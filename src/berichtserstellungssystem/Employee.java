@@ -16,7 +16,7 @@ public class Employee extends Person{
     private boolean permitted;
     private Date permitionEndDate = new Date();
 
-    public Employee(String name, String lastname, String geschlecht, Date birthDate, String adress, String email, int[] TCNr, int[] telephone, int[] personalNr, Date permitionEndDate, int level, boolean permitted) {
+    public Employee(String name, String lastname, String geschlecht, Date birthDate, String adress, String email, long TCNr, int[] telephone, int personalNr, Date permitionEndDate, int level, boolean permitted) {
         this.setName(name);
         this.setLastname(lastname);
         this.setGender(geschlecht);
@@ -29,6 +29,8 @@ public class Employee extends Person{
         this.permitionEndDate = permitionEndDate;
         this.level = level;
         this.permitted = permitted;
+        this.setUsername(Long.toString(TCNr));
+        this.setPassword(Integer.toString(personalNr));
     }
 
     public int getLevel() {

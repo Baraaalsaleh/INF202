@@ -17,7 +17,7 @@ public class Manager extends Person{
     private ArrayList addedTestUnits = new ArrayList<TestUnit>();
     private ArrayList addedCustomers = new ArrayList<Customer>();
     
-    public Manager(String name, String lastname, String geschlecht, Date birthDate, String adress, String email, int[] TCNr, int[] telephone, int[] personalNr, Date permitionEndDate, int level, boolean permitted) {
+    public Manager(String name, String lastname, String geschlecht, Date birthDate, String adress, String email, long TCNr, int[] telephone, int personalNr, Date permitionEndDate, int level, boolean permitted) {
         this.setName(name);
         this.setLastname(lastname);
         this.setGender(geschlecht);
@@ -27,6 +27,8 @@ public class Manager extends Person{
         this.setTCNr(TCNr);
         this.setTelephone(telephone);
         this.setPersonalNr(personalNr);
+        this.setUsername(Long.toString(TCNr));
+        this.setPassword(Integer.toString(personalNr));
     }
 
     public ArrayList getAddedEmployees() {

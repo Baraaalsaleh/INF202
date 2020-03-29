@@ -20,9 +20,9 @@ abstract public class Person {
     private String gender;
     private String address;
     private String email;
-    private int[] TCNr = new int[11];
+    private long TCNr;
     private int[] telephone = new int[15];
-    private int[] personalNr = new int[8];
+    private int personalNr;
     private Date birthDate = new Date();
 
     public void setUsername(String username) {
@@ -61,7 +61,7 @@ abstract public class Person {
         return email;
     }
 
-    public int[] getTCNr() {
+    public long getTCNr() {
         return TCNr;
     }
 
@@ -69,7 +69,7 @@ abstract public class Person {
         return telephone;
     }
 
-    public int[] getPersonalNr() {
+    public int getPersonalNr() {
         return personalNr;
     }
 
@@ -97,7 +97,7 @@ abstract public class Person {
         this.email = email;
     }
 
-    public void setTCNr(int[] TCNr) {
+    public void setTCNr(long TCNr) {
         this.TCNr = TCNr;
     }
 
@@ -105,7 +105,7 @@ abstract public class Person {
         this.telephone = telephone;
     }
 
-    public void setPersonalNr(int[] personalNr) {
+    public void setPersonalNr(int personalNr) {
         this.personalNr = personalNr;
     }
 
@@ -131,11 +131,14 @@ abstract public class Person {
             return false;
         }
         final Person other = (Person) obj;
-        if (!Arrays.equals(this.TCNr, other.TCNr)) {
+        if (this.TCNr != other.TCNr) {
             return false;
         }
         return true;
     }
+
+    
+   
     
     
     
