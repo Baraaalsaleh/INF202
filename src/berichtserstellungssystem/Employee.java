@@ -19,9 +19,9 @@ public class Employee extends Person{
     public Employee(String name, String lastname, String geschlecht, Date birthDate, String adress, String email, int[] TCNr, int[] telephone, int[] personalNr, Date permitionEndDate, int level, boolean permitted) {
         this.setName(name);
         this.setLastname(lastname);
-        this.setGeschlecht(geschlecht);
+        this.setGender(geschlecht);
         this.setBirthDate(birthDate);
-        this.setAdress(adress);
+        this.setAddress(adress);
         this.setEmail(email);
         this.setTCNr(TCNr);
         this.setTelephone(telephone);

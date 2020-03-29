@@ -15,13 +15,31 @@ import java.util.Date;
 abstract public class Person {
     private String name;
     private String lastname;
-    private String geschlecht;
-    private String adress;
+    private String username;
+    private String password;
+    private String gender;
+    private String address;
     private String email;
     private int[] TCNr = new int[11];
     private int[] telephone = new int[15];
-    private int[] PersonalNr = new int[8];
+    private int[] personalNr = new int[8];
     private Date birthDate = new Date();
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
 
     public String getName() {
         return name;
@@ -31,12 +49,12 @@ abstract public class Person {
         return lastname;
     }
 
-    public String getGeschlecht() {
-        return geschlecht;
+    public String getGender() {
+        return gender;
     }
 
-    public String getAdress() {
-        return adress;
+    public String getAddress() {
+        return address;
     }
 
     public String getEmail() {
@@ -52,7 +70,7 @@ abstract public class Person {
     }
 
     public int[] getPersonalNr() {
-        return PersonalNr;
+        return personalNr;
     }
 
     public Date getBirthDate() {
@@ -67,12 +85,12 @@ abstract public class Person {
         this.lastname = lastname;
     }
 
-    public void setGeschlecht(String geschlecht) {
-        this.geschlecht = geschlecht;
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
-    public void setAdress(String adress) {
-        this.adress = adress;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public void setEmail(String email) {
@@ -87,8 +105,8 @@ abstract public class Person {
         this.telephone = telephone;
     }
 
-    public void setPersonalNr(int[] PersonalNr) {
-        this.PersonalNr = PersonalNr;
+    public void setPersonalNr(int[] personalNr) {
+        this.personalNr = personalNr;
     }
 
     public void setBirthDate(Date birthDate) {
