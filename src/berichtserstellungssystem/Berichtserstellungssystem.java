@@ -22,9 +22,8 @@ public class Berichtserstellungssystem {
     public static void main(String[] args) throws SQLException {
         // TODO code application logic here
         Connect myConnector = new Connect();
-        Connection myConnection = myConnector.connect();
-        
-       
+        //Connection myConnection = myConnector.connect();      
+        myConnector.create_The_Database();
     }
     
 }
