@@ -16,21 +16,10 @@ public class Employee extends Person{
     private boolean permitted;
     private Date permitionEndDate = new Date();
 
-    public Employee(String name, String lastname, String geschlecht, Date birthDate, String adress, String email, long TCNr, int[] telephone, int personalNr, Date permitionEndDate, int level, boolean permitted) {
-        this.setName(name);
-        this.setLastname(lastname);
-        this.setGender(geschlecht);
-        this.setBirthDate(birthDate);
-        this.setAddress(adress);
-        this.setEmail(email);
-        this.setTCNr(TCNr);
-        this.setTelephone(telephone);
-        this.setPersonalNr(personalNr);
-        this.permitionEndDate = permitionEndDate;
+    public Employee(int level, boolean permitted, String name, String lastname, String username, String password, String gender, String address, String email, long TCNr, long telephone, long personalNr, Date birthDate) {
+        super(name, lastname, username, password, gender, address, email, TCNr, telephone, personalNr, birthDate);
         this.level = level;
         this.permitted = permitted;
-        this.setUsername(Long.toString(TCNr));
-        this.setPassword(Integer.toString(personalNr));
     }
 
     public int getLevel() {

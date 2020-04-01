@@ -21,10 +21,26 @@ abstract public class Person {
     private String address;
     private String email;
     private long TCNr;
-    private int[] telephone = new int[15];
-    private int personalNr;
-    private Date birthDate = new Date();
+    private long telephone;
+    private long personalNr;
+    private Date birthDate;
 
+    public Person(String name, String lastname, String username, String password, String gender, String address, String email, long TCNr, long telephone, long personalNr, Date birthDate) {
+        this.name = name;
+        this.lastname = lastname;
+        this.username = username;
+        this.password = password;
+        this.gender = gender;
+        this.address = address;
+        this.email = email;
+        this.TCNr = TCNr;
+        this.telephone = telephone;
+        this.personalNr = personalNr;
+        this.birthDate = birthDate;
+    }
+
+    
+    
     public void setUsername(String username) {
         this.username = username;
     }
@@ -65,11 +81,11 @@ abstract public class Person {
         return TCNr;
     }
 
-    public int[] getTelephone() {
+    public long getTelephone() {
         return telephone;
     }
 
-    public int getPersonalNr() {
+    public long getPersonalNr() {
         return personalNr;
     }
 
@@ -101,11 +117,11 @@ abstract public class Person {
         this.TCNr = TCNr;
     }
 
-    public void setTelephone(int[] telephone) {
+    public void setTelephone(long telephone) {
         this.telephone = telephone;
     }
 
-    public void setPersonalNr(int personalNr) {
+    public void setPersonalNr(long personalNr) {
         this.personalNr = personalNr;
     }
 

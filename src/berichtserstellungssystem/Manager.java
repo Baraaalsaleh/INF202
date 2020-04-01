@@ -16,19 +16,9 @@ public class Manager extends Person{
     private ArrayList addedEmployees = new ArrayList<Employee>();
     private ArrayList addedTestUnits = new ArrayList<MagneticEquipment>();
     private ArrayList addedCustomers = new ArrayList<Customer>();
-    
-    public Manager(String name, String lastname, String geschlecht, Date birthDate, String adress, String email, long TCNr, int[] telephone, int personalNr, Date permitionEndDate, int level, boolean permitted) {
-        this.setName(name);
-        this.setLastname(lastname);
-        this.setGender(geschlecht);
-        this.setBirthDate(birthDate);
-        this.setAddress(adress);
-        this.setEmail(email);
-        this.setTCNr(TCNr);
-        this.setTelephone(telephone);
-        this.setPersonalNr(personalNr);
-        this.setUsername(Long.toString(TCNr));
-        this.setPassword(Integer.toString(personalNr));
+
+    public Manager(String name, String lastname, String username, String password, String gender, String address, String email, long TCNr, long telephone, long personalNr, Date birthDate) {
+        super(name, lastname, username, password, gender, address, email, TCNr, telephone, personalNr, birthDate);
     }
 
     public ArrayList getAddedEmployees() {
