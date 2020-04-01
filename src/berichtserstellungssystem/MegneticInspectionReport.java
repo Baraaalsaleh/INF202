@@ -13,7 +13,7 @@ import java.util.Date;
  * @author Baraa
  */
 public class MegneticInspectionReport extends Report{
-    private int poleDistance;
+    private String poleDistance;
     private String MPCarrier;
     private String magTech;
     private String UVIntensity;
@@ -32,7 +32,7 @@ public class MegneticInspectionReport extends Report{
     private String standardDeviations;
     private ArrayList<MagneticInspectionResult> inspectionResults= new ArrayList();
 
-    public MegneticInspectionReport(int poleDistance, String MPCarrier, String magTech, String UVIntensity, String distanceOfLight, String examintionArea, String currentType, String Luxmeter, String testMedium, String demagnetization, String surfaceTemperature, String gaussFieldStrength, String identificationOfLightEquip, String liftingTest, boolean buttWeld, boolean filletWeld, String standardDeviations, String customer, String projectName, String inspectionPlace, String inspectionClass, String evaluationStandard, String inspectionProcedure, double inspectionScope, String drawingNo, String surfaceCondition, String stageOfExaminaiton, String page, long reportNumber, Date reportDate, String orderNumber, String offerNumber, String equipment, String heatTreatment, String inspectionDates, String descriptionOfAttachments, Employee operator, boolean operatorSignature, Employee evaluator, boolean evaluatorSignature, Employee confirmation, boolean confirmationSignature, String customerName, String customerLevel) {
+    public MegneticInspectionReport(String poleDistance, String MPCarrier, String magTech, String UVIntensity, String distanceOfLight, String examintionArea, String currentType, String Luxmeter, String testMedium, String demagnetization, String surfaceTemperature, String gaussFieldStrength, String identificationOfLightEquip, String liftingTest, boolean buttWeld, boolean filletWeld, String standardDeviations, String customer, String projectName, String inspectionPlace, String inspectionClass, String evaluationStandard, String inspectionProcedure, String inspectionScope, String drawingNo, String surfaceCondition, String stageOfExaminaiton, String page, String reportNumber, Date reportDate, String orderNumber, String offerNumber, String equipment, String heatTreatment, String inspectionDates, String descriptionOfAttachments, Employee operator, boolean operatorSignature, Employee evaluator, boolean evaluatorSignature, Employee confirmation, boolean confirmationSignature, String customerName, String customerLevel) {
         super(customer, projectName, inspectionPlace, inspectionClass, evaluationStandard, inspectionProcedure, inspectionScope, drawingNo, surfaceCondition, stageOfExaminaiton, page, reportNumber, reportDate, orderNumber, offerNumber, equipment, heatTreatment, inspectionDates, descriptionOfAttachments, operator, operatorSignature, evaluator, evaluatorSignature, confirmation, confirmationSignature, customerName, customerLevel);
         this.poleDistance = poleDistance;
         this.MPCarrier = MPCarrier;
@@ -53,7 +53,7 @@ public class MegneticInspectionReport extends Report{
         this.standardDeviations = standardDeviations;
     }
 
-    public void setPoleDistance(int poleDistance) {
+    public void setPoleDistance(String poleDistance) {
         this.poleDistance = poleDistance;
     }
 
@@ -125,7 +125,7 @@ public class MegneticInspectionReport extends Report{
         this.inspectionResults = inspectionResults;
     }
 
-    public int getPoleDistance() {
+    public String getPoleDistance() {
         return poleDistance;
     }
 

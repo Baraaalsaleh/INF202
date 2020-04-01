@@ -16,11 +16,11 @@ public class RadiographicEquipment extends Equipment{
     private boolean xRay;
     private String focalSpotSize;
     private String exposureTime;
-    private int filmFocusDistance;
-    private double pbSreens;
+    private String filmFocusDistance;
+    private String pbScreens;
     private String filters;
 
-    public RadiographicEquipment(String usedDevice, boolean ir192, boolean se75, boolean xRay, String focalSpotSize, String exposureTime, int filmFocusDistance, double pbSreens, String filters, String name) {
+    public RadiographicEquipment(String usedDevice, boolean ir192, boolean se75, boolean xRay, String focalSpotSize, String exposureTime, String filmFocusDistance, String pbSreens, String filters, String name) {
         super(name);
         this.usedDevice = usedDevice;
         this.ir192 = ir192;
@@ -29,7 +29,7 @@ public class RadiographicEquipment extends Equipment{
         this.focalSpotSize = focalSpotSize;
         this.exposureTime = exposureTime;
         this.filmFocusDistance = filmFocusDistance;
-        this.pbSreens = pbSreens;
+        this.pbScreens = pbSreens;
         this.filters = filters;
     }
 
@@ -57,12 +57,12 @@ public class RadiographicEquipment extends Equipment{
         this.exposureTime = exposureTime;
     }
 
-    public void setFilmFocusDistance(int filmFocusDistance) {
+    public void setFilmFocusDistance(String filmFocusDistance) {
         this.filmFocusDistance = filmFocusDistance;
     }
 
-    public void setPbSreens(double pbSreens) {
-        this.pbSreens = pbSreens;
+    public void setPbScreens(String pbScreens) {
+        this.pbScreens = pbScreens;
     }
 
     public void setFilters(String filters) {
@@ -93,12 +93,12 @@ public class RadiographicEquipment extends Equipment{
         return exposureTime;
     }
 
-    public int getFilmFocusDistance() {
+    public String getFilmFocusDistance() {
         return filmFocusDistance;
     }
 
-    public double getPbSreens() {
-        return pbSreens;
+    public String getPbScreens() {
+        return pbScreens;
     }
 
     public String getFilters() {

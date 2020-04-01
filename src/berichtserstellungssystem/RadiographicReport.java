@@ -18,9 +18,9 @@ public class RadiographicReport extends Report{
     private boolean se75;
     private boolean xRay;
     private String focalSpotSize;
-    private int exposureTime;
-    private int filmFocusDistance;
-    private double pbSreens;
+    private String exposureTime;
+    private String filmFocusDistance;
+    private String pbScreens;
     private String filters;
     private String filmBrand;
     private boolean d4MX125;
@@ -32,13 +32,13 @@ public class RadiographicReport extends Report{
     private boolean filmSide;
     private boolean automatic;
     private boolean manuel;
-    private double temp;
+    private String temp;
     private int[] filmQuantity = new int[8];
     private boolean[] testArrangements = new boolean[6];
     private ArrayList<RadiographicInspectionResult> inspectionResults= new ArrayList();
 
 
-    public RadiographicReport(String usedDevice, boolean ir192, boolean se75, boolean xRay, String focalSpotSize, int exposureTime, int filmFocusDistance, double pbSreens, String filters, String filmBrand, boolean d4MX125, boolean d5T200, boolean d7AA400, boolean en, boolean astm, boolean sourceSide, boolean filmSide, boolean automatic, boolean manuel, double temp, String customer, String projectName, String inspectionPlace, String inspectionClass, String evaluationStandard, String inspectionProcedure, double inspectionScope, String drawingNo, String surfaceCondition, String stageOfExaminaiton, String page, long reportNumber, Date reportDate, String orderNumber, String offerNumber, String equipment, String heatTreatment, String inspectionDates, String descriptionOfAttachments, Employee operator, boolean operatorSignature, Employee evaluator, boolean evaluatorSignature, Employee confirmation, boolean confirmationSignature, String customerName, String customerLevel) {
+    public RadiographicReport(String usedDevice, boolean ir192, boolean se75, boolean xRay, String focalSpotSize, String exposureTime, String filmFocusDistance, String pbSreens, String filters, String filmBrand, boolean d4MX125, boolean d5T200, boolean d7AA400, boolean en, boolean astm, boolean sourceSide, boolean filmSide, boolean automatic, boolean manuel, String temp, String customer, String projectName, String inspectionPlace, String inspectionClass, String evaluationStandard, String inspectionProcedure, String inspectionScope, String drawingNo, String surfaceCondition, String stageOfExaminaiton, String page, String reportNumber, Date reportDate, String orderNumber, String offerNumber, String equipment, String heatTreatment, String inspectionDates, String descriptionOfAttachments, Employee operator, boolean operatorSignature, Employee evaluator, boolean evaluatorSignature, Employee confirmation, boolean confirmationSignature, String customerName, String customerLevel) {
         super(customer, projectName, inspectionPlace, inspectionClass, evaluationStandard, inspectionProcedure, inspectionScope, drawingNo, surfaceCondition, stageOfExaminaiton, page, reportNumber, reportDate, orderNumber, offerNumber, equipment, heatTreatment, inspectionDates, descriptionOfAttachments, operator, operatorSignature, evaluator, evaluatorSignature, confirmation, confirmationSignature, customerName, customerLevel);
         this.usedDevice = usedDevice;
         this.ir192 = ir192;
@@ -47,7 +47,7 @@ public class RadiographicReport extends Report{
         this.focalSpotSize = focalSpotSize;
         this.exposureTime = exposureTime;
         this.filmFocusDistance = filmFocusDistance;
-        this.pbSreens = pbSreens;
+        this.pbScreens = pbSreens;
         this.filters = filters;
         this.filmBrand = filmBrand;
         this.d4MX125 = d4MX125;
@@ -82,16 +82,16 @@ public class RadiographicReport extends Report{
         this.focalSpotSize = focalSpotSize;
     }
 
-    public void setExposureTime(int exposureTime) {
+    public void setExposureTime(String exposureTime) {
         this.exposureTime = exposureTime;
     }
 
-    public void setFilmFocusDistance(int filmFocusDistance) {
+    public void setFilmFocusDistance(String filmFocusDistance) {
         this.filmFocusDistance = filmFocusDistance;
     }
 
-    public void setPbSreens(double pbSreens) {
-        this.pbSreens = pbSreens;
+    public void setPbScreens(String pbScreens) {
+        this.pbScreens = pbScreens;
     }
 
     public void setFilters(String filters) {
@@ -138,7 +138,7 @@ public class RadiographicReport extends Report{
         this.manuel = manuel;
     }
 
-    public void setTemp(double temp) {
+    public void setTemp(String temp) {
         this.temp = temp;
     }
 
@@ -170,16 +170,16 @@ public class RadiographicReport extends Report{
         return focalSpotSize;
     }
 
-    public int getExposureTime() {
+    public String getExposureTime() {
         return exposureTime;
     }
 
-    public int getFilmFocusDistance() {
+    public String getFilmFocusDistance() {
         return filmFocusDistance;
     }
 
-    public double getPbSreens() {
-        return pbSreens;
+    public String getPbScreens() {
+        return pbScreens;
     }
 
     public String getFilters() {
@@ -226,7 +226,7 @@ public class RadiographicReport extends Report{
         return manuel;
     }
 
-    public double getTemp() {
+    public String getTemp() {
         return temp;
     }
 

@@ -18,12 +18,12 @@ public class Report {
     private String inspectionClass;
     private String evaluationStandard;
     private String inspectionProcedure;
-    private double inspectionScope;
+    private String inspectionScope;
     private String drawingNo;
     private String surfaceCondition;
     private String stageOfExaminaiton;
     private String page;
-    private long reportNumber;
+    private String reportNumber;
     private Date reportDate;
     private String orderNumber;
     private String offerNumber;
@@ -40,7 +40,7 @@ public class Report {
     private String customerName;
     private String customerLevel;
 
-    public Report(String customer, String projectName, String inspectionPlace, String inspectionClass, String evaluationStandard, String inspectionProcedure, double inspectionScope, String drawingNo, String surfaceCondition, String stageOfExaminaiton, String page, long reportNumber, Date reportDate, String orderNumber, String offerNumber, String equipment, String heatTreatment, String inspectionDates, String descriptionOfAttachments, Employee operator, boolean operatorSignature, Employee evaluator, boolean evaluatorSignature, Employee confirmation, boolean confirmationSignature, String customerName, String customerLevel) {
+    public Report(String customer, String projectName, String inspectionPlace, String inspectionClass, String evaluationStandard, String inspectionProcedure, String inspectionScope, String drawingNo, String surfaceCondition, String stageOfExaminaiton, String page, String reportNumber, Date reportDate, String orderNumber, String offerNumber, String equipment, String heatTreatment, String inspectionDates, String descriptionOfAttachments, Employee operator, boolean operatorSignature, Employee evaluator, boolean evaluatorSignature, Employee confirmation, boolean confirmationSignature, String customerName, String customerLevel) {
         this.customer = customer;
         this.projectName = projectName;
         this.inspectionPlace = inspectionPlace;
@@ -96,7 +96,7 @@ public class Report {
         this.inspectionProcedure = inspectionProcedure;
     }
 
-    public void setInspectionScope(double inspectionScope) {
+    public void setInspectionScope(String inspectionScope) {
         this.inspectionScope = inspectionScope;
     }
 
@@ -116,7 +116,7 @@ public class Report {
         this.page = page;
     }
 
-    public void setReportNumber(long reportNumber) {
+    public void setReportNumber(String reportNumber) {
         this.reportNumber = reportNumber;
     }
 
@@ -204,7 +204,7 @@ public class Report {
         return inspectionProcedure;
     }
 
-    public double getInspectionScope() {
+    public String getInspectionScope() {
         return inspectionScope;
     }
 
@@ -224,7 +224,7 @@ public class Report {
         return page;
     }
 
-    public long getReportNumber() {
+    public String getReportNumber() {
         return reportNumber;
     }
 
