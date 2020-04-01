@@ -14,7 +14,7 @@ import java.util.Date;
  */
 public class Manager extends Person{
     private ArrayList addedEmployees = new ArrayList<Employee>();
-    private ArrayList addedTestUnits = new ArrayList<TestUnit>();
+    private ArrayList addedTestUnits = new ArrayList<MagneticEquipment>();
     private ArrayList addedCustomers = new ArrayList<Customer>();
     
     public Manager(String name, String lastname, String geschlecht, Date birthDate, String adress, String email, long TCNr, int[] telephone, int personalNr, Date permitionEndDate, int level, boolean permitted) {
@@ -47,7 +47,7 @@ public class Manager extends Person{
         this.addedEmployees.add(addedEmployee);
     }
 
-    public void addTestUnits(TestUnit addedTestUnit) {
+    public void addTestUnits(MagneticEquipment addedTestUnit) {
         this.addedTestUnits.add(addedTestUnit);
     }
 
@@ -59,7 +59,7 @@ public class Manager extends Person{
         this.addedEmployees.remove(deletedEmployee);
     }
 
-    public void delTestUnits(TestUnit deletedTestUnit) {
+    public void delTestUnits(MagneticEquipment deletedTestUnit) {
         this.addedTestUnits.remove(deletedTestUnit);
     }
 

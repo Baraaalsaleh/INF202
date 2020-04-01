@@ -11,27 +11,22 @@ import java.util.Objects;
  *
  * @author Baraa
  */
-public class TestUnit {
-    private String name;
+public class MagneticEquipment extends Equipment{
     private int polesDistance;
     private String MPCarrier;
     private String MagTechnic;
     private double UVIntensity;
     private int lightDistance;
 
-    public TestUnit(String name, int polesDistance, String MPCarrier, String MagTechnic, double UVStrength, int illuminationDistance) {
-        this.name = name;
+    public MagneticEquipment(int polesDistance, String MPCarrier, String MagTechnic, double UVIntensity, int lightDistance, String name) {
+        super(name);
         this.polesDistance = polesDistance;
         this.MPCarrier = MPCarrier;
         this.MagTechnic = MagTechnic;
-        this.UVIntensity = UVStrength;
-        this.lightDistance = illuminationDistance;
-    }
-
-    public String getName() {
-        return name;
-    }
-
+        this.UVIntensity = UVIntensity;
+        this.lightDistance = lightDistance;
+    }  
+    
     public int getPolesDistance() {
         return polesDistance;
     }
@@ -50,10 +45,6 @@ public class TestUnit {
 
     public int getLightDistance() {
         return lightDistance;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public void setPolesDistance(int polesDistance) {
@@ -93,7 +84,7 @@ public class TestUnit {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final TestUnit other = (TestUnit) obj;
+        final MagneticEquipment other = (MagneticEquipment) obj;
         if (this.polesDistance != other.polesDistance) {
             return false;
         }
@@ -103,7 +94,7 @@ public class TestUnit {
         if (this.lightDistance != other.lightDistance) {
             return false;
         }
-        if (!Objects.equals(this.name, other.name)) {
+        if (!Objects.equals(this.getName(), other.getName())) {
             return false;
         }
         if (!Objects.equals(this.MPCarrier, other.MPCarrier)) {
