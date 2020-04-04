@@ -129,6 +129,10 @@ abstract public class Person {
         this.birthDate = birthDate;
     }
 
+    public String date_toString(Date date){
+        return (date.getYear() + "-" + date.getMonth() + "-" + date.getDay());
+    }
+    
     @Override
     public int hashCode() {
         int hash = 7;

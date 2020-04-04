@@ -27,8 +27,8 @@ public class Berichtserstellungssystem {
 
         Employee myEmployee = new Employee(2, true, "name", "lastname", "username", "password", "gender", "address", "email", 99999999999L, 5555555555L, 999999999L, myDate);
         Manager myManager = new Manager("Managername", "Managerlastname", "Managerusername", "Managerpassword", "Managergender", "Manageraddress", "Manageremail", 11111111111L, 5555555555L, 111111111L, myDate);
-        System.out.println(myConnector.insertManager(myManager));
-        System.out.println(myConnector.insertEmployee(myEmployee, myManager));
+        //System.out.println(myConnector.insertManager(myManager));
+        //System.out.println(myConnector.insertEmployee(myEmployee, myManager));
     }
     
 }
