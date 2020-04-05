@@ -131,7 +131,7 @@ public class CustomerManagement extends DatabaseManagement{
         ResultSet rs = null;
         try {
             Statement stmt = con.createStatement();
-            rs = stmt.executeQuery("SELECT name as Adı, address as adres FROM Customer LIMIT " + limit + ";");
+            rs = stmt.executeQuery("SELECT name, address FROM Customer LIMIT " + limit + ";");
             if (rs.next()) {
                 return rs;
             }   
@@ -141,6 +141,49 @@ public class CustomerManagement extends DatabaseManagement{
         }
         return rs;
     }
+    //Abfragen von allen Kunden, die von einem bestimmten Manager eingerfügt wurden
+    public ResultSet getAddedCustomers (int limit, Manager manager) {
+        Connection con = this.connect();
+        ResultSet rs = null;
+        int manager_id = 0;
+        try {
+            Statement stmt = con.createStatement();
+            rs = stmt.executeQuery("SELECT id FROM Person WHERE PersonalNr = " + manager.getPersonalNr() + ";");
+            if (rs.next()){
+                manager_id = rs.getInt("id");
+                }            
+            rs = stmt.executeQuery("SELECT name, address FROM Customer WHERE Manager_id = " + manager_id + " LIMIT " + limit + ";");
+            if (rs.next()) {
+                return rs;
+            }   
+        }
+        catch (SQLException e){
+            return rs;
+        }
+        return rs;
+    }
+    //Abfragen von allen Kunden, die von einem bestimmten Manager modifiziert wurden
+    public ResultSet getEditedCustomers (int limit, Manager manager) {
+        Connection con = this.connect();
+        ResultSet rs = null;
+        int manager_id = 0;
+        try {
+            Statement stmt = con.createStatement();
+            rs = stmt.executeQuery("SELECT id FROM Person WHERE PersonalNr = " + manager.getPersonalNr() + ";");
+            if (rs.next()){
+                manager_id = rs.getInt("id");
+                }            
+            rs = stmt.executeQuery("SELECT C.name, C.address FROM Customer C JOIN LastModification L ON C.id = L.Element_id WHERE L.Manager_id = " + manager_id 
+                    + " AND L.type = " + this.getCustomer_type() + " LIMIT " + limit + ";");
+            if (rs.next()) {
+                return rs;
+            }   
+        }
+        catch (SQLException e){
+            return rs;
+        }
+        return rs;
+    }    
     //Abfragen von einem bestimmten Kunden
     public ResultSet[] getCustomer (String name) {
         Connection con = this.connect();

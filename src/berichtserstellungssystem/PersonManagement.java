@@ -186,6 +186,49 @@ public class PersonManagement extends DatabaseManagement{
         }
         return rs;
     }
+    //Abfragen von allen Mitarbeitern, die von einem bestimmten Manager eingefügt wurden
+    public ResultSet getAddedEmployees (int limit, Manager manager) {
+        Connection con = this.connect();
+        ResultSet rs = null;
+        try {
+            Statement stmt = con.createStatement();
+            int manager_id = 0;
+            rs = stmt.executeQuery("SELECT id FROM Person WHERE PersonalNr = " + manager.getPersonalNr() + ";");
+            if (rs.next()){
+                manager_id = rs.getInt("id");
+            }               
+            rs = stmt.executeQuery("SELECT P.name as Adı, P.lastname as Soyadı, P.PersonalNr FROM Person P JOIN Employee E ON P.id = E.Employee_id WHERE P.status = " + this.getEmployee_status() + " AND E.Manager_id = " + manager_id + " LIMIT " + limit + ";");
+            if (rs.next()) {
+                return rs;
+            }   
+        }
+        catch (SQLException e){
+            return rs;
+        }
+        return rs;
+    }
+    //Abfragen von allen Mitarbeitern, die von einem bestimmten Manager modifiziert wurden
+    public ResultSet getEditedEmployees (int limit, Manager manager) {
+        Connection con = this.connect();
+        ResultSet rs = null;
+        try {
+            Statement stmt = con.createStatement();
+            int manager_id = 0;
+            rs = stmt.executeQuery("SELECT id FROM Person WHERE PersonalNr = " + manager.getPersonalNr() + ";");
+            if (rs.next()){
+                manager_id = rs.getInt("id");
+            }               
+            rs = stmt.executeQuery("SELECT P.name as Adı, P.lastname as Soyadı, P.PersonalNr FROM Person P JOIN LastModification L ON P.id = L.Element_id WHERE P.status = " 
+                    + this.getEmployee_status() + " AND L.Manager_id = " + manager_id + " AND L.type = " + this.getEmployee_type() + " LIMIT " + limit + ";");
+            if (rs.next()) {
+                return rs;
+            }   
+        }
+        catch (SQLException e){
+            return rs;
+        }
+        return rs;
+    }    
     //Abfragen aller Manager
     public ResultSet getManagers (int limit) {
         Connection con = this.connect();
