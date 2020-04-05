@@ -61,4 +61,5 @@ public class Customer {
     public void delOfferNrs(String offerNr) {
         this.offerNrs.remove(offerNr);
     }
+
 }

@@ -1,0 +1,165 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package berichtserstellungssystem;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+
+/**
+ *
+ * @author Baraa
+ */
+public class CustomerManagement extends DatabaseManagement{
+    //Einfügen von Kunden
+    public int insertCustomer (Customer customer, Manager manager){
+        Connection con = this.connect();
+        ResultSet rs;
+        int manager_id = 0; 
+        int customer_id = 0;
+        try {
+            Statement stmt = con.createStatement();
+            rs = stmt.executeQuery("SELECT id FROM Customer WHERE name = '" + customer.getName() + "';");
+            if (rs.next() == false) {
+                rs = stmt.executeQuery("SELECT id FROM Person WHERE PersonalNr = " + manager.getPersonalNr() + ";");
+                if (rs.next()){
+                    manager_id = rs.getInt("id");
+                    }
+                stmt.executeUpdate("INSERT INTO Customer (Manager_id, name, address) VALUES (" + manager_id + ", '" + customer.getName() + "', '" + customer.getAddress() + "');");
+                rs = stmt.executeQuery("SELECT id FROM Customer WHERE name = '" + customer.getName() + "';");
+                if (rs.next()){
+                    customer_id = rs.getInt("id");
+                }
+                ArrayList<String> offers = customer.getOfferNrs();
+                for (int i = 0; i < offers.size(); i++) {
+                    stmt.executeUpdate("INSERT INTO Customer_Offer (Customer_id, Manager_id, OfferNr) VALUES (" + customer_id + ", " + manager_id + ", '" + offers.get(i) + "');");
+                }
+                ArrayList<String> orders = customer.getOrderNrs();
+                for (int i = 0; i < orders.size(); i++) {
+                    stmt.executeUpdate("INSERT INTO Customer_Order (Customer_id, Manager_id, OrderNr) VALUES (" + customer_id + ", " + manager_id + ", '" + orders.get(i) + "');");
+                }
+                return 1;
+            }
+            else {
+                return 0;
+            }
+        }
+            catch (SQLException e) {
+                return -1;
+            }
+    }
+    //Löschen von Kunden
+    public int deleteCustomer (Customer customer){
+        Connection con = this.connect();
+        ResultSet rs;
+        int customer_id = 0;
+        try {
+            Statement stmt = con.createStatement();
+            rs = stmt.executeQuery("SELECT id FROM Customer WHERE name = '" + customer.getName() + "';");
+            if (rs.next()) {
+                rs = stmt.executeQuery("SELECT id FROM Customer WHERE name = '" + customer.getName() + "';");
+                if (rs.next()){
+                    customer_id = rs.getInt("id");
+                }
+                stmt.executeUpdate("DELETE FROM Customer WHERE id = " + customer_id + ";");
+                stmt.executeUpdate("DELETE FROM Customer_Offer WHERE Customer_id = " + customer_id + ";");
+                stmt.executeUpdate("DELETE FROM Customer_Order WHERE Customer_id = " + customer_id + ";");
+                return 1;
+            }
+            else {
+                return 0;
+            }
+        }
+            catch (SQLException e) {
+                return -1;
+            }
+    }
+    //Modifikation von Kundeninformationen
+    public int updateCustomer (Customer customer, Manager manager){
+        Connection con = this.connect();
+        ResultSet rs;
+        int manager_id = 0; 
+        int customer_id = 0;
+        int last_id = 0;
+        try {
+            Statement stmt = con.createStatement();
+            rs = stmt.executeQuery("SELECT id FROM Customer WHERE name = '" + customer.getName() + "';");
+            if (rs.next()) {
+                rs = stmt.executeQuery("SELECT id FROM Person WHERE PersonalNr = " + manager.getPersonalNr() + ";");
+                if (rs.next()){
+                    manager_id = rs.getInt("id");
+                    }
+                stmt.executeUpdate("UPDATE Customer SET address = '" + customer.getAddress() + "';");
+                rs = stmt.executeQuery("SELECT id FROM Customer WHERE name = '" + customer.getName() + "';");
+                if (rs.next()){
+                    customer_id = rs.getInt("id");
+                }
+                stmt.executeUpdate("DELETE FROM Customer_Offer WHERE Customer_id = " + customer_id + ";");
+                stmt.executeUpdate("DELETE FROM Customer_Order WHERE Customer_id = " + customer_id + ";");                
+                ArrayList<String> offers = customer.getOfferNrs();
+                for (int i = 0; i < offers.size(); i++) {
+                    stmt.executeUpdate("INSERT INTO Customer_Offer (Customer_id, Manager_id, OfferNr) VALUES (" + customer_id + ", " + manager_id + ", '" + offers.get(i) + "');");
+                }
+                ArrayList<String> orders = customer.getOrderNrs();
+                for (int i = 0; i < orders.size(); i++) {
+                    stmt.executeUpdate("INSERT INTO Customer_Order (Customer_id, Manager_id, OrderNr) VALUES (" + customer_id + ", " + manager_id + ", '" + orders.get(i) + "');");
+                }
+                rs = stmt.executeQuery("SELECT id FROM LastModification WHERE Element_id = " + customer_id + " AND type = " + this.getCustomer_type() + ";");
+                if (rs.next()){
+                    last_id = rs.getInt("id");
+                }
+                stmt.executeUpdate("DELETE FROM LastModification WHERE id = " + last_id + ";");
+                stmt.executeUpdate("INSERT INTO LastModification (Type, Manager_id, Element_id, date) VALUES (" + this.getCustomer_type() + ", " + manager_id + ", " + customer_id + ", NOW();");                                
+                return 1;
+            }
+            else {
+                return 0;
+            }
+        }
+            catch (SQLException e) {
+                return -1;
+            }
+    }
+    //Abfragen von allen Kunden
+    public ResultSet getCustomers (int limit) {
+        Connection con = this.connect();
+        ResultSet rs = null;
+        try {
+            Statement stmt = con.createStatement();
+            rs = stmt.executeQuery("SELECT name as Adı, address as adres FROM Customer LIMIT " + limit + ";");
+            if (rs.next()) {
+                return rs;
+            }   
+        }
+        catch (SQLException e){
+            return rs;
+        }
+        return rs;
+    }
+    //Abfragen von einem bestimmten Kunden
+    public ResultSet[] getCustomer (String name) {
+        Connection con = this.connect();
+        ResultSet[] rs = new ResultSet[3];
+        int customer_id = 0;
+        try {
+            Statement stmt = con.createStatement();            
+            rs[0] = stmt.executeQuery("SELECT id FROM Customer WHERE name = '" + name + "';");
+            if (rs[0].next()){
+                customer_id = rs[0].getInt("id");
+            }            
+            rs[0] = stmt.executeQuery("SELECT C.name, C.address, P.name as adder_name, P.lastname as adder_lastname FROM Customer C JOIN Person P ON C.Manager_id = P.id WHERE C.id = " + customer_id + ";");
+            rs[1] = stmt.executeQuery("SELECT C.OfferNr, P.name as adder_name, P.lastname as adder_lastname FROM Customer_Offer C JOIN Person P ON C.Manager_id = P.id WHERE C.Customer_id = " + customer_id + ";");
+            rs[2] = stmt.executeQuery("SELECT C.OrderNr, P.name as adder_name, P.lastname as adder_lastname FROM Customer_Order C JOIN Person P ON C.Manager_id = P.id WHERE C.Customer_id " + customer_id + ";");
+            
+        }
+        catch (SQLException e){
+            return rs;
+        }
+        return rs;
+    }        
+}
