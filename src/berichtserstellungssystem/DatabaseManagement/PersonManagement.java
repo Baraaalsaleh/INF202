@@ -184,7 +184,7 @@ public class PersonManagement extends DatabaseManagement{
         ResultSet rs = null;
         try {
             Statement stmt = con.createStatement();
-            rs = stmt.executeQuery("SELECT name as Adı, lastname as Soyadı, PersonalNr FROM Person WHERE status = " + this.getEmployee_status() + " LIMIT " + limit + ";");
+            rs = stmt.executeQuery("SELECT name, lastname, PersonalNr FROM Person WHERE status = " + this.getEmployee_status() + " LIMIT " + limit + ";");
             if (rs.next()) {
                 return rs;
             }   
@@ -205,7 +205,7 @@ public class PersonManagement extends DatabaseManagement{
             if (rs.next()){
                 manager_id = rs.getInt("id");
             }               
-            rs = stmt.executeQuery("SELECT P.name as Adı, P.lastname as Soyadı, P.PersonalNr FROM Person P JOIN Employee E ON P.id = E.Employee_id WHERE P.status = " + this.getEmployee_status() + " AND E.Manager_id = " + manager_id + " LIMIT " + limit + ";");
+            rs = stmt.executeQuery("SELECT P.name, P.lastname, P.PersonalNr FROM Person P JOIN Employee E ON P.id = E.Employee_id WHERE P.status = " + this.getEmployee_status() + " AND E.Manager_id = " + manager_id + " LIMIT " + limit + ";");
             if (rs.next()) {
                 return rs;
             }   
@@ -226,7 +226,7 @@ public class PersonManagement extends DatabaseManagement{
             if (rs.next()){
                 manager_id = rs.getInt("id");
             }               
-            rs = stmt.executeQuery("SELECT P.name as Adı, P.lastname as Soyadı, P.PersonalNr FROM Person P JOIN LastModification L ON P.id = L.Element_id WHERE P.status = " 
+            rs = stmt.executeQuery("SELECT P.name, P.lastname, P.PersonalNr FROM Person P JOIN LastModification L ON P.id = L.Element_id WHERE P.status = " 
                     + this.getEmployee_status() + " AND L.Manager_id = " + manager_id + " AND L.type = " + this.getEmployee_type() + " LIMIT " + limit + ";");
             if (rs.next()) {
                 return rs;
@@ -243,7 +243,7 @@ public class PersonManagement extends DatabaseManagement{
         ResultSet rs = null;
         try {
             Statement stmt = con.createStatement();
-            rs = stmt.executeQuery("SELECT name as Adı, lastname as Soyadı, PersonalNr FROM Person WHERE status = " + this.getManager_status() + " LIMIT " + limit + ";");
+            rs = stmt.executeQuery("SELECT name, lastname, PersonalNr FROM Person WHERE status = " + this.getManager_status() + " LIMIT " + limit + ";");
             if (rs.next()) {
                 return rs;
             }   
