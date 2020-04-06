@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package berichtserstellungssystem;
+package berichtserstellungssystem.Resource;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -129,10 +129,7 @@ abstract public class Person {
         this.birthDate = birthDate;
     }
 
-    public String date_toString(Date date){
-        return (date.getYear() + "-" + date.getMonth() + "-" + date.getDay());
-    }
-    
+
     @Override
     public int hashCode() {
         int hash = 7;

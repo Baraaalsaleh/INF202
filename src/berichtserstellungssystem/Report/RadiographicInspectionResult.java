@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package berichtserstellungssystem;
+package berichtserstellungssystem.Report;
 
 import java.util.Objects;
 
@@ -12,25 +12,25 @@ import java.util.Objects;
  * @author Baraa
  */
 public class RadiographicInspectionResult {
-    String shootingArea;
-    String filmNo;
-    String materialType;
-    String weldingType;
-    String welderNr;
-    String position;
-    String thickness;
-    String penetremeter;
-    String visibleQ;
-    String density;
-    String f1012;
-    String f1016;
-    String f1024;
-    String f1036;
-    String f1048;
-    String f3040;
-    String defectType;
-    String preEvaluation;
-    String finalEvaluation;
+    private String shootingArea;
+    private String filmNo;
+    private String materialType;
+    private String weldingType;
+    private String welderNr;
+    private String position;
+    private String thickness;
+    private String penetremeter;
+    private String visibleQ;
+    private String density;
+    private String f1012;
+    private String f1016;
+    private String f1024;
+    private String f1036;
+    private String f1048;
+    private String f3040;
+    private String defectType;
+    private String preEvaluation;
+    private String finalEvaluation;
 
     public RadiographicInspectionResult(String shootingArea, String filmNo, String materialType, String weldingType, String welderNr, String position, String thickness, String penetremeter, String visibleQ, String density, String f1012, String f1016, String f1024, String f1036, String f1048, String f3040, String defectType, String preEvaluation, String finalEvaluation) {
         this.shootingArea = shootingArea;

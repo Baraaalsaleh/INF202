@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package berichtserstellungssystem;
+package berichtserstellungssystem.Report;
 
+import berichtserstellungssystem.Resource.Employee;
+import berichtserstellungssystem.Report.Report;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -150,6 +152,10 @@ public class RadiographicReport extends Report{
         this.testArrangements = testArrangements;
     }
 
+    public void setInspectionResults(ArrayList<RadiographicInspectionResult> inspectionResults) {
+        this.inspectionResults = inspectionResults;
+    }
+
     public String getUsedDevice() {
         return usedDevice;
     }
@@ -236,6 +242,10 @@ public class RadiographicReport extends Report{
 
     public boolean[] getTestArrangements() {
         return testArrangements;
+    }
+
+    public ArrayList<RadiographicInspectionResult> getInspectionResults() {
+        return inspectionResults;
     }
     
     

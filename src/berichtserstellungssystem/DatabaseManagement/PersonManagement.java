@@ -3,8 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package berichtserstellungssystem;
+package berichtserstellungssystem.DatabaseManagement;
 
+import berichtserstellungssystem.Common;
+import berichtserstellungssystem.DatabaseManagement.DatabaseManagement;
+import berichtserstellungssystem.Resource.Employee;
+import berichtserstellungssystem.Resource.Manager;
+import berichtserstellungssystem.Resource.Person;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,13 +23,14 @@ public class PersonManagement extends DatabaseManagement{
     //Einfügen von Mitarbeiter
     public int insertEmployee (Employee employee, Manager manager){
         Connection con = this.connect();
+        Common common = new Common();
         ResultSet rs;
         try {
             Statement stmt = con.createStatement();
             rs = stmt.executeQuery("SELECT id FROM Person WHERE PersonalNr = " + employee.getPersonalNr() + ";");
             if (rs.next() == false) {
-                String birthdate = employee.date_toString(employee.getBirthDate());
-                String permitionEndDate = employee.date_toString(employee.getPermitionEndDate());
+                String birthdate = common.date_toString(employee.getBirthDate());
+                String permitionEndDate = common.date_toString(employee.getPermitionEndDate());
 
                 stmt.executeUpdate("INSERT INTO Person (TCNr, PersonalNr, name, lastname, username, password, birthdate, address, email, telephone, status) " +
                 "VALUES (" + employee.getTCNr() + "," + employee.getPersonalNr() + ",'" + employee.getName() + "','" + employee.getLastname() + "','" + employee.getUsername() +
@@ -53,12 +59,13 @@ public class PersonManagement extends DatabaseManagement{
     //Einfügen von Manager
     public int insertManager (Manager manager){
         Connection con = this.connect();
+        Common common = new Common();
         ResultSet rs;
         try {
             Statement stmt = con.createStatement();
             rs = stmt.executeQuery("SELECT id FROM Person WHERE PersonalNr = " + manager.getPersonalNr() + ";");
             if (rs.next() == false) {
-                String myDate = manager.date_toString(manager.getBirthDate());
+                String myDate = common.date_toString(manager.getBirthDate());
                 stmt.executeUpdate("INSERT INTO Person (TCNr, PersonalNr, name, lastname, username, password, birthdate, address, email, telephone, status) " +
                 "VALUES (" + manager.getTCNr() + "," + manager.getPersonalNr() + ",'" + manager.getName() + "','" + manager.getLastname() + "','" + manager.getUsername() +
                 "','" + manager.getPassword() + "','" + myDate + "','" + manager.getAddress() + "','" + manager.getEmail()+ "'," + manager.getTelephone() + ", " + this.getManager_status() + ");");
@@ -94,13 +101,14 @@ public class PersonManagement extends DatabaseManagement{
     //Modifiziere Informationen einer Employee
     public int updateEmployee (Employee employee, Manager manager){
         Connection con = this.connect();
+        Common common = new Common();
         ResultSet rs;
         try {
             Statement stmt = con.createStatement();
             rs = stmt.executeQuery("SELECT id FROM Person WHERE PersonalNr = " + employee.getPersonalNr() + ";");
             if (rs.next()) {
-                String birthdate = employee.date_toString(employee.getBirthDate());          
-                String permitionEndDate = employee.date_toString(employee.getPermitionEndDate());
+                String birthdate = common.date_toString(employee.getBirthDate());          
+                String permitionEndDate = common.date_toString(employee.getPermitionEndDate());
 
                 stmt.executeUpdate("UPDATE Person SET TCNr = " + employee.getTCNr() + ", name = '" + employee.getName() + "', lastname = '" +
                 employee.getLastname() + "', birthdate = '"  + birthdate + "', address = '" + employee.getAddress() + "', email = '"  + employee.getEmail()+ "', telephone = " + employee.getTelephone() + "WHERE PersonalNr = " + employee.getPersonalNr() + ";");                

@@ -3,8 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package berichtserstellungssystem;
+package berichtserstellungssystem.DatabaseManagement;
 
+import berichtserstellungssystem.DatabaseManagement.DatabaseManagement;
+import berichtserstellungssystem.Resource.Equipment;
+import berichtserstellungssystem.Resource.MagneticEquipment;
+import berichtserstellungssystem.Resource.Manager;
+import berichtserstellungssystem.Resource.RadiographicEquipment;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;

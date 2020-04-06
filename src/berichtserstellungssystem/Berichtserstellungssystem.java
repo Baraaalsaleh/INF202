@@ -5,6 +5,9 @@
  */
 package berichtserstellungssystem;
 
+import berichtserstellungssystem.Resource.Manager;
+import berichtserstellungssystem.Resource.Employee;
+import berichtserstellungssystem.DatabaseManagement.DatabaseManagement;
 import java.sql.*;
 import java.util.Date;
 

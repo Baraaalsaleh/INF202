@@ -3,8 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package berichtserstellungssystem;
+package berichtserstellungssystem.DatabaseManagement;
 
+import berichtserstellungssystem.Resource.Customer;
+import berichtserstellungssystem.DatabaseManagement.DatabaseManagement;
+import berichtserstellungssystem.Resource.Manager;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -43,6 +46,10 @@ public class CustomerManagement extends DatabaseManagement{
                 for (int i = 0; i < orders.size(); i++) {
                     stmt.executeUpdate("INSERT INTO Customer_Order (Customer_id, Manager_id, OrderNr) VALUES (" + customer_id + ", " + manager_id + ", '" + orders.get(i) + "');");
                 }
+                ArrayList<String> projects = customer.getProjects();
+                for (int i = 0; i < orders.size(); i++) {
+                    stmt.executeUpdate("INSERT INTO Customer_Projects (Customer_id, Manager_id, project) VALUES (" + customer_id + ", " + manager_id + ", '" + projects.get(i) + "');");
+                }                
                 return 1;
             }
             else {
@@ -69,6 +76,7 @@ public class CustomerManagement extends DatabaseManagement{
                 stmt.executeUpdate("DELETE FROM Customer WHERE id = " + customer_id + ";");
                 stmt.executeUpdate("DELETE FROM Customer_Offer WHERE Customer_id = " + customer_id + ";");
                 stmt.executeUpdate("DELETE FROM Customer_Order WHERE Customer_id = " + customer_id + ";");
+                stmt.executeUpdate("DELETE FROM Customer_Projects WHERE Customer_id = " + customer_id + ";");
                 return 1;
             }
             else {
@@ -100,7 +108,8 @@ public class CustomerManagement extends DatabaseManagement{
                     customer_id = rs.getInt("id");
                 }
                 stmt.executeUpdate("DELETE FROM Customer_Offer WHERE Customer_id = " + customer_id + ";");
-                stmt.executeUpdate("DELETE FROM Customer_Order WHERE Customer_id = " + customer_id + ";");                
+                stmt.executeUpdate("DELETE FROM Customer_Order WHERE Customer_id = " + customer_id + ";"); 
+                stmt.executeUpdate("DELETE FROM Customer_Projects WHERE Customer_id = " + customer_id + ";");                
                 ArrayList<String> offers = customer.getOfferNrs();
                 for (int i = 0; i < offers.size(); i++) {
                     stmt.executeUpdate("INSERT INTO Customer_Offer (Customer_id, Manager_id, OfferNr) VALUES (" + customer_id + ", " + manager_id + ", '" + offers.get(i) + "');");
@@ -109,6 +118,10 @@ public class CustomerManagement extends DatabaseManagement{
                 for (int i = 0; i < orders.size(); i++) {
                     stmt.executeUpdate("INSERT INTO Customer_Order (Customer_id, Manager_id, OrderNr) VALUES (" + customer_id + ", " + manager_id + ", '" + orders.get(i) + "');");
                 }
+                ArrayList<String> projects = customer.getProjects();
+                for (int i = 0; i < orders.size(); i++) {
+                    stmt.executeUpdate("INSERT INTO Customer_Projects (Customer_id, Manager_id, project) VALUES (" + customer_id + ", " + manager_id + ", '" + projects.get(i) + "');");
+                }                      
                 rs = stmt.executeQuery("SELECT id FROM LastModification WHERE Element_id = " + customer_id + " AND type = " + this.getCustomer_type() + ";");
                 if (rs.next()){
                     last_id = rs.getInt("id");
@@ -187,7 +200,7 @@ public class CustomerManagement extends DatabaseManagement{
     //Abfragen von einem bestimmten Kunden
     public ResultSet[] getCustomer (String name) {
         Connection con = this.connect();
-        ResultSet[] rs = new ResultSet[3];
+        ResultSet[] rs = new ResultSet[4];
         int customer_id = 0;
         try {
             Statement stmt = con.createStatement();            
@@ -198,6 +211,7 @@ public class CustomerManagement extends DatabaseManagement{
             rs[0] = stmt.executeQuery("SELECT C.name, C.address, P.name as adder_name, P.lastname as adder_lastname FROM Customer C JOIN Person P ON C.Manager_id = P.id WHERE C.id = " + customer_id + ";");
             rs[1] = stmt.executeQuery("SELECT C.OfferNr, P.name as adder_name, P.lastname as adder_lastname FROM Customer_Offer C JOIN Person P ON C.Manager_id = P.id WHERE C.Customer_id = " + customer_id + ";");
             rs[2] = stmt.executeQuery("SELECT C.OrderNr, P.name as adder_name, P.lastname as adder_lastname FROM Customer_Order C JOIN Person P ON C.Manager_id = P.id WHERE C.Customer_id " + customer_id + ";");
+            rs[3] = stmt.executeQuery("SELECT C.project, P.name as adder_name, P.lastname as adder_lastname FROM Customer_Projects C JOIN Person P ON C.Manager_id = P.id WHERE C.Customer_id " + customer_id + ";");
             
         }
         catch (SQLException e){

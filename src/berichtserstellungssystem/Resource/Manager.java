@@ -3,8 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package berichtserstellungssystem;
+package berichtserstellungssystem.Resource;
 
+import berichtserstellungssystem.Resource.MagneticEquipment;
+import berichtserstellungssystem.Resource.Employee;
+import berichtserstellungssystem.Resource.Customer;
 import java.util.ArrayList;
 import java.util.Date;
 
