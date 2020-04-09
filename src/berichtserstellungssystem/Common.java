@@ -21,20 +21,6 @@ public class Common {
         return (date.getYear() + "-" + date.getMonth() + "-" + date.getDay());
     }
     
-    static public void loginVerification (String username, String password) {
-        PersonManagement person = new PersonManagement();
-        int res = person.login(username, password);
-        JDialog dialog = new JDialog();
-        dialog.setAlwaysOnTop(true);
-        if (res == 0) {
-            JOptionPane.showMessageDialog(dialog, "Girdiğiniz kullanıcı adı veya şifre yanlıştır!", "Yanlış Giriş Bilgileri", JOptionPane.PLAIN_MESSAGE);
-        }
-        else if (res == -1) {
-            JOptionPane.showMessageDialog(dialog, "Veri tabanina bağlanamadı!, Lütfen tekrar deneyin.", "Bağlantı Kesildi", JOptionPane.PLAIN_MESSAGE);
-        }
-        else {
-            //hier
-        }
-    }
+
     
 }

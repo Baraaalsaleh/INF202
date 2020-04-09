@@ -8,13 +8,36 @@ package berichtserstellungssystem.GUI;
 import berichtserstellungssystem.Common;
 import berichtserstellungssystem.DatabaseManagement.*;
 import berichtserstellungssystem.Resource.*;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JFrame;
+import java.util.*;
+
 /**
  *
  * @author Baraa
  */
 public class Login extends javax.swing.JFrame {
+    
+    private Menu menu = new Menu();
+    public static int saveInformation (){
+        int res = 0;
+        return res;
+    }
+    
+    public static int loginVerification (String username, String password, boolean remember) {
+        PersonManagement person = new PersonManagement();
+        int res = person.login(username, password);
+        JDialog dialog = new JDialog();
+        dialog.setAlwaysOnTop(true);
+        if (res == 0) {
+            JOptionPane.showMessageDialog(dialog, "Girdiğiniz kullanıcı adı veya şifre yanlıştır!", "Yanlış Giriş Bilgileri", JOptionPane.PLAIN_MESSAGE);
+        }
+        else if (res == -1) {
+            JOptionPane.showMessageDialog(dialog, "Veri tabanına bağlanamadı!, Lütfen tekrar deneyin.", "Bağlantı Kesildi", JOptionPane.PLAIN_MESSAGE);
+        }
+        return res;
+    }
 
     /**
      * Creates new form Login
@@ -23,6 +46,11 @@ public class Login extends javax.swing.JFrame {
         initComponents();
     }
 
+    public Login(Menu menu) {
+        initComponents();
+        this.menu = menu;
+        menu.setEnabled(false);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -45,7 +73,7 @@ public class Login extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setAlwaysOnTop(true);
-        setMinimumSize(new java.awt.Dimension(400, 200));
+        setMinimumSize(new java.awt.Dimension(400, 230));
         setName("frame2"); // NOI18N
         setUndecorated(true);
         setResizable(false);
@@ -128,7 +156,7 @@ public class Login extends javax.swing.JFrame {
                     .addComponent(_username, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE)
                     .addComponent(_password))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -136,7 +164,7 @@ public class Login extends javax.swing.JFrame {
                     .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jCheckBox1)
-                .addGap(25, 25, 25))
+                .addContainerGap())
         );
 
         jPanel2.setBackground(new java.awt.Color(0, 102, 102));
@@ -173,9 +201,8 @@ public class Login extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 16, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0))
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         getAccessibleContext().setAccessibleParent(this);
@@ -185,6 +212,7 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        menu.setEnabled(true);
         this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -193,9 +221,12 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_jCheckBox1ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        Common.loginVerification(_username.getText(), _password.getText());
+        loginVerification(_username.getText(), _password.getText(), true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    public static int closeWindow(){
+        return 1;
+    }
     /**
      * @param args the command line arguments
      */
