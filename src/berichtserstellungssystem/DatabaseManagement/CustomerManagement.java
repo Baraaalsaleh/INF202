@@ -20,8 +20,8 @@ import java.util.ArrayList;
  */
 public class CustomerManagement extends DatabaseManagement{
     //Einfügen von Kunden
-    public int insertCustomer (Customer customer, Manager manager){
-        Connection con = this.connect();
+    public static int insertCustomer (Customer customer, Manager manager){
+        Connection con = DatabaseManagement.connect();
         ResultSet rs;
         int manager_id = 0; 
         int customer_id = 0;
@@ -46,10 +46,6 @@ public class CustomerManagement extends DatabaseManagement{
                 for (int i = 0; i < orders.size(); i++) {
                     stmt.executeUpdate("INSERT INTO Customer_Order (Customer_id, Manager_id, OrderNr) VALUES (" + customer_id + ", " + manager_id + ", '" + orders.get(i) + "');");
                 }
-                ArrayList<String> projects = customer.getProjects();
-                for (int i = 0; i < orders.size(); i++) {
-                    stmt.executeUpdate("INSERT INTO Customer_Projects (Customer_id, Manager_id, project) VALUES (" + customer_id + ", " + manager_id + ", '" + projects.get(i) + "');");
-                }                
                 return 1;
             }
             else {
@@ -61,8 +57,8 @@ public class CustomerManagement extends DatabaseManagement{
             }
     }
     //Löschen von Kunden
-    public int deleteCustomer (Customer customer){
-        Connection con = this.connect();
+    public static int deleteCustomer (Customer customer){
+        Connection con = DatabaseManagement.connect();
         ResultSet rs;
         int customer_id = 0;
         try {
@@ -76,7 +72,6 @@ public class CustomerManagement extends DatabaseManagement{
                 stmt.executeUpdate("DELETE FROM Customer WHERE id = " + customer_id + ";");
                 stmt.executeUpdate("DELETE FROM Customer_Offer WHERE Customer_id = " + customer_id + ";");
                 stmt.executeUpdate("DELETE FROM Customer_Order WHERE Customer_id = " + customer_id + ";");
-                stmt.executeUpdate("DELETE FROM Customer_Projects WHERE Customer_id = " + customer_id + ";");
                 return 1;
             }
             else {
@@ -88,8 +83,8 @@ public class CustomerManagement extends DatabaseManagement{
             }
     }
     //Modifikation von Kundeninformationen
-    public int updateCustomer (Customer customer, Manager manager){
-        Connection con = this.connect();
+    public static int updateCustomer (Customer customer, Manager manager){
+        Connection con = DatabaseManagement.connect();
         ResultSet rs;
         int manager_id = 0; 
         int customer_id = 0;
@@ -109,7 +104,6 @@ public class CustomerManagement extends DatabaseManagement{
                 }
                 stmt.executeUpdate("DELETE FROM Customer_Offer WHERE Customer_id = " + customer_id + ";");
                 stmt.executeUpdate("DELETE FROM Customer_Order WHERE Customer_id = " + customer_id + ";"); 
-                stmt.executeUpdate("DELETE FROM Customer_Projects WHERE Customer_id = " + customer_id + ";");                
                 ArrayList<String> offers = customer.getOfferNrs();
                 for (int i = 0; i < offers.size(); i++) {
                     stmt.executeUpdate("INSERT INTO Customer_Offer (Customer_id, Manager_id, OfferNr) VALUES (" + customer_id + ", " + manager_id + ", '" + offers.get(i) + "');");
@@ -118,16 +112,12 @@ public class CustomerManagement extends DatabaseManagement{
                 for (int i = 0; i < orders.size(); i++) {
                     stmt.executeUpdate("INSERT INTO Customer_Order (Customer_id, Manager_id, OrderNr) VALUES (" + customer_id + ", " + manager_id + ", '" + orders.get(i) + "');");
                 }
-                ArrayList<String> projects = customer.getProjects();
-                for (int i = 0; i < orders.size(); i++) {
-                    stmt.executeUpdate("INSERT INTO Customer_Projects (Customer_id, Manager_id, project) VALUES (" + customer_id + ", " + manager_id + ", '" + projects.get(i) + "');");
-                }                      
-                rs = stmt.executeQuery("SELECT id FROM LastModification WHERE Element_id = " + customer_id + " AND type = " + this.getCustomer_type() + ";");
+                rs = stmt.executeQuery("SELECT id FROM LastModification WHERE Element_id = " + customer_id + " AND type = " + DatabaseManagement.getCustomer_type() + ";");
                 if (rs.next()){
                     last_id = rs.getInt("id");
                 }
                 stmt.executeUpdate("DELETE FROM LastModification WHERE id = " + last_id + ";");
-                stmt.executeUpdate("INSERT INTO LastModification (Type, Manager_id, Element_id, date) VALUES (" + this.getCustomer_type() + ", " + manager_id + ", " + customer_id + ", NOW();");                                
+                stmt.executeUpdate("INSERT INTO LastModification (Type, Manager_id, Element_id, date) VALUES (" + DatabaseManagement.getCustomer_type() + ", " + manager_id + ", " + customer_id + ", NOW();");                                
                 return 1;
             }
             else {
@@ -139,8 +129,8 @@ public class CustomerManagement extends DatabaseManagement{
             }
     }
     //Abfragen von allen Kunden
-    public ResultSet getCustomers (int limit) {
-        Connection con = this.connect();
+    public static ResultSet getCustomers (int limit) {
+        Connection con = DatabaseManagement.connect();
         ResultSet rs = null;
         try {
             Statement stmt = con.createStatement();
@@ -155,8 +145,8 @@ public class CustomerManagement extends DatabaseManagement{
         return rs;
     }
     //Abfragen von allen Kunden, die von einem bestimmten Manager eingerfügt wurden
-    public ResultSet getAddedCustomers (int limit, Manager manager) {
-        Connection con = this.connect();
+    public static ResultSet getAddedCustomers (int limit, Manager manager) {
+        Connection con = DatabaseManagement.connect();
         ResultSet rs = null;
         int manager_id = 0;
         try {
@@ -176,8 +166,8 @@ public class CustomerManagement extends DatabaseManagement{
         return rs;
     }
     //Abfragen von allen Kunden, die von einem bestimmten Manager modifiziert wurden
-    public ResultSet getEditedCustomers (int limit, Manager manager) {
-        Connection con = this.connect();
+    public static ResultSet getEditedCustomers (int limit, Manager manager) {
+        Connection con = DatabaseManagement.connect();
         ResultSet rs = null;
         int manager_id = 0;
         try {
@@ -187,7 +177,7 @@ public class CustomerManagement extends DatabaseManagement{
                 manager_id = rs.getInt("id");
                 }            
             rs = stmt.executeQuery("SELECT C.name, C.address FROM Customer C JOIN LastModification L ON C.id = L.Element_id WHERE L.Manager_id = " + manager_id 
-                    + " AND L.type = " + this.getCustomer_type() + " LIMIT " + limit + ";");
+                    + " AND L.type = " + DatabaseManagement.getCustomer_type() + " LIMIT " + limit + ";");
             if (rs.next()) {
                 return rs;
             }   
@@ -198,9 +188,9 @@ public class CustomerManagement extends DatabaseManagement{
         return rs;
     }    
     //Abfragen von einem bestimmten Kunden
-    public ResultSet[] getCustomer (String name) {
-        Connection con = this.connect();
-        ResultSet[] rs = new ResultSet[4];
+    public static ResultSet[] getCustomer (String name) {
+        Connection con = DatabaseManagement.connect();
+        ResultSet[] rs = new ResultSet[3];
         int customer_id = 0;
         try {
             Statement stmt = con.createStatement();            
@@ -210,9 +200,7 @@ public class CustomerManagement extends DatabaseManagement{
             }            
             rs[0] = stmt.executeQuery("SELECT C.name, C.address, P.name as adder_name, P.lastname as adder_lastname FROM Customer C JOIN Person P ON C.Manager_id = P.id WHERE C.id = " + customer_id + ";");
             rs[1] = stmt.executeQuery("SELECT C.OfferNr, P.name as adder_name, P.lastname as adder_lastname FROM Customer_Offer C JOIN Person P ON C.Manager_id = P.id WHERE C.Customer_id = " + customer_id + ";");
-            rs[2] = stmt.executeQuery("SELECT C.OrderNr, P.name as adder_name, P.lastname as adder_lastname FROM Customer_Order C JOIN Person P ON C.Manager_id = P.id WHERE C.Customer_id " + customer_id + ";");
-            rs[3] = stmt.executeQuery("SELECT C.project, P.name as adder_name, P.lastname as adder_lastname FROM Customer_Projects C JOIN Person P ON C.Manager_id = P.id WHERE C.Customer_id " + customer_id + ";");
-            
+            rs[2] = stmt.executeQuery("SELECT C.OrderNr, P.name as adder_name, P.lastname as adder_lastname FROM Customer_Order C JOIN Person P ON C.Manager_id = P.id WHERE C.Customer_id " + customer_id + ";");            
         }
         catch (SQLException e){
             return rs;

@@ -2,7 +2,7 @@ package berichtserstellungssystem.DatabaseManagement;
 
 import berichtserstellungssystem.Report.*;
 import berichtserstellungssystem.Common;
-import berichtserstellungssystem.DatabaseManagement.DatabaseManagement;
+import berichtserstellungssystem.DatabaseManagement.*;
 import berichtserstellungssystem.Resource.*;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -16,16 +16,15 @@ import java.util.ArrayList;
  */
 public class ReportManagement extends DatabaseManagement{
     //Einfügen von Bericht (magnetic)
-    public int insertMagneticReport (MagneticReport report){
-        Connection con = this.connect();
-        Common common = new Common();
+    public static int insertMagneticReport (MagneticReport report){
+        Connection con = DatabaseManagement.connect();
         ResultSet rs;
         try {
             Statement stmt = con.createStatement();
             rs = stmt.executeQuery("SELECT id FROM Report WHERE customer = '" + report.getCustomer() + "' AND reportNumber = '" + report.getReportNumber() + "';");
 
             if (rs.next() == false) {
-                String reportDate = common.date_toString(report.getReportDate());
+                String reportDate = Common.date_toString(report.getReportDate());
                 int operator_id = 0;
                 int evaluator_id = 0;
                 int confirmation_id = 0;
@@ -45,13 +44,13 @@ public class ReportManagement extends DatabaseManagement{
                 
                 stmt.executeUpdate("INSERT INTO Report (customer, projectName, inspectionPlace, inspectionClass, evaluationStandard, inspectionProcedure, inspectionScope, drawingNo, "
                         + "surfaceCondition, stageOfExamination, page, reportNumber, reportDate, orderNumber, offerNumber, equipment, heatTreatment, inspectionDates, descriptionOfAttachments,"
-                        + " operator_Employee_id, operatorSignature, evaluator_Employee_id, evaluatorSignature, confirmation_Employee_id, confirmationSignature, customerName, customerLevel, type) VALUES\n"
+                        + " operator_Employee_id, evaluator_Employee_id, confirmation_Employee_id, customerName, customerLevel, type) VALUES\n"
                         + "('" + report.getCustomer() + "', '" + report.getProjectName() + "', '" + report.getInspectionPlace() + "', '" + report.getInspectionClass() + "', '"
                         + report.getEvaluationStandard() + "', '" + report.getInspectionProcedure() + "', '" + report.getInspectionScope() + "', '" + report.getDrawingNo() + "', '"
                         + report.getSurfaceCondition() + "', '" + report.getStageOfExaminaiton() + "', '" + report.getPage() + "', '" + report.getReportNumber() + "', '" + reportDate + "', '"
                         + report.getOrderNumber() + "', '" + report.getOfferNumber() + "', '" + report.getEquipment() + "', '" + report.getHeatTreatment() + "', '" + report.getInspectionDates()
-                        + "', '" + report.getDescriptionOfAttachments() + "', " + operator_id + ", false, " + evaluator_id + ", false, " + confirmation_id + ", false, '"
-                        + report.getCustomerName() + "', '" + report.getCustomerLevel() + "', " + this.getMagnetic_type() + ");");
+                        + "', '" + report.getDescriptionOfAttachments() + "', " + operator_id + ", " + evaluator_id + ", " + confirmation_id + ", '"
+                        + report.getCustomerName() + "', '" + report.getCustomerLevel() + "', " + DatabaseManagement.getMagnetic_type() + ");");
                 
                 int report_id = 0;
                 rs = stmt.executeQuery("SELECT id FROM Report WHERE customer = '" + report.getCustomer() + "' AND reportNumber = '" + report.getReportNumber() + "';");
@@ -82,16 +81,15 @@ public class ReportManagement extends DatabaseManagement{
     }
     
     //Einfügen von Bericht (radiographic)
-    public int insertRadiographicReport (RadiographicReport report){
-        Connection con = this.connect();
-        Common common = new Common();
+    public static int insertRadiographicReport (RadiographicReport report){
+        Connection con = DatabaseManagement.connect();
         ResultSet rs;
         try {
             Statement stmt = con.createStatement();
             rs = stmt.executeQuery("SELECT id FROM Report WHERE customer = '" + report.getCustomer() + "' AND reportNumber = '" + report.getReportNumber() + "';");
 
             if (rs.next() == false) {
-                String reportDate = common.date_toString(report.getReportDate());
+                String reportDate = Common.date_toString(report.getReportDate());
                 int operator_id = 0;
                 int evaluator_id = 0;
                 int confirmation_id = 0;
@@ -111,13 +109,13 @@ public class ReportManagement extends DatabaseManagement{
                 
                 stmt.executeUpdate("INSERT INTO Report (customer, projectName, inspectionPlace, inspectionClass, evaluationStandard, inspectionProcedure, inspectionScope, drawingNo, "
                         + "surfaceCondition, stageOfExamination, page, reportNumber, reportDate, orderNumber, offerNumber, equipment, heatTreatment, inspectionDates, descriptionOfAttachments,"
-                        + " operator_Employee_id, operatorSignature, evaluator_Employee_id, evaluatorSignature, confirmation_Employee_id, confirmationSignature, customerName, customerLevel, type) VALUES\n"
+                        + " operator_Employee_id, evaluator_Employee_id, confirmation_Employee_id, customerName, customerLevel, type) VALUES\n"
                         + "('" + report.getCustomer() + "', '" + report.getProjectName() + "', '" + report.getInspectionPlace() + "', '" + report.getInspectionClass() + "', '"
                         + report.getEvaluationStandard() + "', '" + report.getInspectionProcedure() + "', '" + report.getInspectionScope() + "', '" + report.getDrawingNo() + "', '"
                         + report.getSurfaceCondition() + "', '" + report.getStageOfExaminaiton() + "', '" + report.getPage() + "', '" + report.getReportNumber() + "', '" + reportDate + "', '"
                         + report.getOrderNumber() + "', '" + report.getOfferNumber() + "', '" + report.getEquipment() + "', '" + report.getHeatTreatment() + "', '" + report.getInspectionDates()
-                        + "', '" + report.getDescriptionOfAttachments() + "', " + operator_id + ", false, " + evaluator_id + ", false, " + confirmation_id + ", false, '"
-                        + report.getCustomerName() + "', '" + report.getCustomerLevel() + "', " + this.getRadiographic_type() + ");");
+                        + "', '" + report.getDescriptionOfAttachments() + "', " + operator_id + ", " + evaluator_id + ", " + confirmation_id + ", '"
+                        + report.getCustomerName() + "', '" + report.getCustomerLevel() + "', " + DatabaseManagement.getRadiographic_type() + ");");
                 
                 int report_id = 0;
                 rs = stmt.executeQuery("SELECT id FROM Report WHERE customer = '" + report.getCustomer() + "' AND reportNumber = '" + report.getReportNumber() + "';");
@@ -153,8 +151,8 @@ public class ReportManagement extends DatabaseManagement{
             }
     }
     //Löschen eines Berichtes
-    public int deleteReport (Report report){
-        Connection con = this.connect();
+    public static int deleteReport (Report report){
+        Connection con = DatabaseManagement.connect();
         ResultSet rs;
         int report_id = 0;
         try {
@@ -179,9 +177,8 @@ public class ReportManagement extends DatabaseManagement{
             }
     }
     //Modifikation von Bericht (magnetic)
-    public int updateMagneticReport (MagneticReport report){
-        Connection con = this.connect();
-        Common common = new Common();
+    public static int updateMagneticReport (MagneticReport report){
+        Connection con = DatabaseManagement.connect();
         ResultSet rs;
         int report_id = 0;
         try {
@@ -190,7 +187,7 @@ public class ReportManagement extends DatabaseManagement{
 
             if (rs.next()) {
                 report_id = rs.getInt("id");                
-                String reportDate = common.date_toString(report.getReportDate());
+                String reportDate = Common.date_toString(report.getReportDate());
                 int operator_id = 0;
                 int evaluator_id = 0;
                 int confirmation_id = 0;
@@ -214,9 +211,9 @@ public class ReportManagement extends DatabaseManagement{
                         + report.getSurfaceCondition() + "', stageOfExamination = '" + report.getStageOfExaminaiton() + "', page = '" + report.getPage() + "', reportNumber = '" 
                         + report.getReportNumber() + "', reportDate = '" + reportDate + "', orderNumber = '" + report.getOrderNumber() + "', offerNumber = '" + report.getOfferNumber() 
                         + "', equipment = '" + report.getEquipment() + "', heatTreatment = '" + report.getHeatTreatment() + "', inspectionDates = '" + report.getInspectionDates() 
-                        + "', descriptionOfAttachments = '" + report.getDescriptionOfAttachments() + "', operator_Employee_id = " + operator_id + ", operatorSignature = false, evaluator_Employee_id = "
-                        + evaluator_id + ", evaluatorSignature = false, confirmation_Employee_id = " + confirmation_id + ", confirmationSignature = false, customerName = '" 
-                        + report.getCustomerName() + "', customerLevel = '" + report.getCustomerLevel() + "', type = " + this.getMagnetic_type() + " WHERE id = " + report_id + ";");
+                        + "', descriptionOfAttachments = '" + report.getDescriptionOfAttachments() + "', operator_Employee_id = " + operator_id + ", evaluator_Employee_id = "
+                        + evaluator_id + ", confirmation_Employee_id = " + confirmation_id + ", customerName = '" 
+                        + report.getCustomerName() + "', customerLevel = '" + report.getCustomerLevel() + "', type = " + DatabaseManagement.getMagnetic_type() + " WHERE id = " + report_id + ";");
 
                 stmt.executeUpdate("UPDATE MagneticReport SET poleDistance =  '" + report.getPoleDistance() + "', MPCarrier = '" + report.getMPCarrier() + "', magTech = '"
                         + report.getMagTech() + "', UVIntensity = '" + report.getUVIntensity() + "', distanceOfLight = '" + report.getDistanceOfLight() + "', examinationArea = '"
@@ -244,9 +241,8 @@ public class ReportManagement extends DatabaseManagement{
             }
     }
    //Modifikation von Bericht (radiographic)
-    public int updateRadiographicReport (RadiographicReport report){
-        Connection con = this.connect();
-        Common common = new Common();
+    public static int updateRadiographicReport (RadiographicReport report){
+        Connection con = DatabaseManagement.connect();
         ResultSet rs;
         int report_id = 0;
         try {
@@ -255,7 +251,7 @@ public class ReportManagement extends DatabaseManagement{
 
             if (rs.next()) {
                 report_id = rs.getInt("id");                
-                String reportDate = common.date_toString(report.getReportDate());
+                String reportDate = Common.date_toString(report.getReportDate());
                 int operator_id = 0;
                 int evaluator_id = 0;
                 int confirmation_id = 0;
@@ -279,9 +275,9 @@ public class ReportManagement extends DatabaseManagement{
                         + report.getSurfaceCondition() + "', stageOfExamination = '" + report.getStageOfExaminaiton() + "', page = '" + report.getPage() + "', reportNumber = '" 
                         + report.getReportNumber() + "', reportDate = '" + reportDate + "', orderNumber = '" + report.getOrderNumber() + "', offerNumber = '" + report.getOfferNumber() 
                         + "', equipment = '" + report.getEquipment() + "', heatTreatment = '" + report.getHeatTreatment() + "', inspectionDates = '" + report.getInspectionDates() 
-                        + "', descriptionOfAttachments = '" + report.getDescriptionOfAttachments() + "', operator_Employee_id = " + operator_id + ", operatorSignature = false, evaluator_Employee_id = "
-                        + evaluator_id + ", evaluatorSignature = false, confirmation_Employee_id = " + confirmation_id + ", confirmationSignature = false, customerName = '" 
-                        + report.getCustomerName() + "', customerLevel = '" + report.getCustomerLevel() + "', type = " + this.getRadiographic_type() + " WHERE id = " + report_id + ";");
+                        + "', descriptionOfAttachments = '" + report.getDescriptionOfAttachments() + "', operator_Employee_id = " + operator_id + ", evaluator_Employee_id = "
+                        + evaluator_id + ", confirmation_Employee_id = " + confirmation_id + ", customerName = '" 
+                        + report.getCustomerName() + "', customerLevel = '" + report.getCustomerLevel() + "', type = " + DatabaseManagement.getRadiographic_type() + " WHERE id = " + report_id + ";");
 
                  stmt.executeUpdate("UPDATE RadiographicReport SET usedDevice = '" + report.getUsedDevice() + "', ir192 = " + report.isIr192() + ", se75 = " + report.isSe75() + ", xRay = " 
                         + report.isxRay() + ", focalSpotSize = '" + report.getFocalSpotSize() + "', exposureTime = '" + report.getExposureTime() + "', filmFocusDistance = '"
@@ -312,35 +308,12 @@ public class ReportManagement extends DatabaseManagement{
             }
     }
     //Abfragen von allen Berichten
-    public ResultSet getReport (int limit) {
-        Connection con = this.connect();
+    public static ResultSet getReport (int limit) {
+        Connection con = DatabaseManagement.connect();
         ResultSet rs = null;
         try {
             Statement stmt = con.createStatement();
-            rs = stmt.executeQuery("SELECT Customer, reportNumber, type, reportDate, operatorSignature, evaluatorSignature, confirmationSignature FROM Report LIMIT " + limit + ";");
-            if (rs.next()) {
-                return rs;
-            }   
-        }
-        catch (SQLException e){
-            return rs;
-        }
-        return rs;
-    }
-    //Abfragen von allen Berichten, die auf die Bestägigung eines bestimmten Mitarbeiters
-    public ResultSet getToVerifyReport (Person person, int limit) {
-        Connection con = this.connect();
-        ResultSet rs = null;
-        try {
-            Statement stmt = con.createStatement();
-            int id = 0;
-            rs = stmt.executeQuery("SELECT id FROM Person WHERE PersonalNr = " + person.getPersonalNr() + ";");
-            if (rs.next()){
-                id = rs.getInt("id");
-                }      
-            rs = stmt.executeQuery("SELECT Customer, reportNumber, type, reportDate, operatorSignature, evaluatorSignature, confirmationSignature FROM Report WHERE "
-                            + "(operator_Employee_id = " + id + " AND operatorSignature = false) OR (evaluator_Employee_id = " + id + " AND evaluatorSignature = false)"
-                            + " OR (confirmation_Employee_id = " + id + " AND confirmationSignature = false) LIMIT " + limit + ";");
+            rs = stmt.executeQuery("SELECT Customer, reportNumber, type, reportDate FROM Report LIMIT " + limit + ";");
             if (rs.next()) {
                 return rs;
             }   
@@ -351,8 +324,8 @@ public class ReportManagement extends DatabaseManagement{
         return rs;
     }
     //Abfragen von allen Berichten, die von einem bestimmten Mitarbeiter bestätigt sind
-    public ResultSet getMyVerifiedReport (Person person, int limit) {
-        Connection con = this.connect();
+    public static ResultSet getMyVerifiedReport (Person person, int limit) {
+        Connection con = DatabaseManagement.connect();
         ResultSet rs = null;
         try {
             Statement stmt = con.createStatement();
@@ -361,9 +334,9 @@ public class ReportManagement extends DatabaseManagement{
             if (rs.next()){
                 id = rs.getInt("id");
                 }      
-            rs = stmt.executeQuery("SELECT Customer, reportNumber, type, reportDate, operatorSignature, evaluatorSignature, confirmationSignature FROM Report WHERE "
-                            + "(operator_Employee_id = " + id + " AND operatorSignature = true) OR (evaluator_Employee_id = " + id + " AND evaluatorSignature = true)"
-                            + " OR (confirmation_Employee_id = " + id + " AND confirmationSignature = true) LIMIT " + limit + ";");
+            rs = stmt.executeQuery("SELECT Customer, reportNumber, type, reportDate FROM Report WHERE "
+                            + "operator_Employee_id = " + id + "  OR evaluator_Employee_id = " + id
+                            + " OR confirmation_Employee_id = " + id + " LIMIT " + limit + ";");
             if (rs.next()) {
                 return rs;
             }   
@@ -373,27 +346,9 @@ public class ReportManagement extends DatabaseManagement{
         }
         return rs;
     }    
-    //Abfragen von allen Berichten, die bestägigt sind
-    public ResultSet getVerifiedReport (int limit) {
-        Connection con = this.connect();
-        ResultSet rs = null;
-        try {
-            Statement stmt = con.createStatement();
-            int id = 0;  
-            rs = stmt.executeQuery("SELECT Customer, reportNumber, type, reportDate, operatorSignature, evaluatorSignature, confirmationSignature FROM Report WHERE "
-                            + "operatorSignature = true AND evaluatorSignature = true AND confirmationSignature = true LIMIT " + limit + ";");
-            if (rs.next()) {
-                return rs;
-            }   
-        }
-        catch (SQLException e){
-            return rs;
-        }
-        return rs;
-    }        
     //Abfragen von Reportinformationen
-    public ResultSet[] getReport (Person person, int limit, Report report) {
-        Connection con = this.connect();
+    public static ResultSet[] getReport (Person person, int limit, Report report) {
+        Connection con = DatabaseManagement.connect();
         ResultSet[] rs = new ResultSet[3];
         try {
             Statement stmt = con.createStatement();
@@ -409,8 +364,8 @@ public class ReportManagement extends DatabaseManagement{
                 }                  
             rs[0] = stmt.executeQuery("SELECT R.customer, R.projectName, R.inspectionPlace, R.inspectionClass, R.evaluationStandard, R.inspectionProcedure, R.inspectionScope, R.drawingNo," 
                     + " R.surfaceCondition, R.stageOfExamination, R.page, R.reportNumber, R.reportDate, R.orderNumber, R.offerNumber, R.equipment, R.heatTreatment, R.inspectionDates,"
-                    + " R.descriptionOfAttachments, R.operator_Employee_id, R.operatorSignature, R.evaluator_Employee_id, R.evaluatorSignature, R.confirmation_Employee_id,"
-                    + " R.confirmationSignature, R.customerName, R.customerLevel, R.type FROM Report R JOIN MagneticReport MR ON MR.Report_id = R.id WHERE R.id = " + report_id + ";");
+                    + " R.descriptionOfAttachments, R.operator_Employee_id, R.evaluator_Employee_id, R.confirmation_Employee_id,"
+                    + " R.customerName, R.customerLevel, R.type FROM Report R JOIN MagneticReport MR ON MR.Report_id = R.id WHERE R.id = " + report_id + ";");
             rs[1] = stmt.executeQuery("SELECT weldPieceNo, testLength, weldingProcess, thickness, diameter, defectType, defectLocation, result FROM MagneticResults "
                     + "WHERE Report_id = " + report_id + ";");
             rs[2] = stmt.executeQuery("SELECT Report_id, shootingArea, filmNo, materialType, weldingType, welderNr, position, thickness, penetremeter,"
@@ -422,30 +377,5 @@ public class ReportManagement extends DatabaseManagement{
         }
         return rs;
     }
-    //Bestätigen eines Berichts
-    public int verifyReport (Person person, Report report) {
-        Connection con = this.connect();
-        ResultSet rs = null;
-        try {
-            Statement stmt = con.createStatement();
-            int employee_id = 0;
-            rs = stmt.executeQuery("SELECT id FROM Person WHERE PersonalNr = " + person.getPersonalNr() + ";");
-            if (rs.next()){
-                employee_id = rs.getInt("id");
-                }
-            int report_id = 0;
-            rs = stmt.executeQuery("SELECT id FROM Report WHERE customer = '" + report.getCustomer() + "' AND reportNumber = '" + report.getReportNumber() + "';");
-            if (rs.next()){
-                employee_id = rs.getInt("id");
-                }                  
-            rs = stmt.executeQuery("UPDATE Report SET operatorSignature = true WHERE id = " + report_id + " AND operator_Employee_id = " + employee_id + ";");
-            rs = stmt.executeQuery("UPDATE Report SET evaluatorSignature = true WHERE id = " + report_id + " AND evaluator_Employee_id = " + employee_id + ";");
-            rs = stmt.executeQuery("UPDATE Report SET confirmationSignature = true WHERE id = " + report_id + " AND confirmation_Employee_id = " + employee_id + ";");            
-            return 1;
-        }
-        catch (SQLException e){
-            return -1;
-        }
-    }    
     
 }

@@ -21,8 +21,8 @@ import java.sql.Statement;
  */
 public class EquipmentManagement extends DatabaseManagement{
     //Einfügen von Testmaschine Magnetic
-    public int insertMagnetic (MagneticEquipment equip, Manager manager){
-        Connection con = this.connect();
+    public static int insertMagnetic (MagneticEquipment equip, Manager manager){
+        Connection con = DatabaseManagement.connect();
         ResultSet rs;
         int manager_id = 0; 
         int equip_id = 0;
@@ -34,7 +34,7 @@ public class EquipmentManagement extends DatabaseManagement{
                 if (rs.next()){
                     manager_id = rs.getInt("id");
                     }
-                stmt.executeUpdate("INSERT INTO Equipment (Manager_id, name, type) VALUES (" + manager_id + ", '" + equip.getName() + "', " + this.getMagnetic_type() + ");");
+                stmt.executeUpdate("INSERT INTO Equipment (Manager_id, name, type) VALUES (" + manager_id + ", '" + equip.getName() + "', " + DatabaseManagement.getMagnetic_type() + ");");
                 rs = stmt.executeQuery("SELECT id FROM Equipment WHERE name = '" + equip.getName() + "';");
                 if (rs.next()){
                     equip_id = rs.getInt("id");
@@ -53,8 +53,8 @@ public class EquipmentManagement extends DatabaseManagement{
             }
     }
     //Einfügen von Testmaschine Radiographic
-    public int insertRadiographic (RadiographicEquipment equip, Manager manager){
-        Connection con = this.connect();
+    public static int insertRadiographic (RadiographicEquipment equip, Manager manager){
+        Connection con = DatabaseManagement.connect();
         ResultSet rs;
         int manager_id = 0; 
         int equip_id = 0;
@@ -66,7 +66,7 @@ public class EquipmentManagement extends DatabaseManagement{
                 if (rs.next()){
                     manager_id = rs.getInt("id");
                     }
-                stmt.executeUpdate("INSERT INTO Equipment (Manager_id, name, type) VALUES (" + manager_id + ", '" + equip.getName() + "', " + this.getRadiographic_type() + ");");
+                stmt.executeUpdate("INSERT INTO Equipment (Manager_id, name, type) VALUES (" + manager_id + ", '" + equip.getName() + "', " + DatabaseManagement.getRadiographic_type() + ");");
                 rs = stmt.executeQuery("SELECT id FROM Equipment WHERE name = '" + equip.getName() + "';");
                 if (rs.next()){
                     equip_id = rs.getInt("id");
@@ -85,8 +85,8 @@ public class EquipmentManagement extends DatabaseManagement{
             }
     }
     //Löschen einer Testmaschine
-    public int deleteEquipment (Equipment equip){
-        Connection con = this.connect();
+    public static int deleteEquipment (Equipment equip){
+        Connection con = DatabaseManagement.connect();
         ResultSet rs;
         int equip_id = 0;
         try {
@@ -111,8 +111,8 @@ public class EquipmentManagement extends DatabaseManagement{
             }
     }
     //Modifikation von Testmaschnineninformationen (magnetic) 
-    public int updateMagnetic (MagneticEquipment equip, Manager manager){
-        Connection con = this.connect();
+    public static int updateMagnetic (MagneticEquipment equip, Manager manager){
+        Connection con = DatabaseManagement.connect();
         ResultSet rs;
         int manager_id = 0; 
         int equip_id = 0;
@@ -132,11 +132,11 @@ public class EquipmentManagement extends DatabaseManagement{
                         equip.getMagTechnic() + "', UVIntensity = " + equip.getUVIntensity() + ", lightDistance = " + equip.getLightDistance() + " WHERE Equipment_id = " 
                         + equip_id + ";");
                 
-                rs = stmt.executeQuery("SELECT id FROM LastModification WHERE Element_id = " + equip_id + " AND type = " + this.getEquipment_type() + ";");
+                rs = stmt.executeQuery("SELECT id FROM LastModification WHERE Element_id = " + equip_id + " AND type = " + DatabaseManagement.getEquipment_type() + ";");
                 if (rs.next()){
                     int last_id = rs.getInt("id");
                     stmt.executeUpdate("DELETE FROM LastModification WHERE id = " + last_id + ";");
-                    stmt.executeUpdate("INSERT INTO LastModification (Type, Manager_id, Element_id, date) VALUES (" + this.getEquipment_type() + ", " + manager_id + ", " + equip_id 
+                    stmt.executeUpdate("INSERT INTO LastModification (Type, Manager_id, Element_id, date) VALUES (" + DatabaseManagement.getEquipment_type() + ", " + manager_id + ", " + equip_id 
                             + ", NOW();");
                 }
                 return 1;
@@ -150,8 +150,8 @@ public class EquipmentManagement extends DatabaseManagement{
             }
     }
     //Modifikation von Testmaschnineninformationen (radiographic) 
-    public int updateRadiographic (RadiographicEquipment equip, Manager manager){
-        Connection con = this.connect();
+    public static int updateRadiographic (RadiographicEquipment equip, Manager manager){
+        Connection con = DatabaseManagement.connect();
         ResultSet rs;
         int manager_id = 0; 
         int equip_id = 0;
@@ -171,11 +171,11 @@ public class EquipmentManagement extends DatabaseManagement{
                         ", focalSpotSize = '" + equip.getFocalSpotSize() + "', exposureTime = '" + equip.getExposureTime() + "', filmFocusDistance = '" 
                         + equip.getFilmFocusDistance() +
                         "', pbScreens = '" + equip.getPbScreens() + "', filters = '" + equip.getFilters() + " WHERE Equipment_id = " + equip_id + ";");
-                rs = stmt.executeQuery("SELECT id FROM LastModification WHERE Element_id = " + equip_id + " AND type = " + this.getEquipment_type() + ";");
+                rs = stmt.executeQuery("SELECT id FROM LastModification WHERE Element_id = " + equip_id + " AND type = " + DatabaseManagement.getEquipment_type() + ";");
                 if (rs.next()){
                     int last_id = rs.getInt("id");
                     stmt.executeUpdate("DELETE FROM LastModification WHERE id = " + last_id + ";");
-                    stmt.executeUpdate("INSERT INTO LastModification (Type, Manager_id, Element_id, date) VALUES (" + this.getEquipment_type() + ", " + manager_id 
+                    stmt.executeUpdate("INSERT INTO LastModification (Type, Manager_id, Element_id, date) VALUES (" + DatabaseManagement.getEquipment_type() + ", " + manager_id 
                             + ", " + equip_id + ", NOW();");
                 }
                 return 1;
@@ -189,8 +189,8 @@ public class EquipmentManagement extends DatabaseManagement{
             }
     }  
     //Abfragen von allen Testmaschinen
-    public ResultSet getEquipments (int limit) {
-        Connection con = this.connect();
+    public static ResultSet getEquipments (int limit) {
+        Connection con = DatabaseManagement.connect();
         ResultSet rs = null;
         try {
             Statement stmt = con.createStatement();
@@ -205,8 +205,8 @@ public class EquipmentManagement extends DatabaseManagement{
         return rs;
     }
     //Abfragen von allen Testmaschinen, die von einem bestimmten Manager eingefügt wurden
-    public ResultSet getAddedEquipments (int limit, Manager manager) {
-        Connection con = this.connect();
+    public static ResultSet getAddedEquipments (int limit, Manager manager) {
+        Connection con = DatabaseManagement.connect();
         ResultSet rs = null;
         int manager_id = 0;
         try {
@@ -226,8 +226,8 @@ public class EquipmentManagement extends DatabaseManagement{
         return rs;
     }    
     //Abfragen von allen Testmaschinen, die von einem bestimmten Manager modifiziert wurden
-    public ResultSet getEditedEquipments (int limit, Manager manager) {
-        Connection con = this.connect();
+    public static ResultSet getEditedEquipments (int limit, Manager manager) {
+        Connection con = DatabaseManagement.connect();
         ResultSet rs = null;
         int manager_id = 0;
         try {
@@ -237,7 +237,7 @@ public class EquipmentManagement extends DatabaseManagement{
                 manager_id = rs.getInt("id");
                 }            
             rs = stmt.executeQuery("SELECT E.name, E.type FROM Equipment E JOIN LastModification L ON E.id = L.Element_id WHERE L.Manager_id = " + manager_id 
-                    + " AND L.type = " + this.getEquipment_type() + " LIMIT " + limit + ";");
+                    + " AND L.type = " + DatabaseManagement.getEquipment_type() + " LIMIT " + limit + ";");
             if (rs.next()) {
                 return rs;
             }
@@ -248,8 +248,8 @@ public class EquipmentManagement extends DatabaseManagement{
         return rs;
     }        
     //Abfragen von Testmaschineninformationen (magnetic)
-    public ResultSet getMagneticEquipment (String name){
-        Connection con = this.connect();
+    public static ResultSet getMagneticEquipment (String name){
+        Connection con = DatabaseManagement.connect();
         ResultSet rs = null;
         int equip_id = 0;
         try {
@@ -260,8 +260,8 @@ public class EquipmentManagement extends DatabaseManagement{
                     }            
             rs = stmt.executeQuery("SELECT E.name, M.poles_Distance, M.MPCarrier, M.MagTechnic, M.UVIntensity, M.lightDistance, P.name as adder_name, P.lastname as adder_lastname, "
                     + "Per.name as changer_name, Per.lastname as changer_lastname, L.date FROM Equipment E JOIN MagneticEquipment M ON E.id = M.Equipment_id JOIN Person P ON "
-                    + "E.Manager_id = P.id JOIN LastModification L ON L.Element_id = E.id JOIN Person Per ON Per.id = L.Manager_id WHERE L.type = " + this.getEquipment_type() 
-                    + " AND E.id = " + equip_id + " AND E.type = " + this.getMagnetic_type() + ";");
+                    + "E.Manager_id = P.id JOIN LastModification L ON L.Element_id = E.id JOIN Person Per ON Per.id = L.Manager_id WHERE L.type = " + DatabaseManagement.getEquipment_type() 
+                    + " AND E.id = " + equip_id + " AND E.type = " + DatabaseManagement.getMagnetic_type() + ";");
             if (rs.next()) {
                 return rs;
             }   
@@ -272,8 +272,8 @@ public class EquipmentManagement extends DatabaseManagement{
         return rs;
     }
     //Abfragen von Testmaschineninformationen (radiographic)
-    public ResultSet getRadiographicEquipment (String name){
-        Connection con = this.connect();
+    public static ResultSet getRadiographicEquipment (String name){
+        Connection con = DatabaseManagement.connect();
         ResultSet rs = null;
         int equip_id = 0;
         try {
@@ -285,7 +285,7 @@ public class EquipmentManagement extends DatabaseManagement{
             rs = stmt.executeQuery("SELECT E.name, R.ir192, R.se75, R.xRay, R.focalSpotSize, R.exposureTime, R.filmFocusDistance, R.pbScreens, R.filters, P.name as adder_name, "
                     + "P.lastname as adder_lastname, Per.name as changer_name, Per.lastname as changer_lastname, L.date FROM Equipment E JOIN RadiographicEquipment R ON"
                     + " E.id = R.Equipment_id JOIN Person P ON E.Manager_id = P.id JOIN LastModification L ON L.Element_id = E.id JOIN Person Per ON Per.id = L.Manager_id "
-                    + "WHERE L.type = " + this.getEquipment_type() + " AND E.id = " + equip_id + " AND E.type = " + this.getRadiographic_type() + ";");
+                    + "WHERE L.type = " + DatabaseManagement.getEquipment_type() + " AND E.id = " + equip_id + " AND E.type = " + DatabaseManagement.getRadiographic_type() + ";");
             if (rs.next()) {
                 return rs;
             }   

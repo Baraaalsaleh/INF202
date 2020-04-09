@@ -33,15 +33,12 @@ public class Report {
     private String inspectionDates;
     private String descriptionOfAttachments;
     private Employee operator;
-    private boolean operatorSignature;
     private Employee evaluator;
-    private boolean evaluatorSignature;
     private Employee confirmation;
-    private boolean confirmationSignature;
     private String customerName;
     private String customerLevel;
 
-    public Report(String customer, String projectName, String inspectionPlace, String inspectionClass, String evaluationStandard, String inspectionProcedure, String inspectionScope, String drawingNo, String surfaceCondition, String stageOfExaminaiton, String page, String reportNumber, Date reportDate, String orderNumber, String offerNumber, String equipment, String heatTreatment, String inspectionDates, String descriptionOfAttachments, Employee operator, boolean operatorSignature, Employee evaluator, boolean evaluatorSignature, Employee confirmation, boolean confirmationSignature, String customerName, String customerLevel) {
+    public Report(String customer, String projectName, String inspectionPlace, String inspectionClass, String evaluationStandard, String inspectionProcedure, String inspectionScope, String drawingNo, String surfaceCondition, String stageOfExaminaiton, String page, String reportNumber, Date reportDate, String orderNumber, String offerNumber, String equipment, String heatTreatment, String inspectionDates, String descriptionOfAttachments, Employee operator, Employee evaluator, Employee confirmation, String customerName, String customerLevel) {
         this.customer = customer;
         this.projectName = projectName;
         this.inspectionPlace = inspectionPlace;
@@ -62,11 +59,8 @@ public class Report {
         this.inspectionDates = inspectionDates;
         this.descriptionOfAttachments = descriptionOfAttachments;
         this.operator = operator;
-        this.operatorSignature = operatorSignature;
         this.evaluator = evaluator;
-        this.evaluatorSignature = evaluatorSignature;
         this.confirmation = confirmation;
-        this.confirmationSignature = confirmationSignature;
         this.customerName = customerName;
         this.customerLevel = customerLevel;
     }
@@ -153,24 +147,13 @@ public class Report {
         this.operator = operator;
     }
 
-    public void setOperatorSignature(boolean operatorSignature) {
-        this.operatorSignature = operatorSignature;
-    }
 
     public void setEvaluator(Employee evaluator) {
         this.evaluator = evaluator;
     }
 
-    public void setEvaluatorSignature(boolean evaluatorSignature) {
-        this.evaluatorSignature = evaluatorSignature;
-    }
-
     public void setConfirmation(Employee confirmation) {
         this.confirmation = confirmation;
-    }
-
-    public void setConfirmationSignature(boolean confirmationSignature) {
-        this.confirmationSignature = confirmationSignature;
     }
 
     public void setCustomerName(String customerName) {
@@ -261,24 +244,12 @@ public class Report {
         return operator;
     }
 
-    public boolean isOperatorSignature() {
-        return operatorSignature;
-    }
-
     public Employee getEvaluator() {
         return evaluator;
     }
 
-    public boolean isEvaluatorSignature() {
-        return evaluatorSignature;
-    }
-
     public Employee getConfirmation() {
         return confirmation;
-    }
-
-    public boolean isConfirmationSignature() {
-        return confirmationSignature;
     }
 
     public String getCustomerName() {

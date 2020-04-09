@@ -5,7 +5,11 @@
  */
 package berichtserstellungssystem;
 
+import berichtserstellungssystem.DatabaseManagement.PersonManagement;
+import berichtserstellungssystem.Resource.*;
 import java.util.Date;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -13,8 +17,24 @@ import java.util.Date;
  */
 public class Common {
     
-    public String date_toString(Date date){
+    static public String date_toString(Date date){
         return (date.getYear() + "-" + date.getMonth() + "-" + date.getDay());
-    }    
+    }
+    
+    static public void loginVerification (String username, String password) {
+        PersonManagement person = new PersonManagement();
+        int res = person.login(username, password);
+        JDialog dialog = new JDialog();
+        dialog.setAlwaysOnTop(true);
+        if (res == 0) {
+            JOptionPane.showMessageDialog(dialog, "Girdiğiniz kullanıcı adı veya şifre yanlıştır!", "Yanlış Giriş Bilgileri", JOptionPane.PLAIN_MESSAGE);
+        }
+        else if (res == -1) {
+            JOptionPane.showMessageDialog(dialog, "Veri tabanina bağlanamadı!, Lütfen tekrar deneyin.", "Bağlantı Kesildi", JOptionPane.PLAIN_MESSAGE);
+        }
+        else {
+            //hier
+        }
+    }
     
 }

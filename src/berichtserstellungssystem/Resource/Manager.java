@@ -19,9 +19,13 @@ public class Manager extends Person{
     private ArrayList addedEmployees = new ArrayList<Employee>();
     private ArrayList addedTestUnits = new ArrayList<MagneticEquipment>();
     private ArrayList addedCustomers = new ArrayList<Customer>();
+    private String username;
+    private String password;
 
     public Manager(String name, String lastname, String username, String password, String gender, String address, String email, long TCNr, long telephone, long personalNr, Date birthDate) {
-        super(name, lastname, username, password, gender, address, email, TCNr, telephone, personalNr, birthDate);
+        super(name, lastname, gender, address, email, TCNr, telephone, personalNr, birthDate);
+        this.username = username;
+        this.password = password;
     }
 
     public ArrayList getAddedEmployees() {
@@ -58,5 +62,21 @@ public class Manager extends Person{
 
     public void delCustomers(Customer deletedCustomer) {
         this.addedCustomers.remove(deletedCustomer);
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
     }
 }

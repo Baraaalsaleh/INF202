@@ -16,7 +16,6 @@ public class Customer {
     private String address;
     private ArrayList orderNrs = new ArrayList<String>();
     private ArrayList offerNrs = new ArrayList<String>();
-    private ArrayList projects = new ArrayList<String>();
 
     public Customer(String name, String address) {
         this.name = name;
@@ -39,9 +38,6 @@ public class Customer {
         return offerNrs;
     }
 
-    public ArrayList getProjects() {
-        return projects;
-    }
     
     public void setName(String name) {
         this.name = name;
@@ -58,11 +54,7 @@ public class Customer {
     public void addOfferNrs(String offerNr) {
         this.offerNrs.add(offerNr);
     }
-    
-    public void addProject(String project) {
-        this.projects.add(project);
-    }
-        
+      
      public void delOrderNrs(String orderNr) {
         this.orderNrs.remove(orderNr);
     }

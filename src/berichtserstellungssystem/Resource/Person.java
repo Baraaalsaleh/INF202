@@ -15,8 +15,6 @@ import java.util.Date;
 abstract public class Person {
     private String name;
     private String lastname;
-    private String username;
-    private String password;
     private String gender;
     private String address;
     private String email;
@@ -25,11 +23,9 @@ abstract public class Person {
     private long personalNr;
     private Date birthDate;
 
-    public Person(String name, String lastname, String username, String password, String gender, String address, String email, long TCNr, long telephone, long personalNr, Date birthDate) {
+    public Person(String name, String lastname, String gender, String address, String email, long TCNr, long telephone, long personalNr, Date birthDate) {
         this.name = name;
         this.lastname = lastname;
-        this.username = username;
-        this.password = password;
         this.gender = gender;
         this.address = address;
         this.email = email;
@@ -41,21 +37,6 @@ abstract public class Person {
 
     
     
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
 
     public String getName() {
         return name;

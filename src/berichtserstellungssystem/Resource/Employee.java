@@ -16,8 +16,9 @@ public class Employee extends Person{
     private boolean permitted;
     private Date permitionEndDate = new Date();
 
-    public Employee(int level, boolean permitted, String name, String lastname, String username, String password, String gender, String address, String email, long TCNr, long telephone, long personalNr, Date birthDate) {
-        super(name, lastname, username, password, gender, address, email, TCNr, telephone, personalNr, birthDate);
+    
+    public Employee(int level, boolean permitted, String name, String lastname, String gender, String address, String email, long TCNr, long telephone, long personalNr, Date birthDate) {
+        super(name, lastname, gender, address, email, TCNr, telephone, personalNr, birthDate);
         this.level = level;
         this.permitted = permitted;
     }
