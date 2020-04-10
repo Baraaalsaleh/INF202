@@ -8,6 +8,8 @@ package berichtserstellungssystem.Resource;
 import berichtserstellungssystem.Resource.MagneticEquipment;
 import berichtserstellungssystem.Resource.Employee;
 import berichtserstellungssystem.Resource.Customer;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 

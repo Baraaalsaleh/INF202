@@ -8,10 +8,16 @@ package berichtserstellungssystem.GUI;
 import berichtserstellungssystem.Common;
 import berichtserstellungssystem.DatabaseManagement.*;
 import berichtserstellungssystem.Resource.*;
+import berichtserstellungssystem.Verification;
+import java.io.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JFrame;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -19,25 +25,35 @@ import java.util.*;
  */
 public class Login extends javax.swing.JFrame {
     
+    static public Person toVerify = null;
+    
+    
     private Menu menu = new Menu();
     public static int saveInformation (){
         int res = 0;
         return res;
     }
     
-    public static int loginVerification (String username, String password, boolean remember) {
-        PersonManagement person = new PersonManagement();
-        int res = person.login(username, password);
+    public static int loginVerification (String username, String password, boolean remember) throws SQLException {
+        int res = PersonManagement.login(username, password);
         JDialog dialog = new JDialog();
         dialog.setAlwaysOnTop(true);
         if (res == 0) {
             JOptionPane.showMessageDialog(dialog, "Girdiğiniz kullanıcı adı veya şifre yanlıştır!", "Yanlış Giriş Bilgileri", JOptionPane.PLAIN_MESSAGE);
+            return 0;
         }
         else if (res == -1) {
             JOptionPane.showMessageDialog(dialog, "Veri tabanına bağlanamadı!, Lütfen tekrar deneyin.", "Bağlantı Kesildi", JOptionPane.PLAIN_MESSAGE);
+            return -1;
         }
-        return res;
+        else {
+            ResultSet rs = PersonManagement.getManagerById(res);
+            toVerify = new Person(rs);
+            System.out.println("It was successfully done, and as a profe, your name is " + toVerify.getName() + " " + toVerify.getLastname());
+            return 1;
+        }
     }
+
 
     /**
      * Creates new form Login
@@ -66,7 +82,7 @@ public class Login extends javax.swing.JFrame {
         _username = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        jCheckBox1 = new javax.swing.JCheckBox();
+        remember = new javax.swing.JCheckBox();
         _password = new javax.swing.JPasswordField();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -78,6 +94,11 @@ public class Login extends javax.swing.JFrame {
         setUndecorated(true);
         setResizable(false);
         setType(java.awt.Window.Type.POPUP);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -92,6 +113,19 @@ public class Login extends javax.swing.JFrame {
         _username.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         _username.setToolTipText("");
         _username.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        _username.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _usernameFocusGained(evt);
+            }
+        });
+        _username.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _usernameKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                _usernameKeyTyped(evt);
+            }
+        });
 
         jButton1.setBackground(new java.awt.Color(0, 102, 0));
         jButton1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
@@ -113,14 +147,24 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
-        jCheckBox1.setText("Beni hatırlat");
-        jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
+        remember.setText("Beni hatırlat");
+        remember.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox1ActionPerformed(evt);
+                rememberActionPerformed(evt);
             }
         });
 
         _password.setToolTipText("");
+        _password.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _passwordFocusGained(evt);
+            }
+        });
+        _password.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _passwordKeyReleased(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -144,26 +188,28 @@ public class Login extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jCheckBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(remember, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(150, 150, 150))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(_username, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE)
-                    .addComponent(_password))
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(_username, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(1, 1, 1)
+                        .addComponent(_password))
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jCheckBox1)
+                .addComponent(remember)
                 .addContainerGap())
         );
 
@@ -216,13 +262,78 @@ public class Login extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
+    private void rememberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rememberActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox1ActionPerformed
+    }//GEN-LAST:event_rememberActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        loginVerification(_username.getText(), _password.getText(), true);
+        try {
+            if (loginVerification(_username.getText(), _password.getText(), remember.isSelected()) == 1){
+                if (remember.isSelected() == true){
+                    Common.writeUsingBufferedWriter(_username.getText() + "," + _password.getText(), 1);
+                    System.out.println("Userdata have been saved");
+                }
+                menu.me = toVerify;
+                menu.setEnabled(true);
+                this.dispose();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        try {
+            String[] data = (Common.readUsingBufferReader()).split(",");
+            _username.setText(data[0]);
+            _password.setText(data[1]);
+        } catch (IOException ex) {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            _username.setText("Kullanıcı Adı Giriniz!");
+            _password.setText("Şifre Giriniz!");
+            jButton1.setEnabled(false);
+        }
+    }//GEN-LAST:event_formWindowOpened
+
+    private void _usernameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event__usernameFocusGained
+        _username.selectAll();
+    }//GEN-LAST:event__usernameFocusGained
+
+    private void _passwordFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event__passwordFocusGained
+        _password.selectAll();
+    }//GEN-LAST:event__passwordFocusGained
+
+    private void _usernameKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event__usernameKeyTyped
+        
+    }//GEN-LAST:event__usernameKeyTyped
+
+    private void _usernameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event__usernameKeyReleased
+        if(Verification.verifyUsername(_username.getText())){
+            if (Verification.verifyPassword(_password.getText())){
+                jButton1.setEnabled(true);
+            }
+            else {
+                jButton1.setEnabled(false);
+            }
+        }
+        else{
+                jButton1.setEnabled(false);
+        }
+    }//GEN-LAST:event__usernameKeyReleased
+
+    private void _passwordKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event__passwordKeyReleased
+        if (Verification.verifyPassword(_password.getText())) {
+            if(Verification.verifyUsername(_username.getText())){
+                jButton1.setEnabled(true);
+            }
+            else {
+                jButton1.setEnabled(false);
+            }
+        }
+        else {
+                jButton1.setEnabled(false);
+        }
+    }//GEN-LAST:event__passwordKeyReleased
 
     public static int closeWindow(){
         return 1;
@@ -267,11 +378,11 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JTextField _username;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
-    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JCheckBox remember;
     // End of variables declaration//GEN-END:variables
 }

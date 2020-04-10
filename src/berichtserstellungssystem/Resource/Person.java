@@ -5,6 +5,8 @@
  */
 package berichtserstellungssystem.Resource;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Date;
 
@@ -12,7 +14,7 @@ import java.util.Date;
  *
  * @author Baraa
  */
-abstract public class Person {
+public class Person {
     private String name;
     private String lastname;
     private String gender;
@@ -33,6 +35,31 @@ abstract public class Person {
         this.telephone = telephone;
         this.personalNr = personalNr;
         this.birthDate = birthDate;
+    }
+    
+    public Person (ResultSet rs) {
+        try {
+            this.name = rs.getString("name");
+            this.lastname = rs.getString("lastname");
+            this.gender = rs.getString("gender");
+            this.address = rs.getString("address");
+            this.email = rs.getString("email");
+            this.TCNr = rs.getLong("TCNr");
+            this.telephone = rs.getLong("telephone");
+            this.personalNr = rs.getLong("PersonalNr");
+            String[] date = rs.getString("birthdate").split("-");
+            int year = Integer.parseInt(date[0]);
+            int month = Integer.parseInt(date[1]);
+            int day = Integer.parseInt(date[2]);
+            this.birthDate = new Date(year, month-1, day);
+        }
+        catch (SQLException e){
+            
+        }
+    }
+
+    public Person() {
+        
     }
 
     
