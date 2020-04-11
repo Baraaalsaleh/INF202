@@ -25,32 +25,19 @@ public class ReportManagement extends DatabaseManagement{
 
             if (rs.next() == false) {
                 String reportDate = Common.date_toString(report.getReportDate());
-                int operator_id = 0;
-                int evaluator_id = 0;
-                int confirmation_id = 0;
-                rs = stmt.executeQuery("SELECT id FROM Person WHERE PersonalNr = " + report.getOperator().getPersonalNr() + ";");
-                if (rs.next()){
-                    operator_id = rs.getInt("id");
-                }                
-                rs = stmt.executeQuery("SELECT id FROM Person WHERE PersonalNr = " + report.getEvaluator().getPersonalNr() + ";");
-                if (rs.next()){
-                    evaluator_id = rs.getInt("id");
-                }                
-                rs = stmt.executeQuery("SELECT id FROM Person WHERE PersonalNr = " + report.getConfirmation().getPersonalNr() + ";");
-                if (rs.next()){
-                    confirmation_id = rs.getInt("id");
-                }                
-                
+                int operator_id = report.getOperator_id();
+                int evaluator_id = report.getEvaluator_id();
+                int confirmation_id = report.getConfirmation_id();   
                 
                 stmt.executeUpdate("INSERT INTO Report (customer, projectName, inspectionPlace, inspectionClass, evaluationStandard, inspectionProcedure, inspectionScope, drawingNo, "
                         + "surfaceCondition, stageOfExamination, page, reportNumber, reportDate, orderNumber, offerNumber, equipment, heatTreatment, inspectionDates, descriptionOfAttachments,"
-                        + " operator_Employee_id, evaluator_Employee_id, confirmation_Employee_id, customerName, customerLevel, type) VALUES\n"
+                        + " operator_Employee_id, evaluator_Employee_id, confirmation_Employee_id, customerName, customerLevel, bottom, type) VALUES\n"
                         + "('" + report.getCustomer() + "', '" + report.getProjectName() + "', '" + report.getInspectionPlace() + "', '" + report.getInspectionClass() + "', '"
                         + report.getEvaluationStandard() + "', '" + report.getInspectionProcedure() + "', '" + report.getInspectionScope() + "', '" + report.getDrawingNo() + "', '"
-                        + report.getSurfaceCondition() + "', '" + report.getStageOfExaminaiton() + "', '" + report.getPage() + "', '" + report.getReportNumber() + "', '" + reportDate + "', '"
+                        + report.getSurfaceCondition() + "', '" + report.getStageOfExamination() + "', '" + report.getPage() + "', '" + report.getReportNumber() + "', '" + reportDate + "', '"
                         + report.getOrderNumber() + "', '" + report.getOfferNumber() + "', '" + report.getEquipment() + "', '" + report.getHeatTreatment() + "', '" + report.getInspectionDates()
                         + "', '" + report.getDescriptionOfAttachments() + "', " + operator_id + ", " + evaluator_id + ", " + confirmation_id + ", '"
-                        + report.getCustomerName() + "', '" + report.getCustomerLevel() + "', " + DatabaseManagement.getMagnetic_type() + ");");
+                        + "', '" + report.getBottom() + "', " + DatabaseManagement.getMagnetic_type() + ");");
                 
                 int report_id = 0;
                 rs = stmt.executeQuery("SELECT id FROM Report WHERE customer = '" + report.getCustomer() + "' AND reportNumber = '" + report.getReportNumber() + "';");
@@ -58,11 +45,11 @@ public class ReportManagement extends DatabaseManagement{
                     report_id = rs.getInt("id");
                 }                   
                 stmt.executeUpdate("INSERT INTO MagneticReport (Report_id, poleDistance, MPCarrier, magTech, UVIntensity, distanceOfLight, examinationArea, currentType, Luxmeter,"
-                + " testMedium, demagnetization, surfaceTemperature, gaussFieldStrength, identificationOfLightEquip, liftingTest, buttWeld, filletWeld, standardDeviations) VALUES\n"
+                + " testMedium, demagnetization, surfaceTemperature, gaussFieldStrength, surfaceCondition2, identificationOfLightEquip, liftingTest, buttWeld, filletWeld, standardDeviations) VALUES\n"
                 + "(" + report_id + ", '" + report.getPoleDistance() + "', '" + report.getMPCarrier() + "', '" + report.getMagTech() + "', '" + report.getUVIntensity() + "', '"
-                + report.getDistanceOfLight() + "', '" + report.getExamintionArea() + "', '" + report.getCurrentType() + "', '" + report.getLuxmeter() + "', '" + report.getTestMedium()
-                + "', '" + report.getDemagnetization() + "', '" + report.getSurfaceTemperature() + "', '" + report.getGaussFieldStrength() + "', '" + report.getIdentificationOfLightEquip()
-                + "', '" + report.getLiftingTest() + "', " + report.isButtWeld() + ", " + report.isFilletWeld() + ", '" + report.getStandardDeviations() + "'); ");
+                + report.getDistanceOfLight() + "', '" + report.getExaminationArea() + "', '" + report.getCurrentType() + "', '" + report.getLuxmeter() + "', '" + report.getTestMedium()
+                + "', '" + report.getDemagnetization() + "', '" + report.getSurfaceTemperature() + "', '" + report.getGaussFieldStrength() + "', '" + report.getSurfaceCondition2() 
+                + "', '" + report.getIdentificationOfLightEquip() + "', '" + report.getLiftingTest() + "', " + report.isButtWeld() + ", " + report.isFilletWeld() + ", '" + report.getStandardDeviations() + "'); ");
                 ArrayList<MagneticInspectionResult> results = report.getInspectionResults();
                 for (int i = 0; i < results.size(); i++) {
                     MagneticInspectionResult temp = results.get(i);
@@ -90,32 +77,19 @@ public class ReportManagement extends DatabaseManagement{
 
             if (rs.next() == false) {
                 String reportDate = Common.date_toString(report.getReportDate());
-                int operator_id = 0;
-                int evaluator_id = 0;
-                int confirmation_id = 0;
-                rs = stmt.executeQuery("SELECT id FROM Person WHERE PersonalNr = " + report.getOperator().getPersonalNr() + ";");
-                if (rs.next()){
-                    operator_id = rs.getInt("id");
-                }                
-                rs = stmt.executeQuery("SELECT id FROM Person WHERE PersonalNr = " + report.getEvaluator().getPersonalNr() + ";");
-                if (rs.next()){
-                    evaluator_id = rs.getInt("id");
-                }                
-                rs = stmt.executeQuery("SELECT id FROM Person WHERE PersonalNr = " + report.getConfirmation().getPersonalNr() + ";");
-                if (rs.next()){
-                    confirmation_id = rs.getInt("id");
-                }                
-                
+                int operator_id = report.getOperator_id();
+                int evaluator_id = report.getEvaluator_id();
+                int confirmation_id = report.getConfirmation_id();
                 
                 stmt.executeUpdate("INSERT INTO Report (customer, projectName, inspectionPlace, inspectionClass, evaluationStandard, inspectionProcedure, inspectionScope, drawingNo, "
                         + "surfaceCondition, stageOfExamination, page, reportNumber, reportDate, orderNumber, offerNumber, equipment, heatTreatment, inspectionDates, descriptionOfAttachments,"
-                        + " operator_Employee_id, evaluator_Employee_id, confirmation_Employee_id, customerName, customerLevel, type) VALUES\n"
+                        + " operator_Employee_id, evaluator_Employee_id, confirmation_Employee_id, customerName, customerLevel, bottom, type) VALUES\n"
                         + "('" + report.getCustomer() + "', '" + report.getProjectName() + "', '" + report.getInspectionPlace() + "', '" + report.getInspectionClass() + "', '"
                         + report.getEvaluationStandard() + "', '" + report.getInspectionProcedure() + "', '" + report.getInspectionScope() + "', '" + report.getDrawingNo() + "', '"
-                        + report.getSurfaceCondition() + "', '" + report.getStageOfExaminaiton() + "', '" + report.getPage() + "', '" + report.getReportNumber() + "', '" + reportDate + "', '"
+                        + report.getSurfaceCondition() + "', '" + report.getStageOfExamination() + "', '" + report.getPage() + "', '" + report.getReportNumber() + "', '" + reportDate + "', '"
                         + report.getOrderNumber() + "', '" + report.getOfferNumber() + "', '" + report.getEquipment() + "', '" + report.getHeatTreatment() + "', '" + report.getInspectionDates()
                         + "', '" + report.getDescriptionOfAttachments() + "', " + operator_id + ", " + evaluator_id + ", " + confirmation_id + ", '"
-                        + report.getCustomerName() + "', '" + report.getCustomerLevel() + "', " + DatabaseManagement.getRadiographic_type() + ");");
+                        + report.getBottom() + "', " + DatabaseManagement.getRadiographic_type() + ");");
                 
                 int report_id = 0;
                 rs = stmt.executeQuery("SELECT id FROM Report WHERE customer = '" + report.getCustomer() + "' AND reportNumber = '" + report.getReportNumber() + "';");
@@ -134,11 +108,11 @@ public class ReportManagement extends DatabaseManagement{
                 for (int i = 0; i < results.size(); i++) {
                     RadiographicInspectionResult temp = results.get(i);
                     stmt.executeUpdate("INSERT INTO RadiographicResults (Report_id, shootingArea, filmNo, materialType, weldingType, welderNr, position, thickness, penetremeter,"
-                            + " visibleQ, density, f1012, f1016, f1024, f1036, f1048, f3040, defectType, preEvaluation, finalEvaluation) VALUES "
+                            + " visibleQ, density, f1012, f1016, f1024, f1036, f1048, f3040, defectLocation, defectType, preEvaluation, finalEvaluation) VALUES "
                             + "(" + report_id + ", '" + temp.getShootingArea() + "', '" + temp.getFilmNo() + "', '" + temp.getMaterialType() + "', '" + temp.getWeldingType()
                             + "', '" + temp.getWelderNr() + "', '" + temp.getPosition() + "', '" + temp.getThickness() + "', '" + temp.getPenetremeter() + "', '"
                             + temp.getVisibleQ() + "', '" + temp.getDensity() + "', '" + temp.getF1012() + "', '" + temp.getF1016() + "', '" + temp.getF1024() + "', '"
-                            + temp.getF1036() + "', '" + temp.getF1048() + "', '" + temp.getF3040() + "', '" + temp.getDefectType() + "', '" + temp.getPreEvaluation()
+                            + temp.getF1036() + "', '" + temp.getF1048() + "', '" + temp.getF3040() + "', '" + temp.getDefectLocation() + "', '" + temp.getDefectType() + "', '" + temp.getPreEvaluation()
                             + "', '" + temp.getFinalEvaluation() + "')");
                 }               
                 return 1;
@@ -188,38 +162,25 @@ public class ReportManagement extends DatabaseManagement{
             if (rs.next()) {
                 report_id = rs.getInt("id");                
                 String reportDate = Common.date_toString(report.getReportDate());
-                int operator_id = 0;
-                int evaluator_id = 0;
-                int confirmation_id = 0;
-                rs = stmt.executeQuery("SELECT id FROM Person WHERE PersonalNr = " + report.getOperator().getPersonalNr() + ";");
-                if (rs.next()){
-                    operator_id = rs.getInt("id");
-                }                
-                rs = stmt.executeQuery("SELECT id FROM Person WHERE PersonalNr = " + report.getEvaluator().getPersonalNr() + ";");
-                if (rs.next()){
-                    evaluator_id = rs.getInt("id");
-                }                
-                rs = stmt.executeQuery("SELECT id FROM Person WHERE PersonalNr = " + report.getConfirmation().getPersonalNr() + ";");
-                if (rs.next()){
-                    confirmation_id = rs.getInt("id");
-                }                
-                
+                int operator_id = report.getOperator_id();
+                int evaluator_id = report.getEvaluator_id();
+                int confirmation_id = report.getConfirmation_id();                  
                 
                 stmt.executeUpdate("UPDATE Report SET customer = '" + report.getCustomer() + "', projectName = '" + report.getProjectName() + "', inspectionPlace = '" + report.getInspectionPlace() 
                         + "', inspectionClass = '" + report.getInspectionClass() + "', evaluationStandard = '" + report.getEvaluationStandard() + "', inspectionProcedure = '" 
                         + report.getInspectionProcedure() + "', inspectionScope = '" + report.getInspectionScope() + "', drawingNo = '" + report.getDrawingNo() + "', surfaceCondition = '" 
-                        + report.getSurfaceCondition() + "', stageOfExamination = '" + report.getStageOfExaminaiton() + "', page = '" + report.getPage() + "', reportNumber = '" 
+                        + report.getSurfaceCondition() + "', stageOfExamination = '" + report.getStageOfExamination() + "', page = '" + report.getPage() + "', reportNumber = '" 
                         + report.getReportNumber() + "', reportDate = '" + reportDate + "', orderNumber = '" + report.getOrderNumber() + "', offerNumber = '" + report.getOfferNumber() 
                         + "', equipment = '" + report.getEquipment() + "', heatTreatment = '" + report.getHeatTreatment() + "', inspectionDates = '" + report.getInspectionDates() 
                         + "', descriptionOfAttachments = '" + report.getDescriptionOfAttachments() + "', operator_Employee_id = " + operator_id + ", evaluator_Employee_id = "
-                        + evaluator_id + ", confirmation_Employee_id = " + confirmation_id + ", customerName = '" 
-                        + report.getCustomerName() + "', customerLevel = '" + report.getCustomerLevel() + "', type = " + DatabaseManagement.getMagnetic_type() + " WHERE id = " + report_id + ";");
+                        + evaluator_id + ", confirmation_Employee_id = " + confirmation_id + ", bottom = '" 
+                        + report.getBottom() + "', type = " + DatabaseManagement.getMagnetic_type() + " WHERE id = " + report_id + ";");
 
                 stmt.executeUpdate("UPDATE MagneticReport SET poleDistance =  '" + report.getPoleDistance() + "', MPCarrier = '" + report.getMPCarrier() + "', magTech = '"
                         + report.getMagTech() + "', UVIntensity = '" + report.getUVIntensity() + "', distanceOfLight = '" + report.getDistanceOfLight() + "', examinationArea = '"
-                        + report.getExamintionArea() + "', currentType = '" + report.getCurrentType() + "', Luxmeter = '" + report.getLuxmeter() + "', testMedium = '" + report.getTestMedium()
+                        + report.getExaminationArea() + "', currentType = '" + report.getCurrentType() + "', Luxmeter = '" + report.getLuxmeter() + "', testMedium = '" + report.getTestMedium()
                         + "', demagnetization = '" + report.getDemagnetization() + "', surfaceTemperature = '" + report.getSurfaceTemperature() + "', gaussFieldStrength = '"
-                        + report.getGaussFieldStrength() + "', identificationOfLightEquip = '" + report.getIdentificationOfLightEquip() + "', liftingTest = '" + report.getLiftingTest() 
+                        + report.getGaussFieldStrength() + "', surfaceCondition2 = '" + report.getSurfaceCondition2() + "', identificationOfLightEquip = '" + report.getIdentificationOfLightEquip() + "', liftingTest = '" + report.getLiftingTest() 
                         + "', buttWeld = " + report.isButtWeld() + ", filletWeld = " + report.isButtWeld() + ", standardDeviations = '" + report.getStandardDeviations() + "' WHERE Report_id = " 
                         + report_id + ";");
                 
@@ -252,32 +213,19 @@ public class ReportManagement extends DatabaseManagement{
             if (rs.next()) {
                 report_id = rs.getInt("id");                
                 String reportDate = Common.date_toString(report.getReportDate());
-                int operator_id = 0;
-                int evaluator_id = 0;
-                int confirmation_id = 0;
-                rs = stmt.executeQuery("SELECT id FROM Person WHERE PersonalNr = " + report.getOperator().getPersonalNr() + ";");
-                if (rs.next()){
-                    operator_id = rs.getInt("id");
-                }                
-                rs = stmt.executeQuery("SELECT id FROM Person WHERE PersonalNr = " + report.getEvaluator().getPersonalNr() + ";");
-                if (rs.next()){
-                    evaluator_id = rs.getInt("id");
-                }                
-                rs = stmt.executeQuery("SELECT id FROM Person WHERE PersonalNr = " + report.getConfirmation().getPersonalNr() + ";");
-                if (rs.next()){
-                    confirmation_id = rs.getInt("id");
-                }                
-                
-                
+                int operator_id = report.getOperator_id();
+                int evaluator_id = report.getEvaluator_id();
+                int confirmation_id = report.getConfirmation_id();
+
                 stmt.executeUpdate("UPDATE Report SET customer = '" + report.getCustomer() + "', projectName = '" + report.getProjectName() + "', inspectionPlace = '" + report.getInspectionPlace() 
                         + "', inspectionClass = '" + report.getInspectionClass() + "', evaluationStandard = '" + report.getEvaluationStandard() + "', inspectionProcedure = '" 
                         + report.getInspectionProcedure() + "', inspectionScope = '" + report.getInspectionScope() + "', drawingNo = '" + report.getDrawingNo() + "', surfaceCondition = '" 
-                        + report.getSurfaceCondition() + "', stageOfExamination = '" + report.getStageOfExaminaiton() + "', page = '" + report.getPage() + "', reportNumber = '" 
+                        + report.getSurfaceCondition() + "', stageOfExamination = '" + report.getStageOfExamination() + "', page = '" + report.getPage() + "', reportNumber = '" 
                         + report.getReportNumber() + "', reportDate = '" + reportDate + "', orderNumber = '" + report.getOrderNumber() + "', offerNumber = '" + report.getOfferNumber() 
                         + "', equipment = '" + report.getEquipment() + "', heatTreatment = '" + report.getHeatTreatment() + "', inspectionDates = '" + report.getInspectionDates() 
                         + "', descriptionOfAttachments = '" + report.getDescriptionOfAttachments() + "', operator_Employee_id = " + operator_id + ", evaluator_Employee_id = "
-                        + evaluator_id + ", confirmation_Employee_id = " + confirmation_id + ", customerName = '" 
-                        + report.getCustomerName() + "', customerLevel = '" + report.getCustomerLevel() + "', type = " + DatabaseManagement.getRadiographic_type() + " WHERE id = " + report_id + ";");
+                        + evaluator_id + ", confirmation_Employee_id = " + confirmation_id + ", bottom = '" 
+                        + report.getBottom() + "', type = " + DatabaseManagement.getRadiographic_type() + " WHERE id = " + report_id + ";");
 
                  stmt.executeUpdate("UPDATE RadiographicReport SET usedDevice = '" + report.getUsedDevice() + "', ir192 = " + report.isIr192() + ", se75 = " + report.isSe75() + ", xRay = " 
                         + report.isxRay() + ", focalSpotSize = '" + report.getFocalSpotSize() + "', exposureTime = '" + report.getExposureTime() + "', filmFocusDistance = '"
@@ -291,11 +239,11 @@ public class ReportManagement extends DatabaseManagement{
                 for (int i = 0; i < results.size(); i++) {
                     RadiographicInspectionResult temp = results.get(i);
                     stmt.executeUpdate("INSERT INTO RadiographicResults (Report_id, shootingArea, filmNo, materialType, weldingType, welderNr, position, thickness, penetremeter,"
-                            + " visibleQ, density, f1012, f1016, f1024, f1036, f1048, f3040, defectType, preEvaluation, finalEvaluation) VALUES "
+                            + " visibleQ, density, f1012, f1016, f1024, f1036, f1048, f3040, defectLocation, defectType, preEvaluation, finalEvaluation) VALUES "
                             + "(" + report_id + ", '" + temp.getShootingArea() + "', '" + temp.getFilmNo() + "', '" + temp.getMaterialType() + "', '" + temp.getWeldingType()
                             + "', '" + temp.getWelderNr() + "', '" + temp.getPosition() + "', '" + temp.getThickness() + "', '" + temp.getPenetremeter() + "', '"
                             + temp.getVisibleQ() + "', '" + temp.getDensity() + "', '" + temp.getF1012() + "', '" + temp.getF1016() + "', '" + temp.getF1024() + "', '"
-                            + temp.getF1036() + "', '" + temp.getF1048() + "', '" + temp.getF3040() + "', '" + temp.getDefectType() + "', '" + temp.getPreEvaluation()
+                            + temp.getF1036() + "', '" + temp.getF1048() + "', '" + temp.getF3040() + "', '" + temp.getDefectLocation() + "', '" +temp.getDefectType() + "', '" + temp.getPreEvaluation()
                             + "', '" + temp.getFinalEvaluation() + "')");
                 }               
                 return 1;
@@ -308,12 +256,12 @@ public class ReportManagement extends DatabaseManagement{
             }
     }
     //Abfragen von allen Berichten
-    public static ResultSet getReport (int limit) {
+    public static ResultSet getReports (int limit) {
         Connection con = DatabaseManagement.connect();
         ResultSet rs = null;
         try {
             Statement stmt = con.createStatement();
-            rs = stmt.executeQuery("SELECT Customer, reportNumber, type, reportDate FROM Report LIMIT " + limit + ";");
+            rs = stmt.executeQuery("SELECT id, Customer, reportNumber, type, reportDate FROM Report LIMIT " + limit + ";");
             if (rs.next()) {
                 return rs;
             }   
@@ -347,30 +295,20 @@ public class ReportManagement extends DatabaseManagement{
         return rs;
     }    
     //Abfragen von Reportinformationen
-    public static ResultSet[] getReport (Person person, int limit, Report report) {
+    public static ResultSet[] getReport (int id) {
         Connection con = DatabaseManagement.connect();
         ResultSet[] rs = new ResultSet[3];
         try {
-            Statement stmt = con.createStatement();
-            int employee_id = 0;
-            rs[0] = stmt.executeQuery("SELECT id FROM Person WHERE PersonalNr = " + person.getPersonalNr() + ";");
-            if (rs[0].next()){
-                employee_id = rs[0].getInt("id");
-                }
-            int report_id = 0;
-            rs[0] = stmt.executeQuery("SELECT id FROM Report WHERE customer = '" + report.getCustomer() + "' AND reportNumber = '" + report.getReportNumber() + "';");
-            if (rs[0].next()){
-                employee_id = rs[0].getInt("id");
-                }                  
+            Statement stmt = con.createStatement();            
             rs[0] = stmt.executeQuery("SELECT R.customer, R.projectName, R.inspectionPlace, R.inspectionClass, R.evaluationStandard, R.inspectionProcedure, R.inspectionScope, R.drawingNo," 
                     + " R.surfaceCondition, R.stageOfExamination, R.page, R.reportNumber, R.reportDate, R.orderNumber, R.offerNumber, R.equipment, R.heatTreatment, R.inspectionDates,"
                     + " R.descriptionOfAttachments, R.operator_Employee_id, R.evaluator_Employee_id, R.confirmation_Employee_id,"
-                    + " R.customerName, R.customerLevel, R.type FROM Report R JOIN MagneticReport MR ON MR.Report_id = R.id WHERE R.id = " + report_id + ";");
+                    + " R.customerName, R.customerLevel, R.type FROM Report R JOIN MagneticReport MR ON MR.Report_id = R.id WHERE R.id = " + id + ";");
             rs[1] = stmt.executeQuery("SELECT weldPieceNo, testLength, weldingProcess, thickness, diameter, defectType, defectLocation, result FROM MagneticResults "
-                    + "WHERE Report_id = " + report_id + ";");
+                    + "WHERE Report_id = " + id + ";");
             rs[2] = stmt.executeQuery("SELECT Report_id, shootingArea, filmNo, materialType, weldingType, welderNr, position, thickness, penetremeter,"
                     + " visibleQ, density, f1012, f1016, f1024, f1036, f1048, f3040, defectType, preEvaluation, finalEvaluation FROM RadiographicResults "
-                    + "WHERE Report_id = " + report_id + ";");
+                    + "WHERE Report_id = " + id + ";");
         }
         catch (SQLException e){
             return rs;

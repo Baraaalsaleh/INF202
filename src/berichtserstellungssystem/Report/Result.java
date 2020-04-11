@@ -15,7 +15,11 @@ public class Result {
     public Result(int serialNo) {
         this.serialNo = serialNo;
     }
-
+    
+    public Result () {
+        
+    }
+    
     public void setSerialNo(int serialNo) {
         this.serialNo = serialNo;
     }

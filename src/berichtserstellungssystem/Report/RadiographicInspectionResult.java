@@ -28,11 +28,13 @@ public class RadiographicInspectionResult {
     private String f1036;
     private String f1048;
     private String f3040;
+    //heiieiiieieieeiir
+    private String defectLocation;
     private String defectType;
     private String preEvaluation;
     private String finalEvaluation;
 
-    public RadiographicInspectionResult(String shootingArea, String filmNo, String materialType, String weldingType, String welderNr, String position, String thickness, String penetremeter, String visibleQ, String density, String f1012, String f1016, String f1024, String f1036, String f1048, String f3040, String defectType, String preEvaluation, String finalEvaluation) {
+    public RadiographicInspectionResult(String shootingArea, String filmNo, String materialType, String weldingType, String welderNr, String position, String thickness, String penetremeter, String visibleQ, String density, String f1012, String f1016, String f1024, String f1036, String f1048, String f3040, String defectLocation, String defectType, String preEvaluation, String finalEvaluation) {
         this.shootingArea = shootingArea;
         this.filmNo = filmNo;
         this.materialType = materialType;
@@ -49,11 +51,16 @@ public class RadiographicInspectionResult {
         this.f1036 = f1036;
         this.f1048 = f1048;
         this.f3040 = f3040;
+        this.defectLocation = defectLocation;
         this.defectType = defectType;
         this.preEvaluation = preEvaluation;
         this.finalEvaluation = finalEvaluation;
     }
 
+    public RadiographicInspectionResult () {
+        
+    }
+    
     public void setShootingArea(String shootingArea) {
         this.shootingArea = shootingArea;
     }
@@ -118,6 +125,11 @@ public class RadiographicInspectionResult {
         this.f3040 = f3040;
     }
 
+    public void setDefectLocation(String defectLocation) {
+        this.defectLocation = defectLocation;
+    }
+
+    
     public void setDefectType(String defectType) {
         this.defectType = defectType;
     }
@@ -194,6 +206,10 @@ public class RadiographicInspectionResult {
         return f3040;
     }
 
+    public String getDefectLocation() {
+        return defectLocation;
+    }
+
     public String getDefectType() {
         return defectType;
     }
@@ -205,7 +221,8 @@ public class RadiographicInspectionResult {
     public String getFinalEvaluation() {
         return finalEvaluation;
     }
-
+    
+    
     @Override
     public int hashCode() {
         int hash = 7;

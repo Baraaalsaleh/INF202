@@ -33,6 +33,11 @@ public class MagneticInspectionResult extends Result{
         this.result = result;
     }
 
+    public MagneticInspectionResult () {
+        
+    }
+   
+    
     public void setWeldPieceNo(String weldPieceNo) {
         this.weldPieceNo = weldPieceNo;
     }

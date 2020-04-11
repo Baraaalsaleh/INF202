@@ -20,13 +20,15 @@ public class MagneticReport extends Report{
     private String magTech;
     private String UVIntensity;
     private String distanceOfLight;
-    private String examintionArea;
+    private String examinationArea;
     private String currentType;
     private String Luxmeter;
     private String testMedium;
     private String demagnetization;
     private String surfaceTemperature;
     private String gaussFieldStrength;
+    //hiieiieiieiieeiir
+    private String surfaceCondition2;
     private String identificationOfLightEquip;
     private String liftingTest;
     private boolean buttWeld;
@@ -34,20 +36,21 @@ public class MagneticReport extends Report{
     private String standardDeviations;
     private ArrayList<MagneticInspectionResult> inspectionResults= new ArrayList();
 
-    public MagneticReport(String poleDistance, String MPCarrier, String magTech, String UVIntensity, String distanceOfLight, String examintionArea, String currentType, String Luxmeter, String testMedium, String demagnetization, String surfaceTemperature, String gaussFieldStrength, String identificationOfLightEquip, String liftingTest, boolean buttWeld, boolean filletWeld, String standardDeviations, String customer, String projectName, String inspectionPlace, String inspectionClass, String evaluationStandard, String inspectionProcedure, String inspectionScope, String drawingNo, String surfaceCondition, String stageOfExaminaiton, String page, String reportNumber, Date reportDate, String orderNumber, String offerNumber, String equipment, String heatTreatment, String inspectionDates, String descriptionOfAttachments, Employee operator, Employee evaluator, Employee confirmation, String customerName, String customerLevel) {
-        super(customer, projectName, inspectionPlace, inspectionClass, evaluationStandard, inspectionProcedure, inspectionScope, drawingNo, surfaceCondition, stageOfExaminaiton, page, reportNumber, reportDate, orderNumber, offerNumber, equipment, heatTreatment, inspectionDates, descriptionOfAttachments, operator, evaluator, confirmation, customerName, customerLevel);
+    public MagneticReport(String poleDistance, String MPCarrier, String magTech, String UVIntensity, String distanceOfLight, String examintionArea, String currentType, String Luxmeter, String testMedium, String demagnetization, String surfaceTemperature, String gaussFieldStrength, String surfaceCondtion2, String identificationOfLightEquip, String liftingTest, boolean buttWeld, boolean filletWeld, String standardDeviations, String customer, String projectName, String inspectionPlace, String inspectionClass, String evaluationStandard, String inspectionProcedure, String inspectionScope, String drawingNo, String surfaceCondition, String stageOfExaminaiton, String page, String reportNumber, Date reportDate, String orderNumber, String offerNumber, String equipment, String heatTreatment, String inspectionDates, String descriptionOfAttachments, int operator, int evaluator, int confirmation, String customerName, String customerLevel, String bottom) {
+        super(customer, projectName, inspectionPlace, inspectionClass, evaluationStandard, inspectionProcedure, inspectionScope, drawingNo, surfaceCondition, stageOfExaminaiton, page, reportNumber, reportDate, orderNumber, offerNumber, equipment, heatTreatment, inspectionDates, descriptionOfAttachments, operator, evaluator, confirmation, bottom);
         this.poleDistance = poleDistance;
         this.MPCarrier = MPCarrier;
         this.magTech = magTech;
         this.UVIntensity = UVIntensity;
         this.distanceOfLight = distanceOfLight;
-        this.examintionArea = examintionArea;
+        this.examinationArea = examintionArea;
         this.currentType = currentType;
         this.Luxmeter = Luxmeter;
         this.testMedium = testMedium;
         this.demagnetization = demagnetization;
         this.surfaceTemperature = surfaceTemperature;
         this.gaussFieldStrength = gaussFieldStrength;
+        this.surfaceCondition2 = surfaceCondition2;
         this.identificationOfLightEquip = identificationOfLightEquip;
         this.liftingTest = liftingTest;
         this.buttWeld = buttWeld;
@@ -55,6 +58,14 @@ public class MagneticReport extends Report{
         this.standardDeviations = standardDeviations;
     }
 
+    @Override
+    public String toString() {
+        return "MagneticReport{" + "poleDistance=" + poleDistance + ", MPCarrier=" + MPCarrier + ", magTech=" + magTech + ", UVIntensity=" + UVIntensity + ", distanceOfLight=" + distanceOfLight + ", examinationArea=" + examinationArea + ", currentType=" + currentType + ", Luxmeter=" + Luxmeter + ", testMedium=" + testMedium + ", demagnetization=" + demagnetization + ", surfaceTemperature=" + surfaceTemperature + ", gaussFieldStrength=" + gaussFieldStrength + ", surfaceCondition2=" + surfaceCondition2 + ", identificationOfLightEquip=" + identificationOfLightEquip + ", liftingTest=" + liftingTest + ", buttWeld=" + buttWeld + ", filletWeld=" + filletWeld + ", standardDeviations=" + standardDeviations + ", inspectionResults=" + inspectionResults + '}' + super.toString();
+    }
+
+    public MagneticReport () {
+        
+    }
     public void setPoleDistance(String poleDistance) {
         this.poleDistance = poleDistance;
     }
@@ -75,8 +86,8 @@ public class MagneticReport extends Report{
         this.distanceOfLight = distanceOfLight;
     }
 
-    public void setExamintionArea(String examintionArea) {
-        this.examintionArea = examintionArea;
+    public void setExaminationArea(String examinationArea) {
+        this.examinationArea = examinationArea;
     }
 
     public void setCurrentType(String currentType) {
@@ -101,6 +112,10 @@ public class MagneticReport extends Report{
 
     public void setGaussFieldStrength(String gaussFieldStrength) {
         this.gaussFieldStrength = gaussFieldStrength;
+    }
+
+    public void setSurfaceCondition2(String surfaceCondition2) {
+        this.surfaceCondition2 = surfaceCondition2;
     }
 
     public void setIdentificationOfLightEquip(String identificationOfLightEquip) {
@@ -147,8 +162,8 @@ public class MagneticReport extends Report{
         return distanceOfLight;
     }
 
-    public String getExamintionArea() {
-        return examintionArea;
+    public String getExaminationArea() {
+        return examinationArea;
     }
 
     public String getCurrentType() {
@@ -173,6 +188,10 @@ public class MagneticReport extends Report{
 
     public String getGaussFieldStrength() {
         return gaussFieldStrength;
+    }
+
+    public String getSurfaceCondition2() {
+        return surfaceCondition2;
     }
 
     public String getIdentificationOfLightEquip() {

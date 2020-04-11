@@ -280,7 +280,7 @@ public class Login extends javax.swing.JFrame {
                 this.dispose();
             }
         } catch (SQLException ex) {
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -290,7 +290,6 @@ public class Login extends javax.swing.JFrame {
             _username.setText(data[0]);
             _password.setText(data[1]);
         } catch (IOException ex) {
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
             _username.setText("Kullanıcı Adı Giriniz!");
             _password.setText("Şifre Giriniz!");
             jButton1.setEnabled(false);

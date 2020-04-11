@@ -5,9 +5,16 @@
  */
 package berichtserstellungssystem.GUI;
 
+import berichtserstellungssystem.Common;
+import berichtserstellungssystem.DatabaseManagement.*;
+import berichtserstellungssystem.Resource.*;
+import berichtserstellungssystem.Report.*;
 import java.awt.Dimension;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.text.*;
+import javax.swing.*;
 
 /**
  *
@@ -16,6 +23,31 @@ import javax.swing.text.*;
 public class Report extends javax.swing.JFrame {
 
     GridBagLayout layout = new GridBagLayout();
+    private JTextField[] radiographicResult1 = new JTextField[20];
+    private JTextField[] radiographicResult2 = new JTextField[20];
+    private JTextField[] radiographicResult3 = new JTextField[20];
+    private JTextField[] radiographicResult4 = new JTextField[20];
+    private JTextField[] radiographicResult5 = new JTextField[20];
+    private ArrayList<JTextField[]> radiographicResults = new ArrayList();
+    private JTextField[] magneticResult1 = new JTextField[8];
+    private JTextField[] magneticResult2 = new JTextField[8];
+    private JTextField[] magneticResult3 = new JTextField[8];
+    private JTextField[] magneticResult4 = new JTextField[8];
+    private JTextField[] magneticResult5 = new JTextField[8];
+    private JTextField[] magneticResult6 = new JTextField[8];
+    private JTextField[] magneticResult7 = new JTextField[8];
+    private JTextField[] magneticResult8 = new JTextField[8];
+    private JTextField[] magneticResult9 = new JTextField[8];
+    private JTextField[] magneticResult10 = new JTextField[8];
+    private ArrayList<JTextField[]> magneticResults = new ArrayList();
+    
+    int R_operator_id;
+    int R_evaluator_id;
+    int R_confirmation_id;
+    int M_operator_id;
+    int M_evaluator_id;
+    int M_confirmation_id;
+    
     
     /**
      * Creates new form Report
@@ -31,9 +63,7 @@ public class Report extends javax.swing.JFrame {
         jPanel2.add(panel1, grid);
         //jScrollPane1.add(panel1, grid);
         panel1.setVisible(true);*/
-        
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -51,187 +81,316 @@ public class Report extends javax.swing.JFrame {
         jLayeredPane1 = new javax.swing.JLayeredPane();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel5 = new javax.swing.JPanel();
+        jPanel16 = new javax.swing.JPanel();
+        _page = new javax.swing.JTextField();
+        _customer = new javax.swing.JTextField();
+        _inspectionProcedure = new javax.swing.JTextField();
+        _project = new javax.swing.JTextField();
+        _inspectionScope = new javax.swing.JTextField();
+        _reportNo = new javax.swing.JTextField();
+        _inspectionPlace = new javax.swing.JTextField();
+        _drawingNo = new javax.swing.JTextField();
+        _reportDate = new javax.swing.JTextField();
+        _surfaceCondition = new javax.swing.JTextField();
+        _inspectionClass = new javax.swing.JTextField();
+        _orderNo = new javax.swing.JTextField();
+        _stageOfExamination = new javax.swing.JTextField();
+        _evaluationStandard = new javax.swing.JTextField();
+        _offerNo = new javax.swing.JTextField();
+        jPanel17 = new javax.swing.JPanel();
+        _filters = new javax.swing.JTextField();
+        _heatTreatment = new javax.swing.JTextField();
+        _usedDevice = new javax.swing.JTextField();
+        _focalSpotSize = new javax.swing.JTextField();
+        _exposureTime = new javax.swing.JTextField();
+        _filmFocusDistance = new javax.swing.JTextField();
+        _pbScreens = new javax.swing.JTextField();
+        _f1016 = new javax.swing.JTextField();
+        _equipment = new javax.swing.JTextField();
+        _filmBrand = new javax.swing.JTextField();
+        _temp = new javax.swing.JTextField();
+        _repairFilm = new javax.swing.JTextField();
+        _suitableFilm = new javax.swing.JTextField();
+        _f3040 = new javax.swing.JTextField();
+        _f1048 = new javax.swing.JTextField();
+        _f1036 = new javax.swing.JTextField();
+        _f1024 = new javax.swing.JTextField();
+        _f1012 = new javax.swing.JTextField();
+        _astm = new javax.swing.JCheckBox();
+        _ir192 = new javax.swing.JCheckBox();
+        _se75 = new javax.swing.JCheckBox();
+        _xRay = new javax.swing.JCheckBox();
+        _d4 = new javax.swing.JCheckBox();
+        _d5 = new javax.swing.JCheckBox();
+        _d7 = new javax.swing.JCheckBox();
+        _sourceSide = new javax.swing.JCheckBox();
+        _filmSide = new javax.swing.JCheckBox();
+        _automatic = new javax.swing.JCheckBox();
+        _manuel = new javax.swing.JCheckBox();
+        _en = new javax.swing.JCheckBox();
+        jPanel18 = new javax.swing.JPanel();
+        _testArr6 = new javax.swing.JCheckBox();
+        _testArr2 = new javax.swing.JCheckBox();
+        _testArr3 = new javax.swing.JCheckBox();
+        _testArr4 = new javax.swing.JCheckBox();
+        _testArr5 = new javax.swing.JCheckBox();
+        _testArr1 = new javax.swing.JCheckBox();
+        jPanel19 = new javax.swing.JPanel();
+        _description = new javax.swing.JTextField();
+        _inspectionDates = new javax.swing.JTextField();
+        jPanel20 = new javax.swing.JPanel();
+        _finalEvaluation1 = new javax.swing.JTextField();
+        _shootingArea1 = new javax.swing.JTextField();
+        _filmNo1 = new javax.swing.JTextField();
+        _materialType1 = new javax.swing.JTextField();
+        _weldingType1 = new javax.swing.JTextField();
+        _welderNr1 = new javax.swing.JTextField();
+        _position1 = new javax.swing.JTextField();
+        _thickness1 = new javax.swing.JTextField();
+        _penetremetreQ1 = new javax.swing.JTextField();
+        _visibleQ1 = new javax.swing.JTextField();
+        _density1 = new javax.swing.JTextField();
+        _f1012_1 = new javax.swing.JTextField();
+        _f1016_1 = new javax.swing.JTextField();
+        _f1024_1 = new javax.swing.JTextField();
+        _f1036_1 = new javax.swing.JTextField();
+        _f1048_1 = new javax.swing.JTextField();
+        _f3040_1 = new javax.swing.JTextField();
+        _defectLocation1 = new javax.swing.JTextField();
+        _defectType1 = new javax.swing.JTextField();
+        _preEvaluation1 = new javax.swing.JTextField();
+        _finalEvaluation2 = new javax.swing.JTextField();
+        _shootingArea2 = new javax.swing.JTextField();
+        _filmNo2 = new javax.swing.JTextField();
+        _weldingType2 = new javax.swing.JTextField();
+        _welderNr2 = new javax.swing.JTextField();
+        _position2 = new javax.swing.JTextField();
+        _thickness2 = new javax.swing.JTextField();
+        _penetremetreQ2 = new javax.swing.JTextField();
+        _visibleQ2 = new javax.swing.JTextField();
+        _density2 = new javax.swing.JTextField();
+        _f1012_2 = new javax.swing.JTextField();
+        _f1016_2 = new javax.swing.JTextField();
+        _f1024_2 = new javax.swing.JTextField();
+        _f1036_2 = new javax.swing.JTextField();
+        _f1048_2 = new javax.swing.JTextField();
+        _f3040_2 = new javax.swing.JTextField();
+        _defectLocation2 = new javax.swing.JTextField();
+        _defectType2 = new javax.swing.JTextField();
+        _preEvaluation2 = new javax.swing.JTextField();
+        _materialType2 = new javax.swing.JTextField();
+        _finalEvaluation3 = new javax.swing.JTextField();
+        _preEvaluation3 = new javax.swing.JTextField();
+        _defectType3 = new javax.swing.JTextField();
+        _defectLocation3 = new javax.swing.JTextField();
+        _f1036_3 = new javax.swing.JTextField();
+        _f1048_3 = new javax.swing.JTextField();
+        _f3040_3 = new javax.swing.JTextField();
+        _f1024_3 = new javax.swing.JTextField();
+        _f1016_3 = new javax.swing.JTextField();
+        _f1012_3 = new javax.swing.JTextField();
+        _density3 = new javax.swing.JTextField();
+        _visibleQ3 = new javax.swing.JTextField();
+        _penetremetreQ3 = new javax.swing.JTextField();
+        _thickness3 = new javax.swing.JTextField();
+        _position3 = new javax.swing.JTextField();
+        _welderNr3 = new javax.swing.JTextField();
+        _weldingType3 = new javax.swing.JTextField();
+        _materialType3 = new javax.swing.JTextField();
+        _filmNo3 = new javax.swing.JTextField();
+        _shootingArea3 = new javax.swing.JTextField();
+        _visibleQ4 = new javax.swing.JTextField();
+        _f1012_4 = new javax.swing.JTextField();
+        _thickness4 = new javax.swing.JTextField();
+        _weldingType4 = new javax.swing.JTextField();
+        _materialType4 = new javax.swing.JTextField();
+        _filmNo4 = new javax.swing.JTextField();
+        _f1036_4 = new javax.swing.JTextField();
+        _shootingArea4 = new javax.swing.JTextField();
+        _defectType4 = new javax.swing.JTextField();
+        _f1048_4 = new javax.swing.JTextField();
+        _density4 = new javax.swing.JTextField();
+        _penetremetreQ4 = new javax.swing.JTextField();
+        _f3040_4 = new javax.swing.JTextField();
+        _position4 = new javax.swing.JTextField();
+        _defectLocation4 = new javax.swing.JTextField();
+        _preEvaluation4 = new javax.swing.JTextField();
+        _f1024_4 = new javax.swing.JTextField();
+        _f1016_4 = new javax.swing.JTextField();
+        _finalEvaluation4 = new javax.swing.JTextField();
+        _welderNr4 = new javax.swing.JTextField();
+        _f1016_5 = new javax.swing.JTextField();
+        _f1012_5 = new javax.swing.JTextField();
+        _f1024_5 = new javax.swing.JTextField();
+        _f3040_5 = new javax.swing.JTextField();
+        _position5 = new javax.swing.JTextField();
+        _preEvaluation5 = new javax.swing.JTextField();
+        _density5 = new javax.swing.JTextField();
+        _defectType5 = new javax.swing.JTextField();
+        _materialType5 = new javax.swing.JTextField();
+        _welderNr5 = new javax.swing.JTextField();
+        _thickness5 = new javax.swing.JTextField();
+        _f1048_5 = new javax.swing.JTextField();
+        _weldingType5 = new javax.swing.JTextField();
+        _visibleQ5 = new javax.swing.JTextField();
+        _shootingArea5 = new javax.swing.JTextField();
+        _f1036_5 = new javax.swing.JTextField();
+        _filmNo5 = new javax.swing.JTextField();
+        _finalEvaluation5 = new javax.swing.JTextField();
+        _penetremetreQ5 = new javax.swing.JTextField();
+        _defectLocation5 = new javax.swing.JTextField();
+        jPanel21 = new javax.swing.JPanel();
+        _operatorName = new javax.swing.JTextField();
+        _evaluatorName = new javax.swing.JTextField();
+        _confirmationName = new javax.swing.JTextField();
+        _operatorLevel = new javax.swing.JTextField();
+        _evaluatorLevel = new javax.swing.JTextField();
+        _confirmationLevel = new javax.swing.JTextField();
+        _bottom = new javax.swing.JTextField();
         jLabel38 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
-        jTextField7 = new javax.swing.JTextField();
-        jTextField8 = new javax.swing.JTextField();
-        jTextField9 = new javax.swing.JTextField();
-        jTextField10 = new javax.swing.JTextField();
-        jTextField11 = new javax.swing.JTextField();
-        jLabel10 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
-        jLabel12 = new javax.swing.JLabel();
-        jLabel13 = new javax.swing.JLabel();
-        jLabel14 = new javax.swing.JLabel();
+        _MstageOfExamination = new javax.swing.JTextField();
+        _MinspectionProcedure = new javax.swing.JTextField();
+        _MinspectionScope = new javax.swing.JTextField();
+        _MdrawingNo = new javax.swing.JTextField();
+        _MsurfaceCondition = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
-        jTextField6 = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
+        _MevaluationStandard = new javax.swing.JTextField();
+        _Mcustomer = new javax.swing.JTextField();
+        _Mproject = new javax.swing.JTextField();
+        _MinspectionPlace = new javax.swing.JTextField();
+        _MinspectionStandard = new javax.swing.JTextField();
         jPanel8 = new javax.swing.JPanel();
-        jTextField12 = new javax.swing.JTextField();
-        jTextField13 = new javax.swing.JTextField();
-        jTextField14 = new javax.swing.JTextField();
-        jTextField15 = new javax.swing.JTextField();
-        jTextField16 = new javax.swing.JTextField();
-        jLabel15 = new javax.swing.JLabel();
-        jLabel16 = new javax.swing.JLabel();
-        jLabel17 = new javax.swing.JLabel();
-        jLabel18 = new javax.swing.JLabel();
-        jLabel19 = new javax.swing.JLabel();
+        _MofferNo = new javax.swing.JTextField();
+        _Mpage = new javax.swing.JTextField();
+        _MreportNo = new javax.swing.JTextField();
+        _MreportDate = new javax.swing.JTextField();
+        _MorderNo = new javax.swing.JTextField();
         jPanel9 = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
-        textPane = new javax.swing.JTextPane();
-        jTextField17 = new javax.swing.JTextField();
-        jTextField18 = new javax.swing.JTextField();
-        jTextField19 = new javax.swing.JTextField();
-        jTextField21 = new javax.swing.JTextField();
-        jTextField22 = new javax.swing.JTextField();
-        jLabel21 = new javax.swing.JLabel();
-        jLabel22 = new javax.swing.JLabel();
-        jLabel23 = new javax.swing.JLabel();
-        jLabel24 = new javax.swing.JLabel();
-        jLabel25 = new javax.swing.JLabel();
+        _MPCarrier = new javax.swing.JTextPane();
+        _distanceOfLight = new javax.swing.JTextField();
+        _poleDistance = new javax.swing.JTextField();
+        _Mequipment = new javax.swing.JTextField();
+        _magTech = new javax.swing.JTextField();
+        _UV = new javax.swing.JTextField();
         jPanel10 = new javax.swing.JPanel();
-        jTextField20 = new javax.swing.JTextField();
-        jTextField23 = new javax.swing.JTextField();
-        jTextField24 = new javax.swing.JTextField();
-        jTextField25 = new javax.swing.JTextField();
-        jTextField26 = new javax.swing.JTextField();
-        jTextField27 = new javax.swing.JTextField();
-        jLabel26 = new javax.swing.JLabel();
-        jLabel27 = new javax.swing.JLabel();
-        jLabel28 = new javax.swing.JLabel();
+        _MheatTreatment = new javax.swing.JTextField();
+        _examinationArea = new javax.swing.JTextField();
+        _currentType = new javax.swing.JTextField();
+        _luxmeter = new javax.swing.JTextField();
+        _testMedium = new javax.swing.JTextField();
+        _demagnetization = new javax.swing.JTextField();
         jPanel11 = new javax.swing.JPanel();
-        jTextField28 = new javax.swing.JTextField();
-        jTextField29 = new javax.swing.JTextField();
-        jTextField30 = new javax.swing.JTextField();
-        jLabel29 = new javax.swing.JLabel();
-        jLabel30 = new javax.swing.JLabel();
-        jLabel31 = new javax.swing.JLabel();
-        jLabel32 = new javax.swing.JLabel();
-        jLabel33 = new javax.swing.JLabel();
-        jLabel34 = new javax.swing.JLabel();
-        jTextField31 = new javax.swing.JTextField();
-        jTextField32 = new javax.swing.JTextField();
+        _gauss = new javax.swing.JTextField();
+        _liftingTestDate = new javax.swing.JTextField();
+        _surfaceTemperature = new javax.swing.JTextField();
+        _MsurfaceCondition2 = new javax.swing.JTextField();
+        _identification = new javax.swing.JTextField();
         jPanel12 = new javax.swing.JPanel();
         jLabel20 = new javax.swing.JLabel();
         jLabel35 = new javax.swing.JLabel();
-        jCheckBox1 = new javax.swing.JCheckBox();
+        _fillet = new javax.swing.JCheckBox();
         jLabel36 = new javax.swing.JLabel();
         jLabel37 = new javax.swing.JLabel();
-        jCheckBox2 = new javax.swing.JCheckBox();
+        _butt = new javax.swing.JCheckBox();
+        jLabel39 = new javax.swing.JLabel();
+        jLabel40 = new javax.swing.JLabel();
         jPanel14 = new javax.swing.JPanel();
-        jTextField34 = new javax.swing.JTextField();
-        jTextField35 = new javax.swing.JTextField();
-        jTextField36 = new javax.swing.JTextField();
+        _Mdescription = new javax.swing.JTextField();
+        _standardDeviations = new javax.swing.JTextField();
+        _MinspectionDates = new javax.swing.JTextField();
         jPanel13 = new javax.swing.JPanel();
-        jTextField37 = new javax.swing.JTextField();
-        jTextField38 = new javax.swing.JTextField();
-        jTextField39 = new javax.swing.JTextField();
-        jTextField40 = new javax.swing.JTextField();
-        jTextField41 = new javax.swing.JTextField();
-        jTextField42 = new javax.swing.JTextField();
-        jTextField43 = new javax.swing.JTextField();
-        jTextField44 = new javax.swing.JTextField();
-        jTextField45 = new javax.swing.JTextField();
-        jTextField46 = new javax.swing.JTextField();
-        jTextField47 = new javax.swing.JTextField();
-        jTextField48 = new javax.swing.JTextField();
-        jTextField49 = new javax.swing.JTextField();
-        jTextField50 = new javax.swing.JTextField();
-        jTextField51 = new javax.swing.JTextField();
-        jTextField52 = new javax.swing.JTextField();
-        jTextField53 = new javax.swing.JTextField();
-        jTextField54 = new javax.swing.JTextField();
-        jTextField55 = new javax.swing.JTextField();
-        jTextField56 = new javax.swing.JTextField();
-        jTextField57 = new javax.swing.JTextField();
-        jTextField58 = new javax.swing.JTextField();
-        jTextField59 = new javax.swing.JTextField();
-        jTextField60 = new javax.swing.JTextField();
-        jTextField61 = new javax.swing.JTextField();
-        jTextField62 = new javax.swing.JTextField();
-        jTextField63 = new javax.swing.JTextField();
-        jTextField64 = new javax.swing.JTextField();
-        jTextField65 = new javax.swing.JTextField();
-        jTextField66 = new javax.swing.JTextField();
-        jTextField67 = new javax.swing.JTextField();
-        jTextField68 = new javax.swing.JTextField();
-        jTextField69 = new javax.swing.JTextField();
-        jTextField70 = new javax.swing.JTextField();
-        jTextField71 = new javax.swing.JTextField();
-        jTextField72 = new javax.swing.JTextField();
-        jTextField73 = new javax.swing.JTextField();
-        jTextField74 = new javax.swing.JTextField();
-        jTextField75 = new javax.swing.JTextField();
-        jTextField76 = new javax.swing.JTextField();
-        jTextField77 = new javax.swing.JTextField();
-        jTextField78 = new javax.swing.JTextField();
-        jTextField79 = new javax.swing.JTextField();
-        jTextField80 = new javax.swing.JTextField();
-        jTextField81 = new javax.swing.JTextField();
-        jTextField82 = new javax.swing.JTextField();
-        jTextField83 = new javax.swing.JTextField();
-        jTextField84 = new javax.swing.JTextField();
-        jTextField85 = new javax.swing.JTextField();
-        jTextField86 = new javax.swing.JTextField();
-        jTextField87 = new javax.swing.JTextField();
-        jTextField88 = new javax.swing.JTextField();
-        jTextField89 = new javax.swing.JTextField();
-        jTextField90 = new javax.swing.JTextField();
-        jTextField91 = new javax.swing.JTextField();
-        jTextField92 = new javax.swing.JTextField();
-        jTextField93 = new javax.swing.JTextField();
-        jTextField94 = new javax.swing.JTextField();
-        jTextField95 = new javax.swing.JTextField();
-        jTextField96 = new javax.swing.JTextField();
-        jTextField97 = new javax.swing.JTextField();
-        jTextField98 = new javax.swing.JTextField();
-        jTextField99 = new javax.swing.JTextField();
-        jTextField100 = new javax.swing.JTextField();
-        jTextField101 = new javax.swing.JTextField();
-        jTextField102 = new javax.swing.JTextField();
-        jTextField103 = new javax.swing.JTextField();
-        jTextField104 = new javax.swing.JTextField();
-        jTextField105 = new javax.swing.JTextField();
-        jTextField106 = new javax.swing.JTextField();
-        jTextField107 = new javax.swing.JTextField();
-        jTextField108 = new javax.swing.JTextField();
-        jTextField109 = new javax.swing.JTextField();
-        jTextField110 = new javax.swing.JTextField();
-        jTextField111 = new javax.swing.JTextField();
-        jTextField112 = new javax.swing.JTextField();
-        jTextField113 = new javax.swing.JTextField();
-        jTextField114 = new javax.swing.JTextField();
-        jTextField115 = new javax.swing.JTextField();
-        jTextField116 = new javax.swing.JTextField();
+        _result1 = new javax.swing.JTextField();
+        _pieceNo1 = new javax.swing.JTextField();
+        _testLength1 = new javax.swing.JTextField();
+        _weldingProcess1 = new javax.swing.JTextField();
+        _Mthickness1 = new javax.swing.JTextField();
+        _diameter1 = new javax.swing.JTextField();
+        _MdefectType1 = new javax.swing.JTextField();
+        _MdefectLocation1 = new javax.swing.JTextField();
+        _result2 = new javax.swing.JTextField();
+        _MdefectLocation2 = new javax.swing.JTextField();
+        _MdefectType2 = new javax.swing.JTextField();
+        _diameter2 = new javax.swing.JTextField();
+        _Mthickness2 = new javax.swing.JTextField();
+        _weldingProcess2 = new javax.swing.JTextField();
+        _testLength2 = new javax.swing.JTextField();
+        _pieceNo2 = new javax.swing.JTextField();
+        _MdefectType3 = new javax.swing.JTextField();
+        _testLength3 = new javax.swing.JTextField();
+        _result3 = new javax.swing.JTextField();
+        _weldingProcess3 = new javax.swing.JTextField();
+        _diameter3 = new javax.swing.JTextField();
+        _Mthickness3 = new javax.swing.JTextField();
+        _MdefectLocation3 = new javax.swing.JTextField();
+        _pieceNo3 = new javax.swing.JTextField();
+        _MdefectType4 = new javax.swing.JTextField();
+        _Mthickness4 = new javax.swing.JTextField();
+        _testLength4 = new javax.swing.JTextField();
+        _result4 = new javax.swing.JTextField();
+        _diameter4 = new javax.swing.JTextField();
+        _MdefectLocation4 = new javax.swing.JTextField();
+        _weldingProcess4 = new javax.swing.JTextField();
+        _pieceNo4 = new javax.swing.JTextField();
+        _testLength8 = new javax.swing.JTextField();
+        _weldingProcess8 = new javax.swing.JTextField();
+        _Mthickness8 = new javax.swing.JTextField();
+        _result8 = new javax.swing.JTextField();
+        _pieceNo8 = new javax.swing.JTextField();
+        _MdefectLocation8 = new javax.swing.JTextField();
+        _diameter8 = new javax.swing.JTextField();
+        _MdefectType8 = new javax.swing.JTextField();
+        _pieceNo7 = new javax.swing.JTextField();
+        _pieceNo6 = new javax.swing.JTextField();
+        _pieceNo5 = new javax.swing.JTextField();
+        _testLength5 = new javax.swing.JTextField();
+        _testLength6 = new javax.swing.JTextField();
+        _testLength7 = new javax.swing.JTextField();
+        _weldingProcess7 = new javax.swing.JTextField();
+        _weldingProcess6 = new javax.swing.JTextField();
+        _weldingProcess5 = new javax.swing.JTextField();
+        _Mthickness5 = new javax.swing.JTextField();
+        _Mthickness6 = new javax.swing.JTextField();
+        _Mthickness7 = new javax.swing.JTextField();
+        _diameter7 = new javax.swing.JTextField();
+        _diameter6 = new javax.swing.JTextField();
+        _diameter5 = new javax.swing.JTextField();
+        _MdefectType5 = new javax.swing.JTextField();
+        _MdefectType6 = new javax.swing.JTextField();
+        _MdefectType7 = new javax.swing.JTextField();
+        _MdefectLocation7 = new javax.swing.JTextField();
+        _MdefectLocation6 = new javax.swing.JTextField();
+        _MdefectLocation5 = new javax.swing.JTextField();
+        _result5 = new javax.swing.JTextField();
+        _result6 = new javax.swing.JTextField();
+        _result7 = new javax.swing.JTextField();
+        _diameter9 = new javax.swing.JTextField();
+        _testLength9 = new javax.swing.JTextField();
+        _Mthickness9 = new javax.swing.JTextField();
+        _result10 = new javax.swing.JTextField();
+        _pieceNo10 = new javax.swing.JTextField();
+        _MdefectLocation9 = new javax.swing.JTextField();
+        _Mthickness10 = new javax.swing.JTextField();
+        _diameter10 = new javax.swing.JTextField();
+        _testLength10 = new javax.swing.JTextField();
+        _weldingProcess10 = new javax.swing.JTextField();
+        _result9 = new javax.swing.JTextField();
+        _pieceNo9 = new javax.swing.JTextField();
+        _MdefectType10 = new javax.swing.JTextField();
+        _MdefectType9 = new javax.swing.JTextField();
+        _MdefectLocation10 = new javax.swing.JTextField();
+        _weldingProcess9 = new javax.swing.JTextField();
         jPanel15 = new javax.swing.JPanel();
-        jTextField117 = new javax.swing.JTextField();
-        jTextField118 = new javax.swing.JTextField();
-        jTextField119 = new javax.swing.JTextField();
-        jTextField120 = new javax.swing.JTextField();
-        jTextField121 = new javax.swing.JTextField();
-        jTextField122 = new javax.swing.JTextField();
-        jTextField123 = new javax.swing.JTextField();
-        jTextField124 = new javax.swing.JTextField();
-        jTextField125 = new javax.swing.JTextField();
-        jTextField126 = new javax.swing.JTextField();
-        jTextField127 = new javax.swing.JTextField();
-        jTextField128 = new javax.swing.JTextField();
-        jTextField129 = new javax.swing.JTextField();
+        _MoperatorName = new javax.swing.JTextField();
+        _MevaluatorName = new javax.swing.JTextField();
+        _MconfirmaionName = new javax.swing.JTextField();
+        _MoperatorLevel = new javax.swing.JTextField();
+        _Mbottom = new javax.swing.JTextField();
+        _MconfirmationLevel = new javax.swing.JTextField();
+        _MevaluatorLevel = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jPanel7 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBounds(new java.awt.Rectangle(0, 0, 0, 0));
@@ -253,6 +412,11 @@ public class Report extends javax.swing.JFrame {
         jButton1.setBackground(new java.awt.Color(255, 255, 255));
         jButton1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jButton1.setText("İleri");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setBackground(new java.awt.Color(255, 255, 255));
         jButton2.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
@@ -320,10 +484,999 @@ public class Report extends javax.swing.JFrame {
         jPanel5.setPreferredSize(new java.awt.Dimension(1350, 1900));
         jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel38.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/radio.PNG"))); // NOI18N
+        jPanel16.setOpaque(false);
+        jPanel16.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        _page.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _page.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _page.setBorder(null);
+        jPanel16.add(_page, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 10, 200, 40));
+
+        _customer.setEditable(false);
+        _customer.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _customer.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _customer.setBorder(null);
+        jPanel16.add(_customer, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 5, 410, 45));
+
+        _inspectionProcedure.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _inspectionProcedure.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _inspectionProcedure.setBorder(null);
+        jPanel16.add(_inspectionProcedure, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 10, 170, 40));
+
+        _project.setEditable(false);
+        _project.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _project.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _project.setBorder(null);
+        jPanel16.add(_project, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 410, 45));
+
+        _inspectionScope.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _inspectionScope.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _inspectionScope.setBorder(null);
+        jPanel16.add(_inspectionScope, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 60, 170, 40));
+
+        _reportNo.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _reportNo.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _reportNo.setBorder(null);
+        jPanel16.add(_reportNo, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 60, 200, 40));
+
+        _inspectionPlace.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _inspectionPlace.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _inspectionPlace.setBorder(null);
+        _inspectionPlace.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                _inspectionPlaceActionPerformed(evt);
+            }
+        });
+        jPanel16.add(_inspectionPlace, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 110, 410, 45));
+
+        _drawingNo.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _drawingNo.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _drawingNo.setBorder(null);
+        jPanel16.add(_drawingNo, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 114, 170, 40));
+
+        _reportDate.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _reportDate.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _reportDate.setBorder(null);
+        jPanel16.add(_reportDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 110, 200, 40));
+
+        _surfaceCondition.setEditable(false);
+        _surfaceCondition.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _surfaceCondition.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _surfaceCondition.setBorder(null);
+        jPanel16.add(_surfaceCondition, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 170, 170, 40));
+
+        _inspectionClass.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _inspectionClass.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _inspectionClass.setBorder(null);
+        jPanel16.add(_inspectionClass, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 165, 410, 40));
+
+        _orderNo.setEditable(false);
+        _orderNo.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _orderNo.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _orderNo.setBorder(null);
+        jPanel16.add(_orderNo, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 170, 200, 40));
+
+        _stageOfExamination.setEditable(false);
+        _stageOfExamination.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _stageOfExamination.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _stageOfExamination.setBorder(null);
+        jPanel16.add(_stageOfExamination, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 220, 170, 40));
+
+        _evaluationStandard.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _evaluationStandard.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _evaluationStandard.setBorder(null);
+        jPanel16.add(_evaluationStandard, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 220, 410, 45));
+
+        _offerNo.setEditable(false);
+        _offerNo.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _offerNo.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _offerNo.setBorder(null);
+        jPanel16.add(_offerNo, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 220, 200, 40));
+
+        jPanel5.add(jPanel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 140, 1120, 270));
+
+        jPanel17.setOpaque(false);
+        jPanel17.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        _filters.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _filters.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _filters.setBorder(null);
+        jPanel17.add(_filters, new org.netbeans.lib.awtextra.AbsoluteConstraints(1240, 80, 100, 20));
+
+        _heatTreatment.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _heatTreatment.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _heatTreatment.setBorder(null);
+        jPanel17.add(_heatTreatment, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 160, 100, 60));
+
+        _usedDevice.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _usedDevice.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _usedDevice.setBorder(null);
+        jPanel17.add(_usedDevice, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 80, 250, 20));
+
+        _focalSpotSize.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _focalSpotSize.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _focalSpotSize.setBorder(null);
+        jPanel17.add(_focalSpotSize, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 80, 160, 20));
+
+        _exposureTime.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _exposureTime.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _exposureTime.setBorder(null);
+        jPanel17.add(_exposureTime, new org.netbeans.lib.awtextra.AbsoluteConstraints(882, 80, 78, 20));
+
+        _filmFocusDistance.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _filmFocusDistance.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _filmFocusDistance.setBorder(null);
+        jPanel17.add(_filmFocusDistance, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 80, 130, 20));
+
+        _pbScreens.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _pbScreens.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _pbScreens.setBorder(null);
+        jPanel17.add(_pbScreens, new org.netbeans.lib.awtextra.AbsoluteConstraints(1110, 80, 120, 20));
+
+        _f1016.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _f1016.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _f1016.setBorder(null);
+        jPanel17.add(_f1016, new org.netbeans.lib.awtextra.AbsoluteConstraints(355, 298, 90, 30));
+
+        _equipment.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _equipment.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _equipment.setBorder(null);
+        jPanel17.add(_equipment, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 80, 110, 20));
+
+        _filmBrand.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _filmBrand.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _filmBrand.setBorder(null);
+        jPanel17.add(_filmBrand, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 200, 90, 20));
+
+        _temp.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _temp.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _temp.setBorder(null);
+        jPanel17.add(_temp, new org.netbeans.lib.awtextra.AbsoluteConstraints(1210, 200, 130, 20));
+
+        _repairFilm.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _repairFilm.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _repairFilm.setBorder(null);
+        jPanel17.add(_repairFilm, new org.netbeans.lib.awtextra.AbsoluteConstraints(1160, 298, 180, 30));
+
+        _suitableFilm.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _suitableFilm.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _suitableFilm.setBorder(null);
+        jPanel17.add(_suitableFilm, new org.netbeans.lib.awtextra.AbsoluteConstraints(1020, 298, 130, 30));
+
+        _f3040.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _f3040.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _f3040.setBorder(null);
+        jPanel17.add(_f3040, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 298, 100, 30));
+
+        _f1048.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _f1048.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _f1048.setBorder(null);
+        jPanel17.add(_f1048, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 298, 120, 30));
+
+        _f1036.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _f1036.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _f1036.setBorder(null);
+        jPanel17.add(_f1036, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 298, 140, 30));
+
+        _f1024.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _f1024.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _f1024.setBorder(null);
+        jPanel17.add(_f1024, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 298, 140, 30));
+
+        _f1012.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _f1012.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _f1012.setBorder(null);
+        jPanel17.add(_f1012, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 298, 220, 30));
+
+        _astm.setBackground(new java.awt.Color(255, 255, 255));
+        _astm.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        _astm.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        _astm.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jPanel17.add(_astm, new org.netbeans.lib.awtextra.AbsoluteConstraints(901, 132, 100, -1));
+
+        _ir192.setBackground(new java.awt.Color(255, 255, 255));
+        _ir192.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        _ir192.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        _ir192.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        _ir192.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        jPanel17.add(_ir192, new org.netbeans.lib.awtextra.AbsoluteConstraints(381, 30, 70, 40));
+
+        _se75.setBackground(new java.awt.Color(255, 255, 255));
+        _se75.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        _se75.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        _se75.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        _se75.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        jPanel17.add(_se75, new org.netbeans.lib.awtextra.AbsoluteConstraints(451, 30, 120, 40));
+
+        _xRay.setBackground(new java.awt.Color(255, 255, 255));
+        _xRay.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        _xRay.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        _xRay.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jPanel17.add(_xRay, new org.netbeans.lib.awtextra.AbsoluteConstraints(581, 30, 120, -1));
+
+        _d4.setBackground(new java.awt.Color(255, 255, 255));
+        _d4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        _d4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        _d4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        _d4.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        jPanel17.add(_d4, new org.netbeans.lib.awtextra.AbsoluteConstraints(445, 161, 100, 60));
+
+        _d5.setBackground(new java.awt.Color(255, 255, 255));
+        _d5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        _d5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        _d5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        _d5.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        jPanel17.add(_d5, new org.netbeans.lib.awtextra.AbsoluteConstraints(556, 161, 120, 60));
+
+        _d7.setBackground(new java.awt.Color(255, 255, 255));
+        _d7.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        _d7.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        _d7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        _d7.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        jPanel17.add(_d7, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 161, 100, 60));
+
+        _sourceSide.setBackground(new java.awt.Color(255, 255, 255));
+        _sourceSide.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        _sourceSide.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        _sourceSide.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        _sourceSide.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        jPanel17.add(_sourceSide, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 161, 100, 60));
+
+        _filmSide.setBackground(new java.awt.Color(255, 255, 255));
+        _filmSide.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        _filmSide.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        _filmSide.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        _filmSide.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        jPanel17.add(_filmSide, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 161, 90, 60));
+
+        _automatic.setBackground(new java.awt.Color(255, 255, 255));
+        _automatic.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        _automatic.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        _automatic.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        _automatic.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        jPanel17.add(_automatic, new org.netbeans.lib.awtextra.AbsoluteConstraints(1010, 131, 90, 90));
+
+        _manuel.setBackground(new java.awt.Color(255, 255, 255));
+        _manuel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        _manuel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        _manuel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        _manuel.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        jPanel17.add(_manuel, new org.netbeans.lib.awtextra.AbsoluteConstraints(1107, 131, 90, 90));
+
+        _en.setBackground(new java.awt.Color(255, 255, 255));
+        _en.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        _en.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        _en.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jPanel17.add(_en, new org.netbeans.lib.awtextra.AbsoluteConstraints(801, 132, 90, -1));
+
+        jPanel5.add(jPanel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 430, 1350, 340));
+
+        jPanel18.setOpaque(false);
+        jPanel18.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        _testArr6.setBackground(new java.awt.Color(255, 255, 255));
+        _testArr6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        _testArr6.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        _testArr6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        _testArr6.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        jPanel18.add(_testArr6, new org.netbeans.lib.awtextra.AbsoluteConstraints(1039, 9, 200, 200));
+
+        _testArr2.setBackground(new java.awt.Color(255, 255, 255));
+        _testArr2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        _testArr2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        _testArr2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        _testArr2.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        _testArr2.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+        jPanel18.add(_testArr2, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 9, 180, 200));
+
+        _testArr3.setBackground(new java.awt.Color(255, 255, 255));
+        _testArr3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        _testArr3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        _testArr3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        _testArr3.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        jPanel18.add(_testArr3, new org.netbeans.lib.awtextra.AbsoluteConstraints(445, 9, 170, 200));
+
+        _testArr4.setBackground(new java.awt.Color(255, 255, 255));
+        _testArr4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        _testArr4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        _testArr4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        _testArr4.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        jPanel18.add(_testArr4, new org.netbeans.lib.awtextra.AbsoluteConstraints(637, 9, 170, 200));
+
+        _testArr5.setBackground(new java.awt.Color(255, 255, 255));
+        _testArr5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        _testArr5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        _testArr5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        _testArr5.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        jPanel18.add(_testArr5, new org.netbeans.lib.awtextra.AbsoluteConstraints(839, 9, 170, 200));
+
+        _testArr1.setBackground(new java.awt.Color(255, 255, 255));
+        _testArr1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        _testArr1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        _testArr1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        _testArr1.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        jPanel18.add(_testArr1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 9, 190, 200));
+
+        jPanel5.add(jPanel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 810, 1290, 220));
+
+        jPanel19.setOpaque(false);
+        jPanel19.setLayout(null);
+
+        _description.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _description.setBorder(null);
+        jPanel19.add(_description);
+        _description.setBounds(10, 49, 660, 40);
+
+        _inspectionDates.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _inspectionDates.setForeground(new java.awt.Color(255, 0, 51));
+        _inspectionDates.setBorder(null);
+        jPanel19.add(_inspectionDates);
+        _inspectionDates.setBounds(10, 0, 670, 40);
+
+        jPanel5.add(jPanel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 1260, 680, 90));
+
+        jPanel20.setOpaque(false);
+        jPanel20.setLayout(null);
+
+        _finalEvaluation1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _finalEvaluation1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _finalEvaluation1.setBorder(null);
+        jPanel20.add(_finalEvaluation1);
+        _finalEvaluation1.setBounds(1200, 10, 100, 40);
+
+        _shootingArea1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _shootingArea1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _shootingArea1.setBorder(null);
+        jPanel20.add(_shootingArea1);
+        _shootingArea1.setBounds(12, 10, 200, 40);
+
+        _filmNo1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _filmNo1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _filmNo1.setBorder(null);
+        jPanel20.add(_filmNo1);
+        _filmNo1.setBounds(220, 10, 85, 40);
+
+        _materialType1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _materialType1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _materialType1.setBorder(null);
+        jPanel20.add(_materialType1);
+        _materialType1.setBounds(310, 10, 40, 40);
+
+        _weldingType1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _weldingType1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _weldingType1.setBorder(null);
+        jPanel20.add(_weldingType1);
+        _weldingType1.setBounds(360, 10, 40, 40);
+
+        _welderNr1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _welderNr1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _welderNr1.setBorder(null);
+        jPanel20.add(_welderNr1);
+        _welderNr1.setBounds(407, 10, 40, 40);
+
+        _position1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _position1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _position1.setBorder(null);
+        jPanel20.add(_position1);
+        _position1.setBounds(452, 10, 50, 40);
+
+        _thickness1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _thickness1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _thickness1.setBorder(null);
+        jPanel20.add(_thickness1);
+        _thickness1.setBounds(510, 10, 50, 40);
+
+        _penetremetreQ1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _penetremetreQ1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _penetremetreQ1.setBorder(null);
+        jPanel20.add(_penetremetreQ1);
+        _penetremetreQ1.setBounds(570, 10, 60, 40);
+
+        _visibleQ1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _visibleQ1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _visibleQ1.setBorder(null);
+        jPanel20.add(_visibleQ1);
+        _visibleQ1.setBounds(640, 10, 55, 40);
+
+        _density1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _density1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _density1.setBorder(null);
+        jPanel20.add(_density1);
+        _density1.setBounds(700, 10, 50, 40);
+
+        _f1012_1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _f1012_1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _f1012_1.setBorder(null);
+        jPanel20.add(_f1012_1);
+        _f1012_1.setBounds(757, 10, 21, 40);
+
+        _f1016_1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _f1016_1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _f1016_1.setBorder(null);
+        jPanel20.add(_f1016_1);
+        _f1016_1.setBounds(786, 10, 21, 40);
+
+        _f1024_1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _f1024_1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _f1024_1.setBorder(null);
+        jPanel20.add(_f1024_1);
+        _f1024_1.setBounds(815, 10, 20, 40);
+
+        _f1036_1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _f1036_1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _f1036_1.setBorder(null);
+        jPanel20.add(_f1036_1);
+        _f1036_1.setBounds(843, 10, 21, 40);
+
+        _f1048_1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _f1048_1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _f1048_1.setBorder(null);
+        jPanel20.add(_f1048_1);
+        _f1048_1.setBounds(872, 10, 20, 40);
+
+        _f3040_1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _f3040_1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _f3040_1.setBorder(null);
+        jPanel20.add(_f3040_1);
+        _f3040_1.setBounds(900, 10, 20, 40);
+
+        _defectLocation1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _defectLocation1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _defectLocation1.setBorder(null);
+        jPanel20.add(_defectLocation1);
+        _defectLocation1.setBounds(930, 10, 60, 40);
+
+        _defectType1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _defectType1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _defectType1.setBorder(null);
+        jPanel20.add(_defectType1);
+        _defectType1.setBounds(1000, 10, 70, 40);
+
+        _preEvaluation1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _preEvaluation1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _preEvaluation1.setBorder(null);
+        jPanel20.add(_preEvaluation1);
+        _preEvaluation1.setBounds(1072, 10, 120, 40);
+
+        _finalEvaluation2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _finalEvaluation2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _finalEvaluation2.setBorder(null);
+        jPanel20.add(_finalEvaluation2);
+        _finalEvaluation2.setBounds(1200, 58, 100, 40);
+
+        _shootingArea2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _shootingArea2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _shootingArea2.setBorder(null);
+        jPanel20.add(_shootingArea2);
+        _shootingArea2.setBounds(12, 58, 200, 40);
+
+        _filmNo2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _filmNo2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _filmNo2.setBorder(null);
+        jPanel20.add(_filmNo2);
+        _filmNo2.setBounds(220, 58, 85, 40);
+
+        _weldingType2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _weldingType2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _weldingType2.setBorder(null);
+        jPanel20.add(_weldingType2);
+        _weldingType2.setBounds(360, 58, 40, 40);
+
+        _welderNr2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _welderNr2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _welderNr2.setBorder(null);
+        jPanel20.add(_welderNr2);
+        _welderNr2.setBounds(408, 58, 40, 40);
+
+        _position2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _position2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _position2.setBorder(null);
+        jPanel20.add(_position2);
+        _position2.setBounds(452, 58, 50, 40);
+
+        _thickness2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _thickness2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _thickness2.setBorder(null);
+        jPanel20.add(_thickness2);
+        _thickness2.setBounds(510, 58, 50, 40);
+
+        _penetremetreQ2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _penetremetreQ2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _penetremetreQ2.setBorder(null);
+        jPanel20.add(_penetremetreQ2);
+        _penetremetreQ2.setBounds(570, 58, 60, 40);
+
+        _visibleQ2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _visibleQ2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _visibleQ2.setBorder(null);
+        jPanel20.add(_visibleQ2);
+        _visibleQ2.setBounds(640, 58, 55, 40);
+
+        _density2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _density2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _density2.setBorder(null);
+        jPanel20.add(_density2);
+        _density2.setBounds(700, 58, 50, 40);
+
+        _f1012_2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _f1012_2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _f1012_2.setBorder(null);
+        jPanel20.add(_f1012_2);
+        _f1012_2.setBounds(757, 58, 21, 40);
+
+        _f1016_2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _f1016_2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _f1016_2.setBorder(null);
+        jPanel20.add(_f1016_2);
+        _f1016_2.setBounds(786, 58, 21, 40);
+
+        _f1024_2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _f1024_2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _f1024_2.setBorder(null);
+        jPanel20.add(_f1024_2);
+        _f1024_2.setBounds(815, 58, 20, 40);
+
+        _f1036_2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _f1036_2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _f1036_2.setBorder(null);
+        jPanel20.add(_f1036_2);
+        _f1036_2.setBounds(843, 58, 21, 40);
+
+        _f1048_2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _f1048_2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _f1048_2.setBorder(null);
+        jPanel20.add(_f1048_2);
+        _f1048_2.setBounds(872, 58, 20, 40);
+
+        _f3040_2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _f3040_2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _f3040_2.setBorder(null);
+        jPanel20.add(_f3040_2);
+        _f3040_2.setBounds(900, 58, 20, 40);
+
+        _defectLocation2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _defectLocation2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _defectLocation2.setBorder(null);
+        jPanel20.add(_defectLocation2);
+        _defectLocation2.setBounds(930, 58, 60, 40);
+
+        _defectType2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _defectType2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _defectType2.setBorder(null);
+        jPanel20.add(_defectType2);
+        _defectType2.setBounds(999, 58, 70, 40);
+
+        _preEvaluation2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _preEvaluation2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _preEvaluation2.setBorder(null);
+        jPanel20.add(_preEvaluation2);
+        _preEvaluation2.setBounds(1072, 58, 120, 40);
+
+        _materialType2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _materialType2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _materialType2.setBorder(null);
+        jPanel20.add(_materialType2);
+        _materialType2.setBounds(310, 58, 40, 40);
+
+        _finalEvaluation3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _finalEvaluation3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _finalEvaluation3.setBorder(null);
+        jPanel20.add(_finalEvaluation3);
+        _finalEvaluation3.setBounds(1200, 104, 100, 40);
+
+        _preEvaluation3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _preEvaluation3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _preEvaluation3.setBorder(null);
+        jPanel20.add(_preEvaluation3);
+        _preEvaluation3.setBounds(1072, 104, 120, 40);
+
+        _defectType3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _defectType3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _defectType3.setBorder(null);
+        jPanel20.add(_defectType3);
+        _defectType3.setBounds(999, 104, 70, 40);
+
+        _defectLocation3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _defectLocation3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _defectLocation3.setBorder(null);
+        jPanel20.add(_defectLocation3);
+        _defectLocation3.setBounds(930, 104, 60, 40);
+
+        _f1036_3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _f1036_3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _f1036_3.setBorder(null);
+        jPanel20.add(_f1036_3);
+        _f1036_3.setBounds(843, 104, 21, 40);
+
+        _f1048_3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _f1048_3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _f1048_3.setBorder(null);
+        jPanel20.add(_f1048_3);
+        _f1048_3.setBounds(872, 104, 20, 40);
+
+        _f3040_3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _f3040_3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _f3040_3.setBorder(null);
+        jPanel20.add(_f3040_3);
+        _f3040_3.setBounds(900, 104, 20, 40);
+
+        _f1024_3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _f1024_3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _f1024_3.setBorder(null);
+        jPanel20.add(_f1024_3);
+        _f1024_3.setBounds(815, 104, 20, 40);
+
+        _f1016_3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _f1016_3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _f1016_3.setBorder(null);
+        jPanel20.add(_f1016_3);
+        _f1016_3.setBounds(786, 104, 21, 40);
+
+        _f1012_3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _f1012_3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _f1012_3.setBorder(null);
+        jPanel20.add(_f1012_3);
+        _f1012_3.setBounds(757, 104, 21, 40);
+
+        _density3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _density3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _density3.setBorder(null);
+        jPanel20.add(_density3);
+        _density3.setBounds(700, 104, 50, 40);
+
+        _visibleQ3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _visibleQ3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _visibleQ3.setBorder(null);
+        jPanel20.add(_visibleQ3);
+        _visibleQ3.setBounds(640, 104, 55, 40);
+
+        _penetremetreQ3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _penetremetreQ3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _penetremetreQ3.setBorder(null);
+        jPanel20.add(_penetremetreQ3);
+        _penetremetreQ3.setBounds(570, 104, 60, 40);
+
+        _thickness3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _thickness3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _thickness3.setBorder(null);
+        jPanel20.add(_thickness3);
+        _thickness3.setBounds(510, 104, 50, 40);
+
+        _position3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _position3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _position3.setBorder(null);
+        jPanel20.add(_position3);
+        _position3.setBounds(452, 104, 50, 40);
+
+        _welderNr3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _welderNr3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _welderNr3.setBorder(null);
+        jPanel20.add(_welderNr3);
+        _welderNr3.setBounds(408, 104, 40, 40);
+
+        _weldingType3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _weldingType3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _weldingType3.setBorder(null);
+        jPanel20.add(_weldingType3);
+        _weldingType3.setBounds(360, 104, 40, 40);
+
+        _materialType3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _materialType3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _materialType3.setBorder(null);
+        jPanel20.add(_materialType3);
+        _materialType3.setBounds(310, 104, 40, 40);
+
+        _filmNo3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _filmNo3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _filmNo3.setBorder(null);
+        jPanel20.add(_filmNo3);
+        _filmNo3.setBounds(220, 104, 85, 40);
+
+        _shootingArea3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _shootingArea3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _shootingArea3.setBorder(null);
+        jPanel20.add(_shootingArea3);
+        _shootingArea3.setBounds(12, 104, 200, 40);
+
+        _visibleQ4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _visibleQ4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _visibleQ4.setBorder(null);
+        jPanel20.add(_visibleQ4);
+        _visibleQ4.setBounds(640, 150, 55, 40);
+
+        _f1012_4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _f1012_4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _f1012_4.setBorder(null);
+        jPanel20.add(_f1012_4);
+        _f1012_4.setBounds(757, 150, 21, 40);
+
+        _thickness4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _thickness4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _thickness4.setBorder(null);
+        jPanel20.add(_thickness4);
+        _thickness4.setBounds(510, 150, 50, 40);
+
+        _weldingType4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _weldingType4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _weldingType4.setBorder(null);
+        jPanel20.add(_weldingType4);
+        _weldingType4.setBounds(360, 150, 40, 40);
+
+        _materialType4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _materialType4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _materialType4.setBorder(null);
+        jPanel20.add(_materialType4);
+        _materialType4.setBounds(310, 150, 40, 40);
+
+        _filmNo4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _filmNo4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _filmNo4.setBorder(null);
+        jPanel20.add(_filmNo4);
+        _filmNo4.setBounds(220, 150, 85, 40);
+
+        _f1036_4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _f1036_4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _f1036_4.setBorder(null);
+        jPanel20.add(_f1036_4);
+        _f1036_4.setBounds(843, 150, 21, 40);
+
+        _shootingArea4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _shootingArea4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _shootingArea4.setBorder(null);
+        jPanel20.add(_shootingArea4);
+        _shootingArea4.setBounds(12, 150, 200, 40);
+
+        _defectType4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _defectType4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _defectType4.setBorder(null);
+        jPanel20.add(_defectType4);
+        _defectType4.setBounds(999, 150, 70, 40);
+
+        _f1048_4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _f1048_4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _f1048_4.setBorder(null);
+        jPanel20.add(_f1048_4);
+        _f1048_4.setBounds(872, 150, 20, 40);
+
+        _density4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _density4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _density4.setBorder(null);
+        jPanel20.add(_density4);
+        _density4.setBounds(700, 150, 50, 40);
+
+        _penetremetreQ4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _penetremetreQ4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _penetremetreQ4.setBorder(null);
+        jPanel20.add(_penetremetreQ4);
+        _penetremetreQ4.setBounds(570, 150, 60, 40);
+
+        _f3040_4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _f3040_4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _f3040_4.setBorder(null);
+        jPanel20.add(_f3040_4);
+        _f3040_4.setBounds(900, 150, 20, 40);
+
+        _position4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _position4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _position4.setBorder(null);
+        jPanel20.add(_position4);
+        _position4.setBounds(452, 150, 50, 40);
+
+        _defectLocation4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _defectLocation4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _defectLocation4.setBorder(null);
+        jPanel20.add(_defectLocation4);
+        _defectLocation4.setBounds(930, 150, 60, 40);
+
+        _preEvaluation4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _preEvaluation4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _preEvaluation4.setBorder(null);
+        jPanel20.add(_preEvaluation4);
+        _preEvaluation4.setBounds(1072, 150, 120, 40);
+
+        _f1024_4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _f1024_4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _f1024_4.setBorder(null);
+        jPanel20.add(_f1024_4);
+        _f1024_4.setBounds(815, 150, 20, 40);
+
+        _f1016_4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _f1016_4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _f1016_4.setBorder(null);
+        jPanel20.add(_f1016_4);
+        _f1016_4.setBounds(786, 150, 21, 40);
+
+        _finalEvaluation4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _finalEvaluation4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _finalEvaluation4.setBorder(null);
+        jPanel20.add(_finalEvaluation4);
+        _finalEvaluation4.setBounds(1200, 150, 100, 40);
+
+        _welderNr4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _welderNr4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _welderNr4.setBorder(null);
+        jPanel20.add(_welderNr4);
+        _welderNr4.setBounds(408, 150, 40, 40);
+
+        _f1016_5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _f1016_5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _f1016_5.setBorder(null);
+        jPanel20.add(_f1016_5);
+        _f1016_5.setBounds(786, 196, 21, 40);
+
+        _f1012_5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _f1012_5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _f1012_5.setBorder(null);
+        jPanel20.add(_f1012_5);
+        _f1012_5.setBounds(757, 196, 21, 40);
+
+        _f1024_5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _f1024_5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _f1024_5.setBorder(null);
+        jPanel20.add(_f1024_5);
+        _f1024_5.setBounds(815, 196, 20, 40);
+
+        _f3040_5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _f3040_5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _f3040_5.setBorder(null);
+        jPanel20.add(_f3040_5);
+        _f3040_5.setBounds(900, 196, 20, 40);
+
+        _position5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _position5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _position5.setBorder(null);
+        jPanel20.add(_position5);
+        _position5.setBounds(452, 196, 50, 40);
+
+        _preEvaluation5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _preEvaluation5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _preEvaluation5.setBorder(null);
+        jPanel20.add(_preEvaluation5);
+        _preEvaluation5.setBounds(1072, 196, 120, 40);
+
+        _density5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _density5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _density5.setBorder(null);
+        jPanel20.add(_density5);
+        _density5.setBounds(700, 196, 50, 40);
+
+        _defectType5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _defectType5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _defectType5.setBorder(null);
+        jPanel20.add(_defectType5);
+        _defectType5.setBounds(999, 196, 70, 40);
+
+        _materialType5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _materialType5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _materialType5.setBorder(null);
+        jPanel20.add(_materialType5);
+        _materialType5.setBounds(310, 196, 40, 40);
+
+        _welderNr5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _welderNr5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _welderNr5.setBorder(null);
+        jPanel20.add(_welderNr5);
+        _welderNr5.setBounds(408, 196, 40, 40);
+
+        _thickness5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _thickness5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _thickness5.setBorder(null);
+        jPanel20.add(_thickness5);
+        _thickness5.setBounds(510, 196, 50, 40);
+
+        _f1048_5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _f1048_5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _f1048_5.setBorder(null);
+        jPanel20.add(_f1048_5);
+        _f1048_5.setBounds(872, 196, 20, 40);
+
+        _weldingType5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _weldingType5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _weldingType5.setBorder(null);
+        jPanel20.add(_weldingType5);
+        _weldingType5.setBounds(360, 196, 40, 40);
+
+        _visibleQ5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _visibleQ5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _visibleQ5.setBorder(null);
+        jPanel20.add(_visibleQ5);
+        _visibleQ5.setBounds(640, 196, 55, 40);
+
+        _shootingArea5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _shootingArea5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _shootingArea5.setBorder(null);
+        jPanel20.add(_shootingArea5);
+        _shootingArea5.setBounds(12, 196, 200, 40);
+
+        _f1036_5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _f1036_5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _f1036_5.setBorder(null);
+        jPanel20.add(_f1036_5);
+        _f1036_5.setBounds(843, 196, 21, 40);
+
+        _filmNo5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _filmNo5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _filmNo5.setBorder(null);
+        jPanel20.add(_filmNo5);
+        _filmNo5.setBounds(220, 196, 85, 40);
+
+        _finalEvaluation5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _finalEvaluation5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _finalEvaluation5.setBorder(null);
+        jPanel20.add(_finalEvaluation5);
+        _finalEvaluation5.setBounds(1200, 196, 100, 40);
+
+        _penetremetreQ5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _penetremetreQ5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _penetremetreQ5.setBorder(null);
+        jPanel20.add(_penetremetreQ5);
+        _penetremetreQ5.setBounds(570, 196, 60, 40);
+
+        _defectLocation5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _defectLocation5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _defectLocation5.setBorder(null);
+        jPanel20.add(_defectLocation5);
+        _defectLocation5.setBounds(930, 196, 60, 40);
+
+        jPanel5.add(jPanel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 1510, 1310, 240));
+
+        jPanel21.setOpaque(false);
+        jPanel21.setLayout(null);
+
+        _operatorName.setEditable(false);
+        _operatorName.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _operatorName.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _operatorName.setBorder(null);
+        jPanel21.add(_operatorName);
+        _operatorName.setBounds(220, 10, 250, 30);
+
+        _evaluatorName.setEditable(false);
+        _evaluatorName.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _evaluatorName.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _evaluatorName.setBorder(null);
+        jPanel21.add(_evaluatorName);
+        _evaluatorName.setBounds(480, 10, 290, 30);
+
+        _confirmationName.setEditable(false);
+        _confirmationName.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _confirmationName.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _confirmationName.setBorder(null);
+        jPanel21.add(_confirmationName);
+        _confirmationName.setBounds(790, 10, 210, 30);
+
+        _operatorLevel.setEditable(false);
+        _operatorLevel.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _operatorLevel.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _operatorLevel.setBorder(null);
+        jPanel21.add(_operatorLevel);
+        _operatorLevel.setBounds(220, 50, 250, 30);
+
+        _evaluatorLevel.setEditable(false);
+        _evaluatorLevel.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _evaluatorLevel.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _evaluatorLevel.setBorder(null);
+        jPanel21.add(_evaluatorLevel);
+        _evaluatorLevel.setBounds(480, 50, 290, 30);
+
+        _confirmationLevel.setEditable(false);
+        _confirmationLevel.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _confirmationLevel.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _confirmationLevel.setBorder(null);
+        jPanel21.add(_confirmationLevel);
+        _confirmationLevel.setBounds(790, 50, 210, 30);
+
+        _bottom.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
+        _bottom.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _bottom.setBorder(null);
+        jPanel21.add(_bottom);
+        _bottom.setBounds(70, 250, 1020, 30);
+
+        jPanel5.add(jPanel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 1790, 1280, 270));
+
+        jLabel38.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/radio2.png"))); // NOI18N
         jPanel5.add(jLabel38, new org.netbeans.lib.awtextra.AbsoluteConstraints(-3, 1, -1, 2060));
 
-        jTabbedPane1.addTab("Manyetik Rapor", jPanel5);
+        jTabbedPane1.addTab("Radyografik Muayene Raporu", jPanel5);
 
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
         jPanel6.setMaximumSize(new java.awt.Dimension(1350, 2000));
@@ -335,210 +1488,157 @@ public class Report extends javax.swing.JFrame {
         jPanel4.setOpaque(false);
         jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jTextField7.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField7.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField7.setToolTipText("");
-        jTextField7.setBorder(null);
-        jTextField7.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField7.setName(""); // NOI18N
-        jTextField7.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel4.add(jTextField7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 210, 180, 40));
+        _MstageOfExamination.setEditable(false);
+        _MstageOfExamination.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MstageOfExamination.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MstageOfExamination.setToolTipText("");
+        _MstageOfExamination.setBorder(null);
+        _MstageOfExamination.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MstageOfExamination.setName(""); // NOI18N
+        _MstageOfExamination.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel4.add(_MstageOfExamination, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 214, 180, 40));
 
-        jTextField8.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField8.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField8.setToolTipText("");
-        jTextField8.setBorder(null);
-        jTextField8.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField8.setName(""); // NOI18N
-        jTextField8.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel4.add(jTextField8, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 180, 40));
+        _MinspectionProcedure.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MinspectionProcedure.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MinspectionProcedure.setToolTipText("");
+        _MinspectionProcedure.setBorder(null);
+        _MinspectionProcedure.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MinspectionProcedure.setName(""); // NOI18N
+        _MinspectionProcedure.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel4.add(_MinspectionProcedure, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 180, 40));
 
-        jTextField9.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField9.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField9.setToolTipText("");
-        jTextField9.setBorder(null);
-        jTextField9.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField9.setName(""); // NOI18N
-        jTextField9.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel4.add(jTextField9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 180, 40));
+        _MinspectionScope.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MinspectionScope.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MinspectionScope.setToolTipText("");
+        _MinspectionScope.setBorder(null);
+        _MinspectionScope.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MinspectionScope.setName(""); // NOI18N
+        _MinspectionScope.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel4.add(_MinspectionScope, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 180, 40));
 
-        jTextField10.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField10.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField10.setToolTipText("");
-        jTextField10.setBorder(null);
-        jTextField10.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField10.setName(""); // NOI18N
-        jTextField10.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel4.add(jTextField10, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, 180, 40));
+        _MdrawingNo.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MdrawingNo.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MdrawingNo.setToolTipText("");
+        _MdrawingNo.setBorder(null);
+        _MdrawingNo.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MdrawingNo.setName(""); // NOI18N
+        _MdrawingNo.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel4.add(_MdrawingNo, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 111, 180, 40));
 
-        jTextField11.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField11.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField11.setToolTipText("");
-        jTextField11.setBorder(null);
-        jTextField11.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField11.setName(""); // NOI18N
-        jTextField11.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel4.add(jTextField11, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 160, 180, 40));
-
-        jLabel10.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel10.setOpaque(true);
-        jPanel4.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(45, 11, 110, 34));
-
-        jLabel11.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel11.setOpaque(true);
-        jPanel4.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(45, 63, 110, 34));
-
-        jLabel12.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel12.setOpaque(true);
-        jPanel4.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(45, 115, 110, 34));
-
-        jLabel13.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel13.setOpaque(true);
-        jPanel4.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(45, 167, 110, 34));
-
-        jLabel14.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel14.setOpaque(true);
-        jPanel4.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(45, 215, 110, 34));
+        _MsurfaceCondition.setEditable(false);
+        _MsurfaceCondition.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MsurfaceCondition.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MsurfaceCondition.setToolTipText("");
+        _MsurfaceCondition.setBorder(null);
+        _MsurfaceCondition.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MsurfaceCondition.setName(""); // NOI18N
+        _MsurfaceCondition.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel4.add(_MsurfaceCondition, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 163, 180, 40));
 
         jPanel6.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 140, 200, 260));
 
         jPanel2.setOpaque(false);
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jTextField2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField2.setToolTipText("");
-        jTextField2.setBorder(null);
-        jTextField2.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField2.setName(""); // NOI18N
-        jTextField2.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel2.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 210, 450, 40));
+        _MevaluationStandard.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MevaluationStandard.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MevaluationStandard.setToolTipText("");
+        _MevaluationStandard.setBorder(null);
+        _MevaluationStandard.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MevaluationStandard.setName(""); // NOI18N
+        _MevaluationStandard.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel2.add(_MevaluationStandard, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 214, 450, 40));
 
-        jTextField3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField3.setToolTipText("");
-        jTextField3.setBorder(null);
-        jTextField3.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField3.setName(""); // NOI18N
-        jTextField3.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel2.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 450, 40));
+        _Mcustomer.setEditable(false);
+        _Mcustomer.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _Mcustomer.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _Mcustomer.setToolTipText("");
+        _Mcustomer.setBorder(null);
+        _Mcustomer.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        _Mcustomer.setMinimumSize(new java.awt.Dimension(470, 46));
+        _Mcustomer.setName(""); // NOI18N
+        _Mcustomer.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel2.add(_Mcustomer, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 450, 40));
 
-        jTextField4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField4.setToolTipText("");
-        jTextField4.setBorder(null);
-        jTextField4.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField4.setName(""); // NOI18N
-        jTextField4.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel2.add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 450, 40));
+        _Mproject.setEditable(false);
+        _Mproject.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _Mproject.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _Mproject.setToolTipText("");
+        _Mproject.setBorder(null);
+        _Mproject.setMinimumSize(new java.awt.Dimension(470, 46));
+        _Mproject.setName(""); // NOI18N
+        _Mproject.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel2.add(_Mproject, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 450, 40));
 
-        jTextField5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField5.setToolTipText("");
-        jTextField5.setBorder(null);
-        jTextField5.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField5.setName(""); // NOI18N
-        jTextField5.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel2.add(jTextField5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, 450, 40));
+        _MinspectionPlace.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MinspectionPlace.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MinspectionPlace.setToolTipText("");
+        _MinspectionPlace.setBorder(null);
+        _MinspectionPlace.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MinspectionPlace.setName(""); // NOI18N
+        _MinspectionPlace.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel2.add(_MinspectionPlace, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 111, 450, 40));
 
-        jTextField6.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField6.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField6.setToolTipText("");
-        jTextField6.setBorder(null);
-        jTextField6.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField6.setName(""); // NOI18N
-        jTextField6.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel2.add(jTextField6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 160, 450, 40));
-
-        jLabel5.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel5.setOpaque(true);
-        jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(194, 11, 85, 33));
-
-        jLabel6.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel6.setOpaque(true);
-        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 220, 290, 30));
-
-        jLabel7.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel7.setOpaque(true);
-        jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 60, 140, 40));
-
-        jLabel8.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel8.setOpaque(true);
-        jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 110, 140, 40));
-
-        jLabel9.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel9.setOpaque(true);
-        jPanel2.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 160, 140, 40));
+        _MinspectionStandard.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MinspectionStandard.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MinspectionStandard.setToolTipText("");
+        _MinspectionStandard.setBorder(null);
+        _MinspectionStandard.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MinspectionStandard.setName(""); // NOI18N
+        _MinspectionStandard.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel2.add(_MinspectionStandard, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 163, 450, 40));
 
         jPanel6.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 140, 470, 260));
 
         jPanel8.setOpaque(false);
         jPanel8.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jTextField12.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField12.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField12.setToolTipText("");
-        jTextField12.setBorder(null);
-        jTextField12.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField12.setName(""); // NOI18N
-        jTextField12.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel8.add(jTextField12, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 210, 140, 40));
+        _MofferNo.setEditable(false);
+        _MofferNo.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MofferNo.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MofferNo.setToolTipText("");
+        _MofferNo.setBorder(null);
+        _MofferNo.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MofferNo.setName(""); // NOI18N
+        _MofferNo.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel8.add(_MofferNo, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 214, 140, 40));
 
-        jTextField13.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField13.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField13.setToolTipText("");
-        jTextField13.setBorder(null);
-        jTextField13.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField13.setName(""); // NOI18N
-        jTextField13.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel8.add(jTextField13, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 140, 40));
+        _Mpage.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _Mpage.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _Mpage.setToolTipText("");
+        _Mpage.setBorder(null);
+        _Mpage.setMinimumSize(new java.awt.Dimension(470, 46));
+        _Mpage.setName(""); // NOI18N
+        _Mpage.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel8.add(_Mpage, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 140, 40));
 
-        jTextField14.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField14.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField14.setToolTipText("");
-        jTextField14.setBorder(null);
-        jTextField14.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField14.setName(""); // NOI18N
-        jTextField14.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel8.add(jTextField14, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 140, 40));
+        _MreportNo.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MreportNo.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MreportNo.setToolTipText("");
+        _MreportNo.setBorder(null);
+        _MreportNo.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MreportNo.setName(""); // NOI18N
+        _MreportNo.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel8.add(_MreportNo, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 140, 40));
 
-        jTextField15.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField15.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField15.setToolTipText("");
-        jTextField15.setBorder(null);
-        jTextField15.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField15.setName(""); // NOI18N
-        jTextField15.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel8.add(jTextField15, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, 140, 40));
+        _MreportDate.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MreportDate.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MreportDate.setToolTipText("");
+        _MreportDate.setBorder(null);
+        _MreportDate.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MreportDate.setName(""); // NOI18N
+        _MreportDate.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel8.add(_MreportDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 111, 140, 40));
 
-        jTextField16.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField16.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField16.setToolTipText("");
-        jTextField16.setBorder(null);
-        jTextField16.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField16.setName(""); // NOI18N
-        jTextField16.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel8.add(jTextField16, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 160, 140, 40));
-
-        jLabel15.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel15.setOpaque(true);
-        jPanel8.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 60, 110, 34));
-
-        jLabel16.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel16.setOpaque(true);
-        jPanel8.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 210, 110, 40));
-
-        jLabel17.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel17.setOpaque(true);
-        jPanel8.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 110, 34));
-
-        jLabel18.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel18.setOpaque(true);
-        jPanel8.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 114, 110, 40));
-
-        jLabel19.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel19.setOpaque(true);
-        jPanel8.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 160, 110, 40));
+        _MorderNo.setEditable(false);
+        _MorderNo.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MorderNo.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MorderNo.setToolTipText("");
+        _MorderNo.setBorder(null);
+        _MorderNo.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MorderNo.setName(""); // NOI18N
+        _MorderNo.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel8.add(_MorderNo, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 163, 140, 40));
 
         jPanel6.add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(1190, 140, 160, 260));
 
@@ -549,220 +1649,165 @@ public class Report extends javax.swing.JFrame {
         jScrollPane4.setBorder(null);
         jScrollPane4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
 
-        textPane.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jScrollPane4.setViewportView(textPane);
+        _MPCarrier.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jScrollPane4.setViewportView(_MPCarrier);
 
         jPanel9.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, 210, 40));
 
-        jTextField17.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField17.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField17.setToolTipText("");
-        jTextField17.setBorder(null);
-        jTextField17.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField17.setName(""); // NOI18N
-        jTextField17.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel9.add(jTextField17, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 260, 210, 40));
+        _distanceOfLight.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _distanceOfLight.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _distanceOfLight.setToolTipText("");
+        _distanceOfLight.setBorder(null);
+        _distanceOfLight.setMinimumSize(new java.awt.Dimension(470, 46));
+        _distanceOfLight.setName(""); // NOI18N
+        _distanceOfLight.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel9.add(_distanceOfLight, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 260, 210, 40));
 
-        jTextField18.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField18.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField18.setToolTipText("");
-        jTextField18.setBorder(null);
-        jTextField18.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField18.setName(""); // NOI18N
-        jTextField18.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel9.add(jTextField18, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 210, 40));
+        _poleDistance.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _poleDistance.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _poleDistance.setToolTipText("");
+        _poleDistance.setBorder(null);
+        _poleDistance.setMinimumSize(new java.awt.Dimension(470, 46));
+        _poleDistance.setName(""); // NOI18N
+        _poleDistance.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel9.add(_poleDistance, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 210, 40));
 
-        jTextField19.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField19.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField19.setToolTipText("");
-        jTextField19.setBorder(null);
-        jTextField19.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField19.setName(""); // NOI18N
-        jTextField19.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel9.add(jTextField19, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 210, 40));
+        _Mequipment.setEditable(false);
+        _Mequipment.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _Mequipment.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _Mequipment.setToolTipText("");
+        _Mequipment.setBorder(null);
+        _Mequipment.setMinimumSize(new java.awt.Dimension(470, 46));
+        _Mequipment.setName(""); // NOI18N
+        _Mequipment.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel9.add(_Mequipment, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 210, 40));
 
-        jTextField21.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField21.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField21.setToolTipText("");
-        jTextField21.setBorder(null);
-        jTextField21.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField21.setName(""); // NOI18N
-        jTextField21.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel9.add(jTextField21, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 160, 210, 40));
+        _magTech.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _magTech.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _magTech.setToolTipText("");
+        _magTech.setBorder(null);
+        _magTech.setMinimumSize(new java.awt.Dimension(470, 46));
+        _magTech.setName(""); // NOI18N
+        _magTech.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel9.add(_magTech, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 160, 210, 40));
 
-        jTextField22.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField22.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField22.setToolTipText("");
-        jTextField22.setBorder(null);
-        jTextField22.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField22.setName(""); // NOI18N
-        jTextField22.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel9.add(jTextField22, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 210, 210, 40));
-
-        jLabel21.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel21.setOpaque(true);
-        jPanel9.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 260, 150, 40));
-
-        jLabel22.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel22.setOpaque(true);
-        jPanel9.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 14, 160, 40));
-
-        jLabel23.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel23.setOpaque(true);
-        jPanel9.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 60, 160, 40));
-
-        jLabel24.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel24.setOpaque(true);
-        jPanel9.add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 110, 150, 40));
-
-        jLabel25.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel25.setOpaque(true);
-        jPanel9.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 210, 150, 40));
+        _UV.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _UV.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _UV.setToolTipText("");
+        _UV.setBorder(null);
+        _UV.setMinimumSize(new java.awt.Dimension(470, 46));
+        _UV.setName(""); // NOI18N
+        _UV.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel9.add(_UV, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 210, 210, 40));
 
         jPanel6.add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 430, 230, 310));
 
         jPanel10.setOpaque(false);
         jPanel10.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jTextField20.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField20.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField20.setToolTipText("");
-        jTextField20.setBorder(null);
-        jTextField20.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField20.setName(""); // NOI18N
-        jTextField20.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel10.add(jTextField20, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 260, 280, 40));
+        _MheatTreatment.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MheatTreatment.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MheatTreatment.setToolTipText("");
+        _MheatTreatment.setBorder(null);
+        _MheatTreatment.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MheatTreatment.setName(""); // NOI18N
+        _MheatTreatment.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel10.add(_MheatTreatment, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 260, 280, 40));
 
-        jTextField23.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField23.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField23.setToolTipText("");
-        jTextField23.setBorder(null);
-        jTextField23.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField23.setName(""); // NOI18N
-        jTextField23.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel10.add(jTextField23, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 280, 40));
+        _examinationArea.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _examinationArea.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _examinationArea.setToolTipText("");
+        _examinationArea.setBorder(null);
+        _examinationArea.setMinimumSize(new java.awt.Dimension(470, 46));
+        _examinationArea.setName(""); // NOI18N
+        _examinationArea.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel10.add(_examinationArea, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 280, 40));
 
-        jTextField24.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField24.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField24.setToolTipText("");
-        jTextField24.setBorder(null);
-        jTextField24.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField24.setName(""); // NOI18N
-        jTextField24.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel10.add(jTextField24, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 280, 40));
+        _currentType.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _currentType.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _currentType.setToolTipText("");
+        _currentType.setBorder(null);
+        _currentType.setMinimumSize(new java.awt.Dimension(470, 46));
+        _currentType.setName(""); // NOI18N
+        _currentType.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel10.add(_currentType, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 280, 40));
 
-        jTextField25.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField25.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField25.setToolTipText("");
-        jTextField25.setBorder(null);
-        jTextField25.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField25.setName(""); // NOI18N
-        jTextField25.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel10.add(jTextField25, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 110, 280, 40));
+        _luxmeter.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _luxmeter.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _luxmeter.setToolTipText("");
+        _luxmeter.setBorder(null);
+        _luxmeter.setMinimumSize(new java.awt.Dimension(470, 46));
+        _luxmeter.setName(""); // NOI18N
+        _luxmeter.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel10.add(_luxmeter, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 110, 280, 40));
 
-        jTextField26.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField26.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField26.setToolTipText("");
-        jTextField26.setBorder(null);
-        jTextField26.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField26.setName(""); // NOI18N
-        jTextField26.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel10.add(jTextField26, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 160, 280, 40));
+        _testMedium.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _testMedium.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _testMedium.setToolTipText("");
+        _testMedium.setBorder(null);
+        _testMedium.setMinimumSize(new java.awt.Dimension(470, 46));
+        _testMedium.setName(""); // NOI18N
+        _testMedium.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel10.add(_testMedium, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 160, 280, 40));
 
-        jTextField27.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField27.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField27.setToolTipText("");
-        jTextField27.setBorder(null);
-        jTextField27.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField27.setName(""); // NOI18N
-        jTextField27.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel10.add(jTextField27, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 210, 280, 40));
-
-        jLabel26.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel26.setOpaque(true);
-        jPanel10.add(jLabel26, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 110, 150, 40));
-
-        jLabel27.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel27.setOpaque(true);
-        jPanel10.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 10, 150, 40));
-
-        jLabel28.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel28.setOpaque(true);
-        jPanel10.add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 60, 150, 40));
+        _demagnetization.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _demagnetization.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _demagnetization.setToolTipText("");
+        _demagnetization.setBorder(null);
+        _demagnetization.setMinimumSize(new java.awt.Dimension(470, 46));
+        _demagnetization.setName(""); // NOI18N
+        _demagnetization.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel10.add(_demagnetization, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 210, 280, 40));
 
         jPanel6.add(jPanel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 430, 290, 310));
 
         jPanel11.setOpaque(false);
         jPanel11.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jTextField28.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField28.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField28.setToolTipText("");
-        jTextField28.setBorder(null);
-        jTextField28.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField28.setName(""); // NOI18N
-        jTextField28.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel11.add(jTextField28, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 190, 90));
+        _gauss.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _gauss.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _gauss.setToolTipText("");
+        _gauss.setBorder(null);
+        _gauss.setMinimumSize(new java.awt.Dimension(470, 46));
+        _gauss.setName(""); // NOI18N
+        _gauss.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel11.add(_gauss, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 190, 90));
 
-        jTextField29.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField29.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField29.setToolTipText("");
-        jTextField29.setBorder(null);
-        jTextField29.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField29.setName(""); // NOI18N
-        jTextField29.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel11.add(jTextField29, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 260, 190, 40));
+        _liftingTestDate.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _liftingTestDate.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _liftingTestDate.setToolTipText("");
+        _liftingTestDate.setBorder(null);
+        _liftingTestDate.setMinimumSize(new java.awt.Dimension(470, 46));
+        _liftingTestDate.setName(""); // NOI18N
+        _liftingTestDate.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel11.add(_liftingTestDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 260, 190, 40));
 
-        jTextField30.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField30.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField30.setToolTipText("");
-        jTextField30.setBorder(null);
-        jTextField30.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField30.setName(""); // NOI18N
-        jTextField30.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel11.add(jTextField30, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 190, 40));
+        _surfaceTemperature.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _surfaceTemperature.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _surfaceTemperature.setToolTipText("");
+        _surfaceTemperature.setBorder(null);
+        _surfaceTemperature.setMinimumSize(new java.awt.Dimension(470, 46));
+        _surfaceTemperature.setName(""); // NOI18N
+        _surfaceTemperature.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel11.add(_surfaceTemperature, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 190, 40));
 
-        jLabel29.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel29.setOpaque(true);
-        jPanel11.add(jLabel29, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 260, 190, 40));
+        _MsurfaceCondition2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MsurfaceCondition2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MsurfaceCondition2.setToolTipText("");
+        _MsurfaceCondition2.setBorder(null);
+        _MsurfaceCondition2.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MsurfaceCondition2.setName(""); // NOI18N
+        _MsurfaceCondition2.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel11.add(_MsurfaceCondition2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 160, 190, 40));
 
-        jLabel30.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel30.setOpaque(true);
-        jPanel11.add(jLabel30, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 160, 195, 40));
-
-        jLabel31.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel31.setOpaque(true);
-        jPanel11.add(jLabel31, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 190, 40));
-
-        jLabel32.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel32.setOpaque(true);
-        jPanel11.add(jLabel32, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 160, 190, 40));
-
-        jLabel33.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel33.setOpaque(true);
-        jPanel11.add(jLabel33, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 210, 190, 40));
-
-        jLabel34.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel34.setOpaque(true);
-        jPanel11.add(jLabel34, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 190, 40));
-
-        jTextField31.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField31.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField31.setToolTipText("");
-        jTextField31.setBorder(null);
-        jTextField31.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField31.setName(""); // NOI18N
-        jTextField31.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel11.add(jTextField31, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 160, 190, 40));
-
-        jTextField32.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField32.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField32.setToolTipText("");
-        jTextField32.setBorder(null);
-        jTextField32.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField32.setName(""); // NOI18N
-        jTextField32.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel11.add(jTextField32, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 210, 190, 40));
+        _identification.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _identification.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _identification.setToolTipText("");
+        _identification.setBorder(null);
+        _identification.setMinimumSize(new java.awt.Dimension(470, 46));
+        _identification.setName(""); // NOI18N
+        _identification.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel11.add(_identification, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 210, 190, 40));
 
         jPanel6.add(jPanel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(1140, 430, 210, 310));
 
@@ -783,13 +1828,16 @@ public class Report extends javax.swing.JFrame {
         jLabel35.setOpaque(true);
         jPanel12.add(jLabel35, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 104, 110, 30));
 
-        jCheckBox1.setBackground(new java.awt.Color(255, 255, 255));
-        jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
+        _fillet.setBackground(new java.awt.Color(255, 255, 255));
+        _fillet.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        _fillet.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        _fillet.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        _fillet.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox1ActionPerformed(evt);
+                _filletActionPerformed(evt);
             }
         });
-        jPanel12.add(jCheckBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 130, 30, 30));
+        jPanel12.add(_fillet, new org.netbeans.lib.awtextra.AbsoluteConstraints(308, 10, 350, 170));
 
         jLabel36.setBackground(new java.awt.Color(255, 255, 255));
         jLabel36.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
@@ -805,9 +1853,25 @@ public class Report extends javax.swing.JFrame {
         jLabel37.setOpaque(true);
         jPanel12.add(jLabel37, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 140, 110, 30));
 
-        jCheckBox2.setBackground(new java.awt.Color(255, 255, 255));
-        jCheckBox2.setText("jCheckBox1");
-        jPanel12.add(jCheckBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 140, 20, -1));
+        _butt.setBackground(new java.awt.Color(255, 255, 255));
+        _butt.setToolTipText("");
+        _butt.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        _butt.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        _butt.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        _butt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                _buttActionPerformed(evt);
+            }
+        });
+        jPanel12.add(_butt, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 290, 170));
+
+        jLabel39.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel39.setOpaque(true);
+        jPanel12.add(jLabel39, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 130, 80, 40));
+
+        jLabel40.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel40.setOpaque(true);
+        jPanel12.add(jLabel40, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 124, 80, 40));
 
         jPanel6.add(jPanel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 740, 660, 180));
 
@@ -815,941 +1879,847 @@ public class Report extends javax.swing.JFrame {
         jPanel14.setOpaque(false);
         jPanel14.setLayout(null);
 
-        jTextField34.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField34.setToolTipText("");
-        jTextField34.setBorder(null);
-        jTextField34.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField34.setName(""); // NOI18N
-        jTextField34.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel14.add(jTextField34);
-        jTextField34.setBounds(5, 100, 1030, 40);
+        _Mdescription.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _Mdescription.setToolTipText("");
+        _Mdescription.setBorder(null);
+        _Mdescription.setMinimumSize(new java.awt.Dimension(470, 46));
+        _Mdescription.setName(""); // NOI18N
+        _Mdescription.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel14.add(_Mdescription);
+        _Mdescription.setBounds(5, 100, 1030, 40);
 
-        jTextField35.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField35.setToolTipText("");
-        jTextField35.setBorder(null);
-        jTextField35.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField35.setName(""); // NOI18N
-        jTextField35.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel14.add(jTextField35);
-        jTextField35.setBounds(2, 10, 1040, 40);
+        _standardDeviations.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _standardDeviations.setToolTipText("");
+        _standardDeviations.setBorder(null);
+        _standardDeviations.setMinimumSize(new java.awt.Dimension(470, 46));
+        _standardDeviations.setName(""); // NOI18N
+        _standardDeviations.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel14.add(_standardDeviations);
+        _standardDeviations.setBounds(5, 10, 1040, 40);
 
-        jTextField36.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField36.setForeground(new java.awt.Color(255, 0, 51));
-        jTextField36.setToolTipText("");
-        jTextField36.setBorder(null);
-        jTextField36.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField36.setName(""); // NOI18N
-        jTextField36.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel14.add(jTextField36);
-        jTextField36.setBounds(5, 55, 1030, 40);
+        _MinspectionDates.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MinspectionDates.setForeground(new java.awt.Color(255, 0, 51));
+        _MinspectionDates.setToolTipText("");
+        _MinspectionDates.setBorder(null);
+        _MinspectionDates.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MinspectionDates.setName(""); // NOI18N
+        _MinspectionDates.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel14.add(_MinspectionDates);
+        _MinspectionDates.setBounds(5, 55, 1030, 40);
 
         jPanel6.add(jPanel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 920, 1050, 150));
 
         jPanel13.setOpaque(false);
         jPanel13.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jTextField37.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField37.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField37.setToolTipText("");
-        jTextField37.setBorder(null);
-        jTextField37.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField37.setName(""); // NOI18N
-        jTextField37.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField37, new org.netbeans.lib.awtextra.AbsoluteConstraints(1270, 5, 70, 32));
-
-        jTextField38.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField38.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField38.setToolTipText("");
-        jTextField38.setBorder(null);
-        jTextField38.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField38.setName(""); // NOI18N
-        jTextField38.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField38, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 5, 250, 30));
-
-        jTextField39.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField39.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField39.setToolTipText("");
-        jTextField39.setBorder(null);
-        jTextField39.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField39.setName(""); // NOI18N
-        jTextField39.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField39, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 5, 140, 30));
-
-        jTextField40.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField40.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField40.setToolTipText("");
-        jTextField40.setBorder(null);
-        jTextField40.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField40.setName(""); // NOI18N
-        jTextField40.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField40, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 5, 190, 30));
-
-        jTextField41.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField41.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField41.setToolTipText("");
-        jTextField41.setBorder(null);
-        jTextField41.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField41.setName(""); // NOI18N
-        jTextField41.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField41, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 5, 100, 30));
-
-        jTextField42.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField42.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField42.setToolTipText("");
-        jTextField42.setBorder(null);
-        jTextField42.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField42.setName(""); // NOI18N
-        jTextField42.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField42, new org.netbeans.lib.awtextra.AbsoluteConstraints(815, 5, 130, 30));
-
-        jTextField43.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField43.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField43.setToolTipText("");
-        jTextField43.setBorder(null);
-        jTextField43.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField43.setName(""); // NOI18N
-        jTextField43.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField43, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 5, 130, 30));
-
-        jTextField44.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField44.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField44.setToolTipText("");
-        jTextField44.setBorder(null);
-        jTextField44.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField44.setName(""); // NOI18N
-        jTextField44.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField44, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 5, 170, 30));
-
-        jTextField45.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField45.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField45.setToolTipText("");
-        jTextField45.setBorder(null);
-        jTextField45.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField45.setName(""); // NOI18N
-        jTextField45.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField45, new org.netbeans.lib.awtextra.AbsoluteConstraints(1270, 45, 70, 32));
-
-        jTextField46.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField46.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField46.setToolTipText("");
-        jTextField46.setBorder(null);
-        jTextField46.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField46.setName(""); // NOI18N
-        jTextField46.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField46, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 45, 170, 30));
-
-        jTextField47.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField47.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField47.setToolTipText("");
-        jTextField47.setBorder(null);
-        jTextField47.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField47.setName(""); // NOI18N
-        jTextField47.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField47, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 45, 130, 30));
-
-        jTextField48.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField48.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField48.setToolTipText("");
-        jTextField48.setBorder(null);
-        jTextField48.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField48.setName(""); // NOI18N
-        jTextField48.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField48, new org.netbeans.lib.awtextra.AbsoluteConstraints(815, 45, 130, 30));
-
-        jTextField49.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField49.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField49.setToolTipText("");
-        jTextField49.setBorder(null);
-        jTextField49.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField49.setName(""); // NOI18N
-        jTextField49.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField49, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 45, 100, 30));
-
-        jTextField50.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField50.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField50.setToolTipText("");
-        jTextField50.setBorder(null);
-        jTextField50.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField50.setName(""); // NOI18N
-        jTextField50.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField50, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 45, 190, 30));
-
-        jTextField51.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField51.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField51.setToolTipText("");
-        jTextField51.setBorder(null);
-        jTextField51.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField51.setName(""); // NOI18N
-        jTextField51.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField51, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 45, 140, 30));
-
-        jTextField52.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField52.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField52.setToolTipText("");
-        jTextField52.setBorder(null);
-        jTextField52.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField52.setName(""); // NOI18N
-        jTextField52.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField52, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 45, 250, 30));
-
-        jTextField53.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField53.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField53.setToolTipText("");
-        jTextField53.setBorder(null);
-        jTextField53.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField53.setName(""); // NOI18N
-        jTextField53.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField53, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 85, 130, 30));
-
-        jTextField54.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField54.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField54.setToolTipText("");
-        jTextField54.setBorder(null);
-        jTextField54.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField54.setName(""); // NOI18N
-        jTextField54.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField54, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 85, 140, 30));
-
-        jTextField55.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField55.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField55.setToolTipText("");
-        jTextField55.setBorder(null);
-        jTextField55.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField55.setName(""); // NOI18N
-        jTextField55.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField55, new org.netbeans.lib.awtextra.AbsoluteConstraints(1270, 85, 70, 32));
-
-        jTextField56.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField56.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField56.setToolTipText("");
-        jTextField56.setBorder(null);
-        jTextField56.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField56.setName(""); // NOI18N
-        jTextField56.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField56, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 85, 190, 30));
-
-        jTextField57.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField57.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField57.setToolTipText("");
-        jTextField57.setBorder(null);
-        jTextField57.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField57.setName(""); // NOI18N
-        jTextField57.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField57, new org.netbeans.lib.awtextra.AbsoluteConstraints(815, 85, 130, 30));
-
-        jTextField58.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField58.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField58.setToolTipText("");
-        jTextField58.setBorder(null);
-        jTextField58.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField58.setName(""); // NOI18N
-        jTextField58.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField58, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 85, 100, 30));
-
-        jTextField59.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField59.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField59.setToolTipText("");
-        jTextField59.setBorder(null);
-        jTextField59.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField59.setName(""); // NOI18N
-        jTextField59.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField59, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 85, 170, 30));
-
-        jTextField60.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField60.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField60.setToolTipText("");
-        jTextField60.setBorder(null);
-        jTextField60.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField60.setName(""); // NOI18N
-        jTextField60.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField60, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 85, 250, 30));
-
-        jTextField61.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField61.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField61.setToolTipText("");
-        jTextField61.setBorder(null);
-        jTextField61.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField61.setName(""); // NOI18N
-        jTextField61.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField61, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 125, 130, 30));
-
-        jTextField62.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField62.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField62.setToolTipText("");
-        jTextField62.setBorder(null);
-        jTextField62.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField62.setName(""); // NOI18N
-        jTextField62.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField62, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 125, 100, 30));
-
-        jTextField63.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField63.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField63.setToolTipText("");
-        jTextField63.setBorder(null);
-        jTextField63.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField63.setName(""); // NOI18N
-        jTextField63.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField63, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 125, 140, 30));
-
-        jTextField64.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField64.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField64.setToolTipText("");
-        jTextField64.setBorder(null);
-        jTextField64.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField64.setName(""); // NOI18N
-        jTextField64.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField64, new org.netbeans.lib.awtextra.AbsoluteConstraints(1270, 125, 70, 32));
-
-        jTextField65.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField65.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField65.setToolTipText("");
-        jTextField65.setBorder(null);
-        jTextField65.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField65.setName(""); // NOI18N
-        jTextField65.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField65, new org.netbeans.lib.awtextra.AbsoluteConstraints(815, 125, 130, 30));
-
-        jTextField66.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField66.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField66.setToolTipText("");
-        jTextField66.setBorder(null);
-        jTextField66.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField66.setName(""); // NOI18N
-        jTextField66.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField66, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 125, 170, 30));
-
-        jTextField67.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField67.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField67.setToolTipText("");
-        jTextField67.setBorder(null);
-        jTextField67.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField67.setName(""); // NOI18N
-        jTextField67.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField67, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 125, 190, 30));
-
-        jTextField68.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField68.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField68.setToolTipText("");
-        jTextField68.setBorder(null);
-        jTextField68.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField68.setName(""); // NOI18N
-        jTextField68.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField68, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 125, 250, 30));
-
-        jTextField69.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField69.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField69.setToolTipText("");
-        jTextField69.setBorder(null);
-        jTextField69.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField69.setName(""); // NOI18N
-        jTextField69.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField69, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 285, 140, 30));
-
-        jTextField70.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField70.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField70.setToolTipText("");
-        jTextField70.setBorder(null);
-        jTextField70.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField70.setName(""); // NOI18N
-        jTextField70.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField70, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 285, 190, 30));
-
-        jTextField71.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField71.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField71.setToolTipText("");
-        jTextField71.setBorder(null);
-        jTextField71.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField71.setName(""); // NOI18N
-        jTextField71.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField71, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 285, 100, 30));
-
-        jTextField72.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField72.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField72.setToolTipText("");
-        jTextField72.setBorder(null);
-        jTextField72.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField72.setName(""); // NOI18N
-        jTextField72.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField72, new org.netbeans.lib.awtextra.AbsoluteConstraints(1270, 285, 70, 32));
-
-        jTextField73.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField73.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField73.setToolTipText("");
-        jTextField73.setBorder(null);
-        jTextField73.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField73.setName(""); // NOI18N
-        jTextField73.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField73, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 285, 250, 30));
-
-        jTextField74.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField74.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField74.setToolTipText("");
-        jTextField74.setBorder(null);
-        jTextField74.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField74.setName(""); // NOI18N
-        jTextField74.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField74, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 285, 170, 30));
-
-        jTextField75.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField75.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField75.setToolTipText("");
-        jTextField75.setBorder(null);
-        jTextField75.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField75.setName(""); // NOI18N
-        jTextField75.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField75, new org.netbeans.lib.awtextra.AbsoluteConstraints(815, 285, 130, 30));
-
-        jTextField76.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField76.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField76.setToolTipText("");
-        jTextField76.setBorder(null);
-        jTextField76.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField76.setName(""); // NOI18N
-        jTextField76.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField76, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 285, 130, 30));
-
-        jTextField77.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField77.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField77.setToolTipText("");
-        jTextField77.setBorder(null);
-        jTextField77.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField77.setName(""); // NOI18N
-        jTextField77.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField77, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 245, 250, 30));
-
-        jTextField78.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField78.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField78.setToolTipText("");
-        jTextField78.setBorder(null);
-        jTextField78.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField78.setName(""); // NOI18N
-        jTextField78.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField78, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 205, 250, 30));
-
-        jTextField79.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField79.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField79.setToolTipText("");
-        jTextField79.setBorder(null);
-        jTextField79.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField79.setName(""); // NOI18N
-        jTextField79.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField79, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 165, 250, 30));
-
-        jTextField80.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField80.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField80.setToolTipText("");
-        jTextField80.setBorder(null);
-        jTextField80.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField80.setName(""); // NOI18N
-        jTextField80.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField80, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 165, 140, 30));
-
-        jTextField81.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField81.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField81.setToolTipText("");
-        jTextField81.setBorder(null);
-        jTextField81.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField81.setName(""); // NOI18N
-        jTextField81.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField81, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 205, 140, 30));
-
-        jTextField82.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField82.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField82.setToolTipText("");
-        jTextField82.setBorder(null);
-        jTextField82.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField82.setName(""); // NOI18N
-        jTextField82.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField82, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 245, 140, 30));
-
-        jTextField83.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField83.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField83.setToolTipText("");
-        jTextField83.setBorder(null);
-        jTextField83.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField83.setName(""); // NOI18N
-        jTextField83.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField83, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 245, 190, 30));
-
-        jTextField84.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField84.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField84.setToolTipText("");
-        jTextField84.setBorder(null);
-        jTextField84.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField84.setName(""); // NOI18N
-        jTextField84.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField84, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 205, 190, 30));
-
-        jTextField85.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField85.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField85.setToolTipText("");
-        jTextField85.setBorder(null);
-        jTextField85.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField85.setName(""); // NOI18N
-        jTextField85.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField85, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 165, 190, 30));
-
-        jTextField86.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField86.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField86.setToolTipText("");
-        jTextField86.setBorder(null);
-        jTextField86.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField86.setName(""); // NOI18N
-        jTextField86.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField86, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 165, 100, 30));
-
-        jTextField87.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField87.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField87.setToolTipText("");
-        jTextField87.setBorder(null);
-        jTextField87.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField87.setName(""); // NOI18N
-        jTextField87.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField87, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 205, 100, 30));
-
-        jTextField88.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField88.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField88.setToolTipText("");
-        jTextField88.setBorder(null);
-        jTextField88.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField88.setName(""); // NOI18N
-        jTextField88.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField88, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 245, 100, 30));
-
-        jTextField89.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField89.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField89.setToolTipText("");
-        jTextField89.setBorder(null);
-        jTextField89.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField89.setName(""); // NOI18N
-        jTextField89.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField89, new org.netbeans.lib.awtextra.AbsoluteConstraints(815, 245, 130, 30));
-
-        jTextField90.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField90.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField90.setToolTipText("");
-        jTextField90.setBorder(null);
-        jTextField90.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField90.setName(""); // NOI18N
-        jTextField90.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField90, new org.netbeans.lib.awtextra.AbsoluteConstraints(815, 205, 130, 30));
-
-        jTextField91.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField91.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField91.setToolTipText("");
-        jTextField91.setBorder(null);
-        jTextField91.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField91.setName(""); // NOI18N
-        jTextField91.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField91, new org.netbeans.lib.awtextra.AbsoluteConstraints(815, 165, 130, 30));
-
-        jTextField92.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField92.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField92.setToolTipText("");
-        jTextField92.setBorder(null);
-        jTextField92.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField92.setName(""); // NOI18N
-        jTextField92.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField92, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 165, 130, 30));
-
-        jTextField93.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField93.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField93.setToolTipText("");
-        jTextField93.setBorder(null);
-        jTextField93.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField93.setName(""); // NOI18N
-        jTextField93.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField93, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 205, 130, 30));
-
-        jTextField94.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField94.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField94.setToolTipText("");
-        jTextField94.setBorder(null);
-        jTextField94.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField94.setName(""); // NOI18N
-        jTextField94.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField94, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 245, 130, 30));
-
-        jTextField95.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField95.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField95.setToolTipText("");
-        jTextField95.setBorder(null);
-        jTextField95.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField95.setName(""); // NOI18N
-        jTextField95.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField95, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 245, 170, 30));
-
-        jTextField96.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField96.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField96.setToolTipText("");
-        jTextField96.setBorder(null);
-        jTextField96.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField96.setName(""); // NOI18N
-        jTextField96.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField96, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 205, 170, 30));
-
-        jTextField97.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField97.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField97.setToolTipText("");
-        jTextField97.setBorder(null);
-        jTextField97.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField97.setName(""); // NOI18N
-        jTextField97.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField97, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 165, 170, 30));
-
-        jTextField98.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField98.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField98.setToolTipText("");
-        jTextField98.setBorder(null);
-        jTextField98.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField98.setName(""); // NOI18N
-        jTextField98.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField98, new org.netbeans.lib.awtextra.AbsoluteConstraints(1270, 165, 70, 32));
-
-        jTextField99.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField99.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField99.setToolTipText("");
-        jTextField99.setBorder(null);
-        jTextField99.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField99.setName(""); // NOI18N
-        jTextField99.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField99, new org.netbeans.lib.awtextra.AbsoluteConstraints(1270, 205, 70, 32));
-
-        jTextField100.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField100.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField100.setToolTipText("");
-        jTextField100.setBorder(null);
-        jTextField100.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField100.setName(""); // NOI18N
-        jTextField100.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField100, new org.netbeans.lib.awtextra.AbsoluteConstraints(1270, 245, 70, 32));
-
-        jTextField101.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField101.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField101.setToolTipText("");
-        jTextField101.setBorder(null);
-        jTextField101.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField101.setName(""); // NOI18N
-        jTextField101.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField101, new org.netbeans.lib.awtextra.AbsoluteConstraints(815, 325, 130, 30));
-
-        jTextField102.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField102.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField102.setToolTipText("");
-        jTextField102.setBorder(null);
-        jTextField102.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField102.setName(""); // NOI18N
-        jTextField102.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField102, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 325, 140, 30));
-
-        jTextField103.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField103.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField103.setToolTipText("");
-        jTextField103.setBorder(null);
-        jTextField103.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField103.setName(""); // NOI18N
-        jTextField103.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField103, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 325, 100, 30));
-
-        jTextField104.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField104.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField104.setToolTipText("");
-        jTextField104.setBorder(null);
-        jTextField104.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField104.setName(""); // NOI18N
-        jTextField104.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField104, new org.netbeans.lib.awtextra.AbsoluteConstraints(1270, 365, 70, 30));
-
-        jTextField105.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField105.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField105.setToolTipText("");
-        jTextField105.setBorder(null);
-        jTextField105.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField105.setName(""); // NOI18N
-        jTextField105.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField105, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 365, 250, 30));
-
-        jTextField106.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField106.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField106.setToolTipText("");
-        jTextField106.setBorder(null);
-        jTextField106.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField106.setName(""); // NOI18N
-        jTextField106.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField106, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 325, 170, 30));
-
-        jTextField107.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField107.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField107.setToolTipText("");
-        jTextField107.setBorder(null);
-        jTextField107.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField107.setName(""); // NOI18N
-        jTextField107.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField107, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 365, 100, 30));
-
-        jTextField108.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField108.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField108.setToolTipText("");
-        jTextField108.setBorder(null);
-        jTextField108.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField108.setName(""); // NOI18N
-        jTextField108.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField108, new org.netbeans.lib.awtextra.AbsoluteConstraints(815, 365, 130, 30));
-
-        jTextField109.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField109.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField109.setToolTipText("");
-        jTextField109.setBorder(null);
-        jTextField109.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField109.setName(""); // NOI18N
-        jTextField109.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField109, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 365, 140, 30));
-
-        jTextField110.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField110.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField110.setToolTipText("");
-        jTextField110.setBorder(null);
-        jTextField110.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField110.setName(""); // NOI18N
-        jTextField110.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField110, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 365, 190, 30));
-
-        jTextField111.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField111.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField111.setToolTipText("");
-        jTextField111.setBorder(null);
-        jTextField111.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField111.setName(""); // NOI18N
-        jTextField111.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField111, new org.netbeans.lib.awtextra.AbsoluteConstraints(1270, 325, 70, 32));
-
-        jTextField112.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField112.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField112.setToolTipText("");
-        jTextField112.setBorder(null);
-        jTextField112.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField112.setName(""); // NOI18N
-        jTextField112.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField112, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 325, 250, 30));
-
-        jTextField113.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField113.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField113.setToolTipText("");
-        jTextField113.setBorder(null);
-        jTextField113.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField113.setName(""); // NOI18N
-        jTextField113.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField113, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 365, 130, 30));
-
-        jTextField114.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField114.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField114.setToolTipText("");
-        jTextField114.setBorder(null);
-        jTextField114.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField114.setName(""); // NOI18N
-        jTextField114.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField114, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 325, 130, 30));
-
-        jTextField115.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField115.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField115.setToolTipText("");
-        jTextField115.setBorder(null);
-        jTextField115.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField115.setName(""); // NOI18N
-        jTextField115.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField115, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 365, 170, 30));
-
-        jTextField116.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField116.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField116.setToolTipText("");
-        jTextField116.setBorder(null);
-        jTextField116.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField116.setName(""); // NOI18N
-        jTextField116.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel13.add(jTextField116, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 325, 190, 30));
+        _result1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _result1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _result1.setToolTipText("");
+        _result1.setBorder(null);
+        _result1.setMinimumSize(new java.awt.Dimension(470, 46));
+        _result1.setName(""); // NOI18N
+        _result1.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_result1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1270, 5, 70, 32));
+
+        _pieceNo1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _pieceNo1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _pieceNo1.setToolTipText("");
+        _pieceNo1.setBorder(null);
+        _pieceNo1.setMinimumSize(new java.awt.Dimension(470, 46));
+        _pieceNo1.setName(""); // NOI18N
+        _pieceNo1.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_pieceNo1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 5, 250, 30));
+
+        _testLength1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _testLength1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _testLength1.setToolTipText("");
+        _testLength1.setBorder(null);
+        _testLength1.setMinimumSize(new java.awt.Dimension(470, 46));
+        _testLength1.setName(""); // NOI18N
+        _testLength1.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_testLength1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 5, 140, 30));
+
+        _weldingProcess1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _weldingProcess1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _weldingProcess1.setToolTipText("");
+        _weldingProcess1.setBorder(null);
+        _weldingProcess1.setMinimumSize(new java.awt.Dimension(470, 46));
+        _weldingProcess1.setName(""); // NOI18N
+        _weldingProcess1.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_weldingProcess1, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 5, 190, 30));
+
+        _Mthickness1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _Mthickness1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _Mthickness1.setToolTipText("");
+        _Mthickness1.setBorder(null);
+        _Mthickness1.setMinimumSize(new java.awt.Dimension(470, 46));
+        _Mthickness1.setName(""); // NOI18N
+        _Mthickness1.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_Mthickness1, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 5, 100, 30));
+
+        _diameter1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _diameter1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _diameter1.setToolTipText("");
+        _diameter1.setBorder(null);
+        _diameter1.setMinimumSize(new java.awt.Dimension(470, 46));
+        _diameter1.setName(""); // NOI18N
+        _diameter1.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_diameter1, new org.netbeans.lib.awtextra.AbsoluteConstraints(815, 5, 130, 30));
+
+        _MdefectType1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MdefectType1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MdefectType1.setToolTipText("");
+        _MdefectType1.setBorder(null);
+        _MdefectType1.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MdefectType1.setName(""); // NOI18N
+        _MdefectType1.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_MdefectType1, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 5, 130, 30));
+
+        _MdefectLocation1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MdefectLocation1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MdefectLocation1.setToolTipText("");
+        _MdefectLocation1.setBorder(null);
+        _MdefectLocation1.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MdefectLocation1.setName(""); // NOI18N
+        _MdefectLocation1.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_MdefectLocation1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 5, 170, 30));
+
+        _result2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _result2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _result2.setToolTipText("");
+        _result2.setBorder(null);
+        _result2.setMinimumSize(new java.awt.Dimension(470, 46));
+        _result2.setName(""); // NOI18N
+        _result2.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_result2, new org.netbeans.lib.awtextra.AbsoluteConstraints(1270, 45, 70, 32));
+
+        _MdefectLocation2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MdefectLocation2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MdefectLocation2.setToolTipText("");
+        _MdefectLocation2.setBorder(null);
+        _MdefectLocation2.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MdefectLocation2.setName(""); // NOI18N
+        _MdefectLocation2.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_MdefectLocation2, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 45, 170, 30));
+
+        _MdefectType2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MdefectType2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MdefectType2.setToolTipText("");
+        _MdefectType2.setBorder(null);
+        _MdefectType2.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MdefectType2.setName(""); // NOI18N
+        _MdefectType2.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_MdefectType2, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 45, 130, 30));
+
+        _diameter2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _diameter2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _diameter2.setToolTipText("");
+        _diameter2.setBorder(null);
+        _diameter2.setMinimumSize(new java.awt.Dimension(470, 46));
+        _diameter2.setName(""); // NOI18N
+        _diameter2.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_diameter2, new org.netbeans.lib.awtextra.AbsoluteConstraints(815, 45, 130, 30));
+
+        _Mthickness2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _Mthickness2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _Mthickness2.setToolTipText("");
+        _Mthickness2.setBorder(null);
+        _Mthickness2.setMinimumSize(new java.awt.Dimension(470, 46));
+        _Mthickness2.setName(""); // NOI18N
+        _Mthickness2.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_Mthickness2, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 45, 100, 30));
+
+        _weldingProcess2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _weldingProcess2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _weldingProcess2.setToolTipText("");
+        _weldingProcess2.setBorder(null);
+        _weldingProcess2.setMinimumSize(new java.awt.Dimension(470, 46));
+        _weldingProcess2.setName(""); // NOI18N
+        _weldingProcess2.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_weldingProcess2, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 45, 190, 30));
+
+        _testLength2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _testLength2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _testLength2.setToolTipText("");
+        _testLength2.setBorder(null);
+        _testLength2.setMinimumSize(new java.awt.Dimension(470, 46));
+        _testLength2.setName(""); // NOI18N
+        _testLength2.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_testLength2, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 45, 140, 30));
+
+        _pieceNo2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _pieceNo2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _pieceNo2.setToolTipText("");
+        _pieceNo2.setBorder(null);
+        _pieceNo2.setMinimumSize(new java.awt.Dimension(470, 46));
+        _pieceNo2.setName(""); // NOI18N
+        _pieceNo2.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_pieceNo2, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 45, 250, 30));
+
+        _MdefectType3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MdefectType3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MdefectType3.setToolTipText("");
+        _MdefectType3.setBorder(null);
+        _MdefectType3.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MdefectType3.setName(""); // NOI18N
+        _MdefectType3.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_MdefectType3, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 85, 130, 30));
+
+        _testLength3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _testLength3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _testLength3.setToolTipText("");
+        _testLength3.setBorder(null);
+        _testLength3.setMinimumSize(new java.awt.Dimension(470, 46));
+        _testLength3.setName(""); // NOI18N
+        _testLength3.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_testLength3, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 85, 140, 30));
+
+        _result3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _result3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _result3.setToolTipText("");
+        _result3.setBorder(null);
+        _result3.setMinimumSize(new java.awt.Dimension(470, 46));
+        _result3.setName(""); // NOI18N
+        _result3.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_result3, new org.netbeans.lib.awtextra.AbsoluteConstraints(1270, 85, 70, 32));
+
+        _weldingProcess3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _weldingProcess3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _weldingProcess3.setToolTipText("");
+        _weldingProcess3.setBorder(null);
+        _weldingProcess3.setMinimumSize(new java.awt.Dimension(470, 46));
+        _weldingProcess3.setName(""); // NOI18N
+        _weldingProcess3.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_weldingProcess3, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 85, 190, 30));
+
+        _diameter3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _diameter3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _diameter3.setToolTipText("");
+        _diameter3.setBorder(null);
+        _diameter3.setMinimumSize(new java.awt.Dimension(470, 46));
+        _diameter3.setName(""); // NOI18N
+        _diameter3.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_diameter3, new org.netbeans.lib.awtextra.AbsoluteConstraints(815, 85, 130, 30));
+
+        _Mthickness3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _Mthickness3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _Mthickness3.setToolTipText("");
+        _Mthickness3.setBorder(null);
+        _Mthickness3.setMinimumSize(new java.awt.Dimension(470, 46));
+        _Mthickness3.setName(""); // NOI18N
+        _Mthickness3.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_Mthickness3, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 85, 100, 30));
+
+        _MdefectLocation3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MdefectLocation3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MdefectLocation3.setToolTipText("");
+        _MdefectLocation3.setBorder(null);
+        _MdefectLocation3.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MdefectLocation3.setName(""); // NOI18N
+        _MdefectLocation3.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_MdefectLocation3, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 85, 170, 30));
+
+        _pieceNo3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _pieceNo3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _pieceNo3.setToolTipText("");
+        _pieceNo3.setBorder(null);
+        _pieceNo3.setMinimumSize(new java.awt.Dimension(470, 46));
+        _pieceNo3.setName(""); // NOI18N
+        _pieceNo3.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_pieceNo3, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 85, 250, 30));
+
+        _MdefectType4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MdefectType4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MdefectType4.setToolTipText("");
+        _MdefectType4.setBorder(null);
+        _MdefectType4.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MdefectType4.setName(""); // NOI18N
+        _MdefectType4.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_MdefectType4, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 125, 130, 30));
+
+        _Mthickness4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _Mthickness4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _Mthickness4.setToolTipText("");
+        _Mthickness4.setBorder(null);
+        _Mthickness4.setMinimumSize(new java.awt.Dimension(470, 46));
+        _Mthickness4.setName(""); // NOI18N
+        _Mthickness4.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_Mthickness4, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 125, 100, 30));
+
+        _testLength4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _testLength4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _testLength4.setToolTipText("");
+        _testLength4.setBorder(null);
+        _testLength4.setMinimumSize(new java.awt.Dimension(470, 46));
+        _testLength4.setName(""); // NOI18N
+        _testLength4.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_testLength4, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 125, 140, 30));
+
+        _result4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _result4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _result4.setToolTipText("");
+        _result4.setBorder(null);
+        _result4.setMinimumSize(new java.awt.Dimension(470, 46));
+        _result4.setName(""); // NOI18N
+        _result4.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_result4, new org.netbeans.lib.awtextra.AbsoluteConstraints(1270, 125, 70, 32));
+
+        _diameter4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _diameter4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _diameter4.setToolTipText("");
+        _diameter4.setBorder(null);
+        _diameter4.setMinimumSize(new java.awt.Dimension(470, 46));
+        _diameter4.setName(""); // NOI18N
+        _diameter4.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_diameter4, new org.netbeans.lib.awtextra.AbsoluteConstraints(815, 125, 130, 30));
+
+        _MdefectLocation4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MdefectLocation4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MdefectLocation4.setToolTipText("");
+        _MdefectLocation4.setBorder(null);
+        _MdefectLocation4.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MdefectLocation4.setName(""); // NOI18N
+        _MdefectLocation4.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_MdefectLocation4, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 125, 170, 30));
+
+        _weldingProcess4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _weldingProcess4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _weldingProcess4.setToolTipText("");
+        _weldingProcess4.setBorder(null);
+        _weldingProcess4.setMinimumSize(new java.awt.Dimension(470, 46));
+        _weldingProcess4.setName(""); // NOI18N
+        _weldingProcess4.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_weldingProcess4, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 125, 190, 30));
+
+        _pieceNo4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _pieceNo4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _pieceNo4.setToolTipText("");
+        _pieceNo4.setBorder(null);
+        _pieceNo4.setMinimumSize(new java.awt.Dimension(470, 46));
+        _pieceNo4.setName(""); // NOI18N
+        _pieceNo4.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_pieceNo4, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 125, 250, 30));
+
+        _testLength8.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _testLength8.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _testLength8.setToolTipText("");
+        _testLength8.setBorder(null);
+        _testLength8.setMinimumSize(new java.awt.Dimension(470, 46));
+        _testLength8.setName(""); // NOI18N
+        _testLength8.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_testLength8, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 285, 140, 30));
+
+        _weldingProcess8.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _weldingProcess8.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _weldingProcess8.setToolTipText("");
+        _weldingProcess8.setBorder(null);
+        _weldingProcess8.setMinimumSize(new java.awt.Dimension(470, 46));
+        _weldingProcess8.setName(""); // NOI18N
+        _weldingProcess8.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_weldingProcess8, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 285, 190, 30));
+
+        _Mthickness8.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _Mthickness8.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _Mthickness8.setToolTipText("");
+        _Mthickness8.setBorder(null);
+        _Mthickness8.setMinimumSize(new java.awt.Dimension(470, 46));
+        _Mthickness8.setName(""); // NOI18N
+        _Mthickness8.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_Mthickness8, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 285, 100, 30));
+
+        _result8.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _result8.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _result8.setToolTipText("");
+        _result8.setBorder(null);
+        _result8.setMinimumSize(new java.awt.Dimension(470, 46));
+        _result8.setName(""); // NOI18N
+        _result8.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_result8, new org.netbeans.lib.awtextra.AbsoluteConstraints(1270, 285, 70, 32));
+
+        _pieceNo8.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _pieceNo8.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _pieceNo8.setToolTipText("");
+        _pieceNo8.setBorder(null);
+        _pieceNo8.setMinimumSize(new java.awt.Dimension(470, 46));
+        _pieceNo8.setName(""); // NOI18N
+        _pieceNo8.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_pieceNo8, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 285, 250, 30));
+
+        _MdefectLocation8.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MdefectLocation8.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MdefectLocation8.setToolTipText("");
+        _MdefectLocation8.setBorder(null);
+        _MdefectLocation8.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MdefectLocation8.setName(""); // NOI18N
+        _MdefectLocation8.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_MdefectLocation8, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 285, 170, 30));
+
+        _diameter8.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _diameter8.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _diameter8.setToolTipText("");
+        _diameter8.setBorder(null);
+        _diameter8.setMinimumSize(new java.awt.Dimension(470, 46));
+        _diameter8.setName(""); // NOI18N
+        _diameter8.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_diameter8, new org.netbeans.lib.awtextra.AbsoluteConstraints(815, 285, 130, 30));
+
+        _MdefectType8.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MdefectType8.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MdefectType8.setToolTipText("");
+        _MdefectType8.setBorder(null);
+        _MdefectType8.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MdefectType8.setName(""); // NOI18N
+        _MdefectType8.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_MdefectType8, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 285, 130, 30));
+
+        _pieceNo7.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _pieceNo7.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _pieceNo7.setToolTipText("");
+        _pieceNo7.setBorder(null);
+        _pieceNo7.setMinimumSize(new java.awt.Dimension(470, 46));
+        _pieceNo7.setName(""); // NOI18N
+        _pieceNo7.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_pieceNo7, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 245, 250, 30));
+
+        _pieceNo6.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _pieceNo6.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _pieceNo6.setToolTipText("");
+        _pieceNo6.setBorder(null);
+        _pieceNo6.setMinimumSize(new java.awt.Dimension(470, 46));
+        _pieceNo6.setName(""); // NOI18N
+        _pieceNo6.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_pieceNo6, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 205, 250, 30));
+
+        _pieceNo5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _pieceNo5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _pieceNo5.setToolTipText("");
+        _pieceNo5.setBorder(null);
+        _pieceNo5.setMinimumSize(new java.awt.Dimension(470, 46));
+        _pieceNo5.setName(""); // NOI18N
+        _pieceNo5.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_pieceNo5, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 165, 250, 30));
+
+        _testLength5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _testLength5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _testLength5.setToolTipText("");
+        _testLength5.setBorder(null);
+        _testLength5.setMinimumSize(new java.awt.Dimension(470, 46));
+        _testLength5.setName(""); // NOI18N
+        _testLength5.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_testLength5, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 165, 140, 30));
+
+        _testLength6.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _testLength6.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _testLength6.setToolTipText("");
+        _testLength6.setBorder(null);
+        _testLength6.setMinimumSize(new java.awt.Dimension(470, 46));
+        _testLength6.setName(""); // NOI18N
+        _testLength6.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_testLength6, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 205, 140, 30));
+
+        _testLength7.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _testLength7.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _testLength7.setToolTipText("");
+        _testLength7.setBorder(null);
+        _testLength7.setMinimumSize(new java.awt.Dimension(470, 46));
+        _testLength7.setName(""); // NOI18N
+        _testLength7.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_testLength7, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 245, 140, 30));
+
+        _weldingProcess7.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _weldingProcess7.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _weldingProcess7.setToolTipText("");
+        _weldingProcess7.setBorder(null);
+        _weldingProcess7.setMinimumSize(new java.awt.Dimension(470, 46));
+        _weldingProcess7.setName(""); // NOI18N
+        _weldingProcess7.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_weldingProcess7, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 245, 190, 30));
+
+        _weldingProcess6.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _weldingProcess6.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _weldingProcess6.setToolTipText("");
+        _weldingProcess6.setBorder(null);
+        _weldingProcess6.setMinimumSize(new java.awt.Dimension(470, 46));
+        _weldingProcess6.setName(""); // NOI18N
+        _weldingProcess6.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_weldingProcess6, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 205, 190, 30));
+
+        _weldingProcess5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _weldingProcess5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _weldingProcess5.setToolTipText("");
+        _weldingProcess5.setBorder(null);
+        _weldingProcess5.setMinimumSize(new java.awt.Dimension(470, 46));
+        _weldingProcess5.setName(""); // NOI18N
+        _weldingProcess5.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_weldingProcess5, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 165, 190, 30));
+
+        _Mthickness5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _Mthickness5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _Mthickness5.setToolTipText("");
+        _Mthickness5.setBorder(null);
+        _Mthickness5.setMinimumSize(new java.awt.Dimension(470, 46));
+        _Mthickness5.setName(""); // NOI18N
+        _Mthickness5.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_Mthickness5, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 165, 100, 30));
+
+        _Mthickness6.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _Mthickness6.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _Mthickness6.setToolTipText("");
+        _Mthickness6.setBorder(null);
+        _Mthickness6.setMinimumSize(new java.awt.Dimension(470, 46));
+        _Mthickness6.setName(""); // NOI18N
+        _Mthickness6.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_Mthickness6, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 205, 100, 30));
+
+        _Mthickness7.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _Mthickness7.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _Mthickness7.setToolTipText("");
+        _Mthickness7.setBorder(null);
+        _Mthickness7.setMinimumSize(new java.awt.Dimension(470, 46));
+        _Mthickness7.setName(""); // NOI18N
+        _Mthickness7.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_Mthickness7, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 245, 100, 30));
+
+        _diameter7.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _diameter7.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _diameter7.setToolTipText("");
+        _diameter7.setBorder(null);
+        _diameter7.setMinimumSize(new java.awt.Dimension(470, 46));
+        _diameter7.setName(""); // NOI18N
+        _diameter7.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_diameter7, new org.netbeans.lib.awtextra.AbsoluteConstraints(815, 245, 130, 30));
+
+        _diameter6.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _diameter6.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _diameter6.setToolTipText("");
+        _diameter6.setBorder(null);
+        _diameter6.setMinimumSize(new java.awt.Dimension(470, 46));
+        _diameter6.setName(""); // NOI18N
+        _diameter6.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_diameter6, new org.netbeans.lib.awtextra.AbsoluteConstraints(815, 205, 130, 30));
+
+        _diameter5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _diameter5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _diameter5.setToolTipText("");
+        _diameter5.setBorder(null);
+        _diameter5.setMinimumSize(new java.awt.Dimension(470, 46));
+        _diameter5.setName(""); // NOI18N
+        _diameter5.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_diameter5, new org.netbeans.lib.awtextra.AbsoluteConstraints(815, 165, 130, 30));
+
+        _MdefectType5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MdefectType5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MdefectType5.setToolTipText("");
+        _MdefectType5.setBorder(null);
+        _MdefectType5.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MdefectType5.setName(""); // NOI18N
+        _MdefectType5.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_MdefectType5, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 165, 130, 30));
+
+        _MdefectType6.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MdefectType6.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MdefectType6.setToolTipText("");
+        _MdefectType6.setBorder(null);
+        _MdefectType6.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MdefectType6.setName(""); // NOI18N
+        _MdefectType6.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_MdefectType6, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 205, 130, 30));
+
+        _MdefectType7.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MdefectType7.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MdefectType7.setToolTipText("");
+        _MdefectType7.setBorder(null);
+        _MdefectType7.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MdefectType7.setName(""); // NOI18N
+        _MdefectType7.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_MdefectType7, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 245, 130, 30));
+
+        _MdefectLocation7.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MdefectLocation7.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MdefectLocation7.setToolTipText("");
+        _MdefectLocation7.setBorder(null);
+        _MdefectLocation7.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MdefectLocation7.setName(""); // NOI18N
+        _MdefectLocation7.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_MdefectLocation7, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 245, 170, 30));
+
+        _MdefectLocation6.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MdefectLocation6.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MdefectLocation6.setToolTipText("");
+        _MdefectLocation6.setBorder(null);
+        _MdefectLocation6.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MdefectLocation6.setName(""); // NOI18N
+        _MdefectLocation6.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_MdefectLocation6, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 205, 170, 30));
+
+        _MdefectLocation5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MdefectLocation5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MdefectLocation5.setToolTipText("");
+        _MdefectLocation5.setBorder(null);
+        _MdefectLocation5.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MdefectLocation5.setName(""); // NOI18N
+        _MdefectLocation5.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_MdefectLocation5, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 165, 170, 30));
+
+        _result5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _result5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _result5.setToolTipText("");
+        _result5.setBorder(null);
+        _result5.setMinimumSize(new java.awt.Dimension(470, 46));
+        _result5.setName(""); // NOI18N
+        _result5.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_result5, new org.netbeans.lib.awtextra.AbsoluteConstraints(1270, 165, 70, 32));
+
+        _result6.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _result6.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _result6.setToolTipText("");
+        _result6.setBorder(null);
+        _result6.setMinimumSize(new java.awt.Dimension(470, 46));
+        _result6.setName(""); // NOI18N
+        _result6.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_result6, new org.netbeans.lib.awtextra.AbsoluteConstraints(1270, 205, 70, 32));
+
+        _result7.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _result7.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _result7.setToolTipText("");
+        _result7.setBorder(null);
+        _result7.setMinimumSize(new java.awt.Dimension(470, 46));
+        _result7.setName(""); // NOI18N
+        _result7.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_result7, new org.netbeans.lib.awtextra.AbsoluteConstraints(1270, 245, 70, 32));
+
+        _diameter9.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _diameter9.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _diameter9.setToolTipText("");
+        _diameter9.setBorder(null);
+        _diameter9.setMinimumSize(new java.awt.Dimension(470, 46));
+        _diameter9.setName(""); // NOI18N
+        _diameter9.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_diameter9, new org.netbeans.lib.awtextra.AbsoluteConstraints(815, 325, 130, 30));
+
+        _testLength9.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _testLength9.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _testLength9.setToolTipText("");
+        _testLength9.setBorder(null);
+        _testLength9.setMinimumSize(new java.awt.Dimension(470, 46));
+        _testLength9.setName(""); // NOI18N
+        _testLength9.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_testLength9, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 325, 140, 30));
+
+        _Mthickness9.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _Mthickness9.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _Mthickness9.setToolTipText("");
+        _Mthickness9.setBorder(null);
+        _Mthickness9.setMinimumSize(new java.awt.Dimension(470, 46));
+        _Mthickness9.setName(""); // NOI18N
+        _Mthickness9.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_Mthickness9, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 325, 100, 30));
+
+        _result10.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _result10.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _result10.setToolTipText("");
+        _result10.setBorder(null);
+        _result10.setMinimumSize(new java.awt.Dimension(470, 46));
+        _result10.setName(""); // NOI18N
+        _result10.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_result10, new org.netbeans.lib.awtextra.AbsoluteConstraints(1270, 362, 70, 30));
+
+        _pieceNo10.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _pieceNo10.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _pieceNo10.setToolTipText("");
+        _pieceNo10.setBorder(null);
+        _pieceNo10.setMinimumSize(new java.awt.Dimension(470, 46));
+        _pieceNo10.setName(""); // NOI18N
+        _pieceNo10.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_pieceNo10, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 362, 250, 30));
+
+        _MdefectLocation9.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MdefectLocation9.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MdefectLocation9.setToolTipText("");
+        _MdefectLocation9.setBorder(null);
+        _MdefectLocation9.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MdefectLocation9.setName(""); // NOI18N
+        _MdefectLocation9.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_MdefectLocation9, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 325, 170, 30));
+
+        _Mthickness10.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _Mthickness10.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _Mthickness10.setToolTipText("");
+        _Mthickness10.setBorder(null);
+        _Mthickness10.setMinimumSize(new java.awt.Dimension(470, 46));
+        _Mthickness10.setName(""); // NOI18N
+        _Mthickness10.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_Mthickness10, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 362, 100, 30));
+
+        _diameter10.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _diameter10.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _diameter10.setToolTipText("");
+        _diameter10.setBorder(null);
+        _diameter10.setMinimumSize(new java.awt.Dimension(470, 46));
+        _diameter10.setName(""); // NOI18N
+        _diameter10.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_diameter10, new org.netbeans.lib.awtextra.AbsoluteConstraints(815, 362, 130, 30));
+
+        _testLength10.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _testLength10.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _testLength10.setToolTipText("");
+        _testLength10.setBorder(null);
+        _testLength10.setMinimumSize(new java.awt.Dimension(470, 46));
+        _testLength10.setName(""); // NOI18N
+        _testLength10.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_testLength10, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 362, 140, 30));
+
+        _weldingProcess10.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _weldingProcess10.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _weldingProcess10.setToolTipText("");
+        _weldingProcess10.setBorder(null);
+        _weldingProcess10.setMinimumSize(new java.awt.Dimension(470, 46));
+        _weldingProcess10.setName(""); // NOI18N
+        _weldingProcess10.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_weldingProcess10, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 362, 190, 30));
+
+        _result9.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _result9.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _result9.setToolTipText("");
+        _result9.setBorder(null);
+        _result9.setMinimumSize(new java.awt.Dimension(470, 46));
+        _result9.setName(""); // NOI18N
+        _result9.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_result9, new org.netbeans.lib.awtextra.AbsoluteConstraints(1270, 325, 70, 32));
+
+        _pieceNo9.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _pieceNo9.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _pieceNo9.setToolTipText("");
+        _pieceNo9.setBorder(null);
+        _pieceNo9.setMinimumSize(new java.awt.Dimension(470, 46));
+        _pieceNo9.setName(""); // NOI18N
+        _pieceNo9.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_pieceNo9, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 325, 250, 30));
+
+        _MdefectType10.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MdefectType10.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MdefectType10.setToolTipText("");
+        _MdefectType10.setBorder(null);
+        _MdefectType10.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MdefectType10.setName(""); // NOI18N
+        _MdefectType10.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_MdefectType10, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 362, 130, 30));
+
+        _MdefectType9.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MdefectType9.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MdefectType9.setToolTipText("");
+        _MdefectType9.setBorder(null);
+        _MdefectType9.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MdefectType9.setName(""); // NOI18N
+        _MdefectType9.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_MdefectType9, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 325, 130, 30));
+
+        _MdefectLocation10.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MdefectLocation10.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MdefectLocation10.setToolTipText("");
+        _MdefectLocation10.setBorder(null);
+        _MdefectLocation10.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MdefectLocation10.setName(""); // NOI18N
+        _MdefectLocation10.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_MdefectLocation10, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 362, 170, 30));
+
+        _weldingProcess9.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _weldingProcess9.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _weldingProcess9.setToolTipText("");
+        _weldingProcess9.setBorder(null);
+        _weldingProcess9.setMinimumSize(new java.awt.Dimension(470, 46));
+        _weldingProcess9.setName(""); // NOI18N
+        _weldingProcess9.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(_weldingProcess9, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 325, 190, 30));
 
         jPanel6.add(jPanel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 1160, 1350, 400));
 
         jPanel15.setOpaque(false);
         jPanel15.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jTextField117.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField117.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField117.setToolTipText("");
-        jTextField117.setBorder(null);
-        jTextField117.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField117.setName(""); // NOI18N
-        jTextField117.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel15.add(jTextField117, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 6, 190, 40));
+        _MoperatorName.setEditable(false);
+        _MoperatorName.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MoperatorName.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MoperatorName.setToolTipText("");
+        _MoperatorName.setBorder(null);
+        _MoperatorName.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MoperatorName.setName(""); // NOI18N
+        _MoperatorName.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel15.add(_MoperatorName, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 6, 310, 41));
 
-        jTextField118.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField118.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField118.setToolTipText("");
-        jTextField118.setBorder(null);
-        jTextField118.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField118.setName(""); // NOI18N
-        jTextField118.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel15.add(jTextField118, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 6, 310, 41));
+        _MevaluatorName.setEditable(false);
+        _MevaluatorName.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MevaluatorName.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MevaluatorName.setToolTipText("");
+        _MevaluatorName.setBorder(null);
+        _MevaluatorName.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MevaluatorName.setName(""); // NOI18N
+        _MevaluatorName.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel15.add(_MevaluatorName, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 6, 330, 41));
 
-        jTextField119.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField119.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField119.setToolTipText("");
-        jTextField119.setBorder(null);
-        jTextField119.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField119.setName(""); // NOI18N
-        jTextField119.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel15.add(jTextField119, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 6, 330, 41));
+        _MconfirmaionName.setEditable(false);
+        _MconfirmaionName.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MconfirmaionName.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MconfirmaionName.setToolTipText("");
+        _MconfirmaionName.setBorder(null);
+        _MconfirmaionName.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MconfirmaionName.setName(""); // NOI18N
+        _MconfirmaionName.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel15.add(_MconfirmaionName, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 6, 230, 41));
 
-        jTextField120.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField120.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField120.setToolTipText("");
-        jTextField120.setBorder(null);
-        jTextField120.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField120.setName(""); // NOI18N
-        jTextField120.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel15.add(jTextField120, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 6, 230, 41));
+        _MoperatorLevel.setEditable(false);
+        _MoperatorLevel.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MoperatorLevel.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MoperatorLevel.setToolTipText("");
+        _MoperatorLevel.setBorder(null);
+        _MoperatorLevel.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MoperatorLevel.setName(""); // NOI18N
+        _MoperatorLevel.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel15.add(_MoperatorLevel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 55, 310, 40));
 
-        jTextField121.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField121.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField121.setToolTipText("");
-        jTextField121.setBorder(null);
-        jTextField121.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField121.setName(""); // NOI18N
-        jTextField121.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel15.add(jTextField121, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 55, 310, 40));
-
-        jTextField122.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
-        jTextField122.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField122.setToolTipText("");
-        jTextField122.setBorder(null);
-        jTextField122.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField122.setName(""); // NOI18N
-        jTextField122.setPreferredSize(new java.awt.Dimension(470, 46));
-        jTextField122.addActionListener(new java.awt.event.ActionListener() {
+        _Mbottom.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
+        _Mbottom.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _Mbottom.setToolTipText("");
+        _Mbottom.setBorder(null);
+        _Mbottom.setMinimumSize(new java.awt.Dimension(470, 46));
+        _Mbottom.setName(""); // NOI18N
+        _Mbottom.setPreferredSize(new java.awt.Dimension(470, 46));
+        _Mbottom.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField122ActionPerformed(evt);
+                _MbottomActionPerformed(evt);
             }
         });
-        jPanel15.add(jTextField122, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 250, 610, 20));
+        jPanel15.add(_Mbottom, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 252, 900, 30));
 
-        jTextField123.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField123.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField123.setToolTipText("");
-        jTextField123.setBorder(null);
-        jTextField123.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField123.setName(""); // NOI18N
-        jTextField123.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel15.add(jTextField123, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 55, 230, 40));
+        _MconfirmationLevel.setEditable(false);
+        _MconfirmationLevel.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MconfirmationLevel.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MconfirmationLevel.setToolTipText("");
+        _MconfirmationLevel.setBorder(null);
+        _MconfirmationLevel.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MconfirmationLevel.setName(""); // NOI18N
+        _MconfirmationLevel.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel15.add(_MconfirmationLevel, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 55, 230, 40));
 
-        jTextField124.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField124.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField124.setToolTipText("");
-        jTextField124.setBorder(null);
-        jTextField124.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField124.setName(""); // NOI18N
-        jTextField124.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel15.add(jTextField124, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 55, 190, 40));
-
-        jTextField125.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField125.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField125.setToolTipText("");
-        jTextField125.setBorder(null);
-        jTextField125.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField125.setName(""); // NOI18N
-        jTextField125.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel15.add(jTextField125, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 100, 230, 40));
-
-        jTextField126.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField126.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField126.setToolTipText("");
-        jTextField126.setBorder(null);
-        jTextField126.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField126.setName(""); // NOI18N
-        jTextField126.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel15.add(jTextField126, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 100, 330, 40));
-
-        jTextField127.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField127.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField127.setToolTipText("");
-        jTextField127.setBorder(null);
-        jTextField127.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField127.setName(""); // NOI18N
-        jTextField127.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel15.add(jTextField127, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 100, 190, 40));
-
-        jTextField128.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField128.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField128.setToolTipText("");
-        jTextField128.setBorder(null);
-        jTextField128.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField128.setName(""); // NOI18N
-        jTextField128.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel15.add(jTextField128, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, 310, 40));
-
-        jTextField129.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField129.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField129.setToolTipText("");
-        jTextField129.setBorder(null);
-        jTextField129.setMinimumSize(new java.awt.Dimension(470, 46));
-        jTextField129.setName(""); // NOI18N
-        jTextField129.setPreferredSize(new java.awt.Dimension(470, 46));
-        jPanel15.add(jTextField129, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 55, 330, 40));
+        _MevaluatorLevel.setEditable(false);
+        _MevaluatorLevel.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MevaluatorLevel.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MevaluatorLevel.setToolTipText("");
+        _MevaluatorLevel.setBorder(null);
+        _MevaluatorLevel.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MevaluatorLevel.setName(""); // NOI18N
+        _MevaluatorLevel.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel15.add(_MevaluatorLevel, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 55, 330, 40));
 
         jPanel6.add(jPanel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 1600, 1100, 270));
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/magnetic.png"))); // NOI18N
-        jLabel3.setText("jLabel3");
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/magnetic2.png"))); // NOI18N
         jLabel3.setMaximumSize(new java.awt.Dimension(1350, 1900));
         jLabel3.setMinimumSize(new java.awt.Dimension(1350, 1900));
         jLabel3.setPreferredSize(new java.awt.Dimension(1350, 1900));
         jPanel6.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 1870));
 
-        jTabbedPane1.addTab("Radyografik Rapor", jPanel6);
-
-        jLabel1.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel1.setFont(new java.awt.Font("Times New Roman", 0, 36)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Logo");
-        jLabel1.setToolTipText("");
-        jLabel1.setOpaque(true);
-
-        jLabel2.setBackground(new java.awt.Color(255, 204, 204));
-        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 0, 0));
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("GÖZETİM MUAYENE VE EĞİTİM HİZMETLERİ");
-        jLabel2.setOpaque(true);
-
-        jLabel4.setBackground(new java.awt.Color(255, 204, 204));
-        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(255, 0, 0));
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("MANYETİK PARÇACIK MUAYENE RAPORU");
-        jLabel4.setOpaque(true);
-
-        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
-        jPanel7.setLayout(jPanel7Layout);
-        jPanel7Layout.setHorizontalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createSequentialGroup()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 292, Short.MAX_VALUE)
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 802, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 802, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(68, 68, 68))
-        );
-        jPanel7Layout.setVerticalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
-                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jPanel7Layout.createSequentialGroup()
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-        );
-
-        jTabbedPane1.addTab("tab3", jPanel7);
+        jTabbedPane1.addTab("Manyetik Parçacık Muayene Raporu", jPanel6);
 
         jLayeredPane1.add(jTabbedPane1, "card2");
 
@@ -1778,29 +2748,45 @@ public class Report extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+        
+    
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         //Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         //this.setLocation((screenSize.width-this.getWidth()), (screenSize.height-this.getHeight())/4);
         //jPanel1.setSize(this.getSize());
-        StyledDocument doc = textPane.getStyledDocument();
+        StyledDocument doc = _MPCarrier.getStyledDocument();
         SimpleAttributeSet center = new SimpleAttributeSet();
         StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
         doc.setParagraphAttributes(0, doc.getLength(), center, false);
+        jScrollPane2.getVerticalScrollBar().setUnitIncrement(40);
         
     }//GEN-LAST:event_formWindowOpened
 
-    private void jTextField122ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField122ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField122ActionPerformed
-
-    private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox1ActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        collectDataRadiographic();
+        collectDataMagnetic();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTabbedPane1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTabbedPane1MousePressed
         jTabbedPane1.setSize(1350, 2100);
         jLayeredPane1.setSize(1350, 2100);
     }//GEN-LAST:event_jTabbedPane1MousePressed
+
+    private void _MbottomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event__MbottomActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event__MbottomActionPerformed
+
+    private void _buttActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event__buttActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event__buttActionPerformed
+
+    private void _filletActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event__filletActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event__filletActionPerformed
+
+    private void _inspectionPlaceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event__inspectionPlaceActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event__inspectionPlaceActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1838,48 +2824,300 @@ public class Report extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextPane _MPCarrier;
+    private javax.swing.JTextField _Mbottom;
+    private javax.swing.JTextField _MconfirmaionName;
+    private javax.swing.JTextField _MconfirmationLevel;
+    private javax.swing.JTextField _Mcustomer;
+    private javax.swing.JTextField _MdefectLocation1;
+    private javax.swing.JTextField _MdefectLocation10;
+    private javax.swing.JTextField _MdefectLocation2;
+    private javax.swing.JTextField _MdefectLocation3;
+    private javax.swing.JTextField _MdefectLocation4;
+    private javax.swing.JTextField _MdefectLocation5;
+    private javax.swing.JTextField _MdefectLocation6;
+    private javax.swing.JTextField _MdefectLocation7;
+    private javax.swing.JTextField _MdefectLocation8;
+    private javax.swing.JTextField _MdefectLocation9;
+    private javax.swing.JTextField _MdefectType1;
+    private javax.swing.JTextField _MdefectType10;
+    private javax.swing.JTextField _MdefectType2;
+    private javax.swing.JTextField _MdefectType3;
+    private javax.swing.JTextField _MdefectType4;
+    private javax.swing.JTextField _MdefectType5;
+    private javax.swing.JTextField _MdefectType6;
+    private javax.swing.JTextField _MdefectType7;
+    private javax.swing.JTextField _MdefectType8;
+    private javax.swing.JTextField _MdefectType9;
+    private javax.swing.JTextField _Mdescription;
+    private javax.swing.JTextField _MdrawingNo;
+    private javax.swing.JTextField _Mequipment;
+    private javax.swing.JTextField _MevaluationStandard;
+    private javax.swing.JTextField _MevaluatorLevel;
+    private javax.swing.JTextField _MevaluatorName;
+    private javax.swing.JTextField _MheatTreatment;
+    private javax.swing.JTextField _MinspectionDates;
+    private javax.swing.JTextField _MinspectionPlace;
+    private javax.swing.JTextField _MinspectionProcedure;
+    private javax.swing.JTextField _MinspectionScope;
+    private javax.swing.JTextField _MinspectionStandard;
+    private javax.swing.JTextField _MofferNo;
+    private javax.swing.JTextField _MoperatorLevel;
+    private javax.swing.JTextField _MoperatorName;
+    private javax.swing.JTextField _MorderNo;
+    private javax.swing.JTextField _Mpage;
+    private javax.swing.JTextField _Mproject;
+    private javax.swing.JTextField _MreportDate;
+    private javax.swing.JTextField _MreportNo;
+    private javax.swing.JTextField _MstageOfExamination;
+    private javax.swing.JTextField _MsurfaceCondition;
+    private javax.swing.JTextField _MsurfaceCondition2;
+    private javax.swing.JTextField _Mthickness1;
+    private javax.swing.JTextField _Mthickness10;
+    private javax.swing.JTextField _Mthickness2;
+    private javax.swing.JTextField _Mthickness3;
+    private javax.swing.JTextField _Mthickness4;
+    private javax.swing.JTextField _Mthickness5;
+    private javax.swing.JTextField _Mthickness6;
+    private javax.swing.JTextField _Mthickness7;
+    private javax.swing.JTextField _Mthickness8;
+    private javax.swing.JTextField _Mthickness9;
+    private javax.swing.JTextField _UV;
+    private javax.swing.JCheckBox _astm;
+    private javax.swing.JCheckBox _automatic;
+    private javax.swing.JTextField _bottom;
+    private javax.swing.JCheckBox _butt;
+    private javax.swing.JTextField _confirmationLevel;
+    private javax.swing.JTextField _confirmationName;
+    private javax.swing.JTextField _currentType;
+    private javax.swing.JTextField _customer;
+    private javax.swing.JCheckBox _d4;
+    private javax.swing.JCheckBox _d5;
+    private javax.swing.JCheckBox _d7;
+    private javax.swing.JTextField _defectLocation1;
+    private javax.swing.JTextField _defectLocation2;
+    private javax.swing.JTextField _defectLocation3;
+    private javax.swing.JTextField _defectLocation4;
+    private javax.swing.JTextField _defectLocation5;
+    private javax.swing.JTextField _defectType1;
+    private javax.swing.JTextField _defectType2;
+    private javax.swing.JTextField _defectType3;
+    private javax.swing.JTextField _defectType4;
+    private javax.swing.JTextField _defectType5;
+    private javax.swing.JTextField _demagnetization;
+    private javax.swing.JTextField _density1;
+    private javax.swing.JTextField _density2;
+    private javax.swing.JTextField _density3;
+    private javax.swing.JTextField _density4;
+    private javax.swing.JTextField _density5;
+    private javax.swing.JTextField _description;
+    private javax.swing.JTextField _diameter1;
+    private javax.swing.JTextField _diameter10;
+    private javax.swing.JTextField _diameter2;
+    private javax.swing.JTextField _diameter3;
+    private javax.swing.JTextField _diameter4;
+    private javax.swing.JTextField _diameter5;
+    private javax.swing.JTextField _diameter6;
+    private javax.swing.JTextField _diameter7;
+    private javax.swing.JTextField _diameter8;
+    private javax.swing.JTextField _diameter9;
+    private javax.swing.JTextField _distanceOfLight;
+    private javax.swing.JTextField _drawingNo;
+    private javax.swing.JCheckBox _en;
+    private javax.swing.JTextField _equipment;
+    private javax.swing.JTextField _evaluationStandard;
+    private javax.swing.JTextField _evaluatorLevel;
+    private javax.swing.JTextField _evaluatorName;
+    private javax.swing.JTextField _examinationArea;
+    private javax.swing.JTextField _exposureTime;
+    private javax.swing.JTextField _f1012;
+    private javax.swing.JTextField _f1012_1;
+    private javax.swing.JTextField _f1012_2;
+    private javax.swing.JTextField _f1012_3;
+    private javax.swing.JTextField _f1012_4;
+    private javax.swing.JTextField _f1012_5;
+    private javax.swing.JTextField _f1016;
+    private javax.swing.JTextField _f1016_1;
+    private javax.swing.JTextField _f1016_2;
+    private javax.swing.JTextField _f1016_3;
+    private javax.swing.JTextField _f1016_4;
+    private javax.swing.JTextField _f1016_5;
+    private javax.swing.JTextField _f1024;
+    private javax.swing.JTextField _f1024_1;
+    private javax.swing.JTextField _f1024_2;
+    private javax.swing.JTextField _f1024_3;
+    private javax.swing.JTextField _f1024_4;
+    private javax.swing.JTextField _f1024_5;
+    private javax.swing.JTextField _f1036;
+    private javax.swing.JTextField _f1036_1;
+    private javax.swing.JTextField _f1036_2;
+    private javax.swing.JTextField _f1036_3;
+    private javax.swing.JTextField _f1036_4;
+    private javax.swing.JTextField _f1036_5;
+    private javax.swing.JTextField _f1048;
+    private javax.swing.JTextField _f1048_1;
+    private javax.swing.JTextField _f1048_2;
+    private javax.swing.JTextField _f1048_3;
+    private javax.swing.JTextField _f1048_4;
+    private javax.swing.JTextField _f1048_5;
+    private javax.swing.JTextField _f3040;
+    private javax.swing.JTextField _f3040_1;
+    private javax.swing.JTextField _f3040_2;
+    private javax.swing.JTextField _f3040_3;
+    private javax.swing.JTextField _f3040_4;
+    private javax.swing.JTextField _f3040_5;
+    private javax.swing.JCheckBox _fillet;
+    private javax.swing.JTextField _filmBrand;
+    private javax.swing.JTextField _filmFocusDistance;
+    private javax.swing.JTextField _filmNo1;
+    private javax.swing.JTextField _filmNo2;
+    private javax.swing.JTextField _filmNo3;
+    private javax.swing.JTextField _filmNo4;
+    private javax.swing.JTextField _filmNo5;
+    private javax.swing.JCheckBox _filmSide;
+    private javax.swing.JTextField _filters;
+    private javax.swing.JTextField _finalEvaluation1;
+    private javax.swing.JTextField _finalEvaluation2;
+    private javax.swing.JTextField _finalEvaluation3;
+    private javax.swing.JTextField _finalEvaluation4;
+    private javax.swing.JTextField _finalEvaluation5;
+    private javax.swing.JTextField _focalSpotSize;
+    private javax.swing.JTextField _gauss;
+    private javax.swing.JTextField _heatTreatment;
+    private javax.swing.JTextField _identification;
+    private javax.swing.JTextField _inspectionClass;
+    private javax.swing.JTextField _inspectionDates;
+    private javax.swing.JTextField _inspectionPlace;
+    private javax.swing.JTextField _inspectionProcedure;
+    private javax.swing.JTextField _inspectionScope;
+    private javax.swing.JCheckBox _ir192;
+    private javax.swing.JTextField _liftingTestDate;
+    private javax.swing.JTextField _luxmeter;
+    private javax.swing.JTextField _magTech;
+    private javax.swing.JCheckBox _manuel;
+    private javax.swing.JTextField _materialType1;
+    private javax.swing.JTextField _materialType2;
+    private javax.swing.JTextField _materialType3;
+    private javax.swing.JTextField _materialType4;
+    private javax.swing.JTextField _materialType5;
+    private javax.swing.JTextField _offerNo;
+    private javax.swing.JTextField _operatorLevel;
+    private javax.swing.JTextField _operatorName;
+    private javax.swing.JTextField _orderNo;
+    private javax.swing.JTextField _page;
+    private javax.swing.JTextField _pbScreens;
+    private javax.swing.JTextField _penetremetreQ1;
+    private javax.swing.JTextField _penetremetreQ2;
+    private javax.swing.JTextField _penetremetreQ3;
+    private javax.swing.JTextField _penetremetreQ4;
+    private javax.swing.JTextField _penetremetreQ5;
+    private javax.swing.JTextField _pieceNo1;
+    private javax.swing.JTextField _pieceNo10;
+    private javax.swing.JTextField _pieceNo2;
+    private javax.swing.JTextField _pieceNo3;
+    private javax.swing.JTextField _pieceNo4;
+    private javax.swing.JTextField _pieceNo5;
+    private javax.swing.JTextField _pieceNo6;
+    private javax.swing.JTextField _pieceNo7;
+    private javax.swing.JTextField _pieceNo8;
+    private javax.swing.JTextField _pieceNo9;
+    private javax.swing.JTextField _poleDistance;
+    private javax.swing.JTextField _position1;
+    private javax.swing.JTextField _position2;
+    private javax.swing.JTextField _position3;
+    private javax.swing.JTextField _position4;
+    private javax.swing.JTextField _position5;
+    private javax.swing.JTextField _preEvaluation1;
+    private javax.swing.JTextField _preEvaluation2;
+    private javax.swing.JTextField _preEvaluation3;
+    private javax.swing.JTextField _preEvaluation4;
+    private javax.swing.JTextField _preEvaluation5;
+    private javax.swing.JTextField _project;
+    private javax.swing.JTextField _repairFilm;
+    private javax.swing.JTextField _reportDate;
+    private javax.swing.JTextField _reportNo;
+    private javax.swing.JTextField _result1;
+    private javax.swing.JTextField _result10;
+    private javax.swing.JTextField _result2;
+    private javax.swing.JTextField _result3;
+    private javax.swing.JTextField _result4;
+    private javax.swing.JTextField _result5;
+    private javax.swing.JTextField _result6;
+    private javax.swing.JTextField _result7;
+    private javax.swing.JTextField _result8;
+    private javax.swing.JTextField _result9;
+    private javax.swing.JCheckBox _se75;
+    private javax.swing.JTextField _shootingArea1;
+    private javax.swing.JTextField _shootingArea2;
+    private javax.swing.JTextField _shootingArea3;
+    private javax.swing.JTextField _shootingArea4;
+    private javax.swing.JTextField _shootingArea5;
+    private javax.swing.JCheckBox _sourceSide;
+    private javax.swing.JTextField _stageOfExamination;
+    private javax.swing.JTextField _standardDeviations;
+    private javax.swing.JTextField _suitableFilm;
+    private javax.swing.JTextField _surfaceCondition;
+    private javax.swing.JTextField _surfaceTemperature;
+    private javax.swing.JTextField _temp;
+    private javax.swing.JCheckBox _testArr1;
+    private javax.swing.JCheckBox _testArr2;
+    private javax.swing.JCheckBox _testArr3;
+    private javax.swing.JCheckBox _testArr4;
+    private javax.swing.JCheckBox _testArr5;
+    private javax.swing.JCheckBox _testArr6;
+    private javax.swing.JTextField _testLength1;
+    private javax.swing.JTextField _testLength10;
+    private javax.swing.JTextField _testLength2;
+    private javax.swing.JTextField _testLength3;
+    private javax.swing.JTextField _testLength4;
+    private javax.swing.JTextField _testLength5;
+    private javax.swing.JTextField _testLength6;
+    private javax.swing.JTextField _testLength7;
+    private javax.swing.JTextField _testLength8;
+    private javax.swing.JTextField _testLength9;
+    private javax.swing.JTextField _testMedium;
+    private javax.swing.JTextField _thickness1;
+    private javax.swing.JTextField _thickness2;
+    private javax.swing.JTextField _thickness3;
+    private javax.swing.JTextField _thickness4;
+    private javax.swing.JTextField _thickness5;
+    private javax.swing.JTextField _usedDevice;
+    private javax.swing.JTextField _visibleQ1;
+    private javax.swing.JTextField _visibleQ2;
+    private javax.swing.JTextField _visibleQ3;
+    private javax.swing.JTextField _visibleQ4;
+    private javax.swing.JTextField _visibleQ5;
+    private javax.swing.JTextField _welderNr1;
+    private javax.swing.JTextField _welderNr2;
+    private javax.swing.JTextField _welderNr3;
+    private javax.swing.JTextField _welderNr4;
+    private javax.swing.JTextField _welderNr5;
+    private javax.swing.JTextField _weldingProcess1;
+    private javax.swing.JTextField _weldingProcess10;
+    private javax.swing.JTextField _weldingProcess2;
+    private javax.swing.JTextField _weldingProcess3;
+    private javax.swing.JTextField _weldingProcess4;
+    private javax.swing.JTextField _weldingProcess5;
+    private javax.swing.JTextField _weldingProcess6;
+    private javax.swing.JTextField _weldingProcess7;
+    private javax.swing.JTextField _weldingProcess8;
+    private javax.swing.JTextField _weldingProcess9;
+    private javax.swing.JTextField _weldingType1;
+    private javax.swing.JTextField _weldingType2;
+    private javax.swing.JTextField _weldingType3;
+    private javax.swing.JTextField _weldingType4;
+    private javax.swing.JTextField _weldingType5;
+    private javax.swing.JCheckBox _xRay;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JCheckBox jCheckBox2;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabel19;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
-    private javax.swing.JLabel jLabel21;
-    private javax.swing.JLabel jLabel22;
-    private javax.swing.JLabel jLabel23;
-    private javax.swing.JLabel jLabel24;
-    private javax.swing.JLabel jLabel25;
-    private javax.swing.JLabel jLabel26;
-    private javax.swing.JLabel jLabel27;
-    private javax.swing.JLabel jLabel28;
-    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel30;
-    private javax.swing.JLabel jLabel31;
-    private javax.swing.JLabel jLabel32;
-    private javax.swing.JLabel jLabel33;
-    private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel35;
     private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel37;
     private javax.swing.JLabel jLabel38;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
+    private javax.swing.JLabel jLabel39;
+    private javax.swing.JLabel jLabel40;
     private javax.swing.JLayeredPane jLayeredPane1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
@@ -1888,144 +3126,491 @@ public class Report extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel15;
+    private javax.swing.JPanel jPanel16;
+    private javax.swing.JPanel jPanel17;
+    private javax.swing.JPanel jPanel18;
+    private javax.swing.JPanel jPanel19;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel20;
+    private javax.swing.JPanel jPanel21;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
-    private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTextField jTextField10;
-    private javax.swing.JTextField jTextField100;
-    private javax.swing.JTextField jTextField101;
-    private javax.swing.JTextField jTextField102;
-    private javax.swing.JTextField jTextField103;
-    private javax.swing.JTextField jTextField104;
-    private javax.swing.JTextField jTextField105;
-    private javax.swing.JTextField jTextField106;
-    private javax.swing.JTextField jTextField107;
-    private javax.swing.JTextField jTextField108;
-    private javax.swing.JTextField jTextField109;
-    private javax.swing.JTextField jTextField11;
-    private javax.swing.JTextField jTextField110;
-    private javax.swing.JTextField jTextField111;
-    private javax.swing.JTextField jTextField112;
-    private javax.swing.JTextField jTextField113;
-    private javax.swing.JTextField jTextField114;
-    private javax.swing.JTextField jTextField115;
-    private javax.swing.JTextField jTextField116;
-    private javax.swing.JTextField jTextField117;
-    private javax.swing.JTextField jTextField118;
-    private javax.swing.JTextField jTextField119;
-    private javax.swing.JTextField jTextField12;
-    private javax.swing.JTextField jTextField120;
-    private javax.swing.JTextField jTextField121;
-    private javax.swing.JTextField jTextField122;
-    private javax.swing.JTextField jTextField123;
-    private javax.swing.JTextField jTextField124;
-    private javax.swing.JTextField jTextField125;
-    private javax.swing.JTextField jTextField126;
-    private javax.swing.JTextField jTextField127;
-    private javax.swing.JTextField jTextField128;
-    private javax.swing.JTextField jTextField129;
-    private javax.swing.JTextField jTextField13;
-    private javax.swing.JTextField jTextField14;
-    private javax.swing.JTextField jTextField15;
-    private javax.swing.JTextField jTextField16;
-    private javax.swing.JTextField jTextField17;
-    private javax.swing.JTextField jTextField18;
-    private javax.swing.JTextField jTextField19;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField20;
-    private javax.swing.JTextField jTextField21;
-    private javax.swing.JTextField jTextField22;
-    private javax.swing.JTextField jTextField23;
-    private javax.swing.JTextField jTextField24;
-    private javax.swing.JTextField jTextField25;
-    private javax.swing.JTextField jTextField26;
-    private javax.swing.JTextField jTextField27;
-    private javax.swing.JTextField jTextField28;
-    private javax.swing.JTextField jTextField29;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField30;
-    private javax.swing.JTextField jTextField31;
-    private javax.swing.JTextField jTextField32;
-    private javax.swing.JTextField jTextField34;
-    private javax.swing.JTextField jTextField35;
-    private javax.swing.JTextField jTextField36;
-    private javax.swing.JTextField jTextField37;
-    private javax.swing.JTextField jTextField38;
-    private javax.swing.JTextField jTextField39;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField40;
-    private javax.swing.JTextField jTextField41;
-    private javax.swing.JTextField jTextField42;
-    private javax.swing.JTextField jTextField43;
-    private javax.swing.JTextField jTextField44;
-    private javax.swing.JTextField jTextField45;
-    private javax.swing.JTextField jTextField46;
-    private javax.swing.JTextField jTextField47;
-    private javax.swing.JTextField jTextField48;
-    private javax.swing.JTextField jTextField49;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField50;
-    private javax.swing.JTextField jTextField51;
-    private javax.swing.JTextField jTextField52;
-    private javax.swing.JTextField jTextField53;
-    private javax.swing.JTextField jTextField54;
-    private javax.swing.JTextField jTextField55;
-    private javax.swing.JTextField jTextField56;
-    private javax.swing.JTextField jTextField57;
-    private javax.swing.JTextField jTextField58;
-    private javax.swing.JTextField jTextField59;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField60;
-    private javax.swing.JTextField jTextField61;
-    private javax.swing.JTextField jTextField62;
-    private javax.swing.JTextField jTextField63;
-    private javax.swing.JTextField jTextField64;
-    private javax.swing.JTextField jTextField65;
-    private javax.swing.JTextField jTextField66;
-    private javax.swing.JTextField jTextField67;
-    private javax.swing.JTextField jTextField68;
-    private javax.swing.JTextField jTextField69;
-    private javax.swing.JTextField jTextField7;
-    private javax.swing.JTextField jTextField70;
-    private javax.swing.JTextField jTextField71;
-    private javax.swing.JTextField jTextField72;
-    private javax.swing.JTextField jTextField73;
-    private javax.swing.JTextField jTextField74;
-    private javax.swing.JTextField jTextField75;
-    private javax.swing.JTextField jTextField76;
-    private javax.swing.JTextField jTextField77;
-    private javax.swing.JTextField jTextField78;
-    private javax.swing.JTextField jTextField79;
-    private javax.swing.JTextField jTextField8;
-    private javax.swing.JTextField jTextField80;
-    private javax.swing.JTextField jTextField81;
-    private javax.swing.JTextField jTextField82;
-    private javax.swing.JTextField jTextField83;
-    private javax.swing.JTextField jTextField84;
-    private javax.swing.JTextField jTextField85;
-    private javax.swing.JTextField jTextField86;
-    private javax.swing.JTextField jTextField87;
-    private javax.swing.JTextField jTextField88;
-    private javax.swing.JTextField jTextField89;
-    private javax.swing.JTextField jTextField9;
-    private javax.swing.JTextField jTextField90;
-    private javax.swing.JTextField jTextField91;
-    private javax.swing.JTextField jTextField92;
-    private javax.swing.JTextField jTextField93;
-    private javax.swing.JTextField jTextField94;
-    private javax.swing.JTextField jTextField95;
-    private javax.swing.JTextField jTextField96;
-    private javax.swing.JTextField jTextField97;
-    private javax.swing.JTextField jTextField98;
-    private javax.swing.JTextField jTextField99;
-    private javax.swing.JTextPane textPane;
     // End of variables declaration//GEN-END:variables
+
+    private void radiographicResultsCapsul(){
+        radiographicResult1[0] = _shootingArea1;
+        radiographicResult1[1] = _filmNo1;
+        radiographicResult1[2] = _materialType1;
+        radiographicResult1[3] = _weldingType1;
+        radiographicResult1[4] = _welderNr1;
+        radiographicResult1[5] = _position1;
+        radiographicResult1[6] = _thickness1;
+        radiographicResult1[7] = _penetremetreQ1;
+        radiographicResult1[8] = _visibleQ1;
+        radiographicResult1[9] = _density1;
+        radiographicResult1[10] = _f1012_1;
+        radiographicResult1[11] = _f1016_1;
+        radiographicResult1[12] = _f1024_1;
+        radiographicResult1[13] = _f1036_1;
+        radiographicResult1[14] = _f1048_1;
+        radiographicResult1[15] = _f3040_1;
+        radiographicResult1[16] = _defectLocation1;
+        radiographicResult1[17] = _defectType1;
+        radiographicResult1[18] = _preEvaluation1;
+        radiographicResult1[19] = _finalEvaluation1;
+        
+        radiographicResult2[0] = _shootingArea2;
+        radiographicResult2[1] = _filmNo2;
+        radiographicResult2[2] = _materialType2;
+        radiographicResult2[3] = _weldingType2;
+        radiographicResult2[4] = _welderNr2;
+        radiographicResult2[5] = _position2;
+        radiographicResult2[6] = _thickness2;
+        radiographicResult2[7] = _penetremetreQ2;
+        radiographicResult2[8] = _visibleQ2;
+        radiographicResult2[9] = _density2;
+        radiographicResult2[10] = _f1012_2;
+        radiographicResult2[11] = _f1016_2;
+        radiographicResult2[12] = _f1024_2;
+        radiographicResult2[13] = _f1036_2;
+        radiographicResult2[14] = _f1048_2;
+        radiographicResult2[15] = _f3040_2;
+        radiographicResult2[16] = _defectLocation2;
+        radiographicResult2[17] = _defectType2;
+        radiographicResult2[18] = _preEvaluation2;
+        radiographicResult2[19] = _finalEvaluation2;
+        
+        radiographicResult3[0] = _shootingArea3;
+        radiographicResult3[1] = _filmNo3;
+        radiographicResult3[2] = _materialType3;
+        radiographicResult3[3] = _weldingType3;
+        radiographicResult3[4] = _welderNr3;
+        radiographicResult3[5] = _position3;
+        radiographicResult3[6] = _thickness3;
+        radiographicResult3[7] = _penetremetreQ3;
+        radiographicResult3[8] = _visibleQ3;
+        radiographicResult3[9] = _density3;
+        radiographicResult3[10] = _f1012_3;
+        radiographicResult3[11] = _f1016_3;
+        radiographicResult3[12] = _f1024_3;
+        radiographicResult3[13] = _f1036_3;
+        radiographicResult3[14] = _f1048_3;
+        radiographicResult3[15] = _f3040_3;
+        radiographicResult3[16] = _defectLocation3;
+        radiographicResult3[17] = _defectType3;
+        radiographicResult3[18] = _preEvaluation3;
+        radiographicResult3[19] = _finalEvaluation3;
+        
+        radiographicResult4[0] = _shootingArea4;
+        radiographicResult4[1] = _filmNo4;
+        radiographicResult4[2] = _materialType4;
+        radiographicResult4[3] = _weldingType4;
+        radiographicResult4[4] = _welderNr4;
+        radiographicResult4[5] = _position4;
+        radiographicResult4[6] = _thickness4;
+        radiographicResult4[7] = _penetremetreQ4;
+        radiographicResult4[8] = _visibleQ4;
+        radiographicResult4[9] = _density4;
+        radiographicResult4[10] = _f1012_4;
+        radiographicResult4[11] = _f1016_4;
+        radiographicResult4[12] = _f1024_4;
+        radiographicResult4[13] = _f1036_4;
+        radiographicResult4[14] = _f1048_4;
+        radiographicResult4[15] = _f3040_4;
+        radiographicResult4[16] = _defectLocation4;
+        radiographicResult4[17] = _defectType4;
+        radiographicResult4[18] = _preEvaluation4;
+        radiographicResult4[19] = _finalEvaluation4;
+        
+        radiographicResult5[0] = _shootingArea5;
+        radiographicResult5[1] = _filmNo5;
+        radiographicResult5[2] = _materialType5;
+        radiographicResult5[3] = _weldingType5;
+        radiographicResult5[4] = _welderNr5;
+        radiographicResult5[5] = _position5;
+        radiographicResult5[6] = _thickness5;
+        radiographicResult5[7] = _penetremetreQ5;
+        radiographicResult5[8] = _visibleQ5;
+        radiographicResult5[9] = _density5;
+        radiographicResult5[10] = _f1012_5;
+        radiographicResult5[11] = _f1016_5;
+        radiographicResult5[12] = _f1024_5;
+        radiographicResult5[13] = _f1036_5;
+        radiographicResult5[14] = _f1048_5;
+        radiographicResult5[15] = _f3040_5;
+        radiographicResult5[16] = _defectLocation5;
+        radiographicResult5[17] = _defectType5;
+        radiographicResult5[18] = _preEvaluation5;
+        radiographicResult5[19] = _finalEvaluation5;
+        
+        if (radiographicResult1[0].getText() != "") {
+            radiographicResults.add(radiographicResult1);
+        }
+        if (radiographicResult2[0].getText() != "") {
+            radiographicResults.add(radiographicResult2);
+        }
+        if (radiographicResult3[0].getText() != "") {
+            radiographicResults.add(radiographicResult3);
+        }
+        if (radiographicResult4[0].getText() != "") {
+            radiographicResults.add(radiographicResult4);
+        }
+        if (radiographicResult5[0].getText() != "") {
+            radiographicResults.add(radiographicResult5);
+        }
+    }
+    
+    private int[] getFilmQuantity (){
+        int[] filmQuantity = new int[8];
+        try {
+            filmQuantity[0] = Integer.parseInt(_f1012.getText());
+            filmQuantity[1] = Integer.parseInt(_f1016.getText());
+            filmQuantity[2] = Integer.parseInt(_f1024.getText());
+            filmQuantity[3] = Integer.parseInt(_f1036.getText());
+            filmQuantity[4] = Integer.parseInt(_f1048.getText());
+            filmQuantity[5] = Integer.parseInt(_f3040.getText());
+            filmQuantity[6] = Integer.parseInt(_suitableFilm.getText());
+            filmQuantity[7] = Integer.parseInt(_repairFilm.getText());
+        }
+        catch (NumberFormatException e){
+            filmQuantity = null;
+        }
+        return filmQuantity;
+    }
+    
+    private boolean[] getTestArrangements () {
+        boolean[] testArrangements = new boolean[6];
+        testArrangements[0] = _testArr1.isSelected();
+        testArrangements[1] = _testArr2.isSelected();
+        testArrangements[2] = _testArr3.isSelected();
+        testArrangements[3] = _testArr4.isSelected();
+        testArrangements[4] = _testArr5.isSelected();
+        testArrangements[5] = _testArr6.isSelected();
+        return testArrangements;
+    }
+
+    
+    private ArrayList<RadiographicInspectionResult> getRadiographicResults () {
+        ArrayList<RadiographicInspectionResult> results = new ArrayList(); 
+        radiographicResultsCapsul();
+        for (JTextField[] tf : radiographicResults) {
+            RadiographicInspectionResult temp = new RadiographicInspectionResult();
+            temp.setShootingArea(tf[0].getText());
+            temp.setFilmNo(tf[1].getText());
+            temp.setMaterialType(tf[2].getText());
+            temp.setWeldingType(tf[3].getText());
+            temp.setWelderNr(tf[4].getText());
+            temp.setPosition(tf[5].getText());
+            temp.setThickness(tf[6].getText());
+            temp.setPenetremeter(tf[7].getText());
+            temp.setVisibleQ(tf[8].getText());
+            temp.setDensity(tf[9].getText());
+            temp.setF1012(tf[10].getText());
+            temp.setF1016(tf[11].getText());
+            temp.setF1024(tf[12].getText());
+            temp.setF1036(tf[13].getText());
+            temp.setF1048(tf[14].getText());
+            temp.setF3040(tf[15].getText());
+            temp.setDefectLocation(tf[16].getText());
+            temp.setDefectType(tf[17].getText());          
+            temp.setPreEvaluation(tf[18].getText());
+            temp.setFinalEvaluation(tf[19].getText());
+            results.add(temp);
+        }
+        return results;
+    }
+    
+    
+    
+    private RadiographicReport collectDataRadiographic (){
+            RadiographicReport report = new RadiographicReport();
+            report.setCustomer(_customer.getText());
+            report.setProjectName(_project.getText());
+            report.setInspectionPlace(_inspectionPlace.getText());
+            report.setInspectionClass(_inspectionClass.getText());
+            report.setEvaluationStandard(_evaluationStandard.getText());
+            report.setInspectionProcedure(_inspectionProcedure.getText());
+            report.setInspectionScope(_inspectionScope.getText());
+            report.setDrawingNo(_drawingNo.getText());
+            report.setSurfaceCondition(_surfaceCondition.getText());
+            report.setStageOfExamination(_stageOfExamination.getText());
+            report.setPage(_page.getText());
+            report.setReportNumber(_reportNo.getText());
+            Date date = Common.string_toDate(_reportDate.getText());
+            if (date != null) {
+                report.setReportDate(date);
+            }
+            report.setOrderNumber(_orderNo.getText());
+            report.setOfferNumber(_offerNo.getText());
+            report.setEquipment(_equipment.getText());
+            report.setUsedDevice(_usedDevice.getText());
+            report.setIr192(_ir192.isSelected());
+            report.setSe75(_se75.isSelected());
+            report.setxRay(_xRay.isSelected());
+            report.setFocalSpotSize(_focalSpotSize.getText());
+            report.setExposureTime(_exposureTime.getText());
+            report.setFilmFocusDistance(_filmFocusDistance.getText());
+            report.setPbScreens(_pbScreens.getText());
+            report.setFilters(_filters.getText());
+            report.setHeatTreatment(_heatTreatment.getText());
+            report.setFilmBrand(_filmBrand.getText());
+            report.setD4MX125(_d4.isSelected());
+            report.setD5T200(_d5.isSelected());
+            report.setD7AA400(_d7.isSelected());
+            report.setEn(_en.isSelected());
+            report.setAstm(_astm.isSelected());
+            report.setSourceSide(_sourceSide.isSelected());
+            report.setFilmSide(_filmSide.isSelected());
+            report.setAutomatic(_automatic.isSelected());
+            report.setManuel(_manuel.isSelected());
+            report.setTemp(_temp.getText());
+            int[] filmQuantity = getFilmQuantity();
+            if (filmQuantity != null) {
+                report.setFilmQuantity(getFilmQuantity());
+            }
+            report.setTestArrangements(getTestArrangements());
+            report.setInspectionDates(_inspectionDates.getText());
+            report.setDescriptionOfAttachments(_description.getText());
+            report.setInspectionResults(getRadiographicResults());
+            report.setOperator_id(R_operator_id);
+            report.setEvaluator_id(R_evaluator_id);
+            report.setConfirmation_id(R_confirmation_id);
+            System.out.println(report.toString());
+            return report;
+    }
+    
+    private void magneticResultsCapsul(){
+        magneticResult1[0] = _pieceNo1;
+        magneticResult1[1] = _testLength1;
+        magneticResult1[2] = _weldingProcess1;
+        magneticResult1[3] = _Mthickness1;
+        magneticResult1[4] = _diameter1;
+        magneticResult1[5] = _MdefectType1;
+        magneticResult1[6] = _MdefectLocation1;
+        magneticResult1[7] = _result1;
+
+        magneticResult2[0] = _pieceNo2;
+        magneticResult2[1] = _testLength2;
+        magneticResult2[2] = _weldingProcess2;
+        magneticResult2[3] = _Mthickness2;
+        magneticResult2[4] = _diameter2;
+        magneticResult2[5] = _MdefectType2;
+        magneticResult2[6] = _MdefectLocation2;
+        magneticResult2[7] = _result2;
+
+        magneticResult3[0] = _pieceNo3;
+        magneticResult3[1] = _testLength3;
+        magneticResult3[2] = _weldingProcess3;
+        magneticResult3[3] = _Mthickness3;
+        magneticResult3[4] = _diameter3;
+        magneticResult3[5] = _MdefectType3;
+        magneticResult3[6] = _MdefectLocation3;
+        magneticResult3[7] = _result3;
+
+        magneticResult4[0] = _pieceNo4;
+        magneticResult4[1] = _testLength4;
+        magneticResult4[2] = _weldingProcess4;
+        magneticResult4[3] = _Mthickness4;
+        magneticResult4[4] = _diameter4;
+        magneticResult4[5] = _MdefectType4;
+        magneticResult4[6] = _MdefectLocation4;
+        magneticResult4[7] = _result4;
+
+        magneticResult5[0] = _pieceNo5;
+        magneticResult5[1] = _testLength5;
+        magneticResult5[2] = _weldingProcess5;
+        magneticResult5[3] = _Mthickness5;
+        magneticResult5[4] = _diameter5;
+        magneticResult5[5] = _MdefectType5;
+        magneticResult5[6] = _MdefectLocation5;
+        magneticResult5[7] = _result5;
+        
+        magneticResult6[0] = _pieceNo6;
+        magneticResult6[1] = _testLength6;
+        magneticResult6[2] = _weldingProcess6;
+        magneticResult6[3] = _Mthickness6;
+        magneticResult6[4] = _diameter6;
+        magneticResult6[5] = _MdefectType6;
+        magneticResult6[6] = _MdefectLocation6;
+        magneticResult6[7] = _result6;        
+        
+        magneticResult7[0] = _pieceNo7;
+        magneticResult7[1] = _testLength7;
+        magneticResult7[2] = _weldingProcess7;
+        magneticResult7[3] = _Mthickness7;
+        magneticResult7[4] = _diameter7;
+        magneticResult7[5] = _MdefectType7;
+        magneticResult7[6] = _MdefectLocation7;
+        magneticResult7[7] = _result7;       
+        
+        magneticResult8[0] = _pieceNo8;
+        magneticResult8[1] = _testLength8;
+        magneticResult8[2] = _weldingProcess8;
+        magneticResult8[3] = _Mthickness8;
+        magneticResult8[4] = _diameter8;
+        magneticResult8[5] = _MdefectType8;
+        magneticResult8[6] = _MdefectLocation8;
+        magneticResult8[7] = _result8;        
+        
+        magneticResult9[0] = _pieceNo9;
+        magneticResult9[1] = _testLength9;
+        magneticResult9[2] = _weldingProcess9;
+        magneticResult9[3] = _Mthickness9;
+        magneticResult9[4] = _diameter9;
+        magneticResult9[5] = _MdefectType9;
+        magneticResult9[6] = _MdefectLocation9;
+        magneticResult9[7] = _result9;
+        
+        magneticResult10[0] = _pieceNo10;
+        magneticResult10[1] = _testLength10;
+        magneticResult10[2] = _weldingProcess10;
+        magneticResult10[3] = _Mthickness10;
+        magneticResult10[4] = _diameter10;
+        magneticResult10[5] = _MdefectType10;
+        magneticResult10[6] = _MdefectLocation10;
+        magneticResult10[7] = _result10;
+        
+        if (magneticResult1[0].getText().trim() != "") {
+            magneticResults.add(magneticResult1);
+        }
+        if (magneticResult2[0].getText().trim() != "") {
+            magneticResults.add(magneticResult2);
+        }
+        if (magneticResult3[0].getText().trim() != "") {
+            magneticResults.add(magneticResult3);
+        }
+        if (magneticResult4[0].getText().trim() != "") {
+            magneticResults.add(magneticResult4);
+        }
+        if (magneticResult5[0].getText().trim() != "") {
+            magneticResults.add(magneticResult5);
+        }
+        if (magneticResult6[0].getText().trim() != "") {
+            magneticResults.add(magneticResult6);
+        }
+        if (magneticResult7[0].getText().trim() != "") {
+            magneticResults.add(magneticResult7);
+        }
+        if (magneticResult8[0].getText().trim() != "") {
+            magneticResults.add(magneticResult8);
+        }
+        if (magneticResult9[0].getText().trim() != "") {
+            magneticResults.add(magneticResult9);
+        }
+        if (magneticResult10[0].getText().trim() != "") {
+            magneticResults.add(magneticResult10);
+        }
+    }
+    
+    
+    private ArrayList<MagneticInspectionResult> getMagneticResults () {
+        magneticResultsCapsul();
+        ArrayList<MagneticInspectionResult> results = new ArrayList();
+        for (JTextField[] tf : magneticResults) {
+            MagneticInspectionResult temp = new MagneticInspectionResult();
+            temp.setWeldPieceNo(tf[0].getText());
+            temp.setTestLength(tf[1].getText());
+            temp.setWeldingProcess(tf[2].getText());
+            temp.setThickness(tf[3].getText());
+            temp.setDiameter(tf[4].getText());
+            temp.setDefectType(tf[5].getText());
+            temp.setDefectLocation(tf[6].getText());
+            temp.setResult(tf[7].getText());
+            results.add(temp);
+        }
+        return results;
+    }
+ 
+    
+    
+    
+    
+    
+    
+    
+    private MagneticReport collectDataMagnetic () {
+            MagneticReport report = new MagneticReport();
+            report.setCustomer(_Mcustomer.getText());
+            report.setProjectName(_Mproject.getText());
+            report.setInspectionPlace(_MinspectionPlace.getText());
+            report.setInspectionClass(_MinspectionStandard.getText());
+            report.setEvaluationStandard(_MevaluationStandard.getText());
+            report.setInspectionProcedure(_MinspectionProcedure.getText());
+            report.setInspectionScope(_MinspectionScope.getText());
+            report.setDrawingNo(_MdrawingNo.getText());
+            report.setSurfaceCondition(_MsurfaceCondition.getText());
+            report.setStageOfExamination(_MstageOfExamination.getText());
+            report.setPage(_Mpage.getText());
+            report.setReportNumber(_MreportNo.getText());
+            Date date = Common.string_toDate(_MreportDate.getText());
+            if (date != null) {
+                report.setReportDate(date);
+            }
+            report.setOrderNumber(_MorderNo.getText());
+            report.setOfferNumber(_MofferNo.getText());
+            report.setPoleDistance(_poleDistance.getText());
+            report.setEquipment(_Mequipment.getText());
+            report.setMPCarrier(_MPCarrier.getText());
+            report.setMagTech(_magTech.getText());
+            report.setUVIntensity(_UV.getText());
+            report.setDistanceOfLight(_distanceOfLight.getText());
+            report.setExaminationArea(_examinationArea.getText());
+            report.setCurrentType(_currentType.getText());
+            report.setLuxmeter(_luxmeter.getText());
+            report.setTestMedium(_testMedium.getText());
+            report.setDemagnetization(_demagnetization.getText());
+            report.setHeatTreatment(_MheatTreatment.getText());
+            report.setSurfaceTemperature(_surfaceTemperature.getText());
+            report.setGaussFieldStrength(_gauss.getText());
+            report.setSurfaceCondition2(_MsurfaceCondition2.getText());
+            report.setIdentificationOfLightEquip(_identification.getText());
+            report.setLiftingTest(_liftingTestDate.getText());
+            report.setButtWeld(_butt.isSelected());
+            report.setFilletWeld(_fillet.isSelected());
+            report.setStandardDeviations(_standardDeviations.getText());
+            report.setInspectionDates(_MinspectionDates.getText());
+            report.setDescriptionOfAttachments(_Mdescription.getText());
+            report.setInspectionResults(getMagneticResults());
+            report.setOperator_id(M_operator_id);
+            report.setEvaluator_id(M_evaluator_id);
+            report.setConfirmation_id(M_confirmation_id);
+            report.setBottom(_Mbottom.getText());
+            System.out.println(report.toString());
+            return report;
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }

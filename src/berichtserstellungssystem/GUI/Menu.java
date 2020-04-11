@@ -19,7 +19,7 @@ public class Menu extends javax.swing.JFrame {
 
     int jPanel = 0;
     GridBagLayout layout = new GridBagLayout();
-    ReportList panel1;
+    //ReportList panel1;
     
     Person me = new Person();
     
@@ -37,6 +37,7 @@ public class Menu extends javax.swing.JFrame {
      */
     public Menu() {
         initComponents();
+        /*
         panel1 = new ReportList();
         jPanel3.setLayout(layout);
         GridBagConstraints grid = new GridBagConstraints();
@@ -44,7 +45,7 @@ public class Menu extends javax.swing.JFrame {
         grid.gridy = 0;
         jPanel3.add(panel1, grid);
         panel1.setVisible(false);
-        
+        */
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -63,6 +64,7 @@ public class Menu extends javax.swing.JFrame {
         jMenu6 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem23 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem15 = new javax.swing.JMenuItem();
@@ -151,10 +153,10 @@ public class Menu extends javax.swing.JFrame {
         jMenu6.setText("Rapor");
         jMenu6.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
-        jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Y, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem2.setBackground(new java.awt.Color(204, 255, 204));
         jMenuItem2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/report.png"))); // NOI18N
-        jMenuItem2.setText("Manyetik Parçacık Muayene Raporu");
+        jMenuItem2.setText("Yeni Rapor Rluştur");
         jMenuItem2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -163,10 +165,10 @@ public class Menu extends javax.swing.JFrame {
         });
         jMenu6.add(jMenuItem2);
 
-        jMenuItem3.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem3.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem3.setBackground(new java.awt.Color(204, 255, 204));
         jMenuItem3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/report.png"))); // NOI18N
-        jMenuItem3.setText("Radyografik Muayene Raporu");
+        jMenuItem3.setText("Rapor Düzelt");
         jMenuItem3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -174,6 +176,11 @@ public class Menu extends javax.swing.JFrame {
             }
         });
         jMenu6.add(jMenuItem3);
+
+        jMenuItem23.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/continue.png"))); // NOI18N
+        jMenuItem23.setText("Tüm Raporları Göster");
+        jMenuItem23.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jMenu6.add(jMenuItem23);
 
         jMenuBar1.add(jMenu6);
 
@@ -349,9 +356,7 @@ public class Menu extends javax.swing.JFrame {
 
     private int id = 0;
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        jPanel = DatabaseManagement.getMagnetic_type();
-        panel1.title.setText(jMenuItem2.getText());
-        panel1.setVisible(true);
+        new Report().setVisible(true);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
@@ -377,9 +382,7 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowOpened
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        jPanel = DatabaseManagement.getRadiographic_type();
-        panel1.title.setText(jMenuItem3.getText());
-        panel1.setVisible(true);
+        
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
@@ -483,6 +486,7 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem20;
     private javax.swing.JMenuItem jMenuItem21;
     private javax.swing.JMenuItem jMenuItem22;
+    private javax.swing.JMenuItem jMenuItem23;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;

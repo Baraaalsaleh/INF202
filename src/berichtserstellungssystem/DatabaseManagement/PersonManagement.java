@@ -271,11 +271,33 @@ public class PersonManagement extends DatabaseManagement{
                 if (rs.next()){
                     employee_id = rs.getInt("id");
                 }                  
-            rs = stmt.executeQuery("SELECT P.TCNr, P.PersonalNr, P.name as Employee_name, P.lastname as Employee_lastname, P.gender, P.birthdate, P.address,"
+            rs = stmt.executeQuery("SELECT P.id, P.TCNr, P.PersonalNr, P.name as Employee_name, P.lastname as Employee_lastname, P.gender, P.birthdate, P.address,"
                     + " P.email, P.telephone, E.level, E.permition_End_Date, L.date, Per.name as adder_name, Per.lastname as adder_lastname, Person.name as changer_name, "
                     + "Person.lastname as changer_lastname FROM Person P JOIN Employee E ON P.id = E.Employee_id JOIN Person Per ON E.Manager_id = Per.id"
                     + " JOIN LastModification L ON L.Element_id = P.id JOIN Person ON L.Manager_id = Person.id WHERE L.type = " + DatabaseManagement.getEmployee_type() + 
                     " AND P.PersonalNr = " + personalNr + ";");
+            if (rs.next()) {
+                return rs;
+            }   
+        }
+        catch (SQLException e){
+            return rs;
+        }
+        return rs;
+    } 
+    
+    //Abfragen von Mitarbeiterinformationen
+    public static ResultSet getEmployeeById (int id){
+        Connection con = DatabaseManagement.connect();
+        ResultSet rs = null;
+        int employee_id = 0;
+        try {
+            Statement stmt = con.createStatement();        
+            rs = stmt.executeQuery("SELECT P.id, P.TCNr, P.PersonalNr, P.name as Employee_name, P.lastname as Employee_lastname, P.gender, P.birthdate, P.address,"
+                    + " P.email, P.telephone, E.level, E.permition_End_Date, L.date, Per.name as adder_name, Per.lastname as adder_lastname, Person.name as changer_name, "
+                    + "Person.lastname as changer_lastname FROM Person P JOIN Employee E ON P.id = E.Employee_id JOIN Person Per ON E.Manager_id = Per.id"
+                    + " JOIN LastModification L ON L.Element_id = P.id JOIN Person ON L.Manager_id = Person.id WHERE L.type = " + DatabaseManagement.getEmployee_type() + 
+                    " AND P.id = " + id + ";");
             if (rs.next()) {
                 return rs;
             }   

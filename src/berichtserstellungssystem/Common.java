@@ -22,6 +22,36 @@ public class Common {
         return ((date.getYear()+1900) + "-" + (date.getMonth()+1) + "-" + date.getDate());
     }
     
+    public static Date string_toDate(String s){
+        Date date = new Date();
+        String[] temp = s.split("-");
+        if (temp.length == 3) {
+            try {
+                date.setDate(Integer.parseInt(temp[0]));
+                date.setMonth(Integer.parseInt(temp[1]) - 1);
+                date.setYear(Integer.parseInt(temp[2])-1900);
+            }
+            catch (NumberFormatException a) {
+                date = null;
+            }
+        }
+        else {
+            temp = null;
+            temp = s.split("/");
+            if (temp.length == 3){
+                try {
+                    date.setDate(Integer.parseInt(temp[0]));
+                    date.setMonth(Integer.parseInt(temp[1]) - 1);
+                    date.setYear(Integer.parseInt(temp[2])-1900);
+                }
+                catch (NumberFormatException a) {
+                    date = null;
+                }
+            }
+        }
+        return date;
+    }
+    
     public static void writeUsingBufferedWriter(String data, int noOfLines) {
         File file = new File("C:/Users/Baraa/Desktop/BufferedWriter.txt");
         FileWriter fr = null;

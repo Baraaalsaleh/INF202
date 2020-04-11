@@ -22,7 +22,7 @@ public class Report {
     private String inspectionScope;
     private String drawingNo;
     private String surfaceCondition;
-    private String stageOfExaminaiton;
+    private String stageOfExamination;
     private String page;
     private String reportNumber;
     private Date reportDate;
@@ -32,13 +32,12 @@ public class Report {
     private String heatTreatment;
     private String inspectionDates;
     private String descriptionOfAttachments;
-    private Employee operator;
-    private Employee evaluator;
-    private Employee confirmation;
-    private String customerName;
-    private String customerLevel;
+    private int operator_id;
+    private int evaluator_id;
+    private int confirmation_id;
+    private String bottom;
 
-    public Report(String customer, String projectName, String inspectionPlace, String inspectionClass, String evaluationStandard, String inspectionProcedure, String inspectionScope, String drawingNo, String surfaceCondition, String stageOfExaminaiton, String page, String reportNumber, Date reportDate, String orderNumber, String offerNumber, String equipment, String heatTreatment, String inspectionDates, String descriptionOfAttachments, Employee operator, Employee evaluator, Employee confirmation, String customerName, String customerLevel) {
+    public Report(String customer, String projectName, String inspectionPlace, String inspectionClass, String evaluationStandard, String inspectionProcedure, String inspectionScope, String drawingNo, String surfaceCondition, String stageOfExaminaiton, String page, String reportNumber, Date reportDate, String orderNumber, String offerNumber, String equipment, String heatTreatment, String inspectionDates, String descriptionOfAttachments, int operator, int evaluator, int confirmation, String bottom) {
         this.customer = customer;
         this.projectName = projectName;
         this.inspectionPlace = inspectionPlace;
@@ -48,7 +47,7 @@ public class Report {
         this.inspectionScope = inspectionScope;
         this.drawingNo = drawingNo;
         this.surfaceCondition = surfaceCondition;
-        this.stageOfExaminaiton = stageOfExaminaiton;
+        this.stageOfExamination = stageOfExaminaiton;
         this.page = page;
         this.reportNumber = reportNumber;
         this.reportDate = reportDate;
@@ -58,14 +57,16 @@ public class Report {
         this.heatTreatment = heatTreatment;
         this.inspectionDates = inspectionDates;
         this.descriptionOfAttachments = descriptionOfAttachments;
-        this.operator = operator;
-        this.evaluator = evaluator;
-        this.confirmation = confirmation;
-        this.customerName = customerName;
-        this.customerLevel = customerLevel;
+        this.operator_id = operator;
+        this.evaluator_id = evaluator;
+        this.confirmation_id = confirmation;
+        //heiiiieieieiieieeiir
+        this.bottom = bottom;
     }
     
-    
+    public Report () {
+        
+    }
     
     public void setCustomer(String customer) {
         this.customer = customer;
@@ -103,8 +104,8 @@ public class Report {
         this.surfaceCondition = surfaceCondition;
     }
 
-    public void setStageOfExaminaiton(String stageOfExaminaiton) {
-        this.stageOfExaminaiton = stageOfExaminaiton;
+    public void setStageOfExamination(String stageOfExamination) {
+        this.stageOfExamination = stageOfExamination;
     }
 
     public void setPage(String page) {
@@ -143,27 +144,23 @@ public class Report {
         this.descriptionOfAttachments = descriptionOfAttachments;
     }
 
-    public void setOperator(Employee operator) {
-        this.operator = operator;
+    public void setOperator_id(int operator_id) {
+        this.operator_id = operator_id;
     }
 
 
-    public void setEvaluator(Employee evaluator) {
-        this.evaluator = evaluator;
+    public void setEvaluator_id(int evaluator_id) {
+        this.evaluator_id = evaluator_id;
     }
 
-    public void setConfirmation(Employee confirmation) {
-        this.confirmation = confirmation;
+    public void setConfirmation_id(int confirmation_id) {
+        this.confirmation_id = confirmation_id;
     }
 
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
+    public void setBottom(String bottom) {
+        this.bottom = bottom;
     }
-
-    public void setCustomerLevel(String customerLevel) {
-        this.customerLevel = customerLevel;
-    }
-
+    
     public String getCustomer() {
         return customer;
     }
@@ -200,8 +197,8 @@ public class Report {
         return surfaceCondition;
     }
 
-    public String getStageOfExaminaiton() {
-        return stageOfExaminaiton;
+    public String getStageOfExamination() {
+        return stageOfExamination;
     }
 
     public String getPage() {
@@ -240,26 +237,23 @@ public class Report {
         return descriptionOfAttachments;
     }
 
-    public Employee getOperator() {
-        return operator;
+    public int getOperator_id() {
+        return operator_id;
     }
 
-    public Employee getEvaluator() {
-        return evaluator;
+    public int getEvaluator_id() {
+        return evaluator_id;
     }
 
-    public Employee getConfirmation() {
-        return confirmation;
+    public int getConfirmation_id() {
+        return confirmation_id;
     }
 
-    public String getCustomerName() {
-        return customerName;
+    public String getBottom() {
+        return bottom;
     }
 
-    public String getCustomerLevel() {
-        return customerLevel;
-    }
-
+    
     @Override
     public int hashCode() {
         int hash = 7;

@@ -40,8 +40,8 @@ public class RadiographicReport extends Report{
     private ArrayList<RadiographicInspectionResult> inspectionResults= new ArrayList();
 
 
-    public RadiographicReport(String usedDevice, boolean ir192, boolean se75, boolean xRay, String focalSpotSize, String exposureTime, String filmFocusDistance, String pbSreens, String filters, String filmBrand, boolean d4MX125, boolean d5T200, boolean d7AA400, boolean en, boolean astm, boolean sourceSide, boolean filmSide, boolean automatic, boolean manuel, String temp, String customer, String projectName, String inspectionPlace, String inspectionClass, String evaluationStandard, String inspectionProcedure, String inspectionScope, String drawingNo, String surfaceCondition, String stageOfExaminaiton, String page, String reportNumber, Date reportDate, String orderNumber, String offerNumber, String equipment, String heatTreatment, String inspectionDates, String descriptionOfAttachments, Employee operator, Employee evaluator, Employee confirmation, String customerName, String customerLevel) {
-        super(customer, projectName, inspectionPlace, inspectionClass, evaluationStandard, inspectionProcedure, inspectionScope, drawingNo, surfaceCondition, stageOfExaminaiton, page, reportNumber, reportDate, orderNumber, offerNumber, equipment, heatTreatment, inspectionDates, descriptionOfAttachments, operator, evaluator, confirmation, customerName, customerLevel);
+    public RadiographicReport(String usedDevice, boolean ir192, boolean se75, boolean xRay, String focalSpotSize, String exposureTime, String filmFocusDistance, String pbSreens, String filters, String filmBrand, boolean d4MX125, boolean d5T200, boolean d7AA400, boolean en, boolean astm, boolean sourceSide, boolean filmSide, boolean automatic, boolean manuel, String temp, String customer, String projectName, String inspectionPlace, String inspectionClass, String evaluationStandard, String inspectionProcedure, String inspectionScope, String drawingNo, String surfaceCondition, String stageOfExaminaiton, String page, String reportNumber, Date reportDate, String orderNumber, String offerNumber, String equipment, String heatTreatment, String inspectionDates, String descriptionOfAttachments, int operator, int evaluator, int confirmation, String customerName, String customerLevel, String bottom) {
+        super(customer, projectName, inspectionPlace, inspectionClass, evaluationStandard, inspectionProcedure, inspectionScope, drawingNo, surfaceCondition, stageOfExaminaiton, page, reportNumber, reportDate, orderNumber, offerNumber, equipment, heatTreatment, inspectionDates, descriptionOfAttachments, operator, evaluator, confirmation, bottom);
         this.usedDevice = usedDevice;
         this.ir192 = ir192;
         this.se75 = se75;
@@ -64,6 +64,14 @@ public class RadiographicReport extends Report{
         this.temp = temp;
     }
 
+    @Override
+    public String toString() {
+        return "RadiographicReport{" + "usedDevice=" + usedDevice + ", ir192=" + ir192 + ", se75=" + se75 + ", xRay=" + xRay + ", focalSpotSize=" + focalSpotSize + ", exposureTime=" + exposureTime + ", filmFocusDistance=" + filmFocusDistance + ", pbScreens=" + pbScreens + ", filters=" + filters + ", filmBrand=" + filmBrand + ", d4MX125=" + d4MX125 + ", d5T200=" + d5T200 + ", d7AA400=" + d7AA400 + ", en=" + en + ", astm=" + astm + ", sourceSide=" + sourceSide + ", filmSide=" + filmSide + ", automatic=" + automatic + ", manuel=" + manuel + ", temp=" + temp + ", filmQuantity=" + filmQuantity + ", testArrangements=" + testArrangements + ", inspectionResults=" + inspectionResults + '}' + super.toString();
+    }
+
+    public RadiographicReport () {
+        
+    }
     public void setUsedDevice(String usedDevice) {
         this.usedDevice = usedDevice;
     }
