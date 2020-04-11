@@ -19,15 +19,25 @@ public class Menu extends javax.swing.JFrame {
 
     int jPanel = 0;
     GridBagLayout layout = new GridBagLayout();
-    Report panel1;
+    ReportList panel1;
     
     Person me = new Person();
+    
+    
+    public void isManager (boolean a){
+        jMenuItem1.setVisible(!a);
+        jMenuItem6.setVisible(a);
+        jMenuItem7.setVisible(a);
+        jMenuItem15.setVisible(a);
+        jMenu3.setVisible(a);
+        jMenu7.setVisible(a);
+    }
     /**
      * Creates new form Menu
      */
     public Menu() {
         initComponents();
-        panel1 = new Report();
+        panel1 = new ReportList();
         jPanel3.setLayout(layout);
         GridBagConstraints grid = new GridBagConstraints();
         grid.gridx = 0;
@@ -78,15 +88,14 @@ public class Menu extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Rapor Yönetimi");
         setBackground(new java.awt.Color(0, 0, 0));
+        setFocusTraversalPolicyProvider(true);
+        setLocation(new java.awt.Point(0, 0));
         setMaximumSize(new java.awt.Dimension(800, 500));
         setMinimumSize(new java.awt.Dimension(800, 500));
+        setUndecorated(true);
         setPreferredSize(new java.awt.Dimension(800, 500));
+        setResizable(false);
         setSize(new java.awt.Dimension(0, 0));
-        addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
-            public void mouseDragged(java.awt.event.MouseEvent evt) {
-                formMouseDragged(evt);
-            }
-        });
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 formWindowOpened(evt);
@@ -103,8 +112,16 @@ public class Menu extends javax.swing.JFrame {
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 479, Short.MAX_VALUE)
+            .addGap(0, 477, Short.MAX_VALUE)
         );
+
+        jMenuBar1.setBackground(new java.awt.Color(0, 0, 102));
+        jMenuBar1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jMenuBar1.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                jMenuBar1MouseDragged(evt);
+            }
+        });
 
         jMenu1.setText("Dosya");
         jMenu1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -176,10 +193,12 @@ public class Menu extends javax.swing.JFrame {
 
         jMenuItem15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/person.png"))); // NOI18N
         jMenuItem15.setText("Hesabım");
+        jMenuItem15.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jMenu2.add(jMenuItem15);
 
         jMenuItem7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/continue3.png"))); // NOI18N
         jMenuItem7.setText("Kaldığın yerden devam et");
+        jMenuItem7.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem7ActionPerformed(evt);
@@ -189,18 +208,27 @@ public class Menu extends javax.swing.JFrame {
 
         jMenuItem6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/out.png"))); // NOI18N
         jMenuItem6.setText("Çıkış Yap");
+        jMenuItem6.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem6ActionPerformed(evt);
+            }
+        });
         jMenu2.add(jMenuItem6);
 
         jMenuBar1.add(jMenu2);
 
         jMenu3.setText("Ekle");
+        jMenu3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         jMenuItem8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/person2.png"))); // NOI18N
         jMenuItem8.setText("Personel");
+        jMenuItem8.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jMenu3.add(jMenuItem8);
 
         jMenuItem9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/machine.png"))); // NOI18N
         jMenuItem9.setText("Cihaz");
+        jMenuItem9.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem9ActionPerformed(evt);
@@ -210,6 +238,7 @@ public class Menu extends javax.swing.JFrame {
 
         jMenuItem10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/customer.png"))); // NOI18N
         jMenuItem10.setText("Firma - Müşteri");
+        jMenuItem10.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem10ActionPerformed(evt);
@@ -219,6 +248,7 @@ public class Menu extends javax.swing.JFrame {
 
         jMenuItem11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/person.png"))); // NOI18N
         jMenuItem11.setText("Personel Yönetici");
+        jMenuItem11.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jMenuItem11.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem11ActionPerformed(evt);
@@ -228,26 +258,32 @@ public class Menu extends javax.swing.JFrame {
 
         jMenuItem12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/project.png"))); // NOI18N
         jMenuItem12.setText("Proje");
+        jMenuItem12.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jMenu3.add(jMenuItem12);
 
         jMenuItem13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/surface.png"))); // NOI18N
         jMenuItem13.setText("Yuzay Durumu");
+        jMenuItem13.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jMenu3.add(jMenuItem13);
 
         jMenuItem14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/stage.png"))); // NOI18N
         jMenuItem14.setText("Muayene Aşaması");
+        jMenuItem14.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jMenu3.add(jMenuItem14);
 
         jMenuBar1.add(jMenu3);
 
         jMenu7.setText("Düzelt");
+        jMenu7.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         jMenuItem16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/person2.png"))); // NOI18N
         jMenuItem16.setText("Personel");
+        jMenuItem16.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jMenu7.add(jMenuItem16);
 
         jMenuItem17.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/machine.png"))); // NOI18N
         jMenuItem17.setText("Cihaz");
+        jMenuItem17.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jMenuItem17.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem17ActionPerformed(evt);
@@ -257,6 +293,7 @@ public class Menu extends javax.swing.JFrame {
 
         jMenuItem18.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/customer.png"))); // NOI18N
         jMenuItem18.setText("Firma - Müşteri");
+        jMenuItem18.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jMenuItem18.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem18ActionPerformed(evt);
@@ -266,6 +303,7 @@ public class Menu extends javax.swing.JFrame {
 
         jMenuItem19.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/person.png"))); // NOI18N
         jMenuItem19.setText("Personel Yönetici");
+        jMenuItem19.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jMenuItem19.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem19ActionPerformed(evt);
@@ -275,14 +313,17 @@ public class Menu extends javax.swing.JFrame {
 
         jMenuItem20.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/project.png"))); // NOI18N
         jMenuItem20.setText("Proje");
+        jMenuItem20.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jMenu7.add(jMenuItem20);
 
         jMenuItem21.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/surface.png"))); // NOI18N
         jMenuItem21.setText("Yuzay Durumu");
+        jMenuItem21.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jMenu7.add(jMenuItem21);
 
         jMenuItem22.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/stage.png"))); // NOI18N
         jMenuItem22.setText("Muayene Aşaması");
+        jMenuItem22.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jMenu7.add(jMenuItem22);
 
         jMenuBar1.add(jMenu7);
@@ -302,7 +343,7 @@ public class Menu extends javax.swing.JFrame {
 
         getAccessibleContext().setAccessibleDescription("");
 
-        setSize(new java.awt.Dimension(816, 539));
+        setSize(new java.awt.Dimension(800, 500));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -342,9 +383,6 @@ public class Menu extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
-    private void formMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseDragged
-    }//GEN-LAST:event_formMouseDragged
-
     private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem7ActionPerformed
@@ -372,6 +410,15 @@ public class Menu extends javax.swing.JFrame {
     private void jMenuItem19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem19ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem19ActionPerformed
+
+    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+        me = new Person();
+        isManager(false);
+    }//GEN-LAST:event_jMenuItem6ActionPerformed
+
+    private void jMenuBar1MouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuBar1MouseDragged
+        this.setLocation(evt.getXOnScreen()-(jMenuBar1.getWidth()/2), evt.getYOnScreen());
+    }//GEN-LAST:event_jMenuBar1MouseDragged
     
     private void showPanel (String s){
         this.setMinimumSize(this.getMinimumSize());

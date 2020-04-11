@@ -49,7 +49,8 @@ public class Login extends javax.swing.JFrame {
         else {
             ResultSet rs = PersonManagement.getManagerById(res);
             toVerify = new Person(rs);
-            System.out.println("It was successfully done, and as a profe, your name is " + toVerify.getName() + " " + toVerify.getLastname());
+            System.out.println("It was successfully done, and as a profe, your name is " + toVerify.getName() + " " + toVerify.getLastname()
+            + " and you were born on the " + toVerify.getBirthDate() + " and this is another test " + Common.date_toString(toVerify.getBirthDate()));
             return 1;
         }
     }
@@ -275,6 +276,7 @@ public class Login extends javax.swing.JFrame {
                 }
                 menu.me = toVerify;
                 menu.setEnabled(true);
+                menu.isManager(true);
                 this.dispose();
             }
         } catch (SQLException ex) {

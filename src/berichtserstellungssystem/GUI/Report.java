@@ -5,23 +5,33 @@
  */
 package berichtserstellungssystem.GUI;
 
+import java.awt.Dimension;
+import java.awt.*;
+import javax.swing.text.*;
+
 /**
  *
  * @author Baraa
  */
-public class Report extends javax.swing.JPanel {
+public class Report extends javax.swing.JFrame {
 
+    GridBagLayout layout = new GridBagLayout();
     
     /**
      * Creates new form Report
      */
     public Report() {
         initComponents();
-    }
-    
-    public Report(String s) {
-        initComponents();
-        title.setText(s);
+        /*panel1 = new test();
+        //jScrollPane1.setLayout(layout);
+        jPanel2.setLayout(layout);
+        GridBagConstraints grid = new GridBagConstraints();
+        grid.gridx = 0;
+        grid.gridy = 0;
+        jPanel2.add(panel1, grid);
+        //jScrollPane1.add(panel1, grid);
+        panel1.setVisible(true);*/
+        
     }
 
     /**
@@ -33,109 +43,1989 @@ public class Report extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jLayeredPane1 = new javax.swing.JLayeredPane();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jPanel5 = new javax.swing.JPanel();
+        jLabel38 = new javax.swing.JLabel();
+        jPanel6 = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
+        jTextField7 = new javax.swing.JTextField();
+        jTextField8 = new javax.swing.JTextField();
+        jTextField9 = new javax.swing.JTextField();
+        jTextField10 = new javax.swing.JTextField();
+        jTextField11 = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        jTextField2 = new javax.swing.JTextField();
+        jTextField3 = new javax.swing.JTextField();
+        jTextField4 = new javax.swing.JTextField();
+        jTextField5 = new javax.swing.JTextField();
+        jTextField6 = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jPanel8 = new javax.swing.JPanel();
+        jTextField12 = new javax.swing.JTextField();
+        jTextField13 = new javax.swing.JTextField();
+        jTextField14 = new javax.swing.JTextField();
+        jTextField15 = new javax.swing.JTextField();
+        jTextField16 = new javax.swing.JTextField();
+        jLabel15 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
+        jLabel18 = new javax.swing.JLabel();
+        jLabel19 = new javax.swing.JLabel();
+        jPanel9 = new javax.swing.JPanel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        textPane = new javax.swing.JTextPane();
+        jTextField17 = new javax.swing.JTextField();
+        jTextField18 = new javax.swing.JTextField();
+        jTextField19 = new javax.swing.JTextField();
+        jTextField21 = new javax.swing.JTextField();
+        jTextField22 = new javax.swing.JTextField();
+        jLabel21 = new javax.swing.JLabel();
+        jLabel22 = new javax.swing.JLabel();
+        jLabel23 = new javax.swing.JLabel();
+        jLabel24 = new javax.swing.JLabel();
+        jLabel25 = new javax.swing.JLabel();
+        jPanel10 = new javax.swing.JPanel();
+        jTextField20 = new javax.swing.JTextField();
+        jTextField23 = new javax.swing.JTextField();
+        jTextField24 = new javax.swing.JTextField();
+        jTextField25 = new javax.swing.JTextField();
+        jTextField26 = new javax.swing.JTextField();
+        jTextField27 = new javax.swing.JTextField();
+        jLabel26 = new javax.swing.JLabel();
+        jLabel27 = new javax.swing.JLabel();
+        jLabel28 = new javax.swing.JLabel();
+        jPanel11 = new javax.swing.JPanel();
+        jTextField28 = new javax.swing.JTextField();
+        jTextField29 = new javax.swing.JTextField();
+        jTextField30 = new javax.swing.JTextField();
+        jLabel29 = new javax.swing.JLabel();
+        jLabel30 = new javax.swing.JLabel();
+        jLabel31 = new javax.swing.JLabel();
+        jLabel32 = new javax.swing.JLabel();
+        jLabel33 = new javax.swing.JLabel();
+        jLabel34 = new javax.swing.JLabel();
+        jTextField31 = new javax.swing.JTextField();
+        jTextField32 = new javax.swing.JTextField();
+        jPanel12 = new javax.swing.JPanel();
+        jLabel20 = new javax.swing.JLabel();
+        jLabel35 = new javax.swing.JLabel();
+        jCheckBox1 = new javax.swing.JCheckBox();
+        jLabel36 = new javax.swing.JLabel();
+        jLabel37 = new javax.swing.JLabel();
+        jCheckBox2 = new javax.swing.JCheckBox();
+        jPanel14 = new javax.swing.JPanel();
+        jTextField34 = new javax.swing.JTextField();
+        jTextField35 = new javax.swing.JTextField();
+        jTextField36 = new javax.swing.JTextField();
+        jPanel13 = new javax.swing.JPanel();
+        jTextField37 = new javax.swing.JTextField();
+        jTextField38 = new javax.swing.JTextField();
+        jTextField39 = new javax.swing.JTextField();
+        jTextField40 = new javax.swing.JTextField();
+        jTextField41 = new javax.swing.JTextField();
+        jTextField42 = new javax.swing.JTextField();
+        jTextField43 = new javax.swing.JTextField();
+        jTextField44 = new javax.swing.JTextField();
+        jTextField45 = new javax.swing.JTextField();
+        jTextField46 = new javax.swing.JTextField();
+        jTextField47 = new javax.swing.JTextField();
+        jTextField48 = new javax.swing.JTextField();
+        jTextField49 = new javax.swing.JTextField();
+        jTextField50 = new javax.swing.JTextField();
+        jTextField51 = new javax.swing.JTextField();
+        jTextField52 = new javax.swing.JTextField();
+        jTextField53 = new javax.swing.JTextField();
+        jTextField54 = new javax.swing.JTextField();
+        jTextField55 = new javax.swing.JTextField();
+        jTextField56 = new javax.swing.JTextField();
+        jTextField57 = new javax.swing.JTextField();
+        jTextField58 = new javax.swing.JTextField();
+        jTextField59 = new javax.swing.JTextField();
+        jTextField60 = new javax.swing.JTextField();
+        jTextField61 = new javax.swing.JTextField();
+        jTextField62 = new javax.swing.JTextField();
+        jTextField63 = new javax.swing.JTextField();
+        jTextField64 = new javax.swing.JTextField();
+        jTextField65 = new javax.swing.JTextField();
+        jTextField66 = new javax.swing.JTextField();
+        jTextField67 = new javax.swing.JTextField();
+        jTextField68 = new javax.swing.JTextField();
+        jTextField69 = new javax.swing.JTextField();
+        jTextField70 = new javax.swing.JTextField();
+        jTextField71 = new javax.swing.JTextField();
+        jTextField72 = new javax.swing.JTextField();
+        jTextField73 = new javax.swing.JTextField();
+        jTextField74 = new javax.swing.JTextField();
+        jTextField75 = new javax.swing.JTextField();
+        jTextField76 = new javax.swing.JTextField();
+        jTextField77 = new javax.swing.JTextField();
+        jTextField78 = new javax.swing.JTextField();
+        jTextField79 = new javax.swing.JTextField();
+        jTextField80 = new javax.swing.JTextField();
+        jTextField81 = new javax.swing.JTextField();
+        jTextField82 = new javax.swing.JTextField();
+        jTextField83 = new javax.swing.JTextField();
+        jTextField84 = new javax.swing.JTextField();
+        jTextField85 = new javax.swing.JTextField();
+        jTextField86 = new javax.swing.JTextField();
+        jTextField87 = new javax.swing.JTextField();
+        jTextField88 = new javax.swing.JTextField();
+        jTextField89 = new javax.swing.JTextField();
+        jTextField90 = new javax.swing.JTextField();
+        jTextField91 = new javax.swing.JTextField();
+        jTextField92 = new javax.swing.JTextField();
+        jTextField93 = new javax.swing.JTextField();
+        jTextField94 = new javax.swing.JTextField();
+        jTextField95 = new javax.swing.JTextField();
+        jTextField96 = new javax.swing.JTextField();
+        jTextField97 = new javax.swing.JTextField();
+        jTextField98 = new javax.swing.JTextField();
+        jTextField99 = new javax.swing.JTextField();
+        jTextField100 = new javax.swing.JTextField();
+        jTextField101 = new javax.swing.JTextField();
+        jTextField102 = new javax.swing.JTextField();
+        jTextField103 = new javax.swing.JTextField();
+        jTextField104 = new javax.swing.JTextField();
+        jTextField105 = new javax.swing.JTextField();
+        jTextField106 = new javax.swing.JTextField();
+        jTextField107 = new javax.swing.JTextField();
+        jTextField108 = new javax.swing.JTextField();
+        jTextField109 = new javax.swing.JTextField();
+        jTextField110 = new javax.swing.JTextField();
+        jTextField111 = new javax.swing.JTextField();
+        jTextField112 = new javax.swing.JTextField();
+        jTextField113 = new javax.swing.JTextField();
+        jTextField114 = new javax.swing.JTextField();
+        jTextField115 = new javax.swing.JTextField();
+        jTextField116 = new javax.swing.JTextField();
+        jPanel15 = new javax.swing.JPanel();
+        jTextField117 = new javax.swing.JTextField();
+        jTextField118 = new javax.swing.JTextField();
+        jTextField119 = new javax.swing.JTextField();
+        jTextField120 = new javax.swing.JTextField();
+        jTextField121 = new javax.swing.JTextField();
+        jTextField122 = new javax.swing.JTextField();
+        jTextField123 = new javax.swing.JTextField();
+        jTextField124 = new javax.swing.JTextField();
+        jTextField125 = new javax.swing.JTextField();
+        jTextField126 = new javax.swing.JTextField();
+        jTextField127 = new javax.swing.JTextField();
+        jTextField128 = new javax.swing.JTextField();
+        jTextField129 = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
+        jPanel7 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        title = new javax.swing.JLabel();
 
-        setBackground(new java.awt.Color(0, 0, 0));
-
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/edit1.png"))); // NOI18N
-        jLabel3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jLabel3MouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                jLabel3MouseExited(evt);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setBounds(new java.awt.Rectangle(0, 0, 0, 0));
+        setFocusTraversalPolicyProvider(true);
+        setMaximumSize(new java.awt.Dimension(1200, 800));
+        setMinimumSize(new java.awt.Dimension(1200, 800));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
             }
         });
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/make new2.png"))); // NOI18N
-        jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jLabel1MouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                jLabel1MouseExited(evt);
+        jPanel1.setBackground(new java.awt.Color(0, 102, 102));
+        jPanel1.setBorder(javax.swing.BorderFactory.createCompoundBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED), javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED)));
+        jPanel1.setMaximumSize(new java.awt.Dimension(403, 800));
+        jPanel1.setMinimumSize(new java.awt.Dimension(403, 800));
+        jPanel1.setPreferredSize(new java.awt.Dimension(403, 800));
+
+        jButton1.setBackground(new java.awt.Color(255, 255, 255));
+        jButton1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jButton1.setText("İleri");
+
+        jButton2.setBackground(new java.awt.Color(255, 255, 255));
+        jButton2.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jButton2.setText("Geri");
+        jButton2.setEnabled(false);
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 87, Short.MAX_VALUE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2))
+                .addGap(19, 19, 19))
+        );
+
+        jScrollPane2.setMaximumSize(new java.awt.Dimension(781, 778));
+        jScrollPane2.setMinimumSize(new java.awt.Dimension(781, 778));
+        jScrollPane2.setPreferredSize(new java.awt.Dimension(781, 778));
+
+        jLayeredPane1.setMaximumSize(new java.awt.Dimension(1350, 2100));
+        jLayeredPane1.setMinimumSize(new java.awt.Dimension(1350, 2100));
+        jLayeredPane1.setName(""); // NOI18N
+        jLayeredPane1.setLayout(new java.awt.CardLayout());
+
+        jTabbedPane1.setMaximumSize(new java.awt.Dimension(1350, 2100));
+        jTabbedPane1.setMinimumSize(new java.awt.Dimension(1350, 2100));
+        jTabbedPane1.setPreferredSize(new java.awt.Dimension(1350, 2100));
+        jTabbedPane1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jTabbedPane1MousePressed(evt);
             }
         });
 
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/show1.png"))); // NOI18N
-        jLabel4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jLabel4.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jLabel4MouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                jLabel4MouseExited(evt);
+        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel5.setMaximumSize(new java.awt.Dimension(1350, 1900));
+        jPanel5.setMinimumSize(new java.awt.Dimension(1350, 1900));
+        jPanel5.setPreferredSize(new java.awt.Dimension(1350, 1900));
+        jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel38.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/radio.PNG"))); // NOI18N
+        jPanel5.add(jLabel38, new org.netbeans.lib.awtextra.AbsoluteConstraints(-3, 1, -1, 2060));
+
+        jTabbedPane1.addTab("Manyetik Rapor", jPanel5);
+
+        jPanel6.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel6.setMaximumSize(new java.awt.Dimension(1350, 2000));
+        jPanel6.setMinimumSize(new java.awt.Dimension(1350, 2000));
+        jPanel6.setName(""); // NOI18N
+        jPanel6.setPreferredSize(new java.awt.Dimension(1350, 2000));
+        jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jPanel4.setOpaque(false);
+        jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jTextField7.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField7.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField7.setToolTipText("");
+        jTextField7.setBorder(null);
+        jTextField7.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField7.setName(""); // NOI18N
+        jTextField7.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel4.add(jTextField7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 210, 180, 40));
+
+        jTextField8.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField8.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField8.setToolTipText("");
+        jTextField8.setBorder(null);
+        jTextField8.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField8.setName(""); // NOI18N
+        jTextField8.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel4.add(jTextField8, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 180, 40));
+
+        jTextField9.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField9.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField9.setToolTipText("");
+        jTextField9.setBorder(null);
+        jTextField9.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField9.setName(""); // NOI18N
+        jTextField9.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel4.add(jTextField9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 180, 40));
+
+        jTextField10.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField10.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField10.setToolTipText("");
+        jTextField10.setBorder(null);
+        jTextField10.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField10.setName(""); // NOI18N
+        jTextField10.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel4.add(jTextField10, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, 180, 40));
+
+        jTextField11.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField11.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField11.setToolTipText("");
+        jTextField11.setBorder(null);
+        jTextField11.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField11.setName(""); // NOI18N
+        jTextField11.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel4.add(jTextField11, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 160, 180, 40));
+
+        jLabel10.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel10.setOpaque(true);
+        jPanel4.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(45, 11, 110, 34));
+
+        jLabel11.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel11.setOpaque(true);
+        jPanel4.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(45, 63, 110, 34));
+
+        jLabel12.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel12.setOpaque(true);
+        jPanel4.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(45, 115, 110, 34));
+
+        jLabel13.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel13.setOpaque(true);
+        jPanel4.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(45, 167, 110, 34));
+
+        jLabel14.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel14.setOpaque(true);
+        jPanel4.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(45, 215, 110, 34));
+
+        jPanel6.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 140, 200, 260));
+
+        jPanel2.setOpaque(false);
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jTextField2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField2.setToolTipText("");
+        jTextField2.setBorder(null);
+        jTextField2.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField2.setName(""); // NOI18N
+        jTextField2.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel2.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 210, 450, 40));
+
+        jTextField3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField3.setToolTipText("");
+        jTextField3.setBorder(null);
+        jTextField3.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField3.setName(""); // NOI18N
+        jTextField3.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel2.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 450, 40));
+
+        jTextField4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField4.setToolTipText("");
+        jTextField4.setBorder(null);
+        jTextField4.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField4.setName(""); // NOI18N
+        jTextField4.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel2.add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 450, 40));
+
+        jTextField5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField5.setToolTipText("");
+        jTextField5.setBorder(null);
+        jTextField5.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField5.setName(""); // NOI18N
+        jTextField5.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel2.add(jTextField5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, 450, 40));
+
+        jTextField6.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField6.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField6.setToolTipText("");
+        jTextField6.setBorder(null);
+        jTextField6.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField6.setName(""); // NOI18N
+        jTextField6.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel2.add(jTextField6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 160, 450, 40));
+
+        jLabel5.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel5.setOpaque(true);
+        jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(194, 11, 85, 33));
+
+        jLabel6.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel6.setOpaque(true);
+        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 220, 290, 30));
+
+        jLabel7.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel7.setOpaque(true);
+        jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 60, 140, 40));
+
+        jLabel8.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel8.setOpaque(true);
+        jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 110, 140, 40));
+
+        jLabel9.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel9.setOpaque(true);
+        jPanel2.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 160, 140, 40));
+
+        jPanel6.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 140, 470, 260));
+
+        jPanel8.setOpaque(false);
+        jPanel8.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jTextField12.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField12.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField12.setToolTipText("");
+        jTextField12.setBorder(null);
+        jTextField12.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField12.setName(""); // NOI18N
+        jTextField12.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel8.add(jTextField12, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 210, 140, 40));
+
+        jTextField13.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField13.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField13.setToolTipText("");
+        jTextField13.setBorder(null);
+        jTextField13.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField13.setName(""); // NOI18N
+        jTextField13.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel8.add(jTextField13, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 140, 40));
+
+        jTextField14.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField14.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField14.setToolTipText("");
+        jTextField14.setBorder(null);
+        jTextField14.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField14.setName(""); // NOI18N
+        jTextField14.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel8.add(jTextField14, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 140, 40));
+
+        jTextField15.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField15.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField15.setToolTipText("");
+        jTextField15.setBorder(null);
+        jTextField15.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField15.setName(""); // NOI18N
+        jTextField15.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel8.add(jTextField15, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, 140, 40));
+
+        jTextField16.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField16.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField16.setToolTipText("");
+        jTextField16.setBorder(null);
+        jTextField16.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField16.setName(""); // NOI18N
+        jTextField16.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel8.add(jTextField16, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 160, 140, 40));
+
+        jLabel15.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel15.setOpaque(true);
+        jPanel8.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 60, 110, 34));
+
+        jLabel16.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel16.setOpaque(true);
+        jPanel8.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 210, 110, 40));
+
+        jLabel17.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel17.setOpaque(true);
+        jPanel8.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 110, 34));
+
+        jLabel18.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel18.setOpaque(true);
+        jPanel8.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 114, 110, 40));
+
+        jLabel19.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel19.setOpaque(true);
+        jPanel8.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 160, 110, 40));
+
+        jPanel6.add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(1190, 140, 160, 260));
+
+        jPanel9.setOpaque(false);
+        jPanel9.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jScrollPane4.setBackground(new java.awt.Color(255, 255, 255));
+        jScrollPane4.setBorder(null);
+        jScrollPane4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+
+        textPane.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jScrollPane4.setViewportView(textPane);
+
+        jPanel9.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, 210, 40));
+
+        jTextField17.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField17.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField17.setToolTipText("");
+        jTextField17.setBorder(null);
+        jTextField17.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField17.setName(""); // NOI18N
+        jTextField17.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel9.add(jTextField17, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 260, 210, 40));
+
+        jTextField18.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField18.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField18.setToolTipText("");
+        jTextField18.setBorder(null);
+        jTextField18.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField18.setName(""); // NOI18N
+        jTextField18.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel9.add(jTextField18, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 210, 40));
+
+        jTextField19.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField19.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField19.setToolTipText("");
+        jTextField19.setBorder(null);
+        jTextField19.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField19.setName(""); // NOI18N
+        jTextField19.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel9.add(jTextField19, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 210, 40));
+
+        jTextField21.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField21.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField21.setToolTipText("");
+        jTextField21.setBorder(null);
+        jTextField21.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField21.setName(""); // NOI18N
+        jTextField21.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel9.add(jTextField21, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 160, 210, 40));
+
+        jTextField22.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField22.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField22.setToolTipText("");
+        jTextField22.setBorder(null);
+        jTextField22.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField22.setName(""); // NOI18N
+        jTextField22.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel9.add(jTextField22, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 210, 210, 40));
+
+        jLabel21.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel21.setOpaque(true);
+        jPanel9.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 260, 150, 40));
+
+        jLabel22.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel22.setOpaque(true);
+        jPanel9.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 14, 160, 40));
+
+        jLabel23.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel23.setOpaque(true);
+        jPanel9.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 60, 160, 40));
+
+        jLabel24.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel24.setOpaque(true);
+        jPanel9.add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 110, 150, 40));
+
+        jLabel25.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel25.setOpaque(true);
+        jPanel9.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 210, 150, 40));
+
+        jPanel6.add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 430, 230, 310));
+
+        jPanel10.setOpaque(false);
+        jPanel10.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jTextField20.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField20.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField20.setToolTipText("");
+        jTextField20.setBorder(null);
+        jTextField20.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField20.setName(""); // NOI18N
+        jTextField20.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel10.add(jTextField20, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 260, 280, 40));
+
+        jTextField23.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField23.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField23.setToolTipText("");
+        jTextField23.setBorder(null);
+        jTextField23.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField23.setName(""); // NOI18N
+        jTextField23.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel10.add(jTextField23, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 280, 40));
+
+        jTextField24.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField24.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField24.setToolTipText("");
+        jTextField24.setBorder(null);
+        jTextField24.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField24.setName(""); // NOI18N
+        jTextField24.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel10.add(jTextField24, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 280, 40));
+
+        jTextField25.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField25.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField25.setToolTipText("");
+        jTextField25.setBorder(null);
+        jTextField25.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField25.setName(""); // NOI18N
+        jTextField25.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel10.add(jTextField25, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 110, 280, 40));
+
+        jTextField26.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField26.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField26.setToolTipText("");
+        jTextField26.setBorder(null);
+        jTextField26.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField26.setName(""); // NOI18N
+        jTextField26.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel10.add(jTextField26, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 160, 280, 40));
+
+        jTextField27.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField27.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField27.setToolTipText("");
+        jTextField27.setBorder(null);
+        jTextField27.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField27.setName(""); // NOI18N
+        jTextField27.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel10.add(jTextField27, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 210, 280, 40));
+
+        jLabel26.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel26.setOpaque(true);
+        jPanel10.add(jLabel26, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 110, 150, 40));
+
+        jLabel27.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel27.setOpaque(true);
+        jPanel10.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 10, 150, 40));
+
+        jLabel28.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel28.setOpaque(true);
+        jPanel10.add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 60, 150, 40));
+
+        jPanel6.add(jPanel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 430, 290, 310));
+
+        jPanel11.setOpaque(false);
+        jPanel11.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jTextField28.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField28.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField28.setToolTipText("");
+        jTextField28.setBorder(null);
+        jTextField28.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField28.setName(""); // NOI18N
+        jTextField28.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel11.add(jTextField28, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 190, 90));
+
+        jTextField29.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField29.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField29.setToolTipText("");
+        jTextField29.setBorder(null);
+        jTextField29.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField29.setName(""); // NOI18N
+        jTextField29.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel11.add(jTextField29, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 260, 190, 40));
+
+        jTextField30.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField30.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField30.setToolTipText("");
+        jTextField30.setBorder(null);
+        jTextField30.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField30.setName(""); // NOI18N
+        jTextField30.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel11.add(jTextField30, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 190, 40));
+
+        jLabel29.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel29.setOpaque(true);
+        jPanel11.add(jLabel29, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 260, 190, 40));
+
+        jLabel30.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel30.setOpaque(true);
+        jPanel11.add(jLabel30, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 160, 195, 40));
+
+        jLabel31.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel31.setOpaque(true);
+        jPanel11.add(jLabel31, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 190, 40));
+
+        jLabel32.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel32.setOpaque(true);
+        jPanel11.add(jLabel32, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 160, 190, 40));
+
+        jLabel33.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel33.setOpaque(true);
+        jPanel11.add(jLabel33, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 210, 190, 40));
+
+        jLabel34.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel34.setOpaque(true);
+        jPanel11.add(jLabel34, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 190, 40));
+
+        jTextField31.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField31.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField31.setToolTipText("");
+        jTextField31.setBorder(null);
+        jTextField31.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField31.setName(""); // NOI18N
+        jTextField31.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel11.add(jTextField31, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 160, 190, 40));
+
+        jTextField32.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField32.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField32.setToolTipText("");
+        jTextField32.setBorder(null);
+        jTextField32.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField32.setName(""); // NOI18N
+        jTextField32.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel11.add(jTextField32, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 210, 190, 40));
+
+        jPanel6.add(jPanel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(1140, 430, 210, 310));
+
+        jPanel12.setOpaque(false);
+        jPanel12.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel20.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel20.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        jLabel20.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel20.setText("Butt Weld");
+        jLabel20.setOpaque(true);
+        jPanel12.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 130, 110, 20));
+
+        jLabel35.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel35.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel35.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel35.setText("Alın Kaynağı");
+        jLabel35.setOpaque(true);
+        jPanel12.add(jLabel35, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 104, 110, 30));
+
+        jCheckBox1.setBackground(new java.awt.Color(255, 255, 255));
+        jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBox1ActionPerformed(evt);
             }
         });
+        jPanel12.add(jCheckBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 130, 30, 30));
 
-        title.setBackground(new java.awt.Color(255, 255, 255));
-        title.setFont(new java.awt.Font("Times New Roman", 1, 36)); // NOI18N
-        title.setForeground(new java.awt.Color(255, 255, 255));
-        title.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        title.setText("Title");
+        jLabel36.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel36.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel36.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel36.setText("Köşe Kaynağı");
+        jLabel36.setOpaque(true);
+        jPanel12.add(jLabel36, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 120, 110, 30));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
+        jLabel37.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel37.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        jLabel37.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel37.setText("Fillet Weld");
+        jLabel37.setOpaque(true);
+        jPanel12.add(jLabel37, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 140, 110, 30));
+
+        jCheckBox2.setBackground(new java.awt.Color(255, 255, 255));
+        jCheckBox2.setText("jCheckBox1");
+        jPanel12.add(jCheckBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 140, 20, -1));
+
+        jPanel6.add(jPanel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 740, 660, 180));
+
+        jPanel14.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel14.setOpaque(false);
+        jPanel14.setLayout(null);
+
+        jTextField34.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField34.setToolTipText("");
+        jTextField34.setBorder(null);
+        jTextField34.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField34.setName(""); // NOI18N
+        jTextField34.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel14.add(jTextField34);
+        jTextField34.setBounds(5, 100, 1030, 40);
+
+        jTextField35.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField35.setToolTipText("");
+        jTextField35.setBorder(null);
+        jTextField35.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField35.setName(""); // NOI18N
+        jTextField35.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel14.add(jTextField35);
+        jTextField35.setBounds(2, 10, 1040, 40);
+
+        jTextField36.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField36.setForeground(new java.awt.Color(255, 0, 51));
+        jTextField36.setToolTipText("");
+        jTextField36.setBorder(null);
+        jTextField36.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField36.setName(""); // NOI18N
+        jTextField36.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel14.add(jTextField36);
+        jTextField36.setBounds(5, 55, 1030, 40);
+
+        jPanel6.add(jPanel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 920, 1050, 150));
+
+        jPanel13.setOpaque(false);
+        jPanel13.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jTextField37.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField37.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField37.setToolTipText("");
+        jTextField37.setBorder(null);
+        jTextField37.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField37.setName(""); // NOI18N
+        jTextField37.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField37, new org.netbeans.lib.awtextra.AbsoluteConstraints(1270, 5, 70, 32));
+
+        jTextField38.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField38.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField38.setToolTipText("");
+        jTextField38.setBorder(null);
+        jTextField38.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField38.setName(""); // NOI18N
+        jTextField38.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField38, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 5, 250, 30));
+
+        jTextField39.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField39.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField39.setToolTipText("");
+        jTextField39.setBorder(null);
+        jTextField39.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField39.setName(""); // NOI18N
+        jTextField39.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField39, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 5, 140, 30));
+
+        jTextField40.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField40.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField40.setToolTipText("");
+        jTextField40.setBorder(null);
+        jTextField40.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField40.setName(""); // NOI18N
+        jTextField40.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField40, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 5, 190, 30));
+
+        jTextField41.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField41.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField41.setToolTipText("");
+        jTextField41.setBorder(null);
+        jTextField41.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField41.setName(""); // NOI18N
+        jTextField41.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField41, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 5, 100, 30));
+
+        jTextField42.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField42.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField42.setToolTipText("");
+        jTextField42.setBorder(null);
+        jTextField42.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField42.setName(""); // NOI18N
+        jTextField42.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField42, new org.netbeans.lib.awtextra.AbsoluteConstraints(815, 5, 130, 30));
+
+        jTextField43.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField43.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField43.setToolTipText("");
+        jTextField43.setBorder(null);
+        jTextField43.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField43.setName(""); // NOI18N
+        jTextField43.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField43, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 5, 130, 30));
+
+        jTextField44.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField44.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField44.setToolTipText("");
+        jTextField44.setBorder(null);
+        jTextField44.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField44.setName(""); // NOI18N
+        jTextField44.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField44, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 5, 170, 30));
+
+        jTextField45.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField45.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField45.setToolTipText("");
+        jTextField45.setBorder(null);
+        jTextField45.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField45.setName(""); // NOI18N
+        jTextField45.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField45, new org.netbeans.lib.awtextra.AbsoluteConstraints(1270, 45, 70, 32));
+
+        jTextField46.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField46.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField46.setToolTipText("");
+        jTextField46.setBorder(null);
+        jTextField46.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField46.setName(""); // NOI18N
+        jTextField46.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField46, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 45, 170, 30));
+
+        jTextField47.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField47.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField47.setToolTipText("");
+        jTextField47.setBorder(null);
+        jTextField47.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField47.setName(""); // NOI18N
+        jTextField47.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField47, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 45, 130, 30));
+
+        jTextField48.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField48.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField48.setToolTipText("");
+        jTextField48.setBorder(null);
+        jTextField48.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField48.setName(""); // NOI18N
+        jTextField48.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField48, new org.netbeans.lib.awtextra.AbsoluteConstraints(815, 45, 130, 30));
+
+        jTextField49.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField49.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField49.setToolTipText("");
+        jTextField49.setBorder(null);
+        jTextField49.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField49.setName(""); // NOI18N
+        jTextField49.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField49, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 45, 100, 30));
+
+        jTextField50.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField50.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField50.setToolTipText("");
+        jTextField50.setBorder(null);
+        jTextField50.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField50.setName(""); // NOI18N
+        jTextField50.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField50, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 45, 190, 30));
+
+        jTextField51.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField51.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField51.setToolTipText("");
+        jTextField51.setBorder(null);
+        jTextField51.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField51.setName(""); // NOI18N
+        jTextField51.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField51, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 45, 140, 30));
+
+        jTextField52.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField52.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField52.setToolTipText("");
+        jTextField52.setBorder(null);
+        jTextField52.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField52.setName(""); // NOI18N
+        jTextField52.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField52, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 45, 250, 30));
+
+        jTextField53.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField53.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField53.setToolTipText("");
+        jTextField53.setBorder(null);
+        jTextField53.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField53.setName(""); // NOI18N
+        jTextField53.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField53, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 85, 130, 30));
+
+        jTextField54.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField54.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField54.setToolTipText("");
+        jTextField54.setBorder(null);
+        jTextField54.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField54.setName(""); // NOI18N
+        jTextField54.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField54, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 85, 140, 30));
+
+        jTextField55.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField55.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField55.setToolTipText("");
+        jTextField55.setBorder(null);
+        jTextField55.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField55.setName(""); // NOI18N
+        jTextField55.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField55, new org.netbeans.lib.awtextra.AbsoluteConstraints(1270, 85, 70, 32));
+
+        jTextField56.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField56.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField56.setToolTipText("");
+        jTextField56.setBorder(null);
+        jTextField56.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField56.setName(""); // NOI18N
+        jTextField56.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField56, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 85, 190, 30));
+
+        jTextField57.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField57.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField57.setToolTipText("");
+        jTextField57.setBorder(null);
+        jTextField57.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField57.setName(""); // NOI18N
+        jTextField57.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField57, new org.netbeans.lib.awtextra.AbsoluteConstraints(815, 85, 130, 30));
+
+        jTextField58.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField58.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField58.setToolTipText("");
+        jTextField58.setBorder(null);
+        jTextField58.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField58.setName(""); // NOI18N
+        jTextField58.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField58, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 85, 100, 30));
+
+        jTextField59.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField59.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField59.setToolTipText("");
+        jTextField59.setBorder(null);
+        jTextField59.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField59.setName(""); // NOI18N
+        jTextField59.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField59, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 85, 170, 30));
+
+        jTextField60.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField60.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField60.setToolTipText("");
+        jTextField60.setBorder(null);
+        jTextField60.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField60.setName(""); // NOI18N
+        jTextField60.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField60, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 85, 250, 30));
+
+        jTextField61.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField61.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField61.setToolTipText("");
+        jTextField61.setBorder(null);
+        jTextField61.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField61.setName(""); // NOI18N
+        jTextField61.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField61, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 125, 130, 30));
+
+        jTextField62.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField62.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField62.setToolTipText("");
+        jTextField62.setBorder(null);
+        jTextField62.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField62.setName(""); // NOI18N
+        jTextField62.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField62, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 125, 100, 30));
+
+        jTextField63.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField63.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField63.setToolTipText("");
+        jTextField63.setBorder(null);
+        jTextField63.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField63.setName(""); // NOI18N
+        jTextField63.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField63, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 125, 140, 30));
+
+        jTextField64.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField64.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField64.setToolTipText("");
+        jTextField64.setBorder(null);
+        jTextField64.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField64.setName(""); // NOI18N
+        jTextField64.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField64, new org.netbeans.lib.awtextra.AbsoluteConstraints(1270, 125, 70, 32));
+
+        jTextField65.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField65.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField65.setToolTipText("");
+        jTextField65.setBorder(null);
+        jTextField65.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField65.setName(""); // NOI18N
+        jTextField65.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField65, new org.netbeans.lib.awtextra.AbsoluteConstraints(815, 125, 130, 30));
+
+        jTextField66.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField66.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField66.setToolTipText("");
+        jTextField66.setBorder(null);
+        jTextField66.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField66.setName(""); // NOI18N
+        jTextField66.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField66, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 125, 170, 30));
+
+        jTextField67.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField67.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField67.setToolTipText("");
+        jTextField67.setBorder(null);
+        jTextField67.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField67.setName(""); // NOI18N
+        jTextField67.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField67, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 125, 190, 30));
+
+        jTextField68.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField68.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField68.setToolTipText("");
+        jTextField68.setBorder(null);
+        jTextField68.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField68.setName(""); // NOI18N
+        jTextField68.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField68, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 125, 250, 30));
+
+        jTextField69.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField69.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField69.setToolTipText("");
+        jTextField69.setBorder(null);
+        jTextField69.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField69.setName(""); // NOI18N
+        jTextField69.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField69, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 285, 140, 30));
+
+        jTextField70.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField70.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField70.setToolTipText("");
+        jTextField70.setBorder(null);
+        jTextField70.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField70.setName(""); // NOI18N
+        jTextField70.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField70, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 285, 190, 30));
+
+        jTextField71.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField71.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField71.setToolTipText("");
+        jTextField71.setBorder(null);
+        jTextField71.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField71.setName(""); // NOI18N
+        jTextField71.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField71, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 285, 100, 30));
+
+        jTextField72.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField72.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField72.setToolTipText("");
+        jTextField72.setBorder(null);
+        jTextField72.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField72.setName(""); // NOI18N
+        jTextField72.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField72, new org.netbeans.lib.awtextra.AbsoluteConstraints(1270, 285, 70, 32));
+
+        jTextField73.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField73.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField73.setToolTipText("");
+        jTextField73.setBorder(null);
+        jTextField73.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField73.setName(""); // NOI18N
+        jTextField73.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField73, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 285, 250, 30));
+
+        jTextField74.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField74.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField74.setToolTipText("");
+        jTextField74.setBorder(null);
+        jTextField74.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField74.setName(""); // NOI18N
+        jTextField74.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField74, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 285, 170, 30));
+
+        jTextField75.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField75.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField75.setToolTipText("");
+        jTextField75.setBorder(null);
+        jTextField75.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField75.setName(""); // NOI18N
+        jTextField75.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField75, new org.netbeans.lib.awtextra.AbsoluteConstraints(815, 285, 130, 30));
+
+        jTextField76.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField76.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField76.setToolTipText("");
+        jTextField76.setBorder(null);
+        jTextField76.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField76.setName(""); // NOI18N
+        jTextField76.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField76, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 285, 130, 30));
+
+        jTextField77.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField77.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField77.setToolTipText("");
+        jTextField77.setBorder(null);
+        jTextField77.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField77.setName(""); // NOI18N
+        jTextField77.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField77, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 245, 250, 30));
+
+        jTextField78.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField78.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField78.setToolTipText("");
+        jTextField78.setBorder(null);
+        jTextField78.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField78.setName(""); // NOI18N
+        jTextField78.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField78, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 205, 250, 30));
+
+        jTextField79.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField79.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField79.setToolTipText("");
+        jTextField79.setBorder(null);
+        jTextField79.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField79.setName(""); // NOI18N
+        jTextField79.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField79, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 165, 250, 30));
+
+        jTextField80.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField80.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField80.setToolTipText("");
+        jTextField80.setBorder(null);
+        jTextField80.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField80.setName(""); // NOI18N
+        jTextField80.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField80, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 165, 140, 30));
+
+        jTextField81.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField81.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField81.setToolTipText("");
+        jTextField81.setBorder(null);
+        jTextField81.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField81.setName(""); // NOI18N
+        jTextField81.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField81, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 205, 140, 30));
+
+        jTextField82.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField82.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField82.setToolTipText("");
+        jTextField82.setBorder(null);
+        jTextField82.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField82.setName(""); // NOI18N
+        jTextField82.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField82, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 245, 140, 30));
+
+        jTextField83.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField83.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField83.setToolTipText("");
+        jTextField83.setBorder(null);
+        jTextField83.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField83.setName(""); // NOI18N
+        jTextField83.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField83, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 245, 190, 30));
+
+        jTextField84.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField84.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField84.setToolTipText("");
+        jTextField84.setBorder(null);
+        jTextField84.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField84.setName(""); // NOI18N
+        jTextField84.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField84, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 205, 190, 30));
+
+        jTextField85.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField85.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField85.setToolTipText("");
+        jTextField85.setBorder(null);
+        jTextField85.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField85.setName(""); // NOI18N
+        jTextField85.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField85, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 165, 190, 30));
+
+        jTextField86.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField86.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField86.setToolTipText("");
+        jTextField86.setBorder(null);
+        jTextField86.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField86.setName(""); // NOI18N
+        jTextField86.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField86, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 165, 100, 30));
+
+        jTextField87.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField87.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField87.setToolTipText("");
+        jTextField87.setBorder(null);
+        jTextField87.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField87.setName(""); // NOI18N
+        jTextField87.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField87, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 205, 100, 30));
+
+        jTextField88.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField88.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField88.setToolTipText("");
+        jTextField88.setBorder(null);
+        jTextField88.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField88.setName(""); // NOI18N
+        jTextField88.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField88, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 245, 100, 30));
+
+        jTextField89.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField89.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField89.setToolTipText("");
+        jTextField89.setBorder(null);
+        jTextField89.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField89.setName(""); // NOI18N
+        jTextField89.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField89, new org.netbeans.lib.awtextra.AbsoluteConstraints(815, 245, 130, 30));
+
+        jTextField90.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField90.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField90.setToolTipText("");
+        jTextField90.setBorder(null);
+        jTextField90.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField90.setName(""); // NOI18N
+        jTextField90.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField90, new org.netbeans.lib.awtextra.AbsoluteConstraints(815, 205, 130, 30));
+
+        jTextField91.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField91.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField91.setToolTipText("");
+        jTextField91.setBorder(null);
+        jTextField91.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField91.setName(""); // NOI18N
+        jTextField91.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField91, new org.netbeans.lib.awtextra.AbsoluteConstraints(815, 165, 130, 30));
+
+        jTextField92.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField92.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField92.setToolTipText("");
+        jTextField92.setBorder(null);
+        jTextField92.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField92.setName(""); // NOI18N
+        jTextField92.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField92, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 165, 130, 30));
+
+        jTextField93.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField93.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField93.setToolTipText("");
+        jTextField93.setBorder(null);
+        jTextField93.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField93.setName(""); // NOI18N
+        jTextField93.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField93, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 205, 130, 30));
+
+        jTextField94.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField94.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField94.setToolTipText("");
+        jTextField94.setBorder(null);
+        jTextField94.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField94.setName(""); // NOI18N
+        jTextField94.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField94, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 245, 130, 30));
+
+        jTextField95.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField95.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField95.setToolTipText("");
+        jTextField95.setBorder(null);
+        jTextField95.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField95.setName(""); // NOI18N
+        jTextField95.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField95, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 245, 170, 30));
+
+        jTextField96.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField96.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField96.setToolTipText("");
+        jTextField96.setBorder(null);
+        jTextField96.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField96.setName(""); // NOI18N
+        jTextField96.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField96, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 205, 170, 30));
+
+        jTextField97.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField97.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField97.setToolTipText("");
+        jTextField97.setBorder(null);
+        jTextField97.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField97.setName(""); // NOI18N
+        jTextField97.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField97, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 165, 170, 30));
+
+        jTextField98.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField98.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField98.setToolTipText("");
+        jTextField98.setBorder(null);
+        jTextField98.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField98.setName(""); // NOI18N
+        jTextField98.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField98, new org.netbeans.lib.awtextra.AbsoluteConstraints(1270, 165, 70, 32));
+
+        jTextField99.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField99.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField99.setToolTipText("");
+        jTextField99.setBorder(null);
+        jTextField99.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField99.setName(""); // NOI18N
+        jTextField99.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField99, new org.netbeans.lib.awtextra.AbsoluteConstraints(1270, 205, 70, 32));
+
+        jTextField100.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField100.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField100.setToolTipText("");
+        jTextField100.setBorder(null);
+        jTextField100.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField100.setName(""); // NOI18N
+        jTextField100.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField100, new org.netbeans.lib.awtextra.AbsoluteConstraints(1270, 245, 70, 32));
+
+        jTextField101.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField101.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField101.setToolTipText("");
+        jTextField101.setBorder(null);
+        jTextField101.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField101.setName(""); // NOI18N
+        jTextField101.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField101, new org.netbeans.lib.awtextra.AbsoluteConstraints(815, 325, 130, 30));
+
+        jTextField102.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField102.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField102.setToolTipText("");
+        jTextField102.setBorder(null);
+        jTextField102.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField102.setName(""); // NOI18N
+        jTextField102.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField102, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 325, 140, 30));
+
+        jTextField103.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField103.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField103.setToolTipText("");
+        jTextField103.setBorder(null);
+        jTextField103.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField103.setName(""); // NOI18N
+        jTextField103.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField103, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 325, 100, 30));
+
+        jTextField104.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField104.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField104.setToolTipText("");
+        jTextField104.setBorder(null);
+        jTextField104.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField104.setName(""); // NOI18N
+        jTextField104.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField104, new org.netbeans.lib.awtextra.AbsoluteConstraints(1270, 365, 70, 30));
+
+        jTextField105.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField105.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField105.setToolTipText("");
+        jTextField105.setBorder(null);
+        jTextField105.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField105.setName(""); // NOI18N
+        jTextField105.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField105, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 365, 250, 30));
+
+        jTextField106.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField106.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField106.setToolTipText("");
+        jTextField106.setBorder(null);
+        jTextField106.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField106.setName(""); // NOI18N
+        jTextField106.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField106, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 325, 170, 30));
+
+        jTextField107.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField107.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField107.setToolTipText("");
+        jTextField107.setBorder(null);
+        jTextField107.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField107.setName(""); // NOI18N
+        jTextField107.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField107, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 365, 100, 30));
+
+        jTextField108.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField108.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField108.setToolTipText("");
+        jTextField108.setBorder(null);
+        jTextField108.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField108.setName(""); // NOI18N
+        jTextField108.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField108, new org.netbeans.lib.awtextra.AbsoluteConstraints(815, 365, 130, 30));
+
+        jTextField109.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField109.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField109.setToolTipText("");
+        jTextField109.setBorder(null);
+        jTextField109.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField109.setName(""); // NOI18N
+        jTextField109.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField109, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 365, 140, 30));
+
+        jTextField110.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField110.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField110.setToolTipText("");
+        jTextField110.setBorder(null);
+        jTextField110.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField110.setName(""); // NOI18N
+        jTextField110.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField110, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 365, 190, 30));
+
+        jTextField111.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField111.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField111.setToolTipText("");
+        jTextField111.setBorder(null);
+        jTextField111.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField111.setName(""); // NOI18N
+        jTextField111.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField111, new org.netbeans.lib.awtextra.AbsoluteConstraints(1270, 325, 70, 32));
+
+        jTextField112.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField112.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField112.setToolTipText("");
+        jTextField112.setBorder(null);
+        jTextField112.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField112.setName(""); // NOI18N
+        jTextField112.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField112, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 325, 250, 30));
+
+        jTextField113.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField113.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField113.setToolTipText("");
+        jTextField113.setBorder(null);
+        jTextField113.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField113.setName(""); // NOI18N
+        jTextField113.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField113, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 365, 130, 30));
+
+        jTextField114.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField114.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField114.setToolTipText("");
+        jTextField114.setBorder(null);
+        jTextField114.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField114.setName(""); // NOI18N
+        jTextField114.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField114, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 325, 130, 30));
+
+        jTextField115.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField115.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField115.setToolTipText("");
+        jTextField115.setBorder(null);
+        jTextField115.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField115.setName(""); // NOI18N
+        jTextField115.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField115, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 365, 170, 30));
+
+        jTextField116.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField116.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField116.setToolTipText("");
+        jTextField116.setBorder(null);
+        jTextField116.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField116.setName(""); // NOI18N
+        jTextField116.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel13.add(jTextField116, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 325, 190, 30));
+
+        jPanel6.add(jPanel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 1160, 1350, 400));
+
+        jPanel15.setOpaque(false);
+        jPanel15.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jTextField117.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField117.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField117.setToolTipText("");
+        jTextField117.setBorder(null);
+        jTextField117.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField117.setName(""); // NOI18N
+        jTextField117.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel15.add(jTextField117, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 6, 190, 40));
+
+        jTextField118.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField118.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField118.setToolTipText("");
+        jTextField118.setBorder(null);
+        jTextField118.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField118.setName(""); // NOI18N
+        jTextField118.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel15.add(jTextField118, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 6, 310, 41));
+
+        jTextField119.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField119.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField119.setToolTipText("");
+        jTextField119.setBorder(null);
+        jTextField119.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField119.setName(""); // NOI18N
+        jTextField119.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel15.add(jTextField119, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 6, 330, 41));
+
+        jTextField120.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField120.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField120.setToolTipText("");
+        jTextField120.setBorder(null);
+        jTextField120.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField120.setName(""); // NOI18N
+        jTextField120.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel15.add(jTextField120, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 6, 230, 41));
+
+        jTextField121.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField121.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField121.setToolTipText("");
+        jTextField121.setBorder(null);
+        jTextField121.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField121.setName(""); // NOI18N
+        jTextField121.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel15.add(jTextField121, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 55, 310, 40));
+
+        jTextField122.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
+        jTextField122.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField122.setToolTipText("");
+        jTextField122.setBorder(null);
+        jTextField122.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField122.setName(""); // NOI18N
+        jTextField122.setPreferredSize(new java.awt.Dimension(470, 46));
+        jTextField122.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField122ActionPerformed(evt);
+            }
+        });
+        jPanel15.add(jTextField122, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 250, 610, 20));
+
+        jTextField123.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField123.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField123.setToolTipText("");
+        jTextField123.setBorder(null);
+        jTextField123.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField123.setName(""); // NOI18N
+        jTextField123.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel15.add(jTextField123, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 55, 230, 40));
+
+        jTextField124.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField124.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField124.setToolTipText("");
+        jTextField124.setBorder(null);
+        jTextField124.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField124.setName(""); // NOI18N
+        jTextField124.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel15.add(jTextField124, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 55, 190, 40));
+
+        jTextField125.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField125.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField125.setToolTipText("");
+        jTextField125.setBorder(null);
+        jTextField125.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField125.setName(""); // NOI18N
+        jTextField125.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel15.add(jTextField125, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 100, 230, 40));
+
+        jTextField126.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField126.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField126.setToolTipText("");
+        jTextField126.setBorder(null);
+        jTextField126.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField126.setName(""); // NOI18N
+        jTextField126.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel15.add(jTextField126, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 100, 330, 40));
+
+        jTextField127.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField127.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField127.setToolTipText("");
+        jTextField127.setBorder(null);
+        jTextField127.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField127.setName(""); // NOI18N
+        jTextField127.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel15.add(jTextField127, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 100, 190, 40));
+
+        jTextField128.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField128.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField128.setToolTipText("");
+        jTextField128.setBorder(null);
+        jTextField128.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField128.setName(""); // NOI18N
+        jTextField128.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel15.add(jTextField128, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, 310, 40));
+
+        jTextField129.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField129.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField129.setToolTipText("");
+        jTextField129.setBorder(null);
+        jTextField129.setMinimumSize(new java.awt.Dimension(470, 46));
+        jTextField129.setName(""); // NOI18N
+        jTextField129.setPreferredSize(new java.awt.Dimension(470, 46));
+        jPanel15.add(jTextField129, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 55, 330, 40));
+
+        jPanel6.add(jPanel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 1600, 1100, 270));
+
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/magnetic.png"))); // NOI18N
+        jLabel3.setText("jLabel3");
+        jLabel3.setMaximumSize(new java.awt.Dimension(1350, 1900));
+        jLabel3.setMinimumSize(new java.awt.Dimension(1350, 1900));
+        jLabel3.setPreferredSize(new java.awt.Dimension(1350, 1900));
+        jPanel6.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 1870));
+
+        jTabbedPane1.addTab("Radyografik Rapor", jPanel6);
+
+        jLabel1.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel1.setFont(new java.awt.Font("Times New Roman", 0, 36)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Logo");
+        jLabel1.setToolTipText("");
+        jLabel1.setOpaque(true);
+
+        jLabel2.setBackground(new java.awt.Color(255, 204, 204));
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 0, 0));
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("GÖZETİM MUAYENE VE EĞİTİM HİZMETLERİ");
+        jLabel2.setOpaque(true);
+
+        jLabel4.setBackground(new java.awt.Color(255, 204, 204));
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 0, 0));
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel4.setText("MANYETİK PARÇACIK MUAYENE RAPORU");
+        jLabel4.setOpaque(true);
+
+        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+        jPanel7.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 292, Short.MAX_VALUE)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 802, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 802, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(68, 68, 68))
+        );
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("tab3", jPanel7);
+
+        jLayeredPane1.add(jTabbedPane1, "card2");
+
+        jScrollPane2.setViewportView(jLayeredPane1);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(122, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel1))
-                .addGap(122, 122, 122))
-            .addComponent(title, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(title, javax.swing.GroupLayout.DEFAULT_SIZE, 72, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(68, 68, 68))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
+
+        pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jLabel3MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseEntered
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/edit2.png")));
-    }//GEN-LAST:event_jLabel3MouseEntered
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        //Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        //this.setLocation((screenSize.width-this.getWidth()), (screenSize.height-this.getHeight())/4);
+        //jPanel1.setSize(this.getSize());
+        StyledDocument doc = textPane.getStyledDocument();
+        SimpleAttributeSet center = new SimpleAttributeSet();
+        StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
+        doc.setParagraphAttributes(0, doc.getLength(), center, false);
+        
+    }//GEN-LAST:event_formWindowOpened
 
-    private void jLabel3MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseExited
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/edit1.png")));
-    }//GEN-LAST:event_jLabel3MouseExited
+    private void jTextField122ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField122ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField122ActionPerformed
 
-    private void jLabel1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseEntered
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/make new3.png")));
-    }//GEN-LAST:event_jLabel1MouseEntered
+    private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jCheckBox1ActionPerformed
 
-    private void jLabel1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseExited
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/make new2.png")));
-    }//GEN-LAST:event_jLabel1MouseExited
+    private void jTabbedPane1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTabbedPane1MousePressed
+        jTabbedPane1.setSize(1350, 2100);
+        jLayeredPane1.setSize(1350, 2100);
+    }//GEN-LAST:event_jTabbedPane1MousePressed
 
-    private void jLabel4MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseEntered
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/show2.png")));
-    }//GEN-LAST:event_jLabel4MouseEntered
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(Report.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(Report.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(Report.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(Report.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
 
-    private void jLabel4MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseExited
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/show1.png")));
-    }//GEN-LAST:event_jLabel4MouseExited
-
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new Report().setVisible(true);
+            }
+        });
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel28;
+    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel30;
+    private javax.swing.JLabel jLabel31;
+    private javax.swing.JLabel jLabel32;
+    private javax.swing.JLabel jLabel33;
+    private javax.swing.JLabel jLabel34;
+    private javax.swing.JLabel jLabel35;
+    private javax.swing.JLabel jLabel36;
+    private javax.swing.JLabel jLabel37;
+    private javax.swing.JLabel jLabel38;
     private javax.swing.JLabel jLabel4;
-    protected javax.swing.JLabel title;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JLayeredPane jLayeredPane1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
+    private javax.swing.JPanel jPanel12;
+    private javax.swing.JPanel jPanel13;
+    private javax.swing.JPanel jPanel14;
+    private javax.swing.JPanel jPanel15;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTextField jTextField10;
+    private javax.swing.JTextField jTextField100;
+    private javax.swing.JTextField jTextField101;
+    private javax.swing.JTextField jTextField102;
+    private javax.swing.JTextField jTextField103;
+    private javax.swing.JTextField jTextField104;
+    private javax.swing.JTextField jTextField105;
+    private javax.swing.JTextField jTextField106;
+    private javax.swing.JTextField jTextField107;
+    private javax.swing.JTextField jTextField108;
+    private javax.swing.JTextField jTextField109;
+    private javax.swing.JTextField jTextField11;
+    private javax.swing.JTextField jTextField110;
+    private javax.swing.JTextField jTextField111;
+    private javax.swing.JTextField jTextField112;
+    private javax.swing.JTextField jTextField113;
+    private javax.swing.JTextField jTextField114;
+    private javax.swing.JTextField jTextField115;
+    private javax.swing.JTextField jTextField116;
+    private javax.swing.JTextField jTextField117;
+    private javax.swing.JTextField jTextField118;
+    private javax.swing.JTextField jTextField119;
+    private javax.swing.JTextField jTextField12;
+    private javax.swing.JTextField jTextField120;
+    private javax.swing.JTextField jTextField121;
+    private javax.swing.JTextField jTextField122;
+    private javax.swing.JTextField jTextField123;
+    private javax.swing.JTextField jTextField124;
+    private javax.swing.JTextField jTextField125;
+    private javax.swing.JTextField jTextField126;
+    private javax.swing.JTextField jTextField127;
+    private javax.swing.JTextField jTextField128;
+    private javax.swing.JTextField jTextField129;
+    private javax.swing.JTextField jTextField13;
+    private javax.swing.JTextField jTextField14;
+    private javax.swing.JTextField jTextField15;
+    private javax.swing.JTextField jTextField16;
+    private javax.swing.JTextField jTextField17;
+    private javax.swing.JTextField jTextField18;
+    private javax.swing.JTextField jTextField19;
+    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextField20;
+    private javax.swing.JTextField jTextField21;
+    private javax.swing.JTextField jTextField22;
+    private javax.swing.JTextField jTextField23;
+    private javax.swing.JTextField jTextField24;
+    private javax.swing.JTextField jTextField25;
+    private javax.swing.JTextField jTextField26;
+    private javax.swing.JTextField jTextField27;
+    private javax.swing.JTextField jTextField28;
+    private javax.swing.JTextField jTextField29;
+    private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField jTextField30;
+    private javax.swing.JTextField jTextField31;
+    private javax.swing.JTextField jTextField32;
+    private javax.swing.JTextField jTextField34;
+    private javax.swing.JTextField jTextField35;
+    private javax.swing.JTextField jTextField36;
+    private javax.swing.JTextField jTextField37;
+    private javax.swing.JTextField jTextField38;
+    private javax.swing.JTextField jTextField39;
+    private javax.swing.JTextField jTextField4;
+    private javax.swing.JTextField jTextField40;
+    private javax.swing.JTextField jTextField41;
+    private javax.swing.JTextField jTextField42;
+    private javax.swing.JTextField jTextField43;
+    private javax.swing.JTextField jTextField44;
+    private javax.swing.JTextField jTextField45;
+    private javax.swing.JTextField jTextField46;
+    private javax.swing.JTextField jTextField47;
+    private javax.swing.JTextField jTextField48;
+    private javax.swing.JTextField jTextField49;
+    private javax.swing.JTextField jTextField5;
+    private javax.swing.JTextField jTextField50;
+    private javax.swing.JTextField jTextField51;
+    private javax.swing.JTextField jTextField52;
+    private javax.swing.JTextField jTextField53;
+    private javax.swing.JTextField jTextField54;
+    private javax.swing.JTextField jTextField55;
+    private javax.swing.JTextField jTextField56;
+    private javax.swing.JTextField jTextField57;
+    private javax.swing.JTextField jTextField58;
+    private javax.swing.JTextField jTextField59;
+    private javax.swing.JTextField jTextField6;
+    private javax.swing.JTextField jTextField60;
+    private javax.swing.JTextField jTextField61;
+    private javax.swing.JTextField jTextField62;
+    private javax.swing.JTextField jTextField63;
+    private javax.swing.JTextField jTextField64;
+    private javax.swing.JTextField jTextField65;
+    private javax.swing.JTextField jTextField66;
+    private javax.swing.JTextField jTextField67;
+    private javax.swing.JTextField jTextField68;
+    private javax.swing.JTextField jTextField69;
+    private javax.swing.JTextField jTextField7;
+    private javax.swing.JTextField jTextField70;
+    private javax.swing.JTextField jTextField71;
+    private javax.swing.JTextField jTextField72;
+    private javax.swing.JTextField jTextField73;
+    private javax.swing.JTextField jTextField74;
+    private javax.swing.JTextField jTextField75;
+    private javax.swing.JTextField jTextField76;
+    private javax.swing.JTextField jTextField77;
+    private javax.swing.JTextField jTextField78;
+    private javax.swing.JTextField jTextField79;
+    private javax.swing.JTextField jTextField8;
+    private javax.swing.JTextField jTextField80;
+    private javax.swing.JTextField jTextField81;
+    private javax.swing.JTextField jTextField82;
+    private javax.swing.JTextField jTextField83;
+    private javax.swing.JTextField jTextField84;
+    private javax.swing.JTextField jTextField85;
+    private javax.swing.JTextField jTextField86;
+    private javax.swing.JTextField jTextField87;
+    private javax.swing.JTextField jTextField88;
+    private javax.swing.JTextField jTextField89;
+    private javax.swing.JTextField jTextField9;
+    private javax.swing.JTextField jTextField90;
+    private javax.swing.JTextField jTextField91;
+    private javax.swing.JTextField jTextField92;
+    private javax.swing.JTextField jTextField93;
+    private javax.swing.JTextField jTextField94;
+    private javax.swing.JTextField jTextField95;
+    private javax.swing.JTextField jTextField96;
+    private javax.swing.JTextField jTextField97;
+    private javax.swing.JTextField jTextField98;
+    private javax.swing.JTextField jTextField99;
+    private javax.swing.JTextPane textPane;
     // End of variables declaration//GEN-END:variables
 }

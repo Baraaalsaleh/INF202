@@ -51,7 +51,7 @@ public class Person {
             int year = Integer.parseInt(date[0]);
             int month = Integer.parseInt(date[1]);
             int day = Integer.parseInt(date[2]);
-            this.birthDate = new Date(year, month-1, day);
+            this.birthDate = new Date(year-1900, month-1, day);
         }
         catch (SQLException e){
             

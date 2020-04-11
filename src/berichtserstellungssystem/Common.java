@@ -19,7 +19,7 @@ import javax.swing.JOptionPane;
 public class Common {
     
     public static String date_toString(Date date){
-        return (date.getYear() + "-" + date.getMonth() + "-" + date.getDay());
+        return ((date.getYear()+1900) + "-" + (date.getMonth()+1) + "-" + date.getDate());
     }
     
     public static void writeUsingBufferedWriter(String data, int noOfLines) {
