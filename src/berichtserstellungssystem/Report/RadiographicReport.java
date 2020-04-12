@@ -248,10 +248,36 @@ public class RadiographicReport extends Report{
         return filmQuantity;
     }
 
+    public String getFilmQuantityString() {
+        String res = "";
+        for (int i = 0; i < filmQuantity.length; i++){
+            if (i != (filmQuantity.length - 1)) {
+                res += filmQuantity[i] + ",";
+            }
+            else {
+                res += filmQuantity[i];
+            }
+        }
+        return res;
+    }
+    
     public boolean[] getTestArrangements() {
         return testArrangements;
     }
 
+    public String getTestArrangementsString () {
+        String res = "";
+        for (int i = 0; i < testArrangements.length; i++){
+            if (i != (testArrangements.length - 1)) {
+                res += testArrangements[i] + ",";
+            }
+            else {
+                res += testArrangements[i];
+            }
+        }
+        return res;
+    }
+    
     public ArrayList<RadiographicInspectionResult> getInspectionResults() {
         return inspectionResults;
     }

@@ -5,6 +5,7 @@
  */
 package berichtserstellungssystem.DatabaseManagement;
 
+import berichtserstellungssystem.*;
 import berichtserstellungssystem.DatabaseManagement.DatabaseManagement;
 import berichtserstellungssystem.Resource.Equipment;
 import berichtserstellungssystem.Resource.MagneticEquipment;
@@ -28,20 +29,20 @@ public class EquipmentManagement extends DatabaseManagement{
         int equip_id = 0;
         try {
             Statement stmt = con.createStatement();
-            rs = stmt.executeQuery("SELECT id FROM Equipment WHERE name = '" + equip.getName() + "';");
+            rs = stmt.executeQuery("SELECT id FROM Equipment WHERE name = '" + DataPreparation.prepareString(equip.getName()) + "';");
             if (rs.next() == false) {
                 rs = stmt.executeQuery("SELECT id FROM Person WHERE PersonalNr = " + manager.getPersonalNr() + ";");
                 if (rs.next()){
                     manager_id = rs.getInt("id");
                     }
-                stmt.executeUpdate("INSERT INTO Equipment (Manager_id, name, type) VALUES (" + manager_id + ", '" + equip.getName() + "', " + DatabaseManagement.getMagnetic_type() + ");");
-                rs = stmt.executeQuery("SELECT id FROM Equipment WHERE name = '" + equip.getName() + "';");
+                stmt.executeUpdate("INSERT INTO Equipment (Manager_id, name, type) VALUES (" + manager_id + ", '" + DataPreparation.prepareString(equip.getName()) + "', " + DatabaseManagement.getMagnetic_type() + ");");
+                rs = stmt.executeQuery("SELECT id FROM Equipment WHERE name = '" + DataPreparation.prepareString(equip.getName()) + "';");
                 if (rs.next()){
                     equip_id = rs.getInt("id");
                     }
                 stmt.executeUpdate("INSERT INTO MagneticEquipment (Equipment_id, poles_Distance, MPCarrier, MagTechnic, UVIntensity, lightDistance) VALUES ("
-                        + equip_id + ", " + equip.getPolesDistance() + ", '" + equip.getMPCarrier() + "', '" + equip.getMagTechnic() + "', " + equip.getUVIntensity() 
-                        + ", " + equip.getLightDistance() + ");");
+                        + equip_id + ", " + equip.getPolesDistance() + ", '" + DataPreparation.prepareString(equip.getMPCarrier()) + "', '" + DataPreparation.prepareString(equip.getMagTechnic())
+                        + "', " + equip.getUVIntensity() + ", " + equip.getLightDistance() + ");");
                 return 1;
             }
             else {
@@ -60,20 +61,21 @@ public class EquipmentManagement extends DatabaseManagement{
         int equip_id = 0;
         try {
             Statement stmt = con.createStatement();
-            rs = stmt.executeQuery("SELECT id FROM Equipment WHERE name = '" + equip.getName() + "';");
+            rs = stmt.executeQuery("SELECT id FROM Equipment WHERE name = '" + DataPreparation.prepareString(equip.getName()) + "';");
             if (rs.next() == false) {
                 rs = stmt.executeQuery("SELECT id FROM Person WHERE PersonalNr = " + manager.getPersonalNr() + ";");
                 if (rs.next()){
                     manager_id = rs.getInt("id");
                     }
-                stmt.executeUpdate("INSERT INTO Equipment (Manager_id, name, type) VALUES (" + manager_id + ", '" + equip.getName() + "', " + DatabaseManagement.getRadiographic_type() + ");");
+                stmt.executeUpdate("INSERT INTO Equipment (Manager_id, name, type) VALUES (" + manager_id + ", '" + DataPreparation.prepareString(equip.getName()) + "', " + DatabaseManagement.getRadiographic_type() + ");");
                 rs = stmt.executeQuery("SELECT id FROM Equipment WHERE name = '" + equip.getName() + "';");
                 if (rs.next()){
                     equip_id = rs.getInt("id");
                     }
                 stmt.executeUpdate("INSERT INTO RadiographicEquipment (Equipment_id, ir192, se75, xRay, focalSpotSize, exposureTime, filmFocusDistance, pbScreens, filters) \n" +
-                "VALUES (" + equip_id + ", " + equip.isIr192() + ", " + equip.isSe75() + ", " + equip.isxRay() + ", '" + equip.getFocalSpotSize() + "', '" + equip.getExposureTime() + 
-                "', '" + equip.getFilmFocusDistance() + "', '" + equip.getPbScreens() + "', '" + equip.getFilters() + "');");
+                "VALUES (" + equip_id + ", " + equip.isIr192() + ", " + equip.isSe75() + ", " + equip.isxRay() + ", '" + DataPreparation.prepareString(equip.getFocalSpotSize())
+                        + "', '" + DataPreparation.prepareString(equip.getExposureTime()) + "', '" + DataPreparation.prepareString(equip.getFilmFocusDistance()) + "', '" 
+                        + DataPreparation.prepareString(equip.getPbScreens()) + "', '" + DataPreparation.prepareString(equip.getFilters()) + "');");
                 return 1;
             }
             else {
@@ -91,12 +93,9 @@ public class EquipmentManagement extends DatabaseManagement{
         int equip_id = 0;
         try {
             Statement stmt = con.createStatement();
-            rs = stmt.executeQuery("SELECT id FROM Equipment WHERE name = '" + equip.getName() + "';");
+            rs = stmt.executeQuery("SELECT id FROM Equipment WHERE name = '" + DataPreparation.prepareString(equip.getName()) + "';");
             if (rs.next()) {
-                rs = stmt.executeQuery("SELECT id FROM Equipment WHERE name = '" + equip.getName() + "';");
-                if (rs.next()){
-                    equip_id = rs.getInt("id");
-                    }
+                equip_id = rs.getInt("id");
                 stmt.executeUpdate("DELETE FROM Equipment WHERE id = " + equip_id + ";");
                 stmt.executeUpdate("DELETE FROM MangneticEquipment WHERE Equipment_id = " + equip_id + ";");
                 stmt.executeUpdate("DELETE FROM RadiographicEquipment WHERE Equipment_id = " + equip_id + ";");                
@@ -118,18 +117,15 @@ public class EquipmentManagement extends DatabaseManagement{
         int equip_id = 0;
         try {
             Statement stmt = con.createStatement();
-            rs = stmt.executeQuery("SELECT id FROM Equipment WHERE name = '" + equip.getName() + "';");
+            rs = stmt.executeQuery("SELECT id FROM Equipment WHERE name = '" + DataPreparation.prepareString(equip.getName()) + "';");
             if (rs.next()) {
+                equip_id = rs.getInt("id");
                 rs = stmt.executeQuery("SELECT id FROM Person WHERE PersonalNr = " + manager.getPersonalNr() + ";");
                 if (rs.next()){
                     manager_id = rs.getInt("id");
                     }
-                rs = stmt.executeQuery("SELECT id FROM Equipment WHERE name = '" + equip.getName() + "';");
-                if (rs.next()){
-                    equip_id = rs.getInt("id");
-                    }
-                stmt.executeUpdate("UPDATE MagneticEquipment SET poles_Distance = " + equip.getPolesDistance() + ", MPCarrier = '" + equip.getMPCarrier() + "', MagTechnic = '" + 
-                        equip.getMagTechnic() + "', UVIntensity = " + equip.getUVIntensity() + ", lightDistance = " + equip.getLightDistance() + " WHERE Equipment_id = " 
+                stmt.executeUpdate("UPDATE MagneticEquipment SET poles_Distance = " + equip.getPolesDistance() + ", MPCarrier = '" + DataPreparation.prepareString(equip.getMPCarrier())
+                        + "', MagTechnic = '" + DataPreparation.prepareString(equip.getMagTechnic()) + "', UVIntensity = " + equip.getUVIntensity() + ", lightDistance = " + equip.getLightDistance() + " WHERE Equipment_id = " 
                         + equip_id + ";");
                 
                 rs = stmt.executeQuery("SELECT id FROM LastModification WHERE Element_id = " + equip_id + " AND type = " + DatabaseManagement.getEquipment_type() + ";");
@@ -157,20 +153,18 @@ public class EquipmentManagement extends DatabaseManagement{
         int equip_id = 0;
         try {
             Statement stmt = con.createStatement();
-            rs = stmt.executeQuery("SELECT id FROM Equipment WHERE name = '" + equip.getName() + "';");
+            rs = stmt.executeQuery("SELECT id FROM Equipment WHERE name = '" + DataPreparation.prepareString(equip.getName()) + "';");
             if (rs.next()) {
+                equip_id = rs.getInt("id");
                 rs = stmt.executeQuery("SELECT id FROM Person WHERE PersonalNr = " + manager.getPersonalNr() + ";");
                 if (rs.next()){
                     manager_id = rs.getInt("id");
                     }
-                rs = stmt.executeQuery("SELECT id FROM Equipment WHERE name = '" + equip.getName() + "';");
-                if (rs.next()){
-                    equip_id = rs.getInt("id");
-                    }
+                
                 stmt.executeUpdate("UPDATE RadiographicEquipment SET ir192 = " + equip.isIr192() + ", se75 = " + equip.isSe75() + ", xRay = " + equip.isxRay() +
-                        ", focalSpotSize = '" + equip.getFocalSpotSize() + "', exposureTime = '" + equip.getExposureTime() + "', filmFocusDistance = '" 
-                        + equip.getFilmFocusDistance() +
-                        "', pbScreens = '" + equip.getPbScreens() + "', filters = '" + equip.getFilters() + " WHERE Equipment_id = " + equip_id + ";");
+                        ", focalSpotSize = '" + DataPreparation.prepareString(equip.getFocalSpotSize()) + "', exposureTime = '" + DataPreparation.prepareString(equip.getExposureTime())
+                        + "', filmFocusDistance = '" + DataPreparation.prepareString(equip.getFilmFocusDistance()) + "', pbScreens = '" + DataPreparation.prepareString(equip.getPbScreens()) 
+                        + "', filters = '" + DataPreparation.prepareString(equip.getFilters()) + " WHERE Equipment_id = " + equip_id + ";");
                 rs = stmt.executeQuery("SELECT id FROM LastModification WHERE Element_id = " + equip_id + " AND type = " + DatabaseManagement.getEquipment_type() + ";");
                 if (rs.next()){
                     int last_id = rs.getInt("id");
@@ -254,7 +248,7 @@ public class EquipmentManagement extends DatabaseManagement{
         int equip_id = 0;
         try {
             Statement stmt = con.createStatement();
-            rs = stmt.executeQuery("SELECT id FROM Equipment WHERE name = '" + name + "';");
+            rs = stmt.executeQuery("SELECT id FROM Equipment WHERE name = '" + DataPreparation.prepareString(name) + "';");
                 if (rs.next()){
                     equip_id = rs.getInt("id");
                     }            
@@ -278,7 +272,7 @@ public class EquipmentManagement extends DatabaseManagement{
         int equip_id = 0;
         try {
             Statement stmt = con.createStatement();
-            rs = stmt.executeQuery("SELECT id FROM Equipment WHERE name = '" + name + "';");
+            rs = stmt.executeQuery("SELECT id FROM Equipment WHERE name = '" + DataPreparation.prepareString(name) + "';");
                 if (rs.next()){
                     equip_id = rs.getInt("id");
                     }            

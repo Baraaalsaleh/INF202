@@ -5,6 +5,7 @@
  */
 package berichtserstellungssystem.GUI;
 
+import berichtserstellungssystem.DataPreparation;
 import java.awt.Frame;
 import berichtserstellungssystem.DatabaseManagement.*;
 import berichtserstellungssystem.Resource.*;
@@ -231,6 +232,11 @@ public class Menu extends javax.swing.JFrame {
         jMenuItem8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/person2.png"))); // NOI18N
         jMenuItem8.setText("Personel");
         jMenuItem8.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem8ActionPerformed(evt);
+            }
+        });
         jMenu3.add(jMenuItem8);
 
         jMenuItem9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/machine.png"))); // NOI18N
@@ -378,6 +384,9 @@ public class Menu extends javax.swing.JFrame {
         jMenuItem15.setVisible(false);
         jMenu3.setVisible(false);
         jMenu7.setVisible(false);
+        String s = "ana marra ' kunnt mashi 5\" nach links";
+        System.out.println(s);
+        System.out.println(DataPreparation.prepareString(s));
         
     }//GEN-LAST:event_formWindowOpened
 
@@ -399,7 +408,7 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem10ActionPerformed
 
     private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
-        // TODO add your handling code here:
+        new Personel(DatabaseManagement.getManager_status()).setVisible(true);
     }//GEN-LAST:event_jMenuItem11ActionPerformed
 
     private void jMenuItem17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem17ActionPerformed
@@ -422,6 +431,10 @@ public class Menu extends javax.swing.JFrame {
     private void jMenuBar1MouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuBar1MouseDragged
         this.setLocation(evt.getXOnScreen()-(jMenuBar1.getWidth()/2), evt.getYOnScreen());
     }//GEN-LAST:event_jMenuBar1MouseDragged
+
+    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
+        new Personel(DatabaseManagement.getEmployee_status()).setVisible(true);
+    }//GEN-LAST:event_jMenuItem8ActionPerformed
     
     private void showPanel (String s){
         this.setMinimumSize(this.getMinimumSize());

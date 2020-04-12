@@ -22,34 +22,89 @@ public class Common {
         return ((date.getYear()+1900) + "-" + (date.getMonth()+1) + "-" + date.getDate());
     }
     
+    private static Date makeItDate (String[] temp) {
+        Date date = new Date();
+        try {
+                int day = Integer.parseInt(temp[0]);
+                int month = Integer.parseInt(temp[1]) - 1;
+                int year = Integer.parseInt(temp[2])-1900;
+                if (year > 0 && year < 200) {
+                    if (month == 0 || month == 2 || month == 4 || month == 6 || month == 7 || month == 9 || month == 11){
+                        if (day > 0 && day < 32) {
+                            date.setDate(day);
+                            date.setMonth(month);
+                            date.setYear(year);
+                            return date;
+                        }
+                        else {
+                            return null;
+                        }
+                    }
+                    else if (month == 3 || month == 5 || month == 8 || month == 10) {
+                        if (day > 0 && day < 31) {
+                            date.setDate(day);
+                            date.setMonth(month);
+                            date.setYear(year);
+                            return date;
+                        }
+                        else {
+                            return null;
+                        }
+                    }
+                    else if (month == 1) {
+                        if (year%4 == 0) {
+                            if (day > 0 && day < 30) {
+                            date.setDate(day);
+                            date.setMonth(month);
+                            date.setYear(year);
+                            return date;
+                            }
+                            else {
+                                return null;
+                            }
+                        }
+                        else {
+                            if (day > 0 && day < 29) {
+                                date.setDate(day);
+                                date.setMonth(month);
+                                date.setYear(year);
+                                return date;
+                                }
+                            else {
+                                return null;
+                            }
+                        }
+                    }
+                    else {
+                        return null;
+                    }
+                }
+                else {
+                    return null;
+                }
+        }
+        catch (NumberFormatException e) {
+            return null;
+        }
+    }  
+    
+    
+    
     public static Date string_toDate(String s){
         Date date = new Date();
         String[] temp = s.split("-");
         if (temp.length == 3) {
-            try {
-                date.setDate(Integer.parseInt(temp[0]));
-                date.setMonth(Integer.parseInt(temp[1]) - 1);
-                date.setYear(Integer.parseInt(temp[2])-1900);
-            }
-            catch (NumberFormatException a) {
-                date = null;
-            }
+            return makeItDate(temp);
         }
         else {
-            temp = null;
             temp = s.split("/");
             if (temp.length == 3){
-                try {
-                    date.setDate(Integer.parseInt(temp[0]));
-                    date.setMonth(Integer.parseInt(temp[1]) - 1);
-                    date.setYear(Integer.parseInt(temp[2])-1900);
-                }
-                catch (NumberFormatException a) {
-                    date = null;
-                }
+                return makeItDate(temp);
+            }
+            else {
+                return null;
             }
         }
-        return date;
     }
     
     public static void writeUsingBufferedWriter(String data, int noOfLines) {
