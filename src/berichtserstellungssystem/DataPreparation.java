@@ -11,10 +11,7 @@ package berichtserstellungssystem;
  */
 public class DataPreparation {
     public static String prepareString (String string) {
-        String s = "\\" + "\\" + "'";
-        String s2 = "\\" + "\\" + "\"";
-        String temp = string.replaceAll("'", s);
-        temp = temp.replaceAll("\"", s2);
-        return temp;
+        
+        return string;
     }
 }

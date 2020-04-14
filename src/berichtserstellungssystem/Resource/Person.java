@@ -15,11 +15,11 @@ import java.util.Date;
  * @author Baraa
  */
 public class Person {
-    private String name;
-    private String lastname;
-    private String gender;
-    private String address;
-    private String email;
+    private String name = "";
+    private String lastname = "";
+    private String gender = "";
+    private String address = "";
+    private String email = "";
     private long TCNr;
     private long telephone;
     private long personalNr;
@@ -36,6 +36,7 @@ public class Person {
         this.personalNr = personalNr;
         this.birthDate = birthDate;
     }
+    
     
     public Person (ResultSet rs) {
         try {
@@ -56,6 +57,12 @@ public class Person {
         catch (SQLException e){
             
         }
+    }
+    
+    public Person (String name, String lastname, long pnr) {
+        this.name = name;
+        this.lastname = lastname;
+        this.personalNr = pnr;
     }
 
     public Person() {

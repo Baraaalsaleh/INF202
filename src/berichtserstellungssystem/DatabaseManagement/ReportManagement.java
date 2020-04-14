@@ -16,12 +16,13 @@ import java.util.ArrayList;
  * @author Baraa
  */
 public class ReportManagement extends DatabaseManagement{
+    static Connection con = DatabaseManagement.connect();
+    static Statement stmt;
     //Einfügen von Bericht (magnetic)
     public static int insertMagneticReport (MagneticReport report){
-        Connection con = DatabaseManagement.connect();
         ResultSet rs;
         try {
-            Statement stmt = con.createStatement();
+            stmt = con.createStatement();
             rs = stmt.executeQuery("SELECT id FROM Report WHERE customer = '" + DataPreparation.prepareString(report.getCustomer()) + "' AND reportNumber = '" + DataPreparation.prepareString(report.getReportNumber()) + "';");
 
             if (rs.next() == false) {
@@ -78,10 +79,9 @@ public class ReportManagement extends DatabaseManagement{
     
     //Einfügen von Bericht (radiographic)
     public static int insertRadiographicReport (RadiographicReport report){
-        Connection con = DatabaseManagement.connect();
         ResultSet rs;
         try {
-            Statement stmt = con.createStatement();
+            stmt = con.createStatement();
             rs = stmt.executeQuery("SELECT id FROM Report WHERE customer = '" + DataPreparation.prepareString(report.getCustomer()) + "' AND reportNumber = '" + DataPreparation.prepareString(report.getReportNumber()) + "';");
 
             if (rs.next() == false) {
@@ -143,11 +143,10 @@ public class ReportManagement extends DatabaseManagement{
     }
     //Löschen eines Berichtes
     public static int deleteReport (Report report){
-        Connection con = DatabaseManagement.connect();
         ResultSet rs;
         int report_id = 0;
         try {
-            Statement stmt = con.createStatement();
+            stmt = con.createStatement();
             rs = stmt.executeQuery("SELECT id FROM Report WHERE customer = '" + DataPreparation.prepareString(report.getCustomer()) + "' AND reportNumber = '" + DataPreparation.prepareString(report.getReportNumber()) + "';");
             if (rs.next()) {
                 report_id = rs.getInt("id");
@@ -169,11 +168,10 @@ public class ReportManagement extends DatabaseManagement{
     }
     //Modifikation von Bericht (magnetic)
     public static int updateMagneticReport (MagneticReport report){
-        Connection con = DatabaseManagement.connect();
         ResultSet rs;
         int report_id = 0;
         try {
-            Statement stmt = con.createStatement();
+            stmt = con.createStatement();
             rs = stmt.executeQuery("SELECT id FROM Report WHERE customer = '" + DataPreparation.prepareString(report.getCustomer()) + "' AND reportNumber = '" + DataPreparation.prepareString(report.getReportNumber()) + "';");
 
             if (rs.next()) {
@@ -224,11 +222,10 @@ public class ReportManagement extends DatabaseManagement{
     }
    //Modifikation von Bericht (radiographic)
     public static int updateRadiographicReport (RadiographicReport report){
-        Connection con = DatabaseManagement.connect();
         ResultSet rs;
         int report_id = 0;
         try {
-            Statement stmt = con.createStatement();
+            stmt = con.createStatement();
             rs = stmt.executeQuery("SELECT id FROM Report WHERE customer = '" + DataPreparation.prepareString(report.getCustomer()) + "' AND reportNumber = '" + DataPreparation.prepareString(report.getReportNumber()) + "';");
 
             if (rs.next()) {
@@ -282,10 +279,9 @@ public class ReportManagement extends DatabaseManagement{
     }
     //Abfragen von allen Berichten
     public static ResultSet getReports (int limit) {
-        Connection con = DatabaseManagement.connect();
         ResultSet rs = null;
         try {
-            Statement stmt = con.createStatement();
+            stmt = con.createStatement();
             rs = stmt.executeQuery("SELECT id, Customer, reportNumber, type, reportDate FROM Report LIMIT " + limit + ";");
             if (rs.next()) {
                 return rs;
@@ -298,10 +294,9 @@ public class ReportManagement extends DatabaseManagement{
     }
     //Abfragen von allen Berichten, die von einem bestimmten Mitarbeiter bestätigt sind
     public static ResultSet getMyVerifiedReport (Person person, int limit) {
-        Connection con = DatabaseManagement.connect();
         ResultSet rs = null;
         try {
-            Statement stmt = con.createStatement();
+            stmt = con.createStatement();
             int id = 0;
             rs = stmt.executeQuery("SELECT id FROM Person WHERE PersonalNr = " + person.getPersonalNr() + ";");
             if (rs.next()){
@@ -321,10 +316,9 @@ public class ReportManagement extends DatabaseManagement{
     }    
     //Abfragen von Reportinformationen
     public static ResultSet[] getReport (int id) {
-        Connection con = DatabaseManagement.connect();
         ResultSet[] rs = new ResultSet[3];
         try {
-            Statement stmt = con.createStatement();            
+            stmt = con.createStatement();            
             rs[0] = stmt.executeQuery("SELECT R.customer, R.projectName, R.inspectionPlace, R.inspectionClass, R.evaluationStandard, R.inspectionProcedure, R.inspectionScope, R.drawingNo," 
                     + " R.surfaceCondition, R.stageOfExamination, R.page, R.reportNumber, R.reportDate, R.orderNumber, R.offerNumber, R.equipment, R.heatTreatment, R.inspectionDates,"
                     + " R.descriptionOfAttachments, R.operator_Employee_id, R.evaluator_Employee_id, R.confirmation_Employee_id,"

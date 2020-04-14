@@ -29,7 +29,15 @@ public class Manager extends Person{
         this.username = username;
         this.password = password;
     }
+    
+    public Manager (ResultSet rs) {
+        super(rs);
+    }
 
+    public Manager () {
+        
+    }
+    
     public ArrayList getAddedEmployees() {
         return addedEmployees;
     }

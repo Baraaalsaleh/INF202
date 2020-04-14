@@ -35,6 +35,15 @@ public class Verification {
         }
     }
     
+    public static boolean justEnglish (String string) {
+        if (string.toLowerCase().contains("ş") || string.toLowerCase().contains("ğ") || string.toLowerCase().contains("ü") || string.toLowerCase().contains("ç") || string.toLowerCase().contains("ö") || string.contains("İ")) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+    
     public static boolean verifyUsername (String string) {
         if (string.length() <= nameLength && string.length() > 3){
             if (string.contains("/") || string.contains("*") || string.contains("+") || string.contains("\\") || string.contains("%") || string.contains("$") || string.contains("'") || string.contains("!") || string.contains("@") || string.contains("#") 
@@ -44,8 +53,11 @@ public class Verification {
                 System.out.println("Wrong Username");
                 return false;
             }
-            else {
+            else if (justEnglish(string)){
                 return true;
+            }
+            else {
+                return false;
             }
         }
         else {
@@ -64,7 +76,7 @@ public class Verification {
                 System.out.println("Wrong Email");
                 return false;
             }
-            else if (string.contains("@") && string.contains(".")){
+            else if (justEnglish(string) && string.contains("@") && string.contains(".")){
                     return true;
                 }
             else {
@@ -84,9 +96,12 @@ public class Verification {
                 System.out.println("Wrong Password");
                 return false;
             }
-            else {
+            else if (justEnglish(string)){
                     return true;
                 }
+            else {
+                return false;
+            }
             }
         else {
             System.out.println("Wrong Password");

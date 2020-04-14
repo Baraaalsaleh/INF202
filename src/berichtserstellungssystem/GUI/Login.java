@@ -25,7 +25,7 @@ import java.util.logging.Logger;
  */
 public class Login extends javax.swing.JFrame {
     
-    static public Person toVerify = null;
+    static public Manager toVerify = null;
     
     
     private Menu menu = new Menu();
@@ -34,7 +34,7 @@ public class Login extends javax.swing.JFrame {
         return res;
     }
     
-    public static int loginVerification (String username, String password, boolean remember) throws SQLException {
+    public static int loginVerification (String username, String password, boolean remember)  {
         int res = PersonManagement.login(username, password);
         JDialog dialog = new JDialog();
         dialog.setAlwaysOnTop(true);
@@ -48,7 +48,7 @@ public class Login extends javax.swing.JFrame {
         }
         else {
             ResultSet rs = PersonManagement.getManagerById(res);
-            toVerify = new Person(rs);
+            toVerify = new Manager(rs);
             System.out.println("It was successfully done, and as a profe, your name is " + toVerify.getName() + " " + toVerify.getLastname()
             + " and you were born on the " + toVerify.getBirthDate() + " and this is another test " + Common.date_toString(toVerify.getBirthDate()));
             return 1;
@@ -268,7 +268,6 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_rememberActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        try {
             if (loginVerification(_username.getText(), _password.getText(), remember.isSelected()) == 1){
                 if (remember.isSelected() == true){
                     Common.writeUsingBufferedWriter(_username.getText() + "," + _password.getText(), 1);
@@ -279,17 +278,16 @@ public class Login extends javax.swing.JFrame {
                 menu.isManager(true);
                 this.dispose();
             }
-        } catch (SQLException ex) {
-
-        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        try {
-            String[] data = (Common.readUsingBufferReader()).split(",");
+        String res = Common.readUsingBufferReader();
+        if (res == null) {
+            String[] data = res.split(",");
             _username.setText(data[0]);
             _password.setText(data[1]);
-        } catch (IOException ex) {
+        }
+        else {
             _username.setText("Kullanıcı Adı Giriniz!");
             _password.setText("Şifre Giriniz!");
             jButton1.setEnabled(false);

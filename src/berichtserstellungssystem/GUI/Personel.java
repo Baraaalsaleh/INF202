@@ -5,8 +5,16 @@
  */
 package berichtserstellungssystem.GUI;
 
-import berichtserstellungssystem.DatabaseManagement.DatabaseManagement;
+import berichtserstellungssystem.Common;
+import berichtserstellungssystem.DatabaseManagement.*;
+import berichtserstellungssystem.Resource.*;
 import berichtserstellungssystem.Verification;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -15,6 +23,112 @@ import berichtserstellungssystem.Verification;
 public class Personel extends javax.swing.JFrame {
 
     int type;
+    int process;
+    long personalNr;
+    private Manager me;
+    String name = "";
+    String lastname = "";
+    String gender = "";
+    String telephone = "";
+    String address = "";
+    String email = "";
+    String birthdate = "";
+    String TCNr = "";
+    String Pnr = "";
+    String var1 = "";
+    String var2 = "";
+    
+    
+    /**
+     * Creates new form Personel
+     */
+    public Personel() {
+        initComponents();
+    }
+    
+    public Personel(int type, int process, long personalNr, Manager me) {
+        initComponents();
+        this.type = type;
+        this.process = process;
+        this.me = me;
+        this.personalNr = personalNr;    
+    }
+    
+    public Personel(int type, int process, Manager me) {
+        initComponents();
+        this.type = type;
+        this.process = process;
+        this.me = me;
+    }
+    
+    private void fillData (Person toEdit) {
+        jTextField1.setText(toEdit.getName());
+        jTextField2.setText(toEdit.getLastname());
+        jTextField4.setText(Long.toString(toEdit.getTelephone()));
+        int gender = 1;
+        if (toEdit.getGender().trim().equals("Erkek")) {
+            gender = 0;
+        }
+        jComboBox1.setSelectedIndex(gender);
+        jTextField5.setText(toEdit.getEmail());
+        jTextField6.setText(toEdit.getAddress());
+        jTextField7.setText(Common.date_toStringReverse(toEdit.getBirthDate()));
+        jTextField8.setText(Long.toString(toEdit.getTCNr()));
+        jTextField9.setText(Long.toString(toEdit.getPersonalNr()));
+    }
+    
+    private void fillEmployeeData (Employee toEdit) {
+        fillData(toEdit);
+        jTextField10.setText(Common.date_toStringReverse(toEdit.getPermitionEndDate()));
+        jTextField11.setText(Integer.toString(toEdit.getLevel()));
+    }
+    
+    private void setEveryThing() {
+        if (process == 1) {
+            if (type == DatabaseManagement.getEmployee_status()){
+                this.jLabel1.setText("Personel Ekle");
+            }
+            else if (type == DatabaseManagement.getManager_status()){
+                this.jLabel1.setText("Yönetici Ekle");
+                this.jLabel11.setVisible(false);
+                this.jTextField10.setVisible(false);
+                this.jLabel12.setVisible(false);
+                this.jTextField11.setVisible(false);
+            }
+        }
+        else {
+            jButton1.setText("Güncelle");
+            jTextField1.setEnabled(false);
+            jTextField2.setEnabled(false);
+            jTextField9.setEnabled(false);
+            if (type == DatabaseManagement.getEmployee_status()){
+                    this.jLabel1.setText("Personel Güncelle");
+                    ResultSet rs = PersonManagement.getEmployee(personalNr);
+                    Employee toEdit = new Employee(rs);
+                    System.out.println("this is me " + toEdit.getName());
+                    fillEmployeeData(toEdit);
+            }
+            else if (type == DatabaseManagement.getManager_status()){
+                this.jLabel1.setText("Yönetici Güncelle");
+                this.jLabel11.setVisible(false);
+                this.jTextField10.setVisible(false);
+                this.jLabel12.setVisible(false);
+                this.jTextField11.setVisible(false);
+                ResultSet rs = PersonManagement.getManager(personalNr);
+                Manager toEdit = new Manager(rs); 
+                fillData(toEdit);
+            }
+            else {
+                fillData(me);
+                this.jLabel1.setText("Benim Bilgilerim");
+                this.jLabel11.setText("Kullanıcı Adı");
+                this.jTextField10.setText("Kullanıcı Adı");
+                this.jLabel12.setText("Şifre");
+                this.jTextField11.setText("Şifre");
+            }
+        }
+    }
+    
     private boolean everyThingIsOkay () {
         if (Verification.verifyName(jTextField1.getText().trim()) && Verification.verifyName(jTextField2.getText().trim()) && Verification.verifyTelephoneNumber(jTextField4.getText().trim())
                 && Verification.verifyEmail(jTextField5.getText().trim()) && jTextField6.getText().trim().length() > 10 && Verification.verifyDate(jTextField7.getText().trim()) 
@@ -27,33 +141,142 @@ public class Personel extends javax.swing.JFrame {
                     return false;
                 }
             }
-            return true;
+            else {
+                if (Verification.verifyUsername(jTextField10.getText().trim()) && Verification.verifyPassword(jTextField11.getText().trim())) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
         }
         else {
             return false;
         }
     }
-    /**
-     * Creates new form Personel
-     */
-    public Personel() {
-        initComponents();
-    }
     
-    public Personel(int type) {
-        initComponents();
-        this.type = type;
-        
-        
-        if (type == DatabaseManagement.getEmployee_status()){
-            this.jLabel1.setText("Personel");
+    private void cleanAll () {
+        jTextField1.setText("Adı");
+        jTextField2.setText("Soyadı");
+        jTextField4.setText("Telefon");
+        jTextField5.setText("E-Posta");
+        jTextField6.setText("Adres");
+        jTextField7.setText("GG-AA-YYYY");
+        jTextField8.setText("TCNr");
+        jTextField9.setText("Personel-Nr");
+        if (type == DatabaseManagement.getEmployee_status()) {
+            jTextField10.setText("GG-AA-YYYY");
+            jTextField11.setText("Seviye");
         }
         else {
-            this.jLabel1.setText("Yönetici");
-            this.jLabel11.setVisible(false);
-            this.jTextField10.setVisible(false);
-            this.jLabel12.setVisible(false);
-            this.jTextField11.setVisible(false);
+            jTextField10.setText("Username");
+            jTextField11.setText("Password");
+        }
+        
+        
+    }
+    
+    private void getData () {
+        name = Common.makeFirstLetterCapital(jTextField1.getText().trim());
+        lastname = jTextField2.getText().toUpperCase().trim();
+        gender = jComboBox1.getSelectedItem().toString();
+        telephone = jTextField4.getText().trim();
+        address = jTextField6.getText().trim();
+        email = jTextField5.getText().trim();
+        birthdate = jTextField7.getText().trim();
+        TCNr = jTextField8.getText().trim();
+        Pnr = jTextField9.getText().trim();
+        var1 = jTextField10.getText().trim();
+        var2 = jTextField11.getText().trim();
+    }
+    
+    private Employee employeeDataCollector () {
+        getData();
+        Employee temp = new Employee();
+        temp.setName(name);
+        temp.setLastname(lastname);
+        temp.setGender(gender);
+        temp.setTelephone(Long.parseLong(telephone));
+        temp.setAddress(address);
+        temp.setEmail(email);
+        temp.setBirthDate(Common.string_toDate(birthdate));
+        temp.setTCNr(Long.parseLong(TCNr));
+        temp.setPersonalNr(Long.parseLong(Pnr));
+        temp.setPermitionEndDate(Common.string_toDate(var1));
+        temp.setLevel(Integer.parseInt(var2));
+        return temp;
+    }
+    
+    private Manager managerDataCollector () {
+        getData();
+        Manager temp = new Manager();
+        temp.setName(name);
+        temp.setLastname(lastname);
+        temp.setGender(gender);
+        temp.setTelephone(Long.parseLong(telephone));
+        temp.setAddress(address);
+        temp.setEmail(email);
+        temp.setBirthDate(Common.string_toDate(birthdate));
+        temp.setTCNr(Long.parseLong(TCNr));
+        temp.setPersonalNr(Long.parseLong(Pnr));
+        if (type == 0) {
+            temp.setUsername(var1);
+            temp.setPassword(var2);
+        }
+        return temp;
+    }
+ 
+    private void massege (int done) {
+        JDialog dialog = new JDialog();
+        dialog.setAlwaysOnTop(true);
+        String func = "Ekleme";
+        if (process == 2) {
+            func = "Güncelleme";
+        }
+        if (done == 1) {
+            JOptionPane.showMessageDialog(dialog, func  + " işlemi başarıyla tamamlanmıştır", "Başarılı İşlem", JOptionPane.PLAIN_MESSAGE);
+            cleanAll();
+        }
+        else if (done == 0) {
+            JOptionPane.showMessageDialog(dialog, "Girdiğiniz personel numarası daha önce veri tabanında bulunduğu için kullanılmaz!", "Hatalı İşlem", JOptionPane.PLAIN_MESSAGE);
+        }
+        else {
+            JOptionPane.showMessageDialog(dialog, "Veri tabanına bağlanamadı!, Lütfen tekrar deneyin.", "Bağlantı Kesildi", JOptionPane.PLAIN_MESSAGE);
+        }
+    }
+    
+    private void add () {
+        if (type == DatabaseManagement.getEmployee_status()) {
+            Employee toAdd = employeeDataCollector();
+            int done = PersonManagement.insertEmployee(toAdd, me);      
+            massege(done);
+        }
+        else if (type == DatabaseManagement.getManager_status()){
+            Manager toAdd = managerDataCollector();
+            int done = PersonManagement.insertManager(toAdd);
+            massege(done);
+        }
+    }
+    
+    private void update() {
+        if (type == DatabaseManagement.getEmployee_status()) {
+            Employee toUpdate = employeeDataCollector();
+            System.out.println(toUpdate.getName() + " " + toUpdate.getLastname());
+            int done = PersonManagement.updateEmployee(toUpdate, me);      
+            massege(done);
+        }
+        else if (type == DatabaseManagement.getManager_status()){
+            Manager toUpdate = managerDataCollector();
+            int done = PersonManagement.updateManager(toUpdate);
+            massege(done);
+        }
+        else {
+            Manager toUpdate = managerDataCollector();
+            int done = PersonManagement.updateManager_self(toUpdate);
+            System.out.println("It was successfully done, and as a profe, your name is " + toUpdate.getName() + " " + toUpdate.getLastname() + " " + toUpdate.getPersonalNr()
+            + " and you were born on the " + toUpdate.getBirthDate() + " and this is another test " + Common.date_toString(toUpdate.getBirthDate()) + toUpdate.getUsername()
+            + "    " +toUpdate.getPassword());
+            massege(done);
         }
     }
 
@@ -97,6 +320,11 @@ public class Personel extends javax.swing.JFrame {
         setMaximumSize(new java.awt.Dimension(900, 600));
         setMinimumSize(new java.awt.Dimension(900, 600));
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
         addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 formKeyReleased(evt);
@@ -270,7 +498,7 @@ public class Personel extends javax.swing.JFrame {
         });
 
         jTextField9.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jTextField9.setText("Personel - Nr");
+        jTextField9.setText("Personel-Nr");
         jTextField9.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 jTextField9FocusGained(evt);
@@ -346,6 +574,12 @@ public class Personel extends javax.swing.JFrame {
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("Ekle");
         jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton1.setEnabled(false);
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setBackground(new java.awt.Color(255, 255, 255));
         jButton2.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
@@ -658,6 +892,19 @@ public class Personel extends javax.swing.JFrame {
             jButton1.setEnabled(false);
         }
     }//GEN-LAST:event_jTextField11KeyReleased
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        if (process == 1){
+            add();
+        }    
+        else {
+            update();
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        setEveryThing();
+    }//GEN-LAST:event_formWindowOpened
 
     /**
      * @param args the command line arguments

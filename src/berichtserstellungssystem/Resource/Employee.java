@@ -5,6 +5,8 @@
  */
 package berichtserstellungssystem.Resource;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Date;
 
 /**
@@ -22,7 +24,30 @@ public class Employee extends Person{
         this.level = level;
         this.permitted = permitted;
     }
+    
+    public Employee (ResultSet rs) {
+        super(rs);
+        try {       
+            this.level = rs.getInt("level");
+            String[] date = rs.getString("birthdate").split("-");
+            int year = Integer.parseInt(date[0]);
+            int month = Integer.parseInt(date[1]);
+            int day = Integer.parseInt(date[2]);
+            this.permitionEndDate = new Date(year-1900, month-1, day);
+        }
+        catch (SQLException e) {
+            
+        }
+    }
+    
+    public Employee (String name, String lastname, long personalNr) {
+        super(name, lastname, personalNr);
+    }
 
+    public Employee () {
+        
+    }
+    
     public int getLevel() {
         return level;
     }

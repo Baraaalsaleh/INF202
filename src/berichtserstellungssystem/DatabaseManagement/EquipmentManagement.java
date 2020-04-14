@@ -21,14 +21,15 @@ import java.sql.Statement;
  * @author Baraa
  */
 public class EquipmentManagement extends DatabaseManagement{
+    static Connection con = DatabaseManagement.connect();
+    static Statement stmt;
     //Einfügen von Testmaschine Magnetic
     public static int insertMagnetic (MagneticEquipment equip, Manager manager){
-        Connection con = DatabaseManagement.connect();
         ResultSet rs;
         int manager_id = 0; 
         int equip_id = 0;
         try {
-            Statement stmt = con.createStatement();
+            stmt = con.createStatement();
             rs = stmt.executeQuery("SELECT id FROM Equipment WHERE name = '" + DataPreparation.prepareString(equip.getName()) + "';");
             if (rs.next() == false) {
                 rs = stmt.executeQuery("SELECT id FROM Person WHERE PersonalNr = " + manager.getPersonalNr() + ";");
@@ -55,12 +56,11 @@ public class EquipmentManagement extends DatabaseManagement{
     }
     //Einfügen von Testmaschine Radiographic
     public static int insertRadiographic (RadiographicEquipment equip, Manager manager){
-        Connection con = DatabaseManagement.connect();
         ResultSet rs;
         int manager_id = 0; 
         int equip_id = 0;
         try {
-            Statement stmt = con.createStatement();
+            stmt = con.createStatement();
             rs = stmt.executeQuery("SELECT id FROM Equipment WHERE name = '" + DataPreparation.prepareString(equip.getName()) + "';");
             if (rs.next() == false) {
                 rs = stmt.executeQuery("SELECT id FROM Person WHERE PersonalNr = " + manager.getPersonalNr() + ";");
@@ -88,11 +88,10 @@ public class EquipmentManagement extends DatabaseManagement{
     }
     //Löschen einer Testmaschine
     public static int deleteEquipment (Equipment equip){
-        Connection con = DatabaseManagement.connect();
         ResultSet rs;
         int equip_id = 0;
         try {
-            Statement stmt = con.createStatement();
+            stmt = con.createStatement();
             rs = stmt.executeQuery("SELECT id FROM Equipment WHERE name = '" + DataPreparation.prepareString(equip.getName()) + "';");
             if (rs.next()) {
                 equip_id = rs.getInt("id");
@@ -111,12 +110,11 @@ public class EquipmentManagement extends DatabaseManagement{
     }
     //Modifikation von Testmaschnineninformationen (magnetic) 
     public static int updateMagnetic (MagneticEquipment equip, Manager manager){
-        Connection con = DatabaseManagement.connect();
         ResultSet rs;
         int manager_id = 0; 
         int equip_id = 0;
         try {
-            Statement stmt = con.createStatement();
+            stmt = con.createStatement();
             rs = stmt.executeQuery("SELECT id FROM Equipment WHERE name = '" + DataPreparation.prepareString(equip.getName()) + "';");
             if (rs.next()) {
                 equip_id = rs.getInt("id");
@@ -147,12 +145,11 @@ public class EquipmentManagement extends DatabaseManagement{
     }
     //Modifikation von Testmaschnineninformationen (radiographic) 
     public static int updateRadiographic (RadiographicEquipment equip, Manager manager){
-        Connection con = DatabaseManagement.connect();
         ResultSet rs;
         int manager_id = 0; 
         int equip_id = 0;
         try {
-            Statement stmt = con.createStatement();
+            stmt = con.createStatement();
             rs = stmt.executeQuery("SELECT id FROM Equipment WHERE name = '" + DataPreparation.prepareString(equip.getName()) + "';");
             if (rs.next()) {
                 equip_id = rs.getInt("id");
@@ -184,10 +181,9 @@ public class EquipmentManagement extends DatabaseManagement{
     }  
     //Abfragen von allen Testmaschinen
     public static ResultSet getEquipments (int limit) {
-        Connection con = DatabaseManagement.connect();
         ResultSet rs = null;
         try {
-            Statement stmt = con.createStatement();
+            stmt = con.createStatement();
             rs = stmt.executeQuery("SELECT name, type FROM Equipment LIMIT " + limit + ";");
             if (rs.next()) {
                 return rs;
@@ -200,11 +196,10 @@ public class EquipmentManagement extends DatabaseManagement{
     }
     //Abfragen von allen Testmaschinen, die von einem bestimmten Manager eingefügt wurden
     public static ResultSet getAddedEquipments (int limit, Manager manager) {
-        Connection con = DatabaseManagement.connect();
         ResultSet rs = null;
         int manager_id = 0;
         try {
-            Statement stmt = con.createStatement();
+            stmt = con.createStatement();
             rs = stmt.executeQuery("SELECT id FROM Person WHERE PersonalNr = " + manager.getPersonalNr() + ";");
             if (rs.next()){
                 manager_id = rs.getInt("id");
@@ -221,11 +216,10 @@ public class EquipmentManagement extends DatabaseManagement{
     }    
     //Abfragen von allen Testmaschinen, die von einem bestimmten Manager modifiziert wurden
     public static ResultSet getEditedEquipments (int limit, Manager manager) {
-        Connection con = DatabaseManagement.connect();
         ResultSet rs = null;
         int manager_id = 0;
         try {
-            Statement stmt = con.createStatement();
+            stmt = con.createStatement();
             rs = stmt.executeQuery("SELECT id FROM Person WHERE PersonalNr = " + manager.getPersonalNr() + ";");
             if (rs.next()){
                 manager_id = rs.getInt("id");
@@ -243,11 +237,10 @@ public class EquipmentManagement extends DatabaseManagement{
     }        
     //Abfragen von Testmaschineninformationen (magnetic)
     public static ResultSet getMagneticEquipment (String name){
-        Connection con = DatabaseManagement.connect();
         ResultSet rs = null;
         int equip_id = 0;
         try {
-            Statement stmt = con.createStatement();
+            stmt = con.createStatement();
             rs = stmt.executeQuery("SELECT id FROM Equipment WHERE name = '" + DataPreparation.prepareString(name) + "';");
                 if (rs.next()){
                     equip_id = rs.getInt("id");
@@ -267,11 +260,10 @@ public class EquipmentManagement extends DatabaseManagement{
     }
     //Abfragen von Testmaschineninformationen (radiographic)
     public static ResultSet getRadiographicEquipment (String name){
-        Connection con = DatabaseManagement.connect();
         ResultSet rs = null;
         int equip_id = 0;
         try {
-            Statement stmt = con.createStatement();
+            stmt = con.createStatement();
             rs = stmt.executeQuery("SELECT id FROM Equipment WHERE name = '" + DataPreparation.prepareString(name) + "';");
                 if (rs.next()){
                     equip_id = rs.getInt("id");

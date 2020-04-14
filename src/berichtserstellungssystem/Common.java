@@ -19,8 +19,18 @@ import javax.swing.JOptionPane;
 public class Common {
     
     public static String date_toString(Date date){
-        return ((date.getYear()+1900) + "-" + (date.getMonth()+1) + "-" + date.getDate());
+        if (date != null) {
+            return ((date.getYear()+1900) + "-" + (date.getMonth()+1) + "-" + date.getDate());
+        }
+        return "";
     }
+    
+    public static String date_toStringReverse(Date date){
+        if (date != null) {
+            return (date.getDate()+ "-" + (date.getMonth()+1) + "-" + (date.getYear()+1900));
+        }
+        return "";
+    } 
     
     private static Date makeItDate (String[] temp) {
         Date date = new Date();
@@ -130,15 +140,35 @@ public class Common {
         }
     }
 
-    public static String readUsingBufferReader () throws FileNotFoundException, IOException{
-        File file = new File("C:/Users/Baraa/Desktop/BufferedWriter.txt"); 
-        BufferedReader br = new BufferedReader(new FileReader(file)); 
-        String st; 
-        String data = "";
-        while ((st = br.readLine()) != null) 
-        data += st;
-        
+    public static String readUsingBufferReader (){
+        String data = null;
+        try {
+            data = "";
+            File file = new File("C:/Users/Baraa/Desktop/BufferedWriter.txt"); 
+            BufferedReader br = new BufferedReader(new FileReader(file)); 
+            String st; 
+            while ((st = br.readLine()) != null) 
+            data += st;
+        }
+        catch (FileNotFoundException e) {
+            
+        }
+        catch (IOException e) {
+            
+        }
         return data;
         }
+    
+    public static String makeFirstLetterCapital (String s) {
+        String a = s.charAt(0) + " ";
+        a = a.toUpperCase();
+        char[] temp = s.toCharArray();
+        temp[0] = a.charAt(0);
+        s = "";
+        for (char c : temp){
+            s += c;
+        }
+        return s;
+    }
     
 }

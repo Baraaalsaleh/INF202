@@ -13,10 +13,9 @@ import java.util.HashMap;
  * @author Baraa
  */
 public class DatabaseManagement {
-    final private static String url = "jdbc:mysql://sql7.freemysqlhosting.net:3306";
-    final private static String user = "sql7330144";
-    final private static String pass = "VzpLwH6zGh";
-    final private static int admin_status = 0;        
+    final private static String url = "jdbc:mysql://remotemysql.com:3306";
+    final private static String user = "poucOfCVUy";
+    final private static String pass = "5ObH4PSOeD";
     final private static int manager_status = 1;
     final private static int employee_status = 2;
     final private static int employee_type = 1;
@@ -33,7 +32,7 @@ public class DatabaseManagement {
         con = DriverManager.getConnection(url, user, pass);
         System.out.println("Database connected!");
         Statement stmt = con.createStatement();
-        stmt.executeUpdate("USE sql7330144;");
+        stmt.executeUpdate("USE poucOfCVUy;");
         } catch (SQLException e) {
         System.out.println("Database connection error:" + e);
         }   
@@ -50,10 +49,6 @@ public class DatabaseManagement {
 
     public static int getReport_type() {
         return report_type;
-    }
-
-    public static int getAdmin_status() {
-        return admin_status;
     }
 
     public static int getManager_status() {

@@ -20,14 +20,15 @@ import java.util.ArrayList;
  * @author Baraa
  */
 public class CustomerManagement extends DatabaseManagement{
+    static Connection con = DatabaseManagement.connect();
+    static Statement stmt;
     //Einfügen von Kunden
     public static int insertCustomer (Customer customer, Manager manager){
-        Connection con = DatabaseManagement.connect();
         ResultSet rs;
         int manager_id = 0; 
         int customer_id = 0;
         try {
-            Statement stmt = con.createStatement();
+            stmt = con.createStatement();
             rs = stmt.executeQuery("SELECT id FROM Customer WHERE name = '" + DataPreparation.prepareString(customer.getName()) + "';");
             if (rs.next() == false) {
                 rs = stmt.executeQuery("SELECT id FROM Person WHERE PersonalNr = " + manager.getPersonalNr() + ";");
@@ -59,11 +60,10 @@ public class CustomerManagement extends DatabaseManagement{
     }
     //Löschen von Kunden
     public static int deleteCustomer (Customer customer){
-        Connection con = DatabaseManagement.connect();
         ResultSet rs;
         int customer_id = 0;
         try {
-            Statement stmt = con.createStatement();
+            stmt = con.createStatement();
             rs = stmt.executeQuery("SELECT id FROM Customer WHERE name = '" + DataPreparation.prepareString(customer.getName()) + "';");
             if (rs.next()) {
                 customer_id = rs.getInt("id");
@@ -82,13 +82,12 @@ public class CustomerManagement extends DatabaseManagement{
     }
     //Modifikation von Kundeninformationen
     public static int updateCustomer (Customer customer, Manager manager){
-        Connection con = DatabaseManagement.connect();
         ResultSet rs;
         int manager_id = 0; 
         int customer_id = 0;
         int last_id = 0;
         try {
-            Statement stmt = con.createStatement();
+            stmt = con.createStatement();
             rs = stmt.executeQuery("SELECT id FROM Customer WHERE name = '" + DataPreparation.prepareString(customer.getName()) + "';");
             if (rs.next()) {
                 rs = stmt.executeQuery("SELECT id FROM Person WHERE PersonalNr = " + manager.getPersonalNr() + ";");
@@ -128,10 +127,9 @@ public class CustomerManagement extends DatabaseManagement{
     }
     //Abfragen von allen Kunden
     public static ResultSet getCustomers (int limit) {
-        Connection con = DatabaseManagement.connect();
         ResultSet rs = null;
         try {
-            Statement stmt = con.createStatement();
+            stmt = con.createStatement();
             rs = stmt.executeQuery("SELECT name, address FROM Customer LIMIT " + limit + ";");
             if (rs.next()) {
                 return rs;
@@ -144,11 +142,10 @@ public class CustomerManagement extends DatabaseManagement{
     }
     //Abfragen von allen Kunden, die von einem bestimmten Manager eingerfügt wurden
     public static ResultSet getAddedCustomers (int limit, Manager manager) {
-        Connection con = DatabaseManagement.connect();
         ResultSet rs = null;
         int manager_id = 0;
         try {
-            Statement stmt = con.createStatement();
+            stmt = con.createStatement();
             rs = stmt.executeQuery("SELECT id FROM Person WHERE PersonalNr = " + manager.getPersonalNr() + ";");
             if (rs.next()){
                 manager_id = rs.getInt("id");
@@ -165,11 +162,10 @@ public class CustomerManagement extends DatabaseManagement{
     }
     //Abfragen von allen Kunden, die von einem bestimmten Manager modifiziert wurden
     public static ResultSet getEditedCustomers (int limit, Manager manager) {
-        Connection con = DatabaseManagement.connect();
         ResultSet rs = null;
         int manager_id = 0;
         try {
-            Statement stmt = con.createStatement();
+            stmt = con.createStatement();
             rs = stmt.executeQuery("SELECT id FROM Person WHERE PersonalNr = " + manager.getPersonalNr() + ";");
             if (rs.next()){
                 manager_id = rs.getInt("id");
@@ -187,11 +183,10 @@ public class CustomerManagement extends DatabaseManagement{
     }    
     //Abfragen von einem bestimmten Kunden
     public static ResultSet[] getCustomer (String name) {
-        Connection con = DatabaseManagement.connect();
         ResultSet[] rs = new ResultSet[3];
         int customer_id = 0;
         try {
-            Statement stmt = con.createStatement();            
+            stmt = con.createStatement();            
             rs[0] = stmt.executeQuery("SELECT id FROM Customer WHERE name = '" + DataPreparation.prepareString(name) + "';");
             if (rs[0].next()){
                 customer_id = rs[0].getInt("id");
