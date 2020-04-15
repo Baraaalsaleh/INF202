@@ -44,6 +44,12 @@ public class Login extends javax.swing.JFrame {
         }
         else if (res == -1) {
             JOptionPane.showMessageDialog(dialog, "Veri tabanına bağlanamadı!, Lütfen tekrar deneyin.", "Bağlantı Kesildi", JOptionPane.PLAIN_MESSAGE);
+            try {
+                DatabaseManagement.con.close();
+            } catch (SQLException ex) {
+                System.out.println(ex);
+            }
+            DatabaseManagement.con = DatabaseManagement.connect();
             return -1;
         }
         else {
@@ -282,7 +288,7 @@ public class Login extends javax.swing.JFrame {
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         String res = Common.readUsingBufferReader();
-        if (res == null) {
+        if (res != null) {
             String[] data = res.split(",");
             _username.setText(data[0]);
             _password.setText(data[1]);

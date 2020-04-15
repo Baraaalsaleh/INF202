@@ -24,17 +24,20 @@ public class DatabaseManagement {
     final private static int report_type = 4;
     final private static int magnetic_type = 1;
     final private static int radiographic_type = 2;
+    public static Connection con = connect();
+    public static Statement stmt;
     
     public static Connection connect (){
         Connection con = null;
         try {
-        System.out.println("Connecting database...");
-        con = DriverManager.getConnection(url, user, pass);
-        System.out.println("Database connected!");
-        Statement stmt = con.createStatement();
-        stmt.executeUpdate("USE poucOfCVUy;");
-        } catch (SQLException e) {
-        System.out.println("Database connection error:" + e);
+            System.out.println("Connecting database...");
+            con = DriverManager.getConnection(url, user, pass);
+            System.out.println("Database connected!");
+            stmt = con.createStatement();
+            stmt.executeUpdate("USE poucOfCVUy;");
+        }
+        catch (SQLException e) {
+            System.out.println("Database connection error:" + e);
         }   
         return con;
     }

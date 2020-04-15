@@ -6,29 +6,54 @@
 package berichtserstellungssystem.Resource;
 
 import berichtserstellungssystem.Resource.Equipment;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Date;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Baraa
  */
 public class MagneticEquipment extends Equipment{
-    private int polesDistance;
+    private String polesDistance;
     private String MPCarrier;
     private String MagTechnic;
-    private double UVIntensity;
-    private int lightDistance;
+    private String UVIntensity;
+    private String lightDistance;
 
-    public MagneticEquipment(int polesDistance, String MPCarrier, String MagTechnic, double UVIntensity, int lightDistance, String name) {
-        super(name);
+    public MagneticEquipment(String polesDistance, String MPCarrier, String MagTechnic, String UVIntensity, String lightDistance, String name, Date calibrationEndDate) {
+        super(name, calibrationEndDate);
         this.polesDistance = polesDistance;
         this.MPCarrier = MPCarrier;
         this.MagTechnic = MagTechnic;
         this.UVIntensity = UVIntensity;
         this.lightDistance = lightDistance;
-    }  
+    }
+
+
     
-    public int getPolesDistance() {
+    public MagneticEquipment (ResultSet rs){
+        try {
+            this.setCalibrationEndDate(rs.getDate("calibrationEndDate"));
+            this.setName(rs.getString("name"));
+            this.polesDistance = rs.getString("poles_Distance");
+            this.MPCarrier = rs.getString("MPCarrier");
+            this.MagTechnic = rs.getString("MagTechnic");
+            this.UVIntensity = rs.getString("UVIntensity");
+            this.lightDistance = rs.getString("lightDistance");
+        } catch (SQLException ex) {
+            System.out.println("MagneticEquipment " + ex);
+        }
+    }
+    
+    public MagneticEquipment () {
+        
+    }
+    
+    public String getPolesDistance() {
         return polesDistance;
     }
 
@@ -40,15 +65,15 @@ public class MagneticEquipment extends Equipment{
         return MagTechnic;
     }
 
-    public double getUVIntensity() {
+    public String getUVIntensity() {
         return UVIntensity;
     }
 
-    public int getLightDistance() {
+    public String getLightDistance() {
         return lightDistance;
     }
 
-    public void setPolesDistance(int polesDistance) {
+    public void setPolesDistance(String polesDistance) {
         this.polesDistance = polesDistance;
     }
 
@@ -60,17 +85,17 @@ public class MagneticEquipment extends Equipment{
         this.MagTechnic = MagTechnic;
     }
 
-    public void setUVIntensity(double UVIntensity) {
+    public void setUVIntensity(String UVIntensity) {
         this.UVIntensity = UVIntensity;
     }
 
-    public void setLightDistance(int lightDistance) {
+    public void setLightDistance(String lightDistance) {
         this.lightDistance = lightDistance;
     }
 
     @Override
     public int hashCode() {
-        int hash = 7;
+        int hash = 3;
         return hash;
     }
 
@@ -86,16 +111,7 @@ public class MagneticEquipment extends Equipment{
             return false;
         }
         final MagneticEquipment other = (MagneticEquipment) obj;
-        if (this.polesDistance != other.polesDistance) {
-            return false;
-        }
-        if (Double.doubleToLongBits(this.UVIntensity) != Double.doubleToLongBits(other.UVIntensity)) {
-            return false;
-        }
-        if (this.lightDistance != other.lightDistance) {
-            return false;
-        }
-        if (!Objects.equals(this.getName(), other.getName())) {
+        if (!Objects.equals(this.polesDistance, other.polesDistance)) {
             return false;
         }
         if (!Objects.equals(this.MPCarrier, other.MPCarrier)) {
@@ -104,8 +120,16 @@ public class MagneticEquipment extends Equipment{
         if (!Objects.equals(this.MagTechnic, other.MagTechnic)) {
             return false;
         }
+        if (!Objects.equals(this.UVIntensity, other.UVIntensity)) {
+            return false;
+        }
+        if (!Objects.equals(this.lightDistance, other.lightDistance)) {
+            return false;
+        }
         return true;
     }
+    
+    
     
     
 }

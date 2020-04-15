@@ -6,13 +6,18 @@
 package berichtserstellungssystem.Resource;
 
 import berichtserstellungssystem.Resource.Equipment;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Baraa
  */
 public class RadiographicEquipment extends Equipment{
-    private String usedDevice;
+    private String usedDevice = "";
     private boolean ir192;
     private boolean se75;
     private boolean xRay;
@@ -22,17 +27,38 @@ public class RadiographicEquipment extends Equipment{
     private String pbScreens;
     private String filters;
 
-    public RadiographicEquipment(String usedDevice, boolean ir192, boolean se75, boolean xRay, String focalSpotSize, String exposureTime, String filmFocusDistance, String pbSreens, String filters, String name) {
-        super(name);
-        this.usedDevice = usedDevice;
+    public RadiographicEquipment(boolean ir192, boolean se75, boolean xRay, String focalSpotSize, String exposureTime, String filmFocusDistance, String pbScreens, String filters, String name, Date calibrationEndDate) {
+        super(name, calibrationEndDate);
         this.ir192 = ir192;
         this.se75 = se75;
         this.xRay = xRay;
         this.focalSpotSize = focalSpotSize;
         this.exposureTime = exposureTime;
         this.filmFocusDistance = filmFocusDistance;
-        this.pbScreens = pbSreens;
+        this.pbScreens = pbScreens;
         this.filters = filters;
+    }
+
+    
+    public RadiographicEquipment(ResultSet rs) {
+        try {
+            this.setCalibrationEndDate(rs.getDate("calibrationEndDate"));
+            this.setName(rs.getString("name"));
+            this.ir192 = rs.getBoolean("ir192");
+            this.se75 = rs.getBoolean("se75");
+            this.xRay = rs.getBoolean("xRay");
+            this.focalSpotSize = rs.getString("focalSpotSize");
+            this.exposureTime = rs.getString("exposureTime");
+            this.filmFocusDistance = rs.getString("filmFocusDistance");
+            this.pbScreens = rs.getString("pbScreens");
+            this.filters = rs.getString("filters");
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+    }
+    
+    public RadiographicEquipment () {
+        
     }
 
     public void setUsedDevice(String usedDevice) {

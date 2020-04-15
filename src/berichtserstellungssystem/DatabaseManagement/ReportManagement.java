@@ -16,8 +16,6 @@ import java.util.ArrayList;
  * @author Baraa
  */
 public class ReportManagement extends DatabaseManagement{
-    static Connection con = DatabaseManagement.connect();
-    static Statement stmt;
     //Einfügen von Bericht (magnetic)
     public static int insertMagneticReport (MagneticReport report){
         ResultSet rs;
@@ -73,6 +71,9 @@ public class ReportManagement extends DatabaseManagement{
                 return 0;
             }
             } catch (SQLException e) {
+                System.out.println(e);
+                con = DatabaseManagement.connect();
+                deleteReport(report.getCustomer(), report.getReportNumber());
                 return -1;
             }
     }
@@ -138,16 +139,19 @@ public class ReportManagement extends DatabaseManagement{
                 return 0;
             }
             } catch (SQLException e) {
+                System.out.println(e);
+                con = DatabaseManagement.connect();
+                deleteReport(report.getCustomer(), report.getReportNumber());
                 return -1;
             }
     }
     //Löschen eines Berichtes
-    public static int deleteReport (Report report){
+    public static int deleteReport (String customer, String reportNo){
         ResultSet rs;
         int report_id = 0;
         try {
             stmt = con.createStatement();
-            rs = stmt.executeQuery("SELECT id FROM Report WHERE customer = '" + DataPreparation.prepareString(report.getCustomer()) + "' AND reportNumber = '" + DataPreparation.prepareString(report.getReportNumber()) + "';");
+            rs = stmt.executeQuery("SELECT id FROM Report WHERE customer = '" + customer + "' AND reportNumber = '" + reportNo + "';");
             if (rs.next()) {
                 report_id = rs.getInt("id");
 
@@ -163,6 +167,7 @@ public class ReportManagement extends DatabaseManagement{
             }
         }
             catch (SQLException e) {
+                System.out.println(e);
                 return -1;
             }
     }
@@ -217,6 +222,7 @@ public class ReportManagement extends DatabaseManagement{
                 return 0;
             }
             } catch (SQLException e) {
+                System.out.println(e);
                 return -1;
             }
     }
@@ -274,6 +280,7 @@ public class ReportManagement extends DatabaseManagement{
                 return 0;
             }
             } catch (SQLException e) {
+                System.out.println(e);
                 return -1;
             }
     }
@@ -310,6 +317,7 @@ public class ReportManagement extends DatabaseManagement{
             }   
         }
         catch (SQLException e){
+            System.out.println(e);
             return rs;
         }
         return rs;
@@ -330,6 +338,7 @@ public class ReportManagement extends DatabaseManagement{
                     + "WHERE Report_id = " + id + ";");
         }
         catch (SQLException e){
+            System.out.println(e);
             return rs;
         }
         return rs;

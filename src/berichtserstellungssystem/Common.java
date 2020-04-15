@@ -149,12 +149,13 @@ public class Common {
             String st; 
             while ((st = br.readLine()) != null) 
             data += st;
+            System.out.println(data);
         }
         catch (FileNotFoundException e) {
-            
+            System.out.println(e);
         }
         catch (IOException e) {
-            
+            System.out.println(e);
         }
         return data;
         }
@@ -170,5 +171,6 @@ public class Common {
         }
         return s;
     }
+    
     
 }

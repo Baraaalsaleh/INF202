@@ -20,8 +20,7 @@ import java.util.ArrayList;
  * @author Baraa
  */
 public class CustomerManagement extends DatabaseManagement{
-    static Connection con = DatabaseManagement.connect();
-    static Statement stmt;
+
     //Einfügen von Kunden
     public static int insertCustomer (Customer customer, Manager manager){
         ResultSet rs;
@@ -55,16 +54,19 @@ public class CustomerManagement extends DatabaseManagement{
             }
         }
             catch (SQLException e) {
+                System.out.println(e);
+                con = DatabaseManagement.connect();
+                deleteCustomer(customer.getName());
                 return -1;
             }
     }
     //Löschen von Kunden
-    public static int deleteCustomer (Customer customer){
+    public static int deleteCustomer (String name){
         ResultSet rs;
         int customer_id = 0;
         try {
             stmt = con.createStatement();
-            rs = stmt.executeQuery("SELECT id FROM Customer WHERE name = '" + DataPreparation.prepareString(customer.getName()) + "';");
+            rs = stmt.executeQuery("SELECT id FROM Customer WHERE name = '" + name + "';");
             if (rs.next()) {
                 customer_id = rs.getInt("id");
                 stmt.executeUpdate("DELETE FROM Customer WHERE id = " + customer_id + ";");
@@ -77,6 +79,7 @@ public class CustomerManagement extends DatabaseManagement{
             }
         }
             catch (SQLException e) {
+                System.out.println(e);
                 return -1;
             }
     }
@@ -122,6 +125,7 @@ public class CustomerManagement extends DatabaseManagement{
             }
         }
             catch (SQLException e) {
+                System.out.println(e);
                 return -1;
             }
     }
@@ -136,6 +140,7 @@ public class CustomerManagement extends DatabaseManagement{
             }   
         }
         catch (SQLException e){
+            System.out.println(e);
             return rs;
         }
         return rs;
@@ -156,6 +161,7 @@ public class CustomerManagement extends DatabaseManagement{
             }   
         }
         catch (SQLException e){
+            System.out.println(e);
             return rs;
         }
         return rs;
@@ -177,6 +183,7 @@ public class CustomerManagement extends DatabaseManagement{
             }   
         }
         catch (SQLException e){
+            System.out.println(e);
             return rs;
         }
         return rs;
@@ -196,6 +203,7 @@ public class CustomerManagement extends DatabaseManagement{
             rs[2] = stmt.executeQuery("SELECT C.OrderNr, P.name as adder_name, P.lastname as adder_lastname FROM Customer_Order C JOIN Person P ON C.Manager_id = P.id WHERE C.Customer_id " + customer_id + ";");            
         }
         catch (SQLException e){
+            System.out.println(e);
             return rs;
         }
         return rs;

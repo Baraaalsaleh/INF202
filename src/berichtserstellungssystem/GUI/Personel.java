@@ -37,6 +37,7 @@ public class Personel extends javax.swing.JFrame {
     String Pnr = "";
     String var1 = "";
     String var2 = "";
+    boolean verifiy;
     
     
     /**
@@ -85,6 +86,7 @@ public class Personel extends javax.swing.JFrame {
     
     private void setEveryThing() {
         if (process == 1) {
+            jButton3.setVisible(false);
             if (type == DatabaseManagement.getEmployee_status()){
                 this.jLabel1.setText("Personel Ekle");
             }
@@ -119,6 +121,7 @@ public class Personel extends javax.swing.JFrame {
                 fillData(toEdit);
             }
             else {
+                jButton3.setVisible(false);
                 fillData(me);
                 this.jLabel1.setText("Benim Bilgilerim");
                 this.jLabel11.setText("Kullanıcı Adı");
@@ -142,11 +145,16 @@ public class Personel extends javax.swing.JFrame {
                 }
             }
             else {
-                if (Verification.verifyUsername(jTextField10.getText().trim()) && Verification.verifyPassword(jTextField11.getText().trim())) {
-                    return true;
+                if (process == 2) {
+                    if (Verification.verifyUsername(jTextField10.getText().trim()) && Verification.verifyPassword(jTextField11.getText().trim())) {
+                        return true;
+                    }
+                    else {
+                        return false;
+                    }
                 }
                 else {
-                    return false;
+                    return true;
                 }
             }
         }
@@ -172,7 +180,7 @@ public class Personel extends javax.swing.JFrame {
             jTextField10.setText("Username");
             jTextField11.setText("Password");
         }
-        
+        jButton1.setEnabled(false);
         
     }
     
@@ -233,15 +241,28 @@ public class Personel extends javax.swing.JFrame {
         if (process == 2) {
             func = "Güncelleme";
         }
+        else if (process == 3) {
+            func = "Silme";
+        }
         if (done == 1) {
             JOptionPane.showMessageDialog(dialog, func  + " işlemi başarıyla tamamlanmıştır", "Başarılı İşlem", JOptionPane.PLAIN_MESSAGE);
-            cleanAll();
+            if (process == 1 || process == 3) {
+                cleanAll();
+            }
         }
         else if (done == 0) {
             JOptionPane.showMessageDialog(dialog, "Girdiğiniz personel numarası daha önce veri tabanında bulunduğu için kullanılmaz!", "Hatalı İşlem", JOptionPane.PLAIN_MESSAGE);
+            if (process == 3) { process = 2;}
         }
         else {
-            JOptionPane.showMessageDialog(dialog, "Veri tabanına bağlanamadı!, Lütfen tekrar deneyin.", "Bağlantı Kesildi", JOptionPane.PLAIN_MESSAGE);
+            JOptionPane.showMessageDialog(dialog, "Veri tabanına bağlanırken hata oluştu!, Lütfen tekrar deneyin.", "Hatalı Bağlantı", JOptionPane.PLAIN_MESSAGE);
+            try {
+                DatabaseManagement.con.close();
+            } catch (SQLException ex) {
+                System.out.println(ex);
+            }
+            DatabaseManagement.con = DatabaseManagement.connect();
+            if (process == 3) { process = 2;}
         }
     }
     
@@ -279,6 +300,14 @@ public class Personel extends javax.swing.JFrame {
             massege(done);
         }
     }
+    
+    void delete() {
+        
+        long PNR = Long.parseLong(jTextField9.getText());
+        process = 3;
+        massege(PersonManagement.removePerson(PNR));
+        this.dispose();
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -315,8 +344,10 @@ public class Personel extends javax.swing.JFrame {
         jLabel12 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setAlwaysOnTop(true);
         setMaximumSize(new java.awt.Dimension(900, 600));
         setMinimumSize(new java.awt.Dimension(900, 600));
         setResizable(false);
@@ -591,6 +622,16 @@ public class Personel extends javax.swing.JFrame {
             }
         });
 
+        jButton3.setBackground(new java.awt.Color(255, 51, 51));
+        jButton3.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jButton3.setText("Sil");
+        jButton3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -603,14 +644,16 @@ public class Personel extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(10, 10, 10)
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(145, 145, 145)
+                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGap(0, 147, Short.MAX_VALUE)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(52, 52, 52))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
@@ -704,7 +747,8 @@ public class Personel extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(28, 28, 28))
         );
 
@@ -906,6 +950,10 @@ public class Personel extends javax.swing.JFrame {
         setEveryThing();
     }//GEN-LAST:event_formWindowOpened
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        new Verify((jTextField1.getText() + " " + jTextField2.getText() + "'in bilgileri silmekten emin misiniz?"),this, 1).setVisible(true);
+    }//GEN-LAST:event_jButton3ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -944,6 +992,7 @@ public class Personel extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;

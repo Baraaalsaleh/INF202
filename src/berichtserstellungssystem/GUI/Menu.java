@@ -14,7 +14,9 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTable;
@@ -46,9 +48,9 @@ public class Menu extends javax.swing.JFrame {
     private void addEmployees (ArrayList<Employee> list, JTable t) {
         Object[] row = new Object[25];
         DefaultTableModel model = new DefaultTableModel();
-        model.addColumn("name");
-        model.addColumn("Lastname");
-        model.addColumn("Personal No");
+        model.addColumn("Adı");
+        model.addColumn("Soyadı");
+        model.addColumn("PNR");
         for (Employee e : list) {
             row[0] = e.getName();
             row[1] = e.getLastname();
@@ -59,12 +61,36 @@ public class Menu extends javax.swing.JFrame {
         t.setModel(model);
     }
 
+    private void addEquipments (ArrayList<Equipment> list, JTable t) {
+        Object[] row = new Object[25];
+        DefaultTableModel model = new DefaultTableModel();
+        model.addColumn("Ekipman");
+        model.addColumn("Tipi");
+        model.addColumn("Kalibrasyon Son Geçerlilik Tarihi");
+        model.addColumn("Geçerli");
+        Date now = new Date();
+        for (Equipment e : list) {
+            row[0] = e.getName();
+            if (e.getType() == DatabaseManagement.getMagnetic_type()) {
+                row[1] = "Manyetik";
+            }
+            else {
+                row[1] = "Radyografik";
+            }
+            row[2] = e.getCalibrationEndDate();
+            if (now.before(e.getCalibrationEndDate())) {
+                row[3] = "Evet";
+            }
+            else {
+                row[3] = "Hayır";
+            }
+            System.out.println(e.getName());
+            model.addRow(row);
+        }
+        t.setModel(model);
+    }    
+    
     private void prepareTables (int table) {
-        /*DefaultTableModel tableModel = new DefaultTableModel();
-        if (table == 1) {
-            for(String columnName : personTable){
-            tableModel.addColumn(columnName);
-        }*/
         if (table == 1) {
                 ArrayList<Employee> res = PersonManagement.employees(0, 25, 1, me);
                 addEmployees(res, jTable2);
@@ -72,24 +98,14 @@ public class Menu extends javax.swing.JFrame {
                 addEmployees(res, jTable3);
                 res = PersonManagement.employees(0, 25, 3, me);
                 addEmployees(res, jTable4);
-//                ResultSet rs2 = PersonManagement.getAddedEmployees(25, me);
-//                ArrayList<Employee> employeesAdded = new ArrayList();
-//                while (rs2.next()){
-//                    temp = new Employee(rs2.getString("name"), rs2.getString("lastname"), Long.parseLong(rs2.getString("PersonalNr")));
-//                    employeesAdded.add(temp);
-//                }
-//                addEmployees(employeesAdded, jTable3);
-//                ResultSet rs3 = PersonManagement.getEditedEmployees(25, me);
-//                ArrayList<Employee> employeesEdited = new ArrayList();
-//                while (rs3.next()){
-//                    temp = new Employee(rs3.getString("name"), rs3.getString("lastname"), Long.parseLong(rs3.getString("PersonalNr")));
-//                    employeesEdited.add(temp);
-//                }
-//                addEmployees(employeesEdited, jTable4);
-//            if (!jTable2.isEditing()){
-//                
-//            } 
-
+        }
+        else if (table == 2) {
+                ArrayList<Equipment> res = EquipmentManagement.equipments(0, 25, 1, me);
+                addEquipments(res, jTable2);
+                res = EquipmentManagement.equipments(0, 25, 2, me);
+                addEquipments(res, jTable3);
+                res = EquipmentManagement.equipments(0, 25, 2, me);
+                addEquipments(res, jTable4);
         }
         
     }
@@ -156,7 +172,9 @@ public class Menu extends javax.swing.JFrame {
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem8 = new javax.swing.JMenuItem();
-        jMenuItem9 = new javax.swing.JMenuItem();
+        jMenu4 = new javax.swing.JMenu();
+        jMenuItem19 = new javax.swing.JMenuItem();
+        jMenuItem24 = new javax.swing.JMenuItem();
         jMenuItem10 = new javax.swing.JMenuItem();
         jMenuItem11 = new javax.swing.JMenuItem();
         jMenuItem12 = new javax.swing.JMenuItem();
@@ -166,7 +184,6 @@ public class Menu extends javax.swing.JFrame {
         jMenuItem16 = new javax.swing.JMenuItem();
         jMenuItem17 = new javax.swing.JMenuItem();
         jMenuItem18 = new javax.swing.JMenuItem();
-        jMenuItem19 = new javax.swing.JMenuItem();
         jMenuItem20 = new javax.swing.JMenuItem();
         jMenuItem21 = new javax.swing.JMenuItem();
         jMenuItem22 = new javax.swing.JMenuItem();
@@ -227,8 +244,7 @@ public class Menu extends javax.swing.JFrame {
 
             }
         ));
-        jTable2.setColumnSelectionAllowed(true);
-        jTable2.setRowSelectionAllowed(false);
+        jTable2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jTable2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable2MouseClicked(evt);
@@ -265,6 +281,12 @@ public class Menu extends javax.swing.JFrame {
 
             }
         ));
+        jTable3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jTable3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable3MouseClicked(evt);
+            }
+        });
         jScrollPane4.setViewportView(jTable3);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -295,6 +317,7 @@ public class Menu extends javax.swing.JFrame {
 
             }
         ));
+        jTable4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jScrollPane5.setViewportView(jTable4);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -463,15 +486,31 @@ public class Menu extends javax.swing.JFrame {
         });
         jMenu3.add(jMenuItem8);
 
-        jMenuItem9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/machine.png"))); // NOI18N
-        jMenuItem9.setText("Cihaz");
-        jMenuItem9.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
+        jMenu4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/machine.png"))); // NOI18N
+        jMenu4.setText("Ekipman");
+        jMenu4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+
+        jMenuItem19.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/magnetic3.png"))); // NOI18N
+        jMenuItem19.setText("Manyetik");
+        jMenuItem19.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jMenuItem19.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem9ActionPerformed(evt);
+                jMenuItem19ActionPerformed(evt);
             }
         });
-        jMenu3.add(jMenuItem9);
+        jMenu4.add(jMenuItem19);
+
+        jMenuItem24.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/radiographic.png"))); // NOI18N
+        jMenuItem24.setText("Radyografik");
+        jMenuItem24.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jMenuItem24.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem24ActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMenuItem24);
+
+        jMenu3.add(jMenu4);
 
         jMenuItem10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/customer.png"))); // NOI18N
         jMenuItem10.setText("Firma - Müşteri");
@@ -524,7 +563,7 @@ public class Menu extends javax.swing.JFrame {
         jMenu7.add(jMenuItem16);
 
         jMenuItem17.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/machine.png"))); // NOI18N
-        jMenuItem17.setText("Cihaz");
+        jMenuItem17.setText("Ekipman");
         jMenuItem17.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jMenuItem17.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -542,16 +581,6 @@ public class Menu extends javax.swing.JFrame {
             }
         });
         jMenu7.add(jMenuItem18);
-
-        jMenuItem19.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/person.png"))); // NOI18N
-        jMenuItem19.setText("Personel Yönetici");
-        jMenuItem19.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jMenuItem19.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem19ActionPerformed(evt);
-            }
-        });
-        jMenu7.add(jMenuItem19);
 
         jMenuItem20.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/project.png"))); // NOI18N
         jMenuItem20.setText("Proje");
@@ -614,7 +643,6 @@ public class Menu extends javax.swing.JFrame {
         jMenu3.setVisible(false);
         jMenu7.setVisible(false);
         jScrollPane2.setVisible(false);
-        ;
         
     }//GEN-LAST:event_formWindowOpened
 
@@ -627,10 +655,6 @@ public class Menu extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
-    private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem9ActionPerformed
-
     private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem10ActionPerformed
@@ -639,17 +663,9 @@ public class Menu extends javax.swing.JFrame {
         new Personel(DatabaseManagement.getManager_status(), 1, me).setVisible(true);
     }//GEN-LAST:event_jMenuItem11ActionPerformed
 
-    private void jMenuItem17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem17ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem17ActionPerformed
-
     private void jMenuItem18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem18ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem18ActionPerformed
-
-    private void jMenuItem19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem19ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem19ActionPerformed
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
         me = new Manager();
@@ -678,9 +694,43 @@ public class Menu extends javax.swing.JFrame {
 
     private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
         int row = jTable2.getSelectedRow();
-        String personalNr = jTable2.getValueAt(row, 2).toString();
-        new Personel(DatabaseManagement.getEmployee_status(), 2, Long.parseLong(personalNr), me).setVisible(true);
+        if (jLabel1.getText().equals("Personel")) {
+            String personalNr = jTable2.getValueAt(row, 2).toString();
+            new Personel(DatabaseManagement.getEmployee_status(), 2, Long.parseLong(personalNr), me).setVisible(true);
+        }
+        else if (jLabel1.getText().equals("Ekipmanlar")) {
+            String name = jTable2.getValueAt(row, 0).toString();
+            System.out.println(name);
+            int type;
+            if (jTable2.getValueAt(row, 1).equals("Manyetik")) {
+                type = DatabaseManagement.getMagnetic_type();
+            }
+            else {
+                type = DatabaseManagement.getRadiographic_type();
+            }
+            System.out.println(type);
+            new Ekipman(type, 2, name, me).setVisible(true);
+        }
+        
     }//GEN-LAST:event_jTable2MouseClicked
+
+    private void jMenuItem19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem19ActionPerformed
+        new Ekipman(DatabaseManagement.getMagnetic_type(), 1, "", me).setVisible(true);
+    }//GEN-LAST:event_jMenuItem19ActionPerformed
+
+    private void jMenuItem24ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem24ActionPerformed
+        new Ekipman(DatabaseManagement.getRadiographic_type(), 1, "", me).setVisible(true);
+    }//GEN-LAST:event_jMenuItem24ActionPerformed
+
+    private void jMenuItem17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem17ActionPerformed
+        jScrollPane2.setVisible(true);
+        jLabel1.setText("Ekipmanlar");
+        prepareTables(2);
+    }//GEN-LAST:event_jMenuItem17ActionPerformed
+
+    private void jTable3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable3MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTable3MouseClicked
     
     private void showPanel (String s){
         this.setMinimumSize(this.getMinimumSize());
@@ -728,6 +778,7 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu6;
     private javax.swing.JMenu jMenu7;
     private javax.swing.JMenuBar jMenuBar1;
@@ -747,13 +798,13 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem21;
     private javax.swing.JMenuItem jMenuItem22;
     private javax.swing.JMenuItem jMenuItem23;
+    private javax.swing.JMenuItem jMenuItem24;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
-    private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
