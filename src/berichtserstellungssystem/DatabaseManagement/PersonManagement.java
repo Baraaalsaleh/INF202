@@ -57,9 +57,9 @@ public class PersonManagement extends DatabaseManagement{
                 return 0;
             }
             } catch (SQLException e) {
-                System.out.println(e);
+                System.out.println("insertEmployee " + e);
                 con = DatabaseManagement.connect();
-                removePerson(employee.getPersonalNr());
+                deletePerson(employee.getPersonalNr());
                 return -1;
             }
     }
@@ -88,15 +88,15 @@ public class PersonManagement extends DatabaseManagement{
                 return 0;
             }
             } catch (SQLException e) {
-                System.out.println(e);
+                System.out.println("insertManager " + e);
                 con = DatabaseManagement.connect();
-                removePerson(manager.getPersonalNr());
+                deletePerson(manager.getPersonalNr());
                 return -1;
             }
         return -1;
     }
     //Löschen einer Person
-    public static int removePerson (long personalNr){
+    public static int deletePerson (long personalNr){
         ResultSet rs;
         try {
             stmt = con.createStatement();
@@ -111,7 +111,7 @@ public class PersonManagement extends DatabaseManagement{
             return 1;
             } 
         catch (SQLException e) {
-            System.out.println(e);
+            System.out.println("deletePerson " + e);
             return -1;
             }
     }
@@ -153,7 +153,7 @@ public class PersonManagement extends DatabaseManagement{
                 return 0;
             }
             } catch (SQLException e) {
-                System.out.println(e);
+                System.out.println("updateEmployee " + e);
                 return -1;
             }
     }
@@ -175,7 +175,7 @@ public class PersonManagement extends DatabaseManagement{
                 return 0;
             }
             } catch (SQLException e) {
-                System.out.println(e);
+                System.out.println("updateManager " + e);
                 return -1;
             }
     }
@@ -201,7 +201,7 @@ public class PersonManagement extends DatabaseManagement{
                 return 0;
             }
             } catch (SQLException e) {
-                System.out.println(e);
+                System.out.println("updateManager_self " + e);
                 return -1;
             }
     }
@@ -214,7 +214,7 @@ public class PersonManagement extends DatabaseManagement{
                     + " AND id > " + biggerThan + " LIMIT 1;");
         }
         catch (SQLException e){
-            System.out.println("I have failed!");
+            System.out.println("getEmployees " + e);
         }
         return rs;
     }
@@ -245,7 +245,7 @@ public class PersonManagement extends DatabaseManagement{
                     break;
                 }
             } catch (SQLException ex) {
-                System.out.println(ex);
+                System.out.println("employees " + ex);
                 
             }
         }
@@ -265,7 +265,7 @@ public class PersonManagement extends DatabaseManagement{
                     + " AND E.Manager_id = " + manager_id + " AND P.id > " + biggerThan +" LIMIT 1;");
         }
         catch (SQLException e){
-            System.out.println(e);            
+            System.out.println("getAddedEmployees " + e);            
         }
         return rs;
     }
@@ -284,7 +284,7 @@ public class PersonManagement extends DatabaseManagement{
                     + " AND P.id > " + biggerThan + " LIMIT 1;");  
         }
         catch (SQLException e){
-            System.out.println(e);
+            System.out.println("getEditedEmployees " + e);
         }
         return rs;
     }    
@@ -299,7 +299,7 @@ public class PersonManagement extends DatabaseManagement{
             }   
         }
         catch (SQLException e){
-            System.out.println(e);
+            System.out.println("getManagers " + e);
             return rs;
         }
         return rs;
@@ -318,7 +318,7 @@ public class PersonManagement extends DatabaseManagement{
             }
         }
         catch (SQLException e){
-            System.out.println(e);
+            System.out.println("getEmployee " + e);
         }
         return rs;
     } 
@@ -339,7 +339,7 @@ public class PersonManagement extends DatabaseManagement{
             }   
         }
         catch (SQLException e){
-            System.out.println(e);
+            System.out.println("getEmployeeById " + e);
             return rs;
         }
         return rs;
@@ -364,7 +364,7 @@ public class PersonManagement extends DatabaseManagement{
             } 
         }
         catch (SQLException e){
-            System.out.println(e);
+            System.out.println("getManager " + e);
             return rs;
         }
         return rs;
@@ -382,7 +382,7 @@ public class PersonManagement extends DatabaseManagement{
             }   
         }
         catch (SQLException e){
-            System.out.println(e);
+            System.out.println("getManagerById " + e);
             return rs;
         }
         return rs;
@@ -403,7 +403,7 @@ public class PersonManagement extends DatabaseManagement{
                 }
             }
             catch (SQLException e){
-                System.out.println(e);
+                System.out.println("login " + e);
                 res = -1;
             }
         }

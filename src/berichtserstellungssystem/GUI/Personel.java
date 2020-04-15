@@ -305,7 +305,7 @@ public class Personel extends javax.swing.JFrame {
         
         long PNR = Long.parseLong(jTextField9.getText());
         process = 3;
-        massege(PersonManagement.removePerson(PNR));
+        massege(PersonManagement.deletePerson(PNR));
         this.dispose();
     }
 

@@ -71,7 +71,7 @@ public class ReportManagement extends DatabaseManagement{
                 return 0;
             }
             } catch (SQLException e) {
-                System.out.println(e);
+                System.out.println("insertMagneticReport " + e);
                 con = DatabaseManagement.connect();
                 deleteReport(report.getCustomer(), report.getReportNumber());
                 return -1;
@@ -139,7 +139,7 @@ public class ReportManagement extends DatabaseManagement{
                 return 0;
             }
             } catch (SQLException e) {
-                System.out.println(e);
+                System.out.println("insertRadiographicReport " + e);
                 con = DatabaseManagement.connect();
                 deleteReport(report.getCustomer(), report.getReportNumber());
                 return -1;
@@ -167,7 +167,7 @@ public class ReportManagement extends DatabaseManagement{
             }
         }
             catch (SQLException e) {
-                System.out.println(e);
+                System.out.println("deleteReport " + e);
                 return -1;
             }
     }
@@ -222,7 +222,7 @@ public class ReportManagement extends DatabaseManagement{
                 return 0;
             }
             } catch (SQLException e) {
-                System.out.println(e);
+                System.out.println("updateMagneticReport " + e);
                 return -1;
             }
     }
@@ -280,7 +280,7 @@ public class ReportManagement extends DatabaseManagement{
                 return 0;
             }
             } catch (SQLException e) {
-                System.out.println(e);
+                System.out.println("updateRadiographicReport " + e);
                 return -1;
             }
     }
@@ -295,6 +295,7 @@ public class ReportManagement extends DatabaseManagement{
             }   
         }
         catch (SQLException e){
+            System.out.println("getReports " + e);
             return rs;
         }
         return rs;
@@ -317,7 +318,7 @@ public class ReportManagement extends DatabaseManagement{
             }   
         }
         catch (SQLException e){
-            System.out.println(e);
+            System.out.println("getMyVerifiedReport "  + e);
             return rs;
         }
         return rs;
@@ -338,7 +339,7 @@ public class ReportManagement extends DatabaseManagement{
                     + "WHERE Report_id = " + id + ";");
         }
         catch (SQLException e){
-            System.out.println(e);
+            System.out.println("getReport " + e);
             return rs;
         }
         return rs;

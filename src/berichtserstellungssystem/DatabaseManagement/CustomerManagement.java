@@ -54,7 +54,7 @@ public class CustomerManagement extends DatabaseManagement{
             }
         }
             catch (SQLException e) {
-                System.out.println(e);
+                System.out.println("insertCustomer " + e);
                 con = DatabaseManagement.connect();
                 deleteCustomer(customer.getName());
                 return -1;
@@ -79,7 +79,7 @@ public class CustomerManagement extends DatabaseManagement{
             }
         }
             catch (SQLException e) {
-                System.out.println(e);
+                System.out.println("deleteCustomer " + e);
                 return -1;
             }
     }
@@ -125,7 +125,7 @@ public class CustomerManagement extends DatabaseManagement{
             }
         }
             catch (SQLException e) {
-                System.out.println(e);
+                System.out.println("updateCustomer " + e);
                 return -1;
             }
     }
@@ -140,7 +140,7 @@ public class CustomerManagement extends DatabaseManagement{
             }   
         }
         catch (SQLException e){
-            System.out.println(e);
+            System.out.println("getCustomers " + e);
             return rs;
         }
         return rs;
@@ -161,7 +161,7 @@ public class CustomerManagement extends DatabaseManagement{
             }   
         }
         catch (SQLException e){
-            System.out.println(e);
+            System.out.println("getAddedCustomers " + e);
             return rs;
         }
         return rs;
@@ -183,7 +183,7 @@ public class CustomerManagement extends DatabaseManagement{
             }   
         }
         catch (SQLException e){
-            System.out.println(e);
+            System.out.println("getEditedCustomers " + e);
             return rs;
         }
         return rs;
@@ -203,7 +203,7 @@ public class CustomerManagement extends DatabaseManagement{
             rs[2] = stmt.executeQuery("SELECT C.OrderNr, P.name as adder_name, P.lastname as adder_lastname FROM Customer_Order C JOIN Person P ON C.Manager_id = P.id WHERE C.Customer_id " + customer_id + ";");            
         }
         catch (SQLException e){
-            System.out.println(e);
+            System.out.println("getCustomer " + e);
             return rs;
         }
         return rs;

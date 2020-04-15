@@ -56,7 +56,7 @@ public class EquipmentManagement extends DatabaseManagement{
             }
         }
             catch (SQLException e) {
-                System.out.println(e);
+                System.out.println("insertMagnetic " + e);
                 return -1;
             }
     }
@@ -90,7 +90,7 @@ public class EquipmentManagement extends DatabaseManagement{
             }
         }
             catch (SQLException e) {
-                System.out.println(e);
+                System.out.println("insertRadiographic " + e);
                 con = DatabaseManagement.connect();
                 deleteEquipment(equip.getName());
                 return -1;
@@ -115,7 +115,7 @@ public class EquipmentManagement extends DatabaseManagement{
             }
         }
             catch (SQLException e) {
-                System.out.println(e);
+                System.out.println("deleteEquipment " + e);
                 return -1;
             }
     }
@@ -152,7 +152,7 @@ public class EquipmentManagement extends DatabaseManagement{
             }
         }
             catch (SQLException e) {
-                System.out.println(e);
+                System.out.println("updateMagnetic " + e);
                 return -1;
             }
     }
@@ -224,7 +224,7 @@ public class EquipmentManagement extends DatabaseManagement{
                     break;
                 }
             } catch (SQLException ex) {
-                System.out.println(ex);
+                System.out.println("equipments " + ex);
                 
             }
         }
@@ -321,7 +321,7 @@ public class EquipmentManagement extends DatabaseManagement{
             }   
         }
         catch (SQLException e){
-            System.out.println(e);
+            System.out.println("getRadiographicEquipment " + e);
             return rs;
         }
         return rs;
