@@ -36,9 +36,9 @@ public class PersonManagement extends DatabaseManagement{
                 String permitionEndDate = Common.date_toString(employee.getPermitionEndDate());
 
                 stmt.executeUpdate("INSERT INTO Person (TCNr, PersonalNr, name, lastname, gender, birthdate, address, email, telephone, status) " +
-                "VALUES (" + employee.getTCNr() + "," + employee.getPersonalNr() + ",'" + DataPreparation.prepareString(employee.getName()) + "','" + DataPreparation.prepareString(employee.getLastname()) + "','"
+                "VALUES (" + employee.getTcNr() + "," + employee.getPersonalNr() + ",'" + DataPreparation.prepareString(employee.getName()) + "','" + DataPreparation.prepareString(employee.getLastname()) + "','"
                 + DataPreparation.prepareString(employee.getGender()) + "', '" + birthdate + "','" + DataPreparation.prepareString(employee.getAddress()) + "','" + DataPreparation.prepareString(employee.getEmail())
-                        + "'," + employee.getTelephone() + ", " + DatabaseManagement.getEmployee_status() + ");");                
+                        + "'," + employee.getTelephone() + ", " + DatabaseManagement.getEMPLOYEE_STATUS() + ");");                
                 int employee_Id = 0;
                 int manager_Id = 0;            
                 rs = stmt.executeQuery("SELECT id FROM Person WHERE PersonalNr = " + employee.getPersonalNr() + ";");
@@ -65,7 +65,7 @@ public class PersonManagement extends DatabaseManagement{
     }
 
     //Einfügen von Manager
-    public static int insertManager (Manager manager){
+    public static int insertManager (Manager manager, int status){
         ResultSet rs;
         try {
             stmt = con.createStatement();
@@ -73,14 +73,14 @@ public class PersonManagement extends DatabaseManagement{
             if (rs.next() == false) {
                 String myDate = Common.date_toString(manager.getBirthDate());
                 stmt.executeUpdate("INSERT INTO Person (TCNr, PersonalNr, name, lastname, gender, birthdate, address, email, telephone, status) " +
-                "VALUES (" + manager.getTCNr() + "," + manager.getPersonalNr() + ",'" + DataPreparation.prepareString(manager.getName()) + "','" + DataPreparation.prepareString(manager.getLastname()) + "', '"
+                "VALUES (" + manager.getTcNr() + "," + manager.getPersonalNr() + ",'" + DataPreparation.prepareString(manager.getName()) + "','" + DataPreparation.prepareString(manager.getLastname()) + "', '"
                  + DataPreparation.prepareString(manager.getGender()) + "','" + myDate + "','" + DataPreparation.prepareString(manager.getAddress()) + "','" + DataPreparation.prepareString(manager.getEmail())
-                        + "'," + manager.getTelephone() + ", " + DatabaseManagement.getManager_status() + ");");
+                        + "'," + manager.getTelephone() + ", " + status + ");");
                 int manager_id = 0;
                 rs = stmt.executeQuery("SELECT id FROM Person WHERE PersonalNr = " + manager.getPersonalNr() + ";");
                 if (rs.next()){
                     manager_id = rs.getInt("id");
-                    stmt.executeUpdate("INSERT INTO Manager (Person_id, username, password) VALUES (" + manager_id + ", '" + manager.getPersonalNr() + "', '" + manager.getTCNr() + "');");
+                    stmt.executeUpdate("INSERT INTO Manager (Person_id, username, password) VALUES (" + manager_id + ", '" + manager.getPersonalNr() + "', '" + manager.getTcNr() + "');");
                     return 1;
                 }
             }
@@ -125,7 +125,7 @@ public class PersonManagement extends DatabaseManagement{
                 String birthdate = Common.date_toString(employee.getBirthDate());          
                 String permitionEndDate = Common.date_toString(employee.getPermitionEndDate());
 
-                stmt.executeUpdate("UPDATE Person SET TCNr = " + employee.getTCNr() + ", name = '" + DataPreparation.prepareString(employee.getName()) + "', lastname = '" +
+                stmt.executeUpdate("UPDATE Person SET TCNr = " + employee.getTcNr() + ", name = '" + DataPreparation.prepareString(employee.getName()) + "', lastname = '" +
                     DataPreparation.prepareString(employee.getLastname()) + "', gender = '" + DataPreparation.prepareString(employee.getGender()) + "', birthdate = '"  
                     + birthdate + "', address = '" + DataPreparation.prepareString(employee.getAddress()) + "', email = '"  + DataPreparation.prepareString(employee.getEmail())
                     + "', telephone = " + employee.getTelephone() + " WHERE PersonalNr = " + employee.getPersonalNr() + ";");                
@@ -140,12 +140,12 @@ public class PersonManagement extends DatabaseManagement{
                     manager_Id = rs.getInt("id");
                 }      
                 stmt.executeUpdate("UPDATE Employee SET level = " + employee.getLevel() + ", permition_End_Date = '" + permitionEndDate + "' WHERE Person_id = " + employee_Id + ";");
-                rs = stmt.executeQuery("SELECT id FROM LastModification WHERE Element_id = " + employee_Id + " AND type = " + DatabaseManagement.getEmployee_type() + ";");
+                rs = stmt.executeQuery("SELECT id FROM LastModification WHERE Element_id = " + employee_Id + " AND type = " + DatabaseManagement.getEMPLOYEE_TYPE() + ";");
                 if (rs.next()){
                     int last_id = rs.getInt("id");
                     stmt.executeUpdate("DELETE FROM LastModification WHERE id = " + last_id + ";");
                 }
-                stmt.executeUpdate("INSERT INTO LastModification (Type, Manager_id, Element_id, date) VALUES (" + DatabaseManagement.getEmployee_type() + ", " + manager_Id + ", " + employee_Id + ", NOW());");
+                stmt.executeUpdate("INSERT INTO LastModification (Type, Manager_id, Element_id, date) VALUES (" + DatabaseManagement.getEMPLOYEE_TYPE() + ", " + manager_Id + ", " + employee_Id + ", NOW());");
                 return 1;
                 
             }
@@ -165,7 +165,7 @@ public class PersonManagement extends DatabaseManagement{
             rs = stmt.executeQuery("SELECT id FROM Person WHERE PersonalNr = " + manager.getPersonalNr() + ";");
             if (rs.next()) {
                 String birthdate = Common.date_toString(manager.getBirthDate());
-                stmt.executeUpdate("UPDATE Person SET TCNr = " + manager.getTCNr() + ", name = '" + DataPreparation.prepareString(manager.getName()) + "', lastname = '" +
+                stmt.executeUpdate("UPDATE Person SET TCNr = " + manager.getTcNr() + ", name = '" + DataPreparation.prepareString(manager.getName()) + "', lastname = '" +
                         DataPreparation.prepareString(manager.getLastname()) + "', gender = '" + DataPreparation.prepareString(manager.getGender()) + "', birthdate = '"  + birthdate 
                         + "', address = '" + DataPreparation.prepareString(manager.getAddress()) + "', email = '"  + DataPreparation.prepareString(manager.getEmail())
                         + "', telephone = " + manager.getTelephone() + " WHERE PersonalNr = " + manager.getPersonalNr() + ";");                
@@ -210,8 +210,8 @@ public class PersonManagement extends DatabaseManagement{
         ResultSet rs = null;
         try {
             stmt = con.createStatement();
-            rs = stmt.executeQuery("SELECT id, name, lastname, PersonalNr FROM Person WHERE status = " + DatabaseManagement.getEmployee_status() 
-                    + " AND id > " + biggerThan + " LIMIT 1;");
+            rs = stmt.executeQuery("SELECT P.id, P.name, P.lastname, P.PersonalNr, E.level, E.permition_End_Date FROM Person P JOIN Employee E ON P.id = E.Person_id WHERE status = " + DatabaseManagement.getEMPLOYEE_STATUS() 
+                    + " AND P.id > " + biggerThan + " LIMIT 1;");
         }
         catch (SQLException e){
             System.out.println("getEmployees " + e);
@@ -222,8 +222,9 @@ public class PersonManagement extends DatabaseManagement{
         ArrayList<Employee> res = new ArrayList();
         Employee temp;
         ResultSet rs;
-        int i = 0;
-        while (i < limit) {
+        int count = 0;
+        int i = start;
+        while (count < limit) {
             try {
                 if (type == 1) {
                     rs = getEmployees(i);
@@ -237,9 +238,13 @@ public class PersonManagement extends DatabaseManagement{
                 
                 if (rs.next()) {
                     temp = new Employee(rs.getString("name"), rs.getString("lastname"), rs.getLong("PersonalNr"));
-                    i += rs.getInt("id");
+                    temp.setPermitionEndDate(rs.getDate("permition_End_Date"));
+                    temp.setLevel(rs.getInt("level"));
+                    System.out.println(i);
+                    i += (rs.getInt("id")-i);
                     System.out.println(temp.getName());
                     res.add(temp);
+                    count++;
                 }
                 else {
                     break;
@@ -261,7 +266,7 @@ public class PersonManagement extends DatabaseManagement{
             if (rs.next()){
                 manager_id = rs.getInt("id");
             }               
-            rs = stmt.executeQuery("SELECT P.id, P.name, P.lastname, P.PersonalNr FROM Person P JOIN Employee E ON P.id = E.Person_id WHERE P.status = " + DatabaseManagement.getEmployee_status() 
+            rs = stmt.executeQuery("SELECT P.id, P.name, P.lastname, P.PersonalNr, E.level, E.permition_End_Date FROM Person P JOIN Employee E ON P.id = E.Person_id WHERE P.status = " + DatabaseManagement.getEMPLOYEE_STATUS() 
                     + " AND E.Manager_id = " + manager_id + " AND P.id > " + biggerThan +" LIMIT 1;");
         }
         catch (SQLException e){
@@ -279,8 +284,8 @@ public class PersonManagement extends DatabaseManagement{
             if (rs.next()){
                 manager_id = rs.getInt("id");
             }
-            rs = stmt.executeQuery("SELECT P.id, P.name, P.lastname, P.PersonalNr FROM Person P JOIN LastModification L ON P.id = L.Element_id WHERE P.status = " 
-                    + DatabaseManagement.getEmployee_status() + " AND L.Manager_id = " + manager_id + " AND L.type = " + DatabaseManagement.getEmployee_type() 
+            rs = stmt.executeQuery("SELECT P.id, P.name, P.lastname, P.PersonalNr, E.level, E.permition_End_Date FROM Person P JOIN Employee E ON P.id = E.Person_id JOIN LastModification L ON P.id = L.Element_id WHERE P.status = " 
+                    + DatabaseManagement.getEMPLOYEE_STATUS() + " AND L.Manager_id = " + manager_id + " AND L.type = " + DatabaseManagement.getEMPLOYEE_TYPE() 
                     + " AND P.id > " + biggerThan + " LIMIT 1;");  
         }
         catch (SQLException e){
@@ -289,18 +294,43 @@ public class PersonManagement extends DatabaseManagement{
         return rs;
     }    
     //Abfragen aller Manager
-    public static ResultSet getManagers (int limit) {
+    public static ArrayList<Manager> managers (int start, int limit) {
+        ArrayList<Manager> res = new ArrayList();
+        System.out.println("I got here first");
+        Manager temp;
+        ResultSet rs;
+        int count = 0;
+        int i = start;
+        while (count < limit) {
+            try {
+                rs = getManagers(i);
+                if (rs.next()) {
+                    temp = new Manager(rs.getString("name"), rs.getString("lastname"), rs.getLong("PersonalNr"));
+                    System.out.println(i);
+                    i += (rs.getInt("id")-i);
+                    System.out.println(temp.getName());
+                    res.add(temp);
+                    count++;
+                }
+                else {
+                    break;
+                }
+            } catch (SQLException ex) {
+                System.out.println("managers " + ex);
+            }
+        }
+        return res;
+    }
+    public static ResultSet getManagers (int biggerThan) {
         ResultSet rs = null;
+        System.out.println("I got here");
         try {
             stmt = con.createStatement();
-            rs = stmt.executeQuery("SELECT name, lastname, PersonalNr FROM Person WHERE status = " + DatabaseManagement.getManager_status() + " LIMIT " + limit + ";");
-            if (rs.next()) {
-                return rs;
-            }   
+            rs = stmt.executeQuery("SELECT P.id, P.name, P.lastname, P.PersonalNr FROM Person P WHERE status = " + DatabaseManagement.getMANAGER_STATUS()
+                    + " AND P.id > " + biggerThan + " LIMIT 1;");            
         }
         catch (SQLException e){
             System.out.println("getManagers " + e);
-            return rs;
         }
         return rs;
     }
@@ -332,7 +362,7 @@ public class PersonManagement extends DatabaseManagement{
             rs = stmt.executeQuery("SELECT P.id, P.TCNr, P.PersonalNr, P.name as Employee_name, P.lastname as Employee_lastname, P.gender, P.birthdate, P.address,"
                     + " P.email, P.telephone, E.level, E.permition_End_Date, L.date, Per.name as adder_name, Per.lastname as adder_lastname, Person.name as changer_name, "
                     + "Person.lastname as changer_lastname FROM Person P JOIN Employee E ON P.id = E.Employee_id JOIN Person Per ON E.Manager_id = Per.id"
-                    + " JOIN LastModification L ON L.Element_id = P.id JOIN Person ON L.Manager_id = Person.id WHERE L.type = " + DatabaseManagement.getEmployee_type() + 
+                    + " JOIN LastModification L ON L.Element_id = P.id JOIN Person ON L.Manager_id = Person.id WHERE L.type = " + DatabaseManagement.getEMPLOYEE_TYPE() + 
                     " AND P.id = " + id + ";");
             if (rs.next()) {
                 return rs;
@@ -375,7 +405,7 @@ public class PersonManagement extends DatabaseManagement{
         try {
             stmt = con.createStatement();
             rs = stmt.executeQuery("SELECT P.TCNr, P.PersonalNr, P.name, P.lastname, P.gender, P.birthdate, P.address,"
-                    + " P.email, P.telephone, M.username, M.password FROM Person P JOIN Manager M ON P.id = M.Person_id"
+                    + " P.email, P.telephone, P.status, M.username, M.password FROM Person P JOIN Manager M ON P.id = M.Person_id"
                     + " WHERE P.id = " + manager_id + ";");
             if (rs.next()) {
                 return rs;
@@ -410,4 +440,19 @@ public class PersonManagement extends DatabaseManagement{
         
         return res;
     } 
+    
+    public static boolean findAdmin() {
+        boolean res = false;
+        ResultSet rs = null;
+        try {
+            stmt = con.createStatement();
+            rs = stmt.executeQuery("SELECT id FROM Person WHERE status = " + DatabaseManagement.getAdmin_STATUS() + ";");
+            if (rs.next()) {
+                res = true;
+            }
+        } catch (SQLException ex) {
+            System.out.println("findAdmin " + ex);
+        }
+        return res;       
+    }
 }

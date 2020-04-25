@@ -20,10 +20,11 @@ public class Person {
     private String gender = "";
     private String address = "";
     private String email = "";
-    private long TCNr;
-    private long telephone;
-    private long personalNr;
-    private Date birthDate;
+    private long tcNr = 0;
+    private long telephone = 0;
+    private long personalNr = 0;
+    private Date birthDate = new Date();
+    private int status = 0;
 
     public Person(String name, String lastname, String gender, String address, String email, long TCNr, long telephone, long personalNr, Date birthDate) {
         this.name = name;
@@ -31,7 +32,7 @@ public class Person {
         this.gender = gender;
         this.address = address;
         this.email = email;
-        this.TCNr = TCNr;
+        this.tcNr = TCNr;
         this.telephone = telephone;
         this.personalNr = personalNr;
         this.birthDate = birthDate;
@@ -45,7 +46,7 @@ public class Person {
             this.gender = rs.getString("gender");
             this.address = rs.getString("address");
             this.email = rs.getString("email");
-            this.TCNr = rs.getLong("TCNr");
+            this.tcNr = rs.getLong("TCNr");
             this.telephone = rs.getLong("telephone");
             this.personalNr = rs.getLong("PersonalNr");
             String[] date = rs.getString("birthdate").split("-");
@@ -53,6 +54,7 @@ public class Person {
             int month = Integer.parseInt(date[1]);
             int day = Integer.parseInt(date[2]);
             this.birthDate = new Date(year-1900, month-1, day);
+            this.status = rs.getInt("status");
         }
         catch (SQLException e){
             
@@ -68,9 +70,6 @@ public class Person {
     public Person() {
         
     }
-
-    
-    
 
     public String getName() {
         return name;
@@ -92,8 +91,8 @@ public class Person {
         return email;
     }
 
-    public long getTCNr() {
-        return TCNr;
+    public long getTcNr() {
+        return tcNr;
     }
 
     public long getTelephone() {
@@ -106,6 +105,10 @@ public class Person {
 
     public Date getBirthDate() {
         return birthDate;
+    }
+
+    public int getStatus() {
+        return status;
     }
 
     public void setName(String name) {
@@ -128,8 +131,8 @@ public class Person {
         this.email = email;
     }
 
-    public void setTCNr(long TCNr) {
-        this.TCNr = TCNr;
+    public void setTcNr(long tcNr) {
+        this.tcNr = tcNr;
     }
 
     public void setTelephone(long telephone) {
@@ -163,7 +166,7 @@ public class Person {
             return false;
         }
         final Person other = (Person) obj;
-        if (this.TCNr != other.TCNr) {
+        if (this.tcNr != other.tcNr) {
             return false;
         }
         return true;

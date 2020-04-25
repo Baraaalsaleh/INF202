@@ -52,7 +52,8 @@ public class Personel extends javax.swing.JFrame {
         this.type = type;
         this.process = process;
         this.me = me;
-        this.personalNr = personalNr;    
+        this.personalNr = personalNr;
+        setEveryThing();
     }
     
     public Personel(int type, int process, Manager me) {
@@ -60,6 +61,7 @@ public class Personel extends javax.swing.JFrame {
         this.type = type;
         this.process = process;
         this.me = me;
+        setEveryThing();
     }
     
     private void fillData (Person toEdit) {
@@ -74,7 +76,7 @@ public class Personel extends javax.swing.JFrame {
         jTextField5.setText(toEdit.getEmail());
         jTextField6.setText(toEdit.getAddress());
         jTextField7.setText(Common.date_toStringReverse(toEdit.getBirthDate()));
-        jTextField8.setText(Long.toString(toEdit.getTCNr()));
+        jTextField8.setText(Long.toString(toEdit.getTcNr()));
         jTextField9.setText(Long.toString(toEdit.getPersonalNr()));
     }
     
@@ -87,11 +89,18 @@ public class Personel extends javax.swing.JFrame {
     private void setEveryThing() {
         if (process == 1) {
             jButton3.setVisible(false);
-            if (type == DatabaseManagement.getEmployee_status()){
+            if (type == DatabaseManagement.getEMPLOYEE_STATUS()){
                 this.jLabel1.setText("Personel Ekle");
             }
-            else if (type == DatabaseManagement.getManager_status()){
+            else if (type == DatabaseManagement.getMANAGER_STATUS()){
                 this.jLabel1.setText("Yönetici Ekle");
+                this.jLabel11.setVisible(false);
+                this.jTextField10.setVisible(false);
+                this.jLabel12.setVisible(false);
+                this.jTextField11.setVisible(false);
+            }
+            else {
+                this.jLabel1.setText("Admin Ekle");
                 this.jLabel11.setVisible(false);
                 this.jTextField10.setVisible(false);
                 this.jLabel12.setVisible(false);
@@ -103,14 +112,14 @@ public class Personel extends javax.swing.JFrame {
             jTextField1.setEnabled(false);
             jTextField2.setEnabled(false);
             jTextField9.setEnabled(false);
-            if (type == DatabaseManagement.getEmployee_status()){
+            if (type == DatabaseManagement.getEMPLOYEE_STATUS()){
                     this.jLabel1.setText("Personel Güncelle");
                     ResultSet rs = PersonManagement.getEmployee(personalNr);
                     Employee toEdit = new Employee(rs);
                     System.out.println("this is me " + toEdit.getName());
                     fillEmployeeData(toEdit);
             }
-            else if (type == DatabaseManagement.getManager_status()){
+            else if (type == DatabaseManagement.getMANAGER_STATUS()){
                 this.jLabel1.setText("Yönetici Güncelle");
                 this.jLabel11.setVisible(false);
                 this.jTextField10.setVisible(false);
@@ -136,7 +145,7 @@ public class Personel extends javax.swing.JFrame {
         if (Verification.verifyName(jTextField1.getText().trim()) && Verification.verifyName(jTextField2.getText().trim()) && Verification.verifyTelephoneNumber(jTextField4.getText().trim())
                 && Verification.verifyEmail(jTextField5.getText().trim()) && jTextField6.getText().trim().length() > 10 && Verification.verifyDate(jTextField7.getText().trim()) 
                 && Verification.verifyTCnumber(jTextField8.getText().trim()) && Verification.isNumber(jTextField9.getText().trim())){
-            if (type == DatabaseManagement.getEmployee_status()) {
+            if (type == DatabaseManagement.getEMPLOYEE_STATUS()) {
                 if (Verification.verifyDate(jTextField10.getText().trim()) && Verification.isNumber(jTextField11.getText().trim())) {
                     return true;
                 }
@@ -145,7 +154,7 @@ public class Personel extends javax.swing.JFrame {
                 }
             }
             else {
-                if (process == 2) {
+                if (process == 2 && type == 0) {
                     if (Verification.verifyUsername(jTextField10.getText().trim()) && Verification.verifyPassword(jTextField11.getText().trim())) {
                         return true;
                     }
@@ -172,7 +181,7 @@ public class Personel extends javax.swing.JFrame {
         jTextField7.setText("GG-AA-YYYY");
         jTextField8.setText("TCNr");
         jTextField9.setText("Personel-Nr");
-        if (type == DatabaseManagement.getEmployee_status()) {
+        if (type == DatabaseManagement.getEMPLOYEE_STATUS()) {
             jTextField10.setText("GG-AA-YYYY");
             jTextField11.setText("Seviye");
         }
@@ -208,7 +217,7 @@ public class Personel extends javax.swing.JFrame {
         temp.setAddress(address);
         temp.setEmail(email);
         temp.setBirthDate(Common.string_toDate(birthdate));
-        temp.setTCNr(Long.parseLong(TCNr));
+        temp.setTcNr(Long.parseLong(TCNr));
         temp.setPersonalNr(Long.parseLong(Pnr));
         temp.setPermitionEndDate(Common.string_toDate(var1));
         temp.setLevel(Integer.parseInt(var2));
@@ -225,7 +234,7 @@ public class Personel extends javax.swing.JFrame {
         temp.setAddress(address);
         temp.setEmail(email);
         temp.setBirthDate(Common.string_toDate(birthdate));
-        temp.setTCNr(Long.parseLong(TCNr));
+        temp.setTcNr(Long.parseLong(TCNr));
         temp.setPersonalNr(Long.parseLong(Pnr));
         if (type == 0) {
             temp.setUsername(var1);
@@ -267,26 +276,32 @@ public class Personel extends javax.swing.JFrame {
     }
     
     private void add () {
-        if (type == DatabaseManagement.getEmployee_status()) {
+        if (type == DatabaseManagement.getEMPLOYEE_STATUS()) {
             Employee toAdd = employeeDataCollector();
             int done = PersonManagement.insertEmployee(toAdd, me);      
             massege(done);
         }
-        else if (type == DatabaseManagement.getManager_status()){
+        else if (type == DatabaseManagement.getMANAGER_STATUS()){
             Manager toAdd = managerDataCollector();
-            int done = PersonManagement.insertManager(toAdd);
+            int done = PersonManagement.insertManager(toAdd, DatabaseManagement.getMANAGER_STATUS());
             massege(done);
+        }
+        else {
+            Manager toAdd = managerDataCollector();
+            int done = PersonManagement.insertManager(toAdd, DatabaseManagement.getAdmin_STATUS());
+            massege(done);
+            this.dispose();
         }
     }
     
     private void update() {
-        if (type == DatabaseManagement.getEmployee_status()) {
+        if (type == DatabaseManagement.getEMPLOYEE_STATUS()) {
             Employee toUpdate = employeeDataCollector();
             System.out.println(toUpdate.getName() + " " + toUpdate.getLastname());
             int done = PersonManagement.updateEmployee(toUpdate, me);      
             massege(done);
         }
-        else if (type == DatabaseManagement.getManager_status()){
+        else if (type == DatabaseManagement.getMANAGER_STATUS()){
             Manager toUpdate = managerDataCollector();
             int done = PersonManagement.updateManager(toUpdate);
             massege(done);
@@ -361,6 +376,7 @@ public class Personel extends javax.swing.JFrame {
                 formKeyReleased(evt);
             }
         });
+        getContentPane().setLayout(null);
 
         jPanel1.setBackground(new java.awt.Color(0, 153, 153));
 
@@ -744,7 +760,7 @@ public class Personel extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -752,16 +768,8 @@ public class Personel extends javax.swing.JFrame {
                 .addGap(28, 28, 28))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-        );
+        getContentPane().add(jPanel1);
+        jPanel1.setBounds(0, 0, 937, 595);
 
         pack();
         setLocationRelativeTo(null);
@@ -947,7 +955,7 @@ public class Personel extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        setEveryThing();
+        //setEveryThing();
     }//GEN-LAST:event_formWindowOpened
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed

@@ -16,13 +16,13 @@ import java.util.Date;
  */
 public class MagneticReport extends Report{
     private String poleDistance;
-    private String MPCarrier;
+    private String mpCarrier;
     private String magTech;
-    private String UVIntensity;
+    private String uvIntensity;
     private String distanceOfLight;
     private String examinationArea;
     private String currentType;
-    private String Luxmeter;
+    private String luxmeter;
     private String testMedium;
     private String demagnetization;
     private String surfaceTemperature;
@@ -39,13 +39,13 @@ public class MagneticReport extends Report{
     public MagneticReport(String poleDistance, String MPCarrier, String magTech, String UVIntensity, String distanceOfLight, String examintionArea, String currentType, String Luxmeter, String testMedium, String demagnetization, String surfaceTemperature, String gaussFieldStrength, String surfaceCondtion2, String identificationOfLightEquip, String liftingTest, boolean buttWeld, boolean filletWeld, String standardDeviations, String customer, String projectName, String inspectionPlace, String inspectionClass, String evaluationStandard, String inspectionProcedure, String inspectionScope, String drawingNo, String surfaceCondition, String stageOfExaminaiton, String page, String reportNumber, Date reportDate, String orderNumber, String offerNumber, String equipment, String heatTreatment, String inspectionDates, String descriptionOfAttachments, int operator, int evaluator, int confirmation, String customerName, String customerLevel, String bottom) {
         super(customer, projectName, inspectionPlace, inspectionClass, evaluationStandard, inspectionProcedure, inspectionScope, drawingNo, surfaceCondition, stageOfExaminaiton, page, reportNumber, reportDate, orderNumber, offerNumber, equipment, heatTreatment, inspectionDates, descriptionOfAttachments, operator, evaluator, confirmation, bottom);
         this.poleDistance = poleDistance;
-        this.MPCarrier = MPCarrier;
+        this.mpCarrier = MPCarrier;
         this.magTech = magTech;
-        this.UVIntensity = UVIntensity;
+        this.uvIntensity = UVIntensity;
         this.distanceOfLight = distanceOfLight;
         this.examinationArea = examintionArea;
         this.currentType = currentType;
-        this.Luxmeter = Luxmeter;
+        this.luxmeter = Luxmeter;
         this.testMedium = testMedium;
         this.demagnetization = demagnetization;
         this.surfaceTemperature = surfaceTemperature;
@@ -60,7 +60,7 @@ public class MagneticReport extends Report{
 
     @Override
     public String toString() {
-        return "MagneticReport{" + "poleDistance=" + poleDistance + ", MPCarrier=" + MPCarrier + ", magTech=" + magTech + ", UVIntensity=" + UVIntensity + ", distanceOfLight=" + distanceOfLight + ", examinationArea=" + examinationArea + ", currentType=" + currentType + ", Luxmeter=" + Luxmeter + ", testMedium=" + testMedium + ", demagnetization=" + demagnetization + ", surfaceTemperature=" + surfaceTemperature + ", gaussFieldStrength=" + gaussFieldStrength + ", surfaceCondition2=" + surfaceCondition2 + ", identificationOfLightEquip=" + identificationOfLightEquip + ", liftingTest=" + liftingTest + ", buttWeld=" + buttWeld + ", filletWeld=" + filletWeld + ", standardDeviations=" + standardDeviations + ", inspectionResults=" + inspectionResults + '}' + super.toString();
+        return "MagneticReport{" + "poleDistance=" + poleDistance + ", MPCarrier=" + mpCarrier + ", magTech=" + magTech + ", UVIntensity=" + uvIntensity + ", distanceOfLight=" + distanceOfLight + ", examinationArea=" + examinationArea + ", currentType=" + currentType + ", Luxmeter=" + luxmeter + ", testMedium=" + testMedium + ", demagnetization=" + demagnetization + ", surfaceTemperature=" + surfaceTemperature + ", gaussFieldStrength=" + gaussFieldStrength + ", surfaceCondition2=" + surfaceCondition2 + ", identificationOfLightEquip=" + identificationOfLightEquip + ", liftingTest=" + liftingTest + ", buttWeld=" + buttWeld + ", filletWeld=" + filletWeld + ", standardDeviations=" + standardDeviations + ", inspectionResults=" + inspectionResults + '}' + super.toString();
     }
 
     public MagneticReport () {
@@ -70,16 +70,16 @@ public class MagneticReport extends Report{
         this.poleDistance = poleDistance;
     }
 
-    public void setMPCarrier(String MPCarrier) {
-        this.MPCarrier = MPCarrier;
+    public void setMpCarrier(String mpCarrier) {
+        this.mpCarrier = mpCarrier;
     }
 
     public void setMagTech(String magTech) {
         this.magTech = magTech;
     }
 
-    public void setUVIntensity(String UVIntensity) {
-        this.UVIntensity = UVIntensity;
+    public void setUvIntensity(String uvIntensity) {
+        this.uvIntensity = uvIntensity;
     }
 
     public void setDistanceOfLight(String distanceOfLight) {
@@ -94,8 +94,8 @@ public class MagneticReport extends Report{
         this.currentType = currentType;
     }
 
-    public void setLuxmeter(String Luxmeter) {
-        this.Luxmeter = Luxmeter;
+    public void setLuxmeter(String luxmeter) {
+        this.luxmeter = luxmeter;
     }
 
     public void setTestMedium(String testMedium) {
@@ -146,16 +146,16 @@ public class MagneticReport extends Report{
         return poleDistance;
     }
 
-    public String getMPCarrier() {
-        return MPCarrier;
+    public String getMpCarrier() {
+        return mpCarrier;
     }
 
     public String getMagTech() {
         return magTech;
     }
 
-    public String getUVIntensity() {
-        return UVIntensity;
+    public String getUvIntensity() {
+        return uvIntensity;
     }
 
     public String getDistanceOfLight() {
@@ -171,7 +171,7 @@ public class MagneticReport extends Report{
     }
 
     public String getLuxmeter() {
-        return Luxmeter;
+        return luxmeter;
     }
 
     public String getTestMedium() {

@@ -14,15 +14,13 @@ import java.util.Date;
  * @author Baraa
  */
 public class Employee extends Person{
-    private int level;
-    private boolean permitted;
+    private int level = 0;
     private Date permitionEndDate = new Date();
 
     
-    public Employee(int level, boolean permitted, String name, String lastname, String gender, String address, String email, long TCNr, long telephone, long personalNr, Date birthDate) {
+    public Employee(int level, String name, String lastname, String gender, String address, String email, long TCNr, long telephone, long personalNr, Date birthDate) {
         super(name, lastname, gender, address, email, TCNr, telephone, personalNr, birthDate);
         this.level = level;
-        this.permitted = permitted;
     }
     
     public Employee (ResultSet rs) {
@@ -36,7 +34,7 @@ public class Employee extends Person{
             this.permitionEndDate = new Date(year-1900, month-1, day);
         }
         catch (SQLException e) {
-            
+            System.out.println("Employee.Constructor " + e);
         }
     }
     
@@ -52,20 +50,12 @@ public class Employee extends Person{
         return level;
     }
 
-    public boolean isPermitted() {
-        return permitted;
-    }
-
     public Date getPermitionEndDate() {
         return permitionEndDate;
     }
 
     public void setLevel(int level) {
         this.level = level;
-    }
-
-    public void setPermitted(boolean permitted) {
-        this.permitted = permitted;
     }
 
     public void setPermitionEndDate(Date permitionEndDate) {

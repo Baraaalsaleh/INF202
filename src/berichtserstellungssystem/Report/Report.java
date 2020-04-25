@@ -13,29 +13,29 @@ import java.util.Date;
  * @author Baraa
  */
 public class Report {
-    private String customer;
-    private String projectName;
-    private String inspectionPlace;
-    private String inspectionClass;
-    private String evaluationStandard;
-    private String inspectionProcedure;
-    private String inspectionScope;
-    private String drawingNo;
-    private String surfaceCondition;
-    private String stageOfExamination;
-    private String page;
-    private String reportNumber;
-    private Date reportDate;
-    private String orderNumber;
-    private String offerNumber;
-    private String equipment;
-    private String heatTreatment;
-    private String inspectionDates;
-    private String descriptionOfAttachments;
-    private int operator_id;
-    private int evaluator_id;
-    private int confirmation_id;
-    private String bottom;
+    private String customer = "";
+    private String projectName = "";
+    private String inspectionPlace = "";
+    private String inspectionClass = "";
+    private String evaluationStandard = "";
+    private String inspectionProcedure = "";
+    private String inspectionScope = ""; 
+    private String drawingNo = "";
+    private String surfaceCondition = "";
+    private String stageOfExamination = "";
+    private String page = "";
+    private String reportNumber = "";
+    private Date reportDate = new Date();
+    private String orderNumber = "";
+    private String offerNumber = "";
+    private String equipment = "";
+    private String heatTreatment = "";
+    private String inspectionDates = "";
+    private String descriptionOfAttachments = "";
+    private int operator_id = 0;
+    private int evaluator_id = 0;
+    private int confirmation_id = 0;
+    private String bottom = "";
 
     public Report(String customer, String projectName, String inspectionPlace, String inspectionClass, String evaluationStandard, String inspectionProcedure, String inspectionScope, String drawingNo, String surfaceCondition, String stageOfExaminaiton, String page, String reportNumber, Date reportDate, String orderNumber, String offerNumber, String equipment, String heatTreatment, String inspectionDates, String descriptionOfAttachments, int operator, int evaluator, int confirmation, String bottom) {
         this.customer = customer;

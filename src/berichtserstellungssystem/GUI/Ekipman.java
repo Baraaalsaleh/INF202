@@ -40,8 +40,26 @@ public class Ekipman extends javax.swing.JFrame {
     String var9 = "";
     boolean verifiy;
     
+    /**
+     * Creates new form Machine
+     */
+    public Ekipman() {
+        initComponents();
+    }
+    
+    public Ekipman(int type, int process, String equipmentName, Manager manager) {
+        this.type = type;
+        this.process = process;
+        this.equipmentName = equipmentName;
+        this.me = manager;
+        System.out.println(equipmentName);
+        System.out.println(type);        
+        initComponents();
+        setEveryThing();
+    }
+    
     private void getDataFromDatabase() {
-        if (type == DatabaseManagement.getMagnetic_type()) {
+        if (type == DatabaseManagement.getMAGNETIC_TYPE()) {
                 ResultSet rs = EquipmentManagement.getMagneticEquipment(equipmentName);
                 toEdit1 = new MagneticEquipment(rs);
         }
@@ -55,7 +73,7 @@ public class Ekipman extends javax.swing.JFrame {
         jButton1.setEnabled(false);
         jButton4.setVisible(false);
         
-        if (type == DatabaseManagement.getMagnetic_type()) {
+        if (type == DatabaseManagement.getMAGNETIC_TYPE()) {
             jCheckBox1.setVisible(false);
             jCheckBox2.setVisible(false);
             jCheckBox3.setVisible(false);
@@ -79,9 +97,9 @@ public class Ekipman extends javax.swing.JFrame {
                 jTextField1.setEnabled(false);
                 jTextField1.setText(toEdit1.getName());
                 jTextField2.setText(toEdit1.getPolesDistance());
-                jTextField3.setText(toEdit1.getMPCarrier());
+                jTextField3.setText(toEdit1.getMpCarrier());
                 jTextField4.setText(toEdit1.getMagTechnic());
-                jTextField5.setText(toEdit1.getUVIntensity());
+                jTextField5.setText(toEdit1.getUvIntensity());
                 jTextField6.setText(toEdit1.getLightDistance());
                 jTextField7.setText(Common.date_toStringReverse(toEdit1.getCalibrationEndDate()));
             }
@@ -117,7 +135,7 @@ public class Ekipman extends javax.swing.JFrame {
             !jTextField3.getText().trim().equals("Poz Süresi") && !jTextField3.getText().trim().equals("MP Taşıyıcı Ortam") && jTextField3.getText().trim().length() > 0 &&
             !jTextField4.getText().trim().equals("Çekim Mesafesi") && !jTextField4.getText().trim().equals("Mıknatıslama Tekniği") && jTextField4.getText().trim().length() > 0 &&
             !jTextField5.getText().trim().equals("Kurşun Ekranları") && !jTextField5.getText().trim().equals("UV Işık Şiddeti") && jTextField5.getText().trim().length() > 0 &&
-            !jTextField6.getText().trim().equals("Filterler") && !jTextField6.getText().trim().equals("Işık Mesafesi") && jTextField6.getText().trim().length() > 0 &&
+            !jTextField6.getText().trim().equals("Filtreler") && !jTextField6.getText().trim().equals("Işık Mesafesi") && jTextField6.getText().trim().length() > 0 &&
             Verification.verifyDate(jTextField7.getText())) {
             res = true;
         }
@@ -131,7 +149,7 @@ public class Ekipman extends javax.swing.JFrame {
         jTextField1.setText("Adı");
         jButton1.setEnabled(false);
         jTextField7.setText("GG-AA-YYYY");
-        if (type == DatabaseManagement.getMagnetic_type()) {
+        if (type == DatabaseManagement.getMAGNETIC_TYPE()) {
             jTextField2.setText("Kutup Mesafesi (mm)");
             jTextField3.setText("MP Taşıyıcı Ortam");
             jTextField4.setText("Mıknatıslama Tekniği");
@@ -143,7 +161,7 @@ public class Ekipman extends javax.swing.JFrame {
             jTextField3.setText("Poz Süresi");
             jTextField4.setText("Çekim Mesafesi");
             jTextField5.setText("Kurşun Ekranları");
-            jTextField6.setText("Filterler");
+            jTextField6.setText("Filtreler");
             jCheckBox1.setSelected(false);
             jCheckBox2.setSelected(false);
             jCheckBox3.setSelected(false);
@@ -191,7 +209,7 @@ public class Ekipman extends javax.swing.JFrame {
         var5 = jTextField6.getText();
         var9 = jTextField7.getText();
         
-        if (type == DatabaseManagement.getRadiographic_type()) {
+        if (type == DatabaseManagement.getRADIOGRAPHIC_TYPE()) {
             var6 = jCheckBox1.isSelected();
             var7 = jCheckBox2.isSelected();
             var8 = jCheckBox3.isSelected();
@@ -203,9 +221,9 @@ public class Ekipman extends javax.swing.JFrame {
         MagneticEquipment temp = new MagneticEquipment();
         temp.setName(name);
         temp.setPolesDistance(var1);
-        temp.setMPCarrier(var2);
+        temp.setMpCarrier(var2);
         temp.setMagTechnic(var3);
-        temp.setUVIntensity(var4);
+        temp.setUvIntensity(var4);
         temp.setLightDistance(var5);
         temp.setCalibrationEndDate(Common.string_toDate(var9));
         return temp;
@@ -229,7 +247,7 @@ public class Ekipman extends javax.swing.JFrame {
     
     private void add() {
         int res;
-        if (type == DatabaseManagement.getMagnetic_type()) {
+        if (type == DatabaseManagement.getMAGNETIC_TYPE()) {
             toEdit1 = magneticEquipmentDataCollector();
             res = EquipmentManagement.insertMagnetic(toEdit1, me);
         }
@@ -242,7 +260,7 @@ public class Ekipman extends javax.swing.JFrame {
     
     private void update() {
         int res;
-        if (type == DatabaseManagement.getMagnetic_type()) {
+        if (type == DatabaseManagement.getMAGNETIC_TYPE()) {
             toEdit1 = magneticEquipmentDataCollector();
             res = EquipmentManagement.updateMagnetic(toEdit1, me);
         }
@@ -258,23 +276,6 @@ public class Ekipman extends javax.swing.JFrame {
         massege(EquipmentManagement.deleteEquipment(equipmentName));
         this.dispose();
     }
-    /**
-     * Creates new form Machine
-     */
-    public Ekipman() {
-        initComponents();
-    }
-    
-    public Ekipman(int type, int process, String equipmentName, Manager manager) {
-        this.type = type;
-        this.process = process;
-        this.equipmentName = equipmentName;
-        this.me = manager;
-        System.out.println(equipmentName);
-        System.out.println(type);
-        initComponents();
-    }
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -312,6 +313,7 @@ public class Ekipman extends javax.swing.JFrame {
         setAlwaysOnTop(true);
         setMaximumSize(new java.awt.Dimension(916, 375));
         setMinimumSize(new java.awt.Dimension(916, 375));
+        setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 formWindowOpened(evt);
@@ -428,7 +430,7 @@ public class Ekipman extends javax.swing.JFrame {
         jLabel6.setText("Kurşun Ekranları:");
 
         jTextField6.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jTextField6.setText("Filterler");
+        jTextField6.setText("Filtreler");
         jTextField6.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 jTextField6FocusGained(evt);
@@ -447,7 +449,7 @@ public class Ekipman extends javax.swing.JFrame {
 
         jLabel7.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel7.setText("Filterler:");
+        jLabel7.setText("Filtreler:");
 
         jCheckBox1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jCheckBox1.setText("ir192");
@@ -675,7 +677,7 @@ public class Ekipman extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        setEveryThing();    
+        //setEveryThing();    
     }//GEN-LAST:event_formWindowOpened
 
     private void jTextField1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField1FocusGained

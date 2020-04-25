@@ -18,18 +18,18 @@ import java.util.logging.Logger;
  * @author Baraa
  */
 public class MagneticEquipment extends Equipment{
-    private String polesDistance;
-    private String MPCarrier;
-    private String MagTechnic;
-    private String UVIntensity;
-    private String lightDistance;
+    private String polesDistance = "";
+    private String mpCarrier = "";
+    private String magTechnic = "";
+    private String uvIntensity = "";
+    private String lightDistance = "";
 
     public MagneticEquipment(String polesDistance, String MPCarrier, String MagTechnic, String UVIntensity, String lightDistance, String name, Date calibrationEndDate) {
         super(name, calibrationEndDate);
         this.polesDistance = polesDistance;
-        this.MPCarrier = MPCarrier;
-        this.MagTechnic = MagTechnic;
-        this.UVIntensity = UVIntensity;
+        this.mpCarrier = MPCarrier;
+        this.magTechnic = MagTechnic;
+        this.uvIntensity = UVIntensity;
         this.lightDistance = lightDistance;
     }
 
@@ -40,9 +40,9 @@ public class MagneticEquipment extends Equipment{
             this.setCalibrationEndDate(rs.getDate("calibrationEndDate"));
             this.setName(rs.getString("name"));
             this.polesDistance = rs.getString("poles_Distance");
-            this.MPCarrier = rs.getString("MPCarrier");
-            this.MagTechnic = rs.getString("MagTechnic");
-            this.UVIntensity = rs.getString("UVIntensity");
+            this.mpCarrier = rs.getString("MPCarrier");
+            this.magTechnic = rs.getString("MagTechnic");
+            this.uvIntensity = rs.getString("UVIntensity");
             this.lightDistance = rs.getString("lightDistance");
         } catch (SQLException ex) {
             System.out.println("MagneticEquipment " + ex);
@@ -57,16 +57,16 @@ public class MagneticEquipment extends Equipment{
         return polesDistance;
     }
 
-    public String getMPCarrier() {
-        return MPCarrier;
+    public String getMpCarrier() {
+        return mpCarrier;
     }
 
     public String getMagTechnic() {
-        return MagTechnic;
+        return magTechnic;
     }
 
-    public String getUVIntensity() {
-        return UVIntensity;
+    public String getUvIntensity() {
+        return uvIntensity;
     }
 
     public String getLightDistance() {
@@ -77,16 +77,16 @@ public class MagneticEquipment extends Equipment{
         this.polesDistance = polesDistance;
     }
 
-    public void setMPCarrier(String MPCarrier) {
-        this.MPCarrier = MPCarrier;
+    public void setMpCarrier(String mpCarrier) {
+        this.mpCarrier = mpCarrier;
     }
 
-    public void setMagTechnic(String MagTechnic) {
-        this.MagTechnic = MagTechnic;
+    public void setMagTechnic(String magTechnic) {
+        this.magTechnic = magTechnic;
     }
 
-    public void setUVIntensity(String UVIntensity) {
-        this.UVIntensity = UVIntensity;
+    public void setUvIntensity(String uvIntensity) {
+        this.uvIntensity = uvIntensity;
     }
 
     public void setLightDistance(String lightDistance) {
@@ -114,13 +114,13 @@ public class MagneticEquipment extends Equipment{
         if (!Objects.equals(this.polesDistance, other.polesDistance)) {
             return false;
         }
-        if (!Objects.equals(this.MPCarrier, other.MPCarrier)) {
+        if (!Objects.equals(this.mpCarrier, other.mpCarrier)) {
             return false;
         }
-        if (!Objects.equals(this.MagTechnic, other.MagTechnic)) {
+        if (!Objects.equals(this.magTechnic, other.magTechnic)) {
             return false;
         }
-        if (!Objects.equals(this.UVIntensity, other.UVIntensity)) {
+        if (!Objects.equals(this.uvIntensity, other.uvIntensity)) {
             return false;
         }
         if (!Objects.equals(this.lightDistance, other.lightDistance)) {

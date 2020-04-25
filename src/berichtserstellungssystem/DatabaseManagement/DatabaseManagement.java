@@ -13,17 +13,18 @@ import java.util.HashMap;
  * @author Baraa
  */
 public class DatabaseManagement {
-    final private static String url = "jdbc:mysql://remotemysql.com:3306";
-    final private static String user = "poucOfCVUy";
-    final private static String pass = "5ObH4PSOeD";
-    final private static int manager_status = 1;
-    final private static int employee_status = 2;
-    final private static int employee_type = 1;
-    final private static int equipment_type = 2;
-    final private static int customer_type = 3;
-    final private static int report_type = 4;
-    final private static int magnetic_type = 1;
-    final private static int radiographic_type = 2;
+    final private static String URL = "jdbc:mysql://remotemysql.com:3306";
+    final private static String USER = "poucOfCVUy";
+    final private static String PASS = "5ObH4PSOeD";
+    final private static int Admin_STATUS = 0;
+    final private static int MANAGER_STATUS = 1;
+    final private static int EMPLOYEE_STATUS = 2;
+    final private static int EMPLOYEE_TYPE = 1;
+    final private static int EQUIPMENT_TYPE = 2;
+    final private static int CUSTOMER_TYPE = 3;
+    final private static int REPORT_TYPE = 4;
+    final private static int MAGNETIC_TYPE = 1;
+    final private static int RADIOGRAPHIC_TYPE = 2;
     public static Connection con = connect();
     public static Statement stmt;
     
@@ -31,7 +32,7 @@ public class DatabaseManagement {
         Connection con = null;
         try {
             System.out.println("Connecting database...");
-            con = DriverManager.getConnection(url, user, pass);
+            con = DriverManager.getConnection(URL, USER, PASS);
             System.out.println("Database connected!");
             stmt = con.createStatement();
             stmt.executeUpdate("USE poucOfCVUy;");
@@ -41,37 +42,41 @@ public class DatabaseManagement {
         }   
         return con;
     }
+
+    public static int getAdmin_STATUS() {
+        return Admin_STATUS;
+    }
     
-    public static int getEquipment_type() {
-        return equipment_type;
+    public static int getEQUIPMENT_TYPE() {
+        return EQUIPMENT_TYPE;
     }
 
-    public static int getCustomer_type() {
-        return customer_type;
+    public static int getCUSTOMER_TYPE() {
+        return CUSTOMER_TYPE;
     }
 
-    public static int getReport_type() {
-        return report_type;
+    public static int getREPORT_TYPE() {
+        return REPORT_TYPE;
     }
 
-    public static int getManager_status() {
-        return manager_status;
+    public static int getMANAGER_STATUS() {
+        return MANAGER_STATUS;
     }
 
-    public static int getEmployee_status() {
-        return employee_status;
+    public static int getEMPLOYEE_STATUS() {
+        return EMPLOYEE_STATUS;
     }
 
-    public static int getEmployee_type() {
-        return employee_type;
+    public static int getEMPLOYEE_TYPE() {
+        return EMPLOYEE_TYPE;
     }
 
-    public static int getMagnetic_type() {
-        return magnetic_type;
+    public static int getMAGNETIC_TYPE() {
+        return MAGNETIC_TYPE;
     }
 
-    public static int getRadiographic_type() {
-        return radiographic_type;
+    public static int getRADIOGRAPHIC_TYPE() {
+        return RADIOGRAPHIC_TYPE;
     }
 
 }

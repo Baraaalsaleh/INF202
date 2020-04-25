@@ -33,8 +33,26 @@ public class Menu extends javax.swing.JFrame {
     String[] personTable = new String[4];
     GridBagLayout layout = new GridBagLayout();
     //ReportList panel1;
-    
     Manager me = new Manager();
+    
+    /**
+     * Creates new form Menu
+     */
+    public Menu() {
+        if (!PersonManagement.findAdmin()) {
+            new Personel(0, 1, me).setVisible(true);
+        }
+        initComponents();
+        /*
+        panel1 = new ReportList();
+        jPanel3.setLayout(layout);
+        GridBagConstraints grid = new GridBagConstraints();
+        grid.gridx = 0;
+        grid.gridy = 0;
+        jPanel3.add(panel1, grid);
+        panel1.setVisible(false);
+        */
+    }
     
     public void isManager (boolean a){
         jMenuItem1.setVisible(!a);
@@ -43,6 +61,11 @@ public class Menu extends javax.swing.JFrame {
         jMenuItem15.setVisible(a);
         jMenu3.setVisible(a);
         jMenu7.setVisible(a);
+        
+        if (me.getStatus() == 1) {
+            jMenuItem11.setVisible(!a);
+            jMenuItem25.setVisible(!a);
+        }
     }
     
     private void addEmployees (ArrayList<Employee> list, JTable t) {
@@ -51,7 +74,33 @@ public class Menu extends javax.swing.JFrame {
         model.addColumn("Adı");
         model.addColumn("Soyadı");
         model.addColumn("PNR");
+        model.addColumn("Seviye");
+        model.addColumn("İzinli");
+        Date now = new Date();
         for (Employee e : list) {
+            row[0] = e.getName();
+            row[1] = e.getLastname();
+            row[2] = e.getPersonalNr();
+            row[3] = e.getLevel();
+            if (now.before(e.getPermitionEndDate())) {
+                row[4] = "Evet";
+            }
+            else {
+                row[4] = "Hayır";
+            }
+            System.out.println(e.getName() + " " + e.getLastname());
+            model.addRow(row);
+        }
+        t.setModel(model);
+    }
+    
+    private void addManagers (ArrayList<Manager> list, JTable t) {
+        Object[] row = new Object[25];
+        DefaultTableModel model = new DefaultTableModel();
+        model.addColumn("Adı");
+        model.addColumn("Soyadı");
+        model.addColumn("PNR");
+        for (Manager e : list) {
             row[0] = e.getName();
             row[1] = e.getLastname();
             row[2] = e.getPersonalNr();
@@ -71,7 +120,7 @@ public class Menu extends javax.swing.JFrame {
         Date now = new Date();
         for (Equipment e : list) {
             row[0] = e.getName();
-            if (e.getType() == DatabaseManagement.getMagnetic_type()) {
+            if (e.getType() == DatabaseManagement.getMAGNETIC_TYPE()) {
                 row[1] = "Manyetik";
             }
             else {
@@ -100,11 +149,15 @@ public class Menu extends javax.swing.JFrame {
                 addEmployees(res, jTable4);
         }
         else if (table == 2) {
+                ArrayList<Manager> res = PersonManagement.managers(0, 25);
+                addManagers(res, jTable2);
+        }
+        else if (table == 3) {
                 ArrayList<Equipment> res = EquipmentManagement.equipments(0, 25, 1, me);
                 addEquipments(res, jTable2);
                 res = EquipmentManagement.equipments(0, 25, 2, me);
                 addEquipments(res, jTable3);
-                res = EquipmentManagement.equipments(0, 25, 2, me);
+                res = EquipmentManagement.equipments(0, 25, 3, me);
                 addEquipments(res, jTable4);
         }
         
@@ -120,21 +173,7 @@ public class Menu extends javax.swing.JFrame {
     private void fillTable () {
         
     }
-    /**
-     * Creates new form Menu
-     */
-    public Menu() {
-        initComponents();
-        /*
-        panel1 = new ReportList();
-        jPanel3.setLayout(layout);
-        GridBagConstraints grid = new GridBagConstraints();
-        grid.gridx = 0;
-        grid.gridy = 0;
-        jPanel3.add(panel1, grid);
-        panel1.setVisible(false);
-        */
-    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -182,6 +221,7 @@ public class Menu extends javax.swing.JFrame {
         jMenuItem14 = new javax.swing.JMenuItem();
         jMenu7 = new javax.swing.JMenu();
         jMenuItem16 = new javax.swing.JMenuItem();
+        jMenuItem25 = new javax.swing.JMenuItem();
         jMenuItem17 = new javax.swing.JMenuItem();
         jMenuItem18 = new javax.swing.JMenuItem();
         jMenuItem20 = new javax.swing.JMenuItem();
@@ -210,6 +250,10 @@ public class Menu extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 36)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        jScrollPane2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+
+        jTabbedPane1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         jTable2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
@@ -535,16 +579,31 @@ public class Menu extends javax.swing.JFrame {
         jMenuItem12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/project.png"))); // NOI18N
         jMenuItem12.setText("Proje");
         jMenuItem12.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jMenuItem12.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem12ActionPerformed(evt);
+            }
+        });
         jMenu3.add(jMenuItem12);
 
         jMenuItem13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/surface.png"))); // NOI18N
         jMenuItem13.setText("Yuzay Durumu");
         jMenuItem13.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jMenuItem13.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem13ActionPerformed(evt);
+            }
+        });
         jMenu3.add(jMenuItem13);
 
         jMenuItem14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/stage.png"))); // NOI18N
         jMenuItem14.setText("Muayene Aşaması");
         jMenuItem14.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jMenuItem14.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem14ActionPerformed(evt);
+            }
+        });
         jMenu3.add(jMenuItem14);
 
         jMenuBar1.add(jMenu3);
@@ -561,6 +620,16 @@ public class Menu extends javax.swing.JFrame {
             }
         });
         jMenu7.add(jMenuItem16);
+
+        jMenuItem25.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/person.png"))); // NOI18N
+        jMenuItem25.setText("Personel Yönetici");
+        jMenuItem25.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jMenuItem25.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem25ActionPerformed(evt);
+            }
+        });
+        jMenu7.add(jMenuItem25);
 
         jMenuItem17.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/machine.png"))); // NOI18N
         jMenuItem17.setText("Ekipman");
@@ -585,6 +654,11 @@ public class Menu extends javax.swing.JFrame {
         jMenuItem20.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/project.png"))); // NOI18N
         jMenuItem20.setText("Proje");
         jMenuItem20.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jMenuItem20.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem20ActionPerformed(evt);
+            }
+        });
         jMenu7.add(jMenuItem20);
 
         jMenuItem21.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/surface.png"))); // NOI18N
@@ -636,6 +710,7 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        
         this.setMinimumSize(this.getMinimumSize());
         jMenuItem6.setVisible(false);
         jMenuItem7.setVisible(false);
@@ -656,11 +731,11 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
     private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
-        // TODO add your handling code here:
+        new CustomerFrame().setVisible(true);
     }//GEN-LAST:event_jMenuItem10ActionPerformed
 
     private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
-        new Personel(DatabaseManagement.getManager_status(), 1, me).setVisible(true);
+        new Personel(DatabaseManagement.getMANAGER_STATUS(), 1, me).setVisible(true);
     }//GEN-LAST:event_jMenuItem11ActionPerformed
 
     private void jMenuItem18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem18ActionPerformed
@@ -679,7 +754,7 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuBar1MouseDragged
 
     private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
-        new Personel(DatabaseManagement.getEmployee_status(), 1, me).setVisible(true);
+        new Personel(DatabaseManagement.getEMPLOYEE_STATUS(), 1, me).setVisible(true);
     }//GEN-LAST:event_jMenuItem8ActionPerformed
 
     private void jMenuItem15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem15ActionPerformed
@@ -688,6 +763,10 @@ public class Menu extends javax.swing.JFrame {
 
     private void jMenuItem16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem16ActionPerformed
         jScrollPane2.setVisible(true);
+        if (jTabbedPane1.getComponentCount() < 3) {
+            jTabbedPane1.addTab("Eklediklerim", jPanel2);
+            jTabbedPane1.addTab("Düzelttiklerim", jPanel4);
+        }
         jLabel1.setText("Personel");
         prepareTables(1);
     }//GEN-LAST:event_jMenuItem16ActionPerformed
@@ -696,17 +775,21 @@ public class Menu extends javax.swing.JFrame {
         int row = jTable2.getSelectedRow();
         if (jLabel1.getText().equals("Personel")) {
             String personalNr = jTable2.getValueAt(row, 2).toString();
-            new Personel(DatabaseManagement.getEmployee_status(), 2, Long.parseLong(personalNr), me).setVisible(true);
+            new Personel(DatabaseManagement.getEMPLOYEE_STATUS(), 2, Long.parseLong(personalNr), me).setVisible(true);
+        }
+        else if (jLabel1.getText().equals("Personel Yönetici")) {
+            String personalNr = jTable2.getValueAt(row, 2).toString();
+            new Personel(DatabaseManagement.getMANAGER_STATUS(), 2, Long.parseLong(personalNr), me).setVisible(true);
         }
         else if (jLabel1.getText().equals("Ekipmanlar")) {
             String name = jTable2.getValueAt(row, 0).toString();
             System.out.println(name);
             int type;
             if (jTable2.getValueAt(row, 1).equals("Manyetik")) {
-                type = DatabaseManagement.getMagnetic_type();
+                type = DatabaseManagement.getMAGNETIC_TYPE();
             }
             else {
-                type = DatabaseManagement.getRadiographic_type();
+                type = DatabaseManagement.getRADIOGRAPHIC_TYPE();
             }
             System.out.println(type);
             new Ekipman(type, 2, name, me).setVisible(true);
@@ -715,22 +798,51 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_jTable2MouseClicked
 
     private void jMenuItem19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem19ActionPerformed
-        new Ekipman(DatabaseManagement.getMagnetic_type(), 1, "", me).setVisible(true);
+        new Ekipman(DatabaseManagement.getMAGNETIC_TYPE(), 1, "", me).setVisible(true);
     }//GEN-LAST:event_jMenuItem19ActionPerformed
 
     private void jMenuItem24ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem24ActionPerformed
-        new Ekipman(DatabaseManagement.getRadiographic_type(), 1, "", me).setVisible(true);
+        new Ekipman(DatabaseManagement.getRADIOGRAPHIC_TYPE(), 1, "", me).setVisible(true);
     }//GEN-LAST:event_jMenuItem24ActionPerformed
 
     private void jMenuItem17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem17ActionPerformed
         jScrollPane2.setVisible(true);
+        if (jTabbedPane1.getComponentCount() < 3) {
+            jTabbedPane1.addTab("Eklediklerim", jPanel2);
+            jTabbedPane1.addTab("Düzelttiklerim", jPanel4);
+        }
         jLabel1.setText("Ekipmanlar");
-        prepareTables(2);
+        prepareTables(3);
     }//GEN-LAST:event_jMenuItem17ActionPerformed
 
     private void jTable3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable3MouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_jTable3MouseClicked
+
+    private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
+        new Proje(1, 1, "", me).setVisible(true);
+    }//GEN-LAST:event_jMenuItem12ActionPerformed
+
+    private void jMenuItem13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem13ActionPerformed
+        new Proje(2, 1, "", me).setVisible(true);
+    }//GEN-LAST:event_jMenuItem13ActionPerformed
+
+    private void jMenuItem14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem14ActionPerformed
+        new Proje(3, 1, "", me).setVisible(true);
+    }//GEN-LAST:event_jMenuItem14ActionPerformed
+
+    private void jMenuItem25ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem25ActionPerformed
+        jScrollPane2.setVisible(true);
+        while (jTabbedPane1.getComponentCount() != 1) {
+           jTabbedPane1.removeTabAt(1);
+        }
+        jLabel1.setText("Personel Yönetici");
+        prepareTables(2);
+    }//GEN-LAST:event_jMenuItem25ActionPerformed
+
+    private void jMenuItem20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem20ActionPerformed
+        System.out.println(me.getStatus());
+    }//GEN-LAST:event_jMenuItem20ActionPerformed
     
     private void showPanel (String s){
         this.setMinimumSize(this.getMinimumSize());
@@ -799,6 +911,7 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem22;
     private javax.swing.JMenuItem jMenuItem23;
     private javax.swing.JMenuItem jMenuItem24;
+    private javax.swing.JMenuItem jMenuItem25;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;

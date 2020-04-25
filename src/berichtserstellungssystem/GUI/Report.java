@@ -54,6 +54,11 @@ public class Report extends javax.swing.JFrame {
      */
     public Report() {
         initComponents();
+        StyledDocument doc = _MPCarrier.getStyledDocument();
+        SimpleAttributeSet center = new SimpleAttributeSet();
+        StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
+        doc.setParagraphAttributes(0, doc.getLength(), center, false);
+        jScrollPane2.getVerticalScrollBar().setUnitIncrement(40);
         /*panel1 = new test();
         //jScrollPane1.setLayout(layout);
         jPanel2.setLayout(layout);
@@ -2753,13 +2758,7 @@ public class Report extends javax.swing.JFrame {
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         //Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         //this.setLocation((screenSize.width-this.getWidth()), (screenSize.height-this.getHeight())/4);
-        //jPanel1.setSize(this.getSize());
-        StyledDocument doc = _MPCarrier.getStyledDocument();
-        SimpleAttributeSet center = new SimpleAttributeSet();
-        StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
-        doc.setParagraphAttributes(0, doc.getLength(), center, false);
-        jScrollPane2.getVerticalScrollBar().setUnitIncrement(40);
-        
+        //jPanel1.setSize(this.getSize());      
     }//GEN-LAST:event_formWindowOpened
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -3557,9 +3556,9 @@ public class Report extends javax.swing.JFrame {
             report.setOfferNumber(_MofferNo.getText());
             report.setPoleDistance(_poleDistance.getText());
             report.setEquipment(_Mequipment.getText());
-            report.setMPCarrier(_MPCarrier.getText());
+            report.setMpCarrier(_MPCarrier.getText());
             report.setMagTech(_magTech.getText());
-            report.setUVIntensity(_UV.getText());
+            report.setUvIntensity(_UV.getText());
             report.setDistanceOfLight(_distanceOfLight.getText());
             report.setExaminationArea(_examinationArea.getText());
             report.setCurrentType(_currentType.getText());

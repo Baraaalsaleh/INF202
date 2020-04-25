@@ -14,6 +14,7 @@ import javax.swing.JFrame;
 public class Verify extends javax.swing.JFrame {
     Personel frame1;
     Ekipman frame2;
+    CustomerFrame frame3;
     JFrame frame;
     int type;
 
@@ -32,6 +33,9 @@ public class Verify extends javax.swing.JFrame {
         }
         else if (type == 2) {
             this.frame2 = (Ekipman) frame;
+        }
+        else if (type == 3 || type == 4) {
+            this.frame3 = (CustomerFrame) frame;
         }
         this.frame = frame;
         this.type = type;       
@@ -146,6 +150,12 @@ public class Verify extends javax.swing.JFrame {
         }
         else if (type == 2) {
             frame2.delete();
+        }
+        else if (type == 3) {
+            frame3.clearTable(1);
+        }
+        else if (type == 4) {
+            frame3.clearTable(2);
         }
         frame.setEnabled(true);
         this.dispose();

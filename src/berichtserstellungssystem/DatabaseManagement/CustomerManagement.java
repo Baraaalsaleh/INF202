@@ -112,12 +112,12 @@ public class CustomerManagement extends DatabaseManagement{
                 for (int i = 0; i < orders.size(); i++) {
                     stmt.executeUpdate("INSERT INTO Customer_Order (Customer_id, Manager_id, OrderNr) VALUES (" + customer_id + ", " + manager_id + ", '" + DataPreparation.prepareString(orders.get(i)) + "');");
                 }
-                rs = stmt.executeQuery("SELECT id FROM LastModification WHERE Element_id = " + customer_id + " AND type = " + DatabaseManagement.getCustomer_type() + ";");
+                rs = stmt.executeQuery("SELECT id FROM LastModification WHERE Element_id = " + customer_id + " AND type = " + DatabaseManagement.getCUSTOMER_TYPE() + ";");
                 if (rs.next()){
                     last_id = rs.getInt("id");
                 }
                 stmt.executeUpdate("DELETE FROM LastModification WHERE id = " + last_id + ";");
-                stmt.executeUpdate("INSERT INTO LastModification (Type, Manager_id, Element_id, date) VALUES (" + DatabaseManagement.getCustomer_type() + ", " + manager_id + ", " + customer_id + ", NOW();");                                
+                stmt.executeUpdate("INSERT INTO LastModification (Type, Manager_id, Element_id, date) VALUES (" + DatabaseManagement.getCUSTOMER_TYPE() + ", " + manager_id + ", " + customer_id + ", NOW();");                                
                 return 1;
             }
             else {
@@ -177,7 +177,7 @@ public class CustomerManagement extends DatabaseManagement{
                 manager_id = rs.getInt("id");
                 }            
             rs = stmt.executeQuery("SELECT C.name, C.address FROM Customer C JOIN LastModification L ON C.id = L.Element_id WHERE L.Manager_id = " + manager_id 
-                    + " AND L.type = " + DatabaseManagement.getCustomer_type() + " LIMIT " + limit + ";");
+                    + " AND L.type = " + DatabaseManagement.getCUSTOMER_TYPE() + " LIMIT " + limit + ";");
             if (rs.next()) {
                 return rs;
             }   

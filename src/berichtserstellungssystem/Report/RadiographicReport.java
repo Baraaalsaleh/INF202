@@ -15,28 +15,28 @@ import java.util.Date;
  * @author Baraa
  */
 public class RadiographicReport extends Report{
-    private String usedDevice;
-    private boolean ir192;
-    private boolean se75;
-    private boolean xRay;
-    private String focalSpotSize;
-    private String exposureTime;
-    private String filmFocusDistance;
-    private String pbScreens;
-    private String filters;
-    private String filmBrand;
-    private boolean d4MX125;
-    private boolean d5T200; 
-    private boolean d7AA400;
-    private boolean en;
-    private boolean astm;
-    private boolean sourceSide;
-    private boolean filmSide;
-    private boolean automatic;
-    private boolean manuel;
-    private String temp;
-    private int[] filmQuantity = new int[8];
-    private boolean[] testArrangements = new boolean[6];
+    private String usedDevice = "";
+    private boolean ir192 = false;
+    private boolean se75 = false;
+    private boolean xRay = false;
+    private String focalSpotSize = "";
+    private String exposureTime = "";
+    private String filmFocusDistance = "";
+    private String pbScreens = "";
+    private String filters = "";
+    private String filmBrand = "";
+    private boolean d4MX125 = false;
+    private boolean d5T200 = false; 
+    private boolean d7AA400 = false;
+    private boolean en = false;
+    private boolean astm = false;
+    private boolean sourceSide = false;
+    private boolean filmSide = false;
+    private boolean automatic = false;
+    private boolean manuel = false;
+    private String temp = "";
+    private int[] filmQuantity = {0,0,0,0,0,0,0,0};
+    private boolean[] testArrangements = {false, false, false, false, false, false};
     private ArrayList<RadiographicInspectionResult> inspectionResults= new ArrayList();
 
 
@@ -155,9 +155,42 @@ public class RadiographicReport extends Report{
     public void setFilmQuantity(int[] filmQuantity) {
         this.filmQuantity = filmQuantity;
     }
-
+    
+    public void setFilmQuantityString(String filmQuantity) {
+        int[] temp = new int[8];
+        String[] tempS = filmQuantity.split(",");
+        try {
+            if (tempS.length == 8) {
+                for (int i = 0; i < 8; i++) {
+                    temp[i] = Integer.parseInt(tempS[i]);
+                }
+                this.filmQuantity = temp;
+            }
+            else {
+                System.out.println("setFilmQuantityString not enough elements");
+            }
+        }
+        catch (NumberFormatException e) {
+            System.out.println("setFilmQuantityString " + e);
+        }
+    }
+    
     public void setTestArrangements(boolean[] testArrangements) {
         this.testArrangements = testArrangements;
+    }
+    
+     public void setTestArrangementsString(String testArrangements) {
+        boolean[] temp = new boolean[6];
+        String[] tempS = testArrangements.split(",");
+            if (tempS.length == 6) {
+                for (int i = 0; i < 8; i++) {
+                    temp[i] = Boolean.parseBoolean(tempS[i]);
+                }
+                this.testArrangements = temp;
+            }
+            else {
+                System.out.println("setTestArrangementsString not enough elements");
+            }
     }
 
     public void setInspectionResults(ArrayList<RadiographicInspectionResult> inspectionResults) {

@@ -12,9 +12,9 @@ import java.util.Date;
  * @author Baraa
  */
 public class Equipment {
-    private String name;
-    private Date calibrationEndDate;
-    private int type;
+    private String name = "";
+    private Date calibrationEndDate = new Date();
+    private int type = 0;
 
     public Equipment(String name, Date calibrationEndDate) {
         this.name = name;

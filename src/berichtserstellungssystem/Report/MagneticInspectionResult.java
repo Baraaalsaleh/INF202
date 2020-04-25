@@ -12,14 +12,14 @@ import java.util.Objects;
  * @author Baraa
  */
 public class MagneticInspectionResult extends Result{
-    private String weldPieceNo;
-    private String testLength;
-    private String weldingProcess;
-    private String thickness;
-    private String diameter;
-    private String defectType;
-    private String defectLocation;
-    private String result;
+    private String weldPieceNo = "";
+    private String testLength = "";
+    private String weldingProcess = "";
+    private String thickness = "";
+    private String diameter = "";
+    private String defectType = "";
+    private String defectLocation = "";
+    private String result = "";
 
     public MagneticInspectionResult(String weldPieceNo, String testLength, String weldingProcess, String thickness, String diameter, String defectType, String defectLocation, String result, int serialNo) {
         super(serialNo);

@@ -18,14 +18,14 @@ import java.util.logging.Logger;
  */
 public class RadiographicEquipment extends Equipment{
     private String usedDevice = "";
-    private boolean ir192;
-    private boolean se75;
-    private boolean xRay;
-    private String focalSpotSize;
-    private String exposureTime;
-    private String filmFocusDistance;
-    private String pbScreens;
-    private String filters;
+    private boolean ir192 = false;
+    private boolean se75 = false;
+    private boolean xRay = false;
+    private String focalSpotSize = "";
+    private String exposureTime = "";
+    private String filmFocusDistance = "";
+    private String pbScreens = "";
+    private String filters = "";
 
     public RadiographicEquipment(boolean ir192, boolean se75, boolean xRay, String focalSpotSize, String exposureTime, String filmFocusDistance, String pbScreens, String filters, String name, Date calibrationEndDate) {
         super(name, calibrationEndDate);
