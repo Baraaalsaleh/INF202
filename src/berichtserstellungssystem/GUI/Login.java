@@ -274,7 +274,7 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_rememberActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-            if (loginVerification(_username.getText(), _password.getText(), remember.isSelected()) == 1){
+            if (loginVerification(_username.getText().toLowerCase(), _password.getText(), remember.isSelected()) == 1){
                 if (remember.isSelected() == true){
                     Common.writeUsingBufferedWriter(_username.getText() + "," + _password.getText(), 1);
                     System.out.println("Userdata have been saved");

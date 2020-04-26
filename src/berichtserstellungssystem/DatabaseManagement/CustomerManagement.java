@@ -29,23 +29,38 @@ public class CustomerManagement extends DatabaseManagement{
         try {
             stmt = con.createStatement();
             rs = stmt.executeQuery("SELECT id FROM Customer WHERE name = '" + DataPreparation.prepareString(customer.getName()) + "';");
-            if (rs.next() == false) {
+            if (!rs.next()) {
+                int id = 0;
+                rs = stmt.executeQuery("SELECT MAX(id) as id FROM Customer;");
+                if (rs.next()) {
+                    id = rs.getInt("id");
+                }
                 rs = stmt.executeQuery("SELECT id FROM Person WHERE PersonalNr = " + manager.getPersonalNr() + ";");
                 if (rs.next()){
                     manager_id = rs.getInt("id");
                     }
-                stmt.executeUpdate("INSERT INTO Customer (Manager_id, name, address) VALUES (" + manager_id + ", '" + DataPreparation.prepareString(customer.getName()) + "', '" + DataPreparation.prepareString(customer.getAddress()) + "');");
+                stmt.executeUpdate("INSERT INTO Customer (id, Manager_id, name, address) VALUES ("+ (id+1) + ", " + manager_id + ", '" + DataPreparation.prepareString(customer.getName()) + "', '" + DataPreparation.prepareString(customer.getAddress()) + "');");
                 rs = stmt.executeQuery("SELECT id FROM Customer WHERE name = '" + DataPreparation.prepareString(customer.getName()) + "';");
                 if (rs.next()){
                     customer_id = rs.getInt("id");
                 }
                 ArrayList<String> offers = customer.getOfferNrs();
+                id = 0;
+                rs = stmt.executeQuery("SELECT MAX(id) as id FROM Customer_Offer;");
+                if (rs.next()) {
+                    id = rs.getInt("id");
+                }
                 for (int i = 0; i < offers.size(); i++) {
-                    stmt.executeUpdate("INSERT INTO Customer_Offer (Customer_id, Manager_id, OfferNr) VALUES (" + customer_id + ", " + manager_id + ", '" + DataPreparation.prepareString(offers.get(i)) + "');");
+                    stmt.executeUpdate("INSERT INTO Customer_Offer (id, Customer_id, Manager_id, OfferNr) VALUES (" + (id+1+i) + ", " + customer_id + ", " + manager_id + ", '" + DataPreparation.prepareString(offers.get(i)) + "');");
                 }
                 ArrayList<String> orders = customer.getOrderNrs();
+                id = 0;
                 for (int i = 0; i < orders.size(); i++) {
-                    stmt.executeUpdate("INSERT INTO Customer_Order (Customer_id, Manager_id, OrderNr) VALUES (" + customer_id + ", " + manager_id + ", '" + DataPreparation.prepareString(orders.get(i)) + "');");
+                    rs = stmt.executeQuery("SELECT MAX(id) as id FROM Customer_Order;");
+                    if (rs.next()) {
+                        id = rs.getInt("id");
+                    }
+                    stmt.executeUpdate("INSERT INTO Customer_Order (id, Customer_id, Manager_id, OrderNr) VALUES (" + (id+1) + ", " + customer_id + ", " + manager_id + ", '" + DataPreparation.prepareString(orders.get(i)) + "');");
                 }
                 return 1;
             }
@@ -105,19 +120,34 @@ public class CustomerManagement extends DatabaseManagement{
                 stmt.executeUpdate("DELETE FROM Customer_Offer WHERE Customer_id = " + customer_id + ";");
                 stmt.executeUpdate("DELETE FROM Customer_Order WHERE Customer_id = " + customer_id + ";"); 
                 ArrayList<String> offers = customer.getOfferNrs();
+                int id = 0;
                 for (int i = 0; i < offers.size(); i++) {
-                    stmt.executeUpdate("INSERT INTO Customer_Offer (Customer_id, Manager_id, OfferNr) VALUES (" + customer_id + ", " + manager_id + ", '" + DataPreparation.prepareString(offers.get(i)) + "');");
+                    rs = stmt.executeQuery("SELECT MAX(id) as id FROM Customer_Offer;");
+                    if (rs.next()) {
+                        id = rs.getInt("id");
+                    }
+                    stmt.executeUpdate("INSERT INTO Customer_Offer (id, Customer_id, Manager_id, OfferNr) VALUES (" + (id+1+i) + ", " + customer_id + ", " + manager_id + ", '" + DataPreparation.prepareString(offers.get(i)) + "');");
                 }
                 ArrayList<String> orders = customer.getOrderNrs();
+                id = 0;
                 for (int i = 0; i < orders.size(); i++) {
-                    stmt.executeUpdate("INSERT INTO Customer_Order (Customer_id, Manager_id, OrderNr) VALUES (" + customer_id + ", " + manager_id + ", '" + DataPreparation.prepareString(orders.get(i)) + "');");
+                    rs = stmt.executeQuery("SELECT MAX(id) as id FROM Customer_Order;");
+                    if (rs.next()) {
+                        id = rs.getInt("id");
+                    }
+                    stmt.executeUpdate("INSERT INTO Customer_Order (id, Customer_id, Manager_id, OrderNr) VALUES (" + (id+1+i) + ", " + customer_id + ", " + manager_id + ", '" + DataPreparation.prepareString(orders.get(i)) + "');");
                 }
                 rs = stmt.executeQuery("SELECT id FROM LastModification WHERE Element_id = " + customer_id + " AND type = " + DatabaseManagement.getCUSTOMER_TYPE() + ";");
                 if (rs.next()){
                     last_id = rs.getInt("id");
+                    stmt.executeUpdate("DELETE FROM LastModification WHERE id = " + last_id + ";");
                 }
-                stmt.executeUpdate("DELETE FROM LastModification WHERE id = " + last_id + ";");
-                stmt.executeUpdate("INSERT INTO LastModification (Type, Manager_id, Element_id, date) VALUES (" + DatabaseManagement.getCUSTOMER_TYPE() + ", " + manager_id + ", " + customer_id + ", NOW();");                                
+                id = 0;
+                rs = stmt.executeQuery("SELECT MAX(id) as id FROM LastModification;");
+                if (rs.next()) {
+                    id = rs.getInt("id");
+                }
+                stmt.executeUpdate("INSERT INTO LastModification (id, Type, Manager_id, Element_id, date) VALUES (" + (id+1) + ", " + DatabaseManagement.getCUSTOMER_TYPE() + ", " + manager_id + ", " + customer_id + ", NOW();");                                
                 return 1;
             }
             else {

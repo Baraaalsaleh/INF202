@@ -5,6 +5,12 @@
  */
 package berichtserstellungssystem.GUI;
 
+import berichtserstellungssystem.DatabaseManagement.CustomerManagement;
+import berichtserstellungssystem.DatabaseManagement.DatabaseManagement;
+import berichtserstellungssystem.Resource.*;
+import java.sql.SQLException;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -14,33 +20,11 @@ import javax.swing.table.DefaultTableModel;
  */
 public class CustomerFrame extends javax.swing.JFrame {
 
+    private int process = 0;
+    private String name = "";
+    private Manager me = null;
     JTable table1;
     JTable table2;
-    
-    
-    public void clearTable(int table) {
-        String col = "";
-        DefaultTableModel model = new DefaultTableModel();
-        if (table == 1){
-            table1.setModel(model);
-            col = "İş Emri No";
-            model.addColumn(col);
-            model.addRow(new Object[]{""});
-            table1.setModel(model);
-        }
-        else {
-            table1.setModel(model);
-            col = "Teklif No";
-            model.addColumn(col);
-            model.addRow(new Object[]{""});
-            table2.setModel(model);
-        }
-        
-        
-        
-        
-    }
-    
     
     /**
      * Creates new form CustomerFrame
@@ -50,7 +34,95 @@ public class CustomerFrame extends javax.swing.JFrame {
         this.table2 = jTable2;
         initComponents();
     }
+    
+    public CustomerFrame(int process, String name, Manager manager) {
+        this.table1 = jTable1;
+        this.table2 = jTable2;
+        this.process = process;
+        this.name = name;
+        this.me = manager;
+        initComponents();
+    }
 
+    public void clearAll() {
+        jTextField1.setText("Adı");
+        jTextField2.setText("Adres");
+        String col = "";
+        DefaultTableModel model = new DefaultTableModel();
+        table1.setModel(model);
+        col = "İş Emri No";
+        model.addColumn(col);
+        model.addRow(new Object[]{""});
+        table1.setModel(model);
+        table2.setModel(model);
+        col = "Teklif No";
+        model.addColumn(col);
+        model.addRow(new Object[]{""});
+        table2.setModel(model); 
+    }
+    
+    private void message (int done) {
+        JDialog dialog = new JDialog();
+        dialog.setAlwaysOnTop(true);
+        String func = "Ekleme";
+        if (process == 2) {
+            func = "Güncelleme";
+        }
+        else if (process == 3) {
+            func = "Silme";
+        }
+        if (done == 1) {
+            JOptionPane.showMessageDialog(dialog, func  + " işlemi başarıyla tamamlanmıştır", "Başarılı İşlem", JOptionPane.PLAIN_MESSAGE);
+            if (process == 1 || process == 3) {
+                clearAll();
+            }
+        }
+        else if (done == 0) {
+            JOptionPane.showMessageDialog(dialog, "Girdiğiniz müşteri adı daha önce veri tabanında bulunduğu için kullanılmaz!", "Hatalı İşlem", JOptionPane.PLAIN_MESSAGE);
+            if (process == 3) { process = 2;}
+        }
+        else {
+            JOptionPane.showMessageDialog(dialog, "Veri tabanına bağlanırken hata oluştu!, Lütfen tekrar deneyin.", "Hatalı Bağlantı", JOptionPane.PLAIN_MESSAGE);
+            try {
+                DatabaseManagement.con.close();
+            } catch (SQLException ex) {
+                System.out.println(ex);
+            }
+            DatabaseManagement.con = DatabaseManagement.connect();
+            if (process == 3) { process = 2;}
+        }
+    }
+    
+    private Customer collectData() {
+        Customer temp = new Customer();
+        temp.setName(jTextField1.getText());
+        temp.setAddress(jTextField2.getText());
+        for (int i = 0; i < table1.getRowCount(); i++) {
+            String tempS = table1.getValueAt(i, 0).toString();
+            if (tempS.equals("")) {
+                temp.addOrderNrs(tempS);
+            }
+        }
+        for (int i = 0; i < table2.getRowCount(); i++) {
+            String tempS = table2.getValueAt(i, 0).toString();
+            if (tempS.equals("")) {
+                temp.addOfferNrs(tempS);
+            }
+        }
+        return temp;
+    }
+    
+    private void add() {
+        Customer toAdd = collectData();
+        int res = CustomerManagement.insertCustomer(toAdd, me);
+        message(res);
+    }
+    
+    private void update() {
+        Customer toUpdate = collectData();
+        int res = CustomerManagement.updateCustomer(toUpdate, me);
+        message(res);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -354,12 +426,17 @@ public class CustomerFrame extends javax.swing.JFrame {
 
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
         int row = jTable1.getSelectedRow();
-        jTable1.setValueAt("", row, 0);
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.removeRow(row);
+        jTable1.setModel(model);
+        //jTable1.setValueAt("", row, 0);
     }//GEN-LAST:event_jLabel6MouseClicked
 
     private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
         int row = jTable2.getSelectedRow();
-        jTable2.setValueAt("", row, 0);
+        DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
+        model.removeRow(row);
+        jTable2.setModel(model);
     }//GEN-LAST:event_jLabel7MouseClicked
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed

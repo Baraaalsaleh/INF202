@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.event.*;
 import javax.swing.table.*;
@@ -40,6 +42,7 @@ public class Menu extends javax.swing.JFrame {
      */
     public Menu() {
         if (!PersonManagement.findAdmin()) {
+            
             new Personel(0, 1, me).setVisible(true);
         }
         initComponents();
@@ -65,6 +68,10 @@ public class Menu extends javax.swing.JFrame {
         if (me.getStatus() == 1) {
             jMenuItem11.setVisible(!a);
             jMenuItem25.setVisible(!a);
+        }
+        else {
+            jMenuItem11.setVisible(a);
+            jMenuItem25.setVisible(a);
         }
     }
     
@@ -137,7 +144,18 @@ public class Menu extends javax.swing.JFrame {
             model.addRow(row);
         }
         t.setModel(model);
-    }    
+    }
+    
+    private void addRows(String col, ArrayList<String> list, JTable table) {
+        Object[] row = new Object[25];
+        DefaultTableModel model = new DefaultTableModel();
+        model.addColumn(col);
+        for (String s : list) {
+            row[0] = s;
+            model.addRow(row);
+        }
+        table.setModel(model);
+    }
     
     private void prepareTables (int table) {
         if (table == 1) {
@@ -159,6 +177,18 @@ public class Menu extends javax.swing.JFrame {
                 addEquipments(res, jTable3);
                 res = EquipmentManagement.equipments(0, 25, 3, me);
                 addEquipments(res, jTable4);
+        }
+        else if (table == 4) {
+            ArrayList<String> res = OthersManagement.projects(0, 25);
+            addRows("Proje", res, jTable2);
+        }
+        else if (table == 5) {
+            ArrayList<String> res = OthersManagement.surfaceConditions(0, 25);
+            addRows("Yüzay durumu", res, jTable2);
+        }
+        else if (table == 6) {
+            ArrayList<String> res = OthersManagement.stageOfExaminations(0, 25);
+            addRows("Muayene aşaması", res, jTable2);
         }
         
     }
@@ -211,11 +241,11 @@ public class Menu extends javax.swing.JFrame {
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem8 = new javax.swing.JMenuItem();
+        jMenuItem11 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenuItem19 = new javax.swing.JMenuItem();
         jMenuItem24 = new javax.swing.JMenuItem();
         jMenuItem10 = new javax.swing.JMenuItem();
-        jMenuItem11 = new javax.swing.JMenuItem();
         jMenuItem12 = new javax.swing.JMenuItem();
         jMenuItem13 = new javax.swing.JMenuItem();
         jMenuItem14 = new javax.swing.JMenuItem();
@@ -530,6 +560,16 @@ public class Menu extends javax.swing.JFrame {
         });
         jMenu3.add(jMenuItem8);
 
+        jMenuItem11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/person.png"))); // NOI18N
+        jMenuItem11.setText("Personel Yönetici");
+        jMenuItem11.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jMenuItem11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem11ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem11);
+
         jMenu4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/machine.png"))); // NOI18N
         jMenu4.setText("Ekipman");
         jMenu4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -565,16 +605,6 @@ public class Menu extends javax.swing.JFrame {
             }
         });
         jMenu3.add(jMenuItem10);
-
-        jMenuItem11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/person.png"))); // NOI18N
-        jMenuItem11.setText("Personel Yönetici");
-        jMenuItem11.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jMenuItem11.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem11ActionPerformed(evt);
-            }
-        });
-        jMenu3.add(jMenuItem11);
 
         jMenuItem12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/project.png"))); // NOI18N
         jMenuItem12.setText("Proje");
@@ -664,11 +694,21 @@ public class Menu extends javax.swing.JFrame {
         jMenuItem21.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/surface.png"))); // NOI18N
         jMenuItem21.setText("Yuzay Durumu");
         jMenuItem21.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jMenuItem21.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem21ActionPerformed(evt);
+            }
+        });
         jMenu7.add(jMenuItem21);
 
         jMenuItem22.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/stage.png"))); // NOI18N
         jMenuItem22.setText("Muayene Aşaması");
         jMenuItem22.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jMenuItem22.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem22ActionPerformed(evt);
+            }
+        });
         jMenu7.add(jMenuItem22);
 
         jMenuBar1.add(jMenu7);
@@ -794,6 +834,18 @@ public class Menu extends javax.swing.JFrame {
             System.out.println(type);
             new Ekipman(type, 2, name, me).setVisible(true);
         }
+        else if (jLabel1.getText().equals("Projeler")) {
+            String proje = jTable2.getValueAt(row, 0).toString();
+            new Proje(1, 2, proje, me).setVisible(true);
+        }
+        else if (jLabel1.getText().equals("Yüzay Durumu")) {
+            String yuzay = jTable2.getValueAt(row, 0).toString();
+            new Proje(2, 2, yuzay, me).setVisible(true);
+        }
+        else if (jLabel1.getText().equals("Muayene Aşamaları")) {
+            String muayene = jTable2.getValueAt(row, 0).toString();
+            new Proje(3, 2, muayene, me).setVisible(true);
+        }
         
     }//GEN-LAST:event_jTable2MouseClicked
 
@@ -841,8 +893,31 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem25ActionPerformed
 
     private void jMenuItem20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem20ActionPerformed
-        System.out.println(me.getStatus());
+        jScrollPane2.setVisible(true);
+        while (jTabbedPane1.getComponentCount() != 1) {
+           jTabbedPane1.removeTabAt(1);
+        }
+        jLabel1.setText("Projeler");
+        prepareTables(4);
     }//GEN-LAST:event_jMenuItem20ActionPerformed
+
+    private void jMenuItem21ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem21ActionPerformed
+        jScrollPane2.setVisible(true);
+        while (jTabbedPane1.getComponentCount() != 1) {
+           jTabbedPane1.removeTabAt(1);
+        }
+        jLabel1.setText("Yüzay Durumu");
+        prepareTables(5);
+    }//GEN-LAST:event_jMenuItem21ActionPerformed
+
+    private void jMenuItem22ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem22ActionPerformed
+        jScrollPane2.setVisible(true);
+        while (jTabbedPane1.getComponentCount() != 1) {
+           jTabbedPane1.removeTabAt(1);
+        }
+        jLabel1.setText("Muayene Aşamaları");
+        prepareTables(6);
+    }//GEN-LAST:event_jMenuItem22ActionPerformed
     
     private void showPanel (String s){
         this.setMinimumSize(this.getMinimumSize());

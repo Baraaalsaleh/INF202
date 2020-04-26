@@ -28,11 +28,15 @@ public class ReportManagement extends DatabaseManagement{
                 int operator_id = report.getOperator_id();
                 int evaluator_id = report.getEvaluator_id();
                 int confirmation_id = report.getConfirmation_id();   
-                
-                stmt.executeUpdate("INSERT INTO Report (customer, projectName, inspectionPlace, inspectionClass, evaluationStandard, inspectionProcedure, inspectionScope, drawingNo, "
+                int id = 0;
+                rs = stmt.executeQuery("SELECT MAX(id) as id  FROM Report;");
+                if (rs.next()) {
+                    id = rs.getInt("id");
+                }
+                stmt.executeUpdate("INSERT INTO Report (id, customer, projectName, inspectionPlace, inspectionClass, evaluationStandard, inspectionProcedure, inspectionScope, drawingNo, "
                         + "surfaceCondition, stageOfExamination, page, reportNumber, reportDate, orderNumber, offerNumber, equipment, heatTreatment, inspectionDates, descriptionOfAttachments,"
                         + " operator_Employee_id, evaluator_Employee_id, confirmation_Employee_id, customerName, customerLevel, bottom, type) VALUES\n"
-                        + "('" + DataPreparation.prepareString(report.getCustomer()) + "', '" + DataPreparation.prepareString(report.getProjectName()) + "', '" 
+                        + "(" + (id+1) + ", '" + DataPreparation.prepareString(report.getCustomer()) + "', '" + DataPreparation.prepareString(report.getProjectName()) + "', '" 
                         + DataPreparation.prepareString(report.getInspectionPlace()) + "', '" + DataPreparation.prepareString(report.getInspectionClass()) + "', '"
                         + DataPreparation.prepareString(report.getEvaluationStandard()) + "', '" + DataPreparation.prepareString(report.getInspectionProcedure()) + "', '" 
                         + DataPreparation.prepareString(report.getInspectionScope()) + "', '" + DataPreparation.prepareString(report.getDrawingNo()) + "', '"
@@ -47,20 +51,30 @@ public class ReportManagement extends DatabaseManagement{
                 rs = stmt.executeQuery("SELECT id FROM Report WHERE customer = '" + DataPreparation.prepareString(report.getCustomer()) + "' AND reportNumber = '" + DataPreparation.prepareString(report.getReportNumber()) + "';");
                 if (rs.next()){
                     report_id = rs.getInt("id");
-                }                   
-                stmt.executeUpdate("INSERT INTO MagneticReport (Report_id, poleDistance, MPCarrier, magTech, UVIntensity, distanceOfLight, examinationArea, currentType, Luxmeter,"
+                }
+                id = 0;
+                rs = stmt.executeQuery("SELECT MAX(id) as id FROM MagneticReport;");
+                if (rs.next()) {
+                    id = rs.getInt("id");
+                }
+                stmt.executeUpdate("INSERT INTO MagneticReport (id, Report_id, poleDistance, MPCarrier, magTech, UVIntensity, distanceOfLight, examinationArea, currentType, Luxmeter,"
                 + " testMedium, demagnetization, surfaceTemperature, gaussFieldStrength, surfaceCondition2, identificationOfLightEquip, liftingTest, buttWeld, filletWeld, standardDeviations) VALUES\n"
-                + "(" + report_id + ", '" + DataPreparation.prepareString(report.getPoleDistance()) + "', '" + DataPreparation.prepareString(report.getMpCarrier()) + "', '" + DataPreparation.prepareString(report.getMagTech())
+                + "(" + (id+1) + ", " + report_id + ", '" + DataPreparation.prepareString(report.getPoleDistance()) + "', '" + DataPreparation.prepareString(report.getMpCarrier()) + "', '" + DataPreparation.prepareString(report.getMagTech())
                 + "', '" + DataPreparation.prepareString(report.getUvIntensity()) + "', '" + DataPreparation.prepareString(report.getDistanceOfLight()) + "', '" + DataPreparation.prepareString(report.getExaminationArea())
                 + "', '" + DataPreparation.prepareString(report.getCurrentType()) + "', '" + DataPreparation.prepareString(report.getLuxmeter()) + "', '" + DataPreparation.prepareString(report.getTestMedium())
                 + "', '" + DataPreparation.prepareString(report.getDemagnetization()) + "', '" + DataPreparation.prepareString(report.getSurfaceTemperature()) + "', '" + DataPreparation.prepareString(report.getGaussFieldStrength())
                 + "', '" + DataPreparation.prepareString(report.getSurfaceCondition2()) + "', '" + DataPreparation.prepareString(report.getIdentificationOfLightEquip()) + "', '" + DataPreparation.prepareString(report.getLiftingTest())
                 + "', " + report.isButtWeld() + ", " + report.isFilletWeld() + ", '" + DataPreparation.prepareString(report.getStandardDeviations()) + "'); ");
                 ArrayList<MagneticInspectionResult> results = report.getInspectionResults();
+                id = 0;
                 for (int i = 0; i < results.size(); i++) {
+                    rs = stmt.executeQuery("SELECT MAX(id) as id FROM MagneticResults;");
+                    if (rs.next()) {
+                        id = rs.getInt("id");
+                    }
                     MagneticInspectionResult temp = results.get(i);
-                    stmt.executeUpdate("INSERT INTO MagneticResults (Report_id, weldPieceNo, testLength, weldingProcess, thickness, diameter, defectType, defectLocation, result) "
-                    + "VALUES (" + report_id + ", '" + DataPreparation.prepareString(temp.getWeldPieceNo()) + "', '" + DataPreparation.prepareString(temp.getTestLength()) + "', '" 
+                    stmt.executeUpdate("INSERT INTO MagneticResults (id, Report_id, weldPieceNo, testLength, weldingProcess, thickness, diameter, defectType, defectLocation, result) "
+                    + "VALUES (" + (id+1+i) + ", " + report_id + ", '" + DataPreparation.prepareString(temp.getWeldPieceNo()) + "', '" + DataPreparation.prepareString(temp.getTestLength()) + "', '" 
                     + DataPreparation.prepareString(temp.getWeldingProcess()) + "', '" + DataPreparation.prepareString(temp.getThickness()) + "', '"
                     + DataPreparation.prepareString(temp.getDiameter()) + "', '" + DataPreparation.prepareString(temp.getDefectType()) + "', '" 
                     + DataPreparation.prepareString(temp.getDefectLocation()) + "', '" + DataPreparation.prepareString(temp.getResult()) + "');");
@@ -86,15 +100,20 @@ public class ReportManagement extends DatabaseManagement{
             rs = stmt.executeQuery("SELECT id FROM Report WHERE customer = '" + DataPreparation.prepareString(report.getCustomer()) + "' AND reportNumber = '" + DataPreparation.prepareString(report.getReportNumber()) + "';");
 
             if (rs.next() == false) {
+                int id = 0;
+                rs = stmt.executeQuery("SELECT MAX(id) as id FROM Report;");
+                if (rs.next()) {
+                    id = rs.getInt("id");
+                }
                 String reportDate = Common.date_toString(report.getReportDate());
                 int operator_id = report.getOperator_id();
                 int evaluator_id = report.getEvaluator_id();
                 int confirmation_id = report.getConfirmation_id();
                 
-                stmt.executeUpdate("INSERT INTO Report (customer, projectName, inspectionPlace, inspectionClass, evaluationStandard, inspectionProcedure, inspectionScope, drawingNo, "
+                stmt.executeUpdate("INSERT INTO Report (id, customer, projectName, inspectionPlace, inspectionClass, evaluationStandard, inspectionProcedure, inspectionScope, drawingNo, "
                         + "surfaceCondition, stageOfExamination, page, reportNumber, reportDate, orderNumber, offerNumber, equipment, heatTreatment, inspectionDates, descriptionOfAttachments,"
                         + " operator_Employee_id, evaluator_Employee_id, confirmation_Employee_id, customerName, customerLevel, bottom, type) VALUES\n"
-                        + "('" + DataPreparation.prepareString(report.getCustomer()) + "', '" + DataPreparation.prepareString(report.getProjectName()) + "', '" 
+                        + "(" + (id+1) + ", '" + DataPreparation.prepareString(report.getCustomer()) + "', '" + DataPreparation.prepareString(report.getProjectName()) + "', '" 
                         + DataPreparation.prepareString(report.getInspectionPlace()) + "', '" + DataPreparation.prepareString(report.getInspectionClass()) + "', '"
                         + DataPreparation.prepareString(report.getEvaluationStandard()) + "', '" + DataPreparation.prepareString(report.getInspectionProcedure()) + "', '" 
                         + DataPreparation.prepareString(report.getInspectionScope()) + "', '" + DataPreparation.prepareString(report.getDrawingNo()) + "', '"
@@ -109,10 +128,15 @@ public class ReportManagement extends DatabaseManagement{
                 rs = stmt.executeQuery("SELECT id FROM Report WHERE customer = '" + DataPreparation.prepareString(report.getCustomer()) + "' AND reportNumber = '" + DataPreparation.prepareString(report.getReportNumber()) + "';");
                 if (rs.next()){
                     report_id = rs.getInt("id");
-                }                   
-                stmt.executeUpdate("INSERT INTO RadiographicReport (Report_id, usedDevice, ir192, se75, xRay, focalSpotSize , exposureTime, filmFocusDistance, pbScreens, filters,"
+                }
+                id = 0;
+                rs = stmt.executeQuery("SELECT MAX(id) as id FROM RadiographicReport;");
+                if (rs.next()) {
+                    id = rs.getInt("id");
+                }
+                stmt.executeUpdate("INSERT INTO RadiographicReport (id, Report_id, usedDevice, ir192, se75, xRay, focalSpotSize , exposureTime, filmFocusDistance, pbScreens, filters,"
                         + " filmBrand, d4MX125, d5T200, d7AA400, en , astm, sourceSide, filmSide, automatic , manuel , temp , filmQuantity, testArrangements) VALUES "
-                        + "(" + report_id + ", '" + DataPreparation.prepareString(report.getUsedDevice()) + "', " + report.isIr192() + ", " + report.isSe75() + ", " + report.isxRay() + ", '" 
+                        + "(" + (id+1) + ", " + report_id + ", '" + DataPreparation.prepareString(report.getUsedDevice()) + "', " + report.isIr192() + ", " + report.isSe75() + ", " + report.isxRay() + ", '" 
                         + DataPreparation.prepareString(report.getFocalSpotSize()) + "' , '" + DataPreparation.prepareString(report.getExposureTime()) + "', '" + DataPreparation.prepareString(report.getFilmFocusDistance()) 
                         + "', '" + DataPreparation.prepareString(report.getPbScreens()) + "', '" + DataPreparation.prepareString(report.getFilters()) + "', '"
                         + report.getFilmBrand() + "', " + report.isD4MX125() + ", " + report.isD5T200() + ", " + report.isD7AA400() + ", " + report.isEn() + ", " + report.isAstm() 
@@ -120,11 +144,16 @@ public class ReportManagement extends DatabaseManagement{
                         + report.getFilmQuantityString() + "', '" + report.getTestArrangementsString() + "');");
 
                 ArrayList<RadiographicInspectionResult> results = report.getInspectionResults();
+                id = 0;
                 for (int i = 0; i < results.size(); i++) {
+                    rs = stmt.executeQuery("SELECT MAX(id) as id FROM RadiographicResults;");
+                    if (rs.next()) {
+                        id = rs.getInt("id");
+                    }
                     RadiographicInspectionResult temp = results.get(i);
-                    stmt.executeUpdate("INSERT INTO RadiographicResults (Report_id, shootingArea, filmNo, materialType, weldingType, welderNr, position, thickness, penetremeter,"
+                    stmt.executeUpdate("INSERT INTO RadiographicResults (id, Report_id, shootingArea, filmNo, materialType, weldingType, welderNr, position, thickness, penetremeter,"
                             + " visibleQ, density, f1012, f1016, f1024, f1036, f1048, f3040, defectLocation, defectType, preEvaluation, finalEvaluation) VALUES "
-                            + "(" + report_id + ", '" + DataPreparation.prepareString(temp.getShootingArea()) + "', '" + DataPreparation.prepareString(temp.getFilmNo()) + "', '" 
+                            + "(" + (id+1) + ", " + report_id + ", '" + DataPreparation.prepareString(temp.getShootingArea()) + "', '" + DataPreparation.prepareString(temp.getFilmNo()) + "', '" 
                             + DataPreparation.prepareString(temp.getMaterialType()) + "', '" + DataPreparation.prepareString(temp.getWeldingType()) + "', '" 
                             + DataPreparation.prepareString(temp.getWelderNr()) + "', '" + DataPreparation.prepareString(temp.getPosition()) + "', '" + DataPreparation.prepareString(temp.getThickness())
                             + "', '" + DataPreparation.prepareString(temp.getPenetremeter()) + "', '" + DataPreparation.prepareString(temp.getVisibleQ()) + "', '" + DataPreparation.prepareString(temp.getDensity()) 
@@ -208,11 +237,16 @@ public class ReportManagement extends DatabaseManagement{
                         + DataPreparation.prepareString(report.getStandardDeviations()) + "' WHERE Report_id = " + report_id + ";");
                 
                 stmt.executeUpdate("DELETE FROM MangneticResults WHERE Report_id = " + report_id + ";");
+                int id = 0;
                 ArrayList<MagneticInspectionResult> results = report.getInspectionResults();
                 for (int i = 0; i < results.size(); i++) {
+                    rs = stmt.executeQuery("SELECT MAX(id) as id FROM MagneticResults;");
+                    if (rs.next()) {
+                        id = rs.getInt("id");
+                    }
                     MagneticInspectionResult temp = results.get(i);
-                    stmt.executeUpdate("INSERT INTO MagneticResults (Report_id, weldPieceNo, testLength, weldingProcess, thickness, diameter, defectType, defectLocation, result) "
-                    + "VALUES (" + report_id + ", '" + DataPreparation.prepareString(temp.getWeldPieceNo()) + "', '" + DataPreparation.prepareString(temp.getTestLength()) + "', '" + DataPreparation.prepareString(temp.getWeldingProcess()) 
+                    stmt.executeUpdate("INSERT INTO MagneticResults (id, Report_id, weldPieceNo, testLength, weldingProcess, thickness, diameter, defectType, defectLocation, result) "
+                    + "VALUES (" + (id+1) + ", " + report_id + ", '" + DataPreparation.prepareString(temp.getWeldPieceNo()) + "', '" + DataPreparation.prepareString(temp.getTestLength()) + "', '" + DataPreparation.prepareString(temp.getWeldingProcess()) 
                             + "', '" + DataPreparation.prepareString(temp.getThickness()) + "', '" + DataPreparation.prepareString(temp.getDiameter()) + "', '" + DataPreparation.prepareString(temp.getDefectType())
                             + "', '" + DataPreparation.prepareString(temp.getDefectLocation()) + "', '" + DataPreparation.prepareString(temp.getResult()) + "');");
                 }                 
@@ -262,11 +296,16 @@ public class ReportManagement extends DatabaseManagement{
                         + "', testArrangements = '" + report.getTestArrangementsString() + "' WHERE Report_id = " + report_id + ";");
                 stmt.executeUpdate("DELETE FROM RadiographicResults WHERE Report_id = " + report_id + ";");                     
                 ArrayList<RadiographicInspectionResult> results = report.getInspectionResults();
+                int id = 0;
                 for (int i = 0; i < results.size(); i++) {
+                    rs = stmt.executeQuery("SELECT MAX(id) as id FROM MagneticResults;");
+                    if (rs.next()) {
+                        id = rs.getInt("id");
+                    }
                     RadiographicInspectionResult temp = results.get(i);
-                    stmt.executeUpdate("INSERT INTO RadiographicResults (Report_id, shootingArea, filmNo, materialType, weldingType, welderNr, position, thickness, penetremeter,"
+                    stmt.executeUpdate("INSERT INTO RadiographicResults (id, Report_id, shootingArea, filmNo, materialType, weldingType, welderNr, position, thickness, penetremeter,"
                             + " visibleQ, density, f1012, f1016, f1024, f1036, f1048, f3040, defectLocation, defectType, preEvaluation, finalEvaluation) VALUES "
-                            + "(" + report_id + ", '" + DataPreparation.prepareString(temp.getShootingArea()) + "', '" + DataPreparation.prepareString(temp.getFilmNo()) + "', '" 
+                            + "(" + (id+1) + ", " + report_id + ", '" + DataPreparation.prepareString(temp.getShootingArea()) + "', '" + DataPreparation.prepareString(temp.getFilmNo()) + "', '" 
                             + DataPreparation.prepareString(temp.getMaterialType()) + "', '" + DataPreparation.prepareString(temp.getWeldingType()) + "', '" + DataPreparation.prepareString(temp.getWelderNr())
                             + "', '" + DataPreparation.prepareString(temp.getPosition()) + "', '" + DataPreparation.prepareString(temp.getThickness()) + "', '" + DataPreparation.prepareString(temp.getPenetremeter()) + "', '"
                             + DataPreparation.prepareString(temp.getVisibleQ()) + "', '" + DataPreparation.prepareString(temp.getDensity()) + "', '" + DataPreparation.prepareString(temp.getF1012())
@@ -300,29 +339,6 @@ public class ReportManagement extends DatabaseManagement{
         }
         return rs;
     }
-    //Abfragen von allen Berichten, die von einem bestimmten Mitarbeiter bestätigt sind
-    public static ResultSet getMyVerifiedReport (Person person, int limit) {
-        ResultSet rs = null;
-        try {
-            stmt = con.createStatement();
-            int id = 0;
-            rs = stmt.executeQuery("SELECT id FROM Person WHERE PersonalNr = " + person.getPersonalNr() + ";");
-            if (rs.next()){
-                id = rs.getInt("id");
-                }      
-            rs = stmt.executeQuery("SELECT Customer, reportNumber, type, reportDate FROM Report WHERE "
-                            + "operator_Employee_id = " + id + "  OR evaluator_Employee_id = " + id
-                            + " OR confirmation_Employee_id = " + id + " LIMIT " + limit + ";");
-            if (rs.next()) {
-                return rs;
-            }   
-        }
-        catch (SQLException e){
-            System.out.println("getMyVerifiedReport "  + e);
-            return rs;
-        }
-        return rs;
-    }    
     //Abfragen von Reportinformationen
     public static ResultSet[] getReport (int id) {
         ResultSet[] rs = new ResultSet[3];

@@ -8,6 +8,7 @@ package berichtserstellungssystem.DatabaseManagement;
 import berichtserstellungssystem.Resource.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -23,7 +24,12 @@ public class OthersManagement extends DatabaseManagement{
             stmt = con.createStatement();
             rs = stmt.executeQuery("SELECT id FROM Project WHERE project = '" + name + "';");
             if (!rs.next()){
-                stmt.executeUpdate("INSERT INTO Project (project) VALUES ('" + name + "')");
+                int id = 0;
+                rs = stmt.executeQuery("SELECT MAX(id) as id FROM project;");
+                if (rs.next()) {
+                    id = rs.getInt("id");
+                }
+                stmt.executeUpdate("INSERT INTO Project (id, project) VALUES (" + (id+1) + ", '" + name + "')");
                 return 1;
             }
             else {
@@ -42,7 +48,12 @@ public class OthersManagement extends DatabaseManagement{
             stmt = con.createStatement();
             rs = stmt.executeQuery("SELECT id FROM SurfaceCondition WHERE surfaceCondition = '" + name + "';");
             if (!rs.next()){
-                stmt.executeUpdate("INSERT INTO SurfaceCondition (surfaceCondition) VALUES ('" + name + "')");
+                int id = 0;
+                rs = stmt.executeQuery("SELECT MAX(id) as id FROM SurfaceCondition;");
+                if (rs.next()) {
+                    id = rs.getInt("id");
+                }
+                stmt.executeUpdate("INSERT INTO SurfaceCondition (id, surfaceCondition) VALUES (" + (id+1) + ", '" + name + "')");
                 return 1;
             }
             else {
@@ -61,7 +72,12 @@ public class OthersManagement extends DatabaseManagement{
             stmt = con.createStatement();
             rs = stmt.executeQuery("SELECT id FROM StageOfExamination WHERE stageOfExamination = '" + name + "';");
             if (!rs.next()){
-                stmt.executeUpdate("INSERT INTO StageOfExamination (stageOfExamination) VALUES ('" + name + "')");
+                int id = 0;
+                rs = stmt.executeQuery("SELECT MAX(id) as id FROM StageOfExamination;");
+                if (rs.next()) {
+                    id = rs.getInt("id");
+                }
+                stmt.executeUpdate("INSERT INTO StageOfExamination (id, stageOfExamination) VALUES (" + (id+1) + ", '" + name + "')");
                 return 1;
             }
             else {
@@ -194,5 +210,78 @@ public class OthersManagement extends DatabaseManagement{
         
     }
     
+    public static ArrayList<String> projects (int start, int limit) {
+        ArrayList<String> res = new ArrayList();
+        ResultSet rs = null;
+        int count = 0;
+        String temp = "";
+        try {
+            stmt = con.createStatement();
+            while (count < limit) {
+                rs = stmt.executeQuery("SELECT * FROM Project WHERE id > " + start + ";");
+                if (rs.next()) {
+                    temp = rs.getString("project");
+                    start = rs.getInt("id");
+                    res.add(temp);
+                }
+                else {
+                    break;
+                }
+                count++;
+            }
+        } catch (SQLException e) {
+            System.out.println("projects " + e);
+        }
+        return res;
+    }
     
+    public static ArrayList<String> surfaceConditions (int start, int limit) {
+        ArrayList<String> res = new ArrayList();
+        ResultSet rs = null;
+        int count = 0;
+        String temp = "";
+        try {
+            stmt = con.createStatement();
+            while (count < limit) {
+                rs = stmt.executeQuery("SELECT * FROM SurfaceCondition WHERE id > " + start + ";");
+                if (rs.next()) {
+                    temp = rs.getString("surfaceCondition");
+                    start = rs.getInt("id");
+                    res.add(temp);
+                }
+                else {
+                    break;
+                }
+                count++;
+            }
+        } catch (SQLException e) {
+            System.out.println("surfaceConditions " + e);
+        }
+        return res;
+    }
+    
+    public static ArrayList<String> stageOfExaminations (int start, int limit) {
+        ArrayList<String> res = new ArrayList();
+        ResultSet rs = null;
+        int count = 0;
+        String temp = "";
+        try {
+            stmt = con.createStatement();
+            while (count < limit) {
+                rs = stmt.executeQuery("SELECT * FROM StageOfExamination WHERE id > " + start + ";");
+                if (rs.next()) {
+                    temp = rs.getString("stageOfExamination");
+                    start = rs.getInt("id");
+                    res.add(temp);
+                }
+                else {
+                    break;
+                }
+                count++;
+            }
+        } catch (SQLException e) {
+            System.out.println("stageOfExaminations " + e);
+        }
+        return res;
+    }
 }

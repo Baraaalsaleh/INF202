@@ -93,7 +93,7 @@ public class Proje extends javax.swing.JFrame {
             }
         }
         else if (done == 0) {
-            JOptionPane.showMessageDialog(dialog, "Girdiğiniz " + jLabel1.getText() + " adı daha önce veri tabanında bulunduğu için kullanılmaz!", "Hatalı İşlem", JOptionPane.PLAIN_MESSAGE);
+            JOptionPane.showMessageDialog(dialog, "Girdiğiniz " + jLabel1.getText() + " daha önce veri tabanında bulunduğu için kullanılmaz!", "Hatalı İşlem", JOptionPane.PLAIN_MESSAGE);
             if (process == 3) { process = 2;}
         }
         else {
@@ -137,6 +137,20 @@ public class Proje extends javax.swing.JFrame {
         massege(res);
     }
 
+    void delete() {
+        int res;
+        if (type == 1) {
+            res = OthersManagement.deleteProject(name);
+        }
+        else if (type == 2) {
+            res = OthersManagement.deleteSurfaceCondition(name);
+        }
+        else {
+            res = OthersManagement.deleteStageOfExamination(name);
+        }
+        massege(res);
+        this.dispose();
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -194,6 +208,11 @@ public class Proje extends javax.swing.JFrame {
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/minus.png"))); // NOI18N
         jLabel4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel4MouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -265,6 +284,11 @@ public class Proje extends javax.swing.JFrame {
             update();
         }
     }//GEN-LAST:event_jLabel3MouseClicked
+
+    private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
+        process = 3;
+        new Verify(name + " silmekten emin misiniz?", this, type+4).setVisible(true);
+    }//GEN-LAST:event_jLabel4MouseClicked
 
     /**
      * @param args the command line arguments

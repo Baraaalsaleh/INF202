@@ -11,6 +11,10 @@ import berichtserstellungssystem.Resource.*;
 import berichtserstellungssystem.Report.*;
 import java.awt.Dimension;
 import java.awt.*;
+import java.awt.print.PageFormat;
+import java.awt.print.Printable;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.text.*;
@@ -69,6 +73,33 @@ public class Report extends javax.swing.JFrame {
         //jScrollPane1.add(panel1, grid);
         panel1.setVisible(true);*/
     }
+    
+    private void printReport(JPanel panel, double a, double b) {
+        PrinterJob print = PrinterJob.getPrinterJob();
+        print.setJobName("Print Report");
+        print.setPrintable(new Printable() {
+            @Override
+            public int print(Graphics grphcs, PageFormat pf, int i) throws PrinterException {
+                if (i > 0) {
+                    return Printable.NO_SUCH_PAGE;
+                }
+                Graphics2D graphics = (Graphics2D) grphcs;
+                graphics.translate(50, 30);
+                graphics.scale(a, b);
+                panel.paint(graphics);
+                return Printable.PAGE_EXISTS;
+            }
+        });
+        
+        boolean returningResult = print.printDialog();
+        if (returningResult) {
+            try {
+                print.print();
+            } catch (PrinterException e){
+                JOptionPane.showMessageDialog(this, "Hatalı İşlem" + e.getMessage());
+            }
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -79,9 +110,8 @@ public class Report extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jPanel3 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jLayeredPane1 = new javax.swing.JLayeredPane();
         jTabbedPane1 = new javax.swing.JTabbedPane();
@@ -408,61 +438,43 @@ public class Report extends javax.swing.JFrame {
             }
         });
 
-        jPanel1.setBackground(new java.awt.Color(0, 102, 102));
+        jPanel1.setBackground(java.awt.SystemColor.inactiveCaption);
         jPanel1.setBorder(javax.swing.BorderFactory.createCompoundBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED), javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED)));
         jPanel1.setMaximumSize(new java.awt.Dimension(403, 800));
         jPanel1.setMinimumSize(new java.awt.Dimension(403, 800));
         jPanel1.setPreferredSize(new java.awt.Dimension(403, 800));
 
-        jButton1.setBackground(new java.awt.Color(255, 255, 255));
-        jButton1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jButton1.setText("İleri");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/PDF.png"))); // NOI18N
+        jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel1MouseClicked(evt);
             }
         });
 
-        jButton2.setBackground(new java.awt.Color(255, 255, 255));
-        jButton2.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jButton2.setText("Geri");
-        jButton2.setEnabled(false);
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/save.png"))); // NOI18N
+        jLabel2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 87, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel2)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
-                .addGap(19, 19, 19))
+                .addComponent(jLabel1)
+                .addContainerGap(594, Short.MAX_VALUE))
         );
 
         jScrollPane2.setMaximumSize(new java.awt.Dimension(781, 778));
@@ -578,7 +590,7 @@ public class Report extends javax.swing.JFrame {
         _offerNo.setBorder(null);
         jPanel16.add(_offerNo, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 220, 200, 40));
 
-        jPanel5.add(jPanel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 140, 1120, 270));
+        jPanel5.add(jPanel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(244, 150, 1120, 270));
 
         jPanel17.setOpaque(false);
         jPanel17.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -754,7 +766,7 @@ public class Report extends javax.swing.JFrame {
         _en.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jPanel17.add(_en, new org.netbeans.lib.awtextra.AbsoluteConstraints(801, 132, 90, -1));
 
-        jPanel5.add(jPanel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 430, 1350, 340));
+        jPanel5.add(jPanel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(13, 440, 1350, 340));
 
         jPanel18.setOpaque(false);
         jPanel18.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -802,7 +814,7 @@ public class Report extends javax.swing.JFrame {
         _testArr1.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
         jPanel18.add(_testArr1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 9, 190, 200));
 
-        jPanel5.add(jPanel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 810, 1290, 220));
+        jPanel5.add(jPanel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(64, 820, 1290, 220));
 
         jPanel19.setOpaque(false);
         jPanel19.setLayout(null);
@@ -818,7 +830,7 @@ public class Report extends javax.swing.JFrame {
         jPanel19.add(_inspectionDates);
         _inspectionDates.setBounds(10, 0, 670, 40);
 
-        jPanel5.add(jPanel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 1260, 680, 90));
+        jPanel5.add(jPanel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(684, 1270, 680, 90));
 
         jPanel20.setOpaque(false);
         jPanel20.setLayout(null);
@@ -1423,7 +1435,7 @@ public class Report extends javax.swing.JFrame {
         jPanel20.add(_defectLocation5);
         _defectLocation5.setBounds(930, 196, 60, 40);
 
-        jPanel5.add(jPanel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 1510, 1310, 240));
+        jPanel5.add(jPanel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(54, 1520, 1310, 240));
 
         jPanel21.setOpaque(false);
         jPanel21.setLayout(null);
@@ -1474,12 +1486,12 @@ public class Report extends javax.swing.JFrame {
         _bottom.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         _bottom.setBorder(null);
         jPanel21.add(_bottom);
-        _bottom.setBounds(70, 250, 1020, 30);
+        _bottom.setBounds(84, 255, 1020, 30);
 
-        jPanel5.add(jPanel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 1790, 1280, 270));
+        jPanel5.add(jPanel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(84, 1800, 1280, 270));
 
         jLabel38.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/radio2.png"))); // NOI18N
-        jPanel5.add(jLabel38, new org.netbeans.lib.awtextra.AbsoluteConstraints(-3, 1, -1, 2060));
+        jPanel5.add(jLabel38, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, 2060));
 
         jTabbedPane1.addTab("Radyografik Muayene Raporu", jPanel5);
 
@@ -1540,7 +1552,7 @@ public class Report extends javax.swing.JFrame {
         _MsurfaceCondition.setPreferredSize(new java.awt.Dimension(470, 46));
         jPanel4.add(_MsurfaceCondition, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 163, 180, 40));
 
-        jPanel6.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 140, 200, 260));
+        jPanel6.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 150, 200, 260));
 
         jPanel2.setOpaque(false);
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -1593,7 +1605,7 @@ public class Report extends javax.swing.JFrame {
         _MinspectionStandard.setPreferredSize(new java.awt.Dimension(470, 46));
         jPanel2.add(_MinspectionStandard, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 163, 450, 40));
 
-        jPanel6.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 140, 470, 260));
+        jPanel6.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 150, 470, 260));
 
         jPanel8.setOpaque(false);
         jPanel8.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -1645,7 +1657,7 @@ public class Report extends javax.swing.JFrame {
         _MorderNo.setPreferredSize(new java.awt.Dimension(470, 46));
         jPanel8.add(_MorderNo, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 163, 140, 40));
 
-        jPanel6.add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(1190, 140, 160, 260));
+        jPanel6.add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(1200, 150, 160, 260));
 
         jPanel9.setOpaque(false);
         jPanel9.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -1705,7 +1717,7 @@ public class Report extends javax.swing.JFrame {
         _UV.setPreferredSize(new java.awt.Dimension(470, 46));
         jPanel9.add(_UV, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 210, 210, 40));
 
-        jPanel6.add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 430, 230, 310));
+        jPanel6.add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 440, 230, 310));
 
         jPanel10.setOpaque(false);
         jPanel10.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -1764,7 +1776,7 @@ public class Report extends javax.swing.JFrame {
         _demagnetization.setPreferredSize(new java.awt.Dimension(470, 46));
         jPanel10.add(_demagnetization, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 210, 280, 40));
 
-        jPanel6.add(jPanel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 430, 290, 310));
+        jPanel6.add(jPanel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 440, 290, 310));
 
         jPanel11.setOpaque(false);
         jPanel11.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -1814,7 +1826,7 @@ public class Report extends javax.swing.JFrame {
         _identification.setPreferredSize(new java.awt.Dimension(470, 46));
         jPanel11.add(_identification, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 210, 190, 40));
 
-        jPanel6.add(jPanel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(1140, 430, 210, 310));
+        jPanel6.add(jPanel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(1150, 440, 210, 310));
 
         jPanel12.setOpaque(false);
         jPanel12.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -1878,7 +1890,7 @@ public class Report extends javax.swing.JFrame {
         jLabel40.setOpaque(true);
         jPanel12.add(jLabel40, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 124, 80, 40));
 
-        jPanel6.add(jPanel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 740, 660, 180));
+        jPanel6.add(jPanel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 750, 660, 180));
 
         jPanel14.setBackground(new java.awt.Color(255, 255, 255));
         jPanel14.setOpaque(false);
@@ -1912,7 +1924,7 @@ public class Report extends javax.swing.JFrame {
         jPanel14.add(_MinspectionDates);
         _MinspectionDates.setBounds(5, 55, 1030, 40);
 
-        jPanel6.add(jPanel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 920, 1050, 150));
+        jPanel6.add(jPanel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 930, 1050, 150));
 
         jPanel13.setOpaque(false);
         jPanel13.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -2637,7 +2649,7 @@ public class Report extends javax.swing.JFrame {
         _weldingProcess9.setPreferredSize(new java.awt.Dimension(470, 46));
         jPanel13.add(_weldingProcess9, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 325, 190, 30));
 
-        jPanel6.add(jPanel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 1160, 1350, 400));
+        jPanel6.add(jPanel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 1170, 1350, 400));
 
         jPanel15.setOpaque(false);
         jPanel15.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -2694,7 +2706,7 @@ public class Report extends javax.swing.JFrame {
                 _MbottomActionPerformed(evt);
             }
         });
-        jPanel15.add(_Mbottom, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 252, 900, 30));
+        jPanel15.add(_Mbottom, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 255, 900, 30));
 
         _MconfirmationLevel.setEditable(false);
         _MconfirmationLevel.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
@@ -2716,13 +2728,13 @@ public class Report extends javax.swing.JFrame {
         _MevaluatorLevel.setPreferredSize(new java.awt.Dimension(470, 46));
         jPanel15.add(_MevaluatorLevel, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 55, 330, 40));
 
-        jPanel6.add(jPanel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 1600, 1100, 270));
+        jPanel6.add(jPanel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 1610, 1100, 270));
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/magnetic2.png"))); // NOI18N
         jLabel3.setMaximumSize(new java.awt.Dimension(1350, 1900));
         jLabel3.setMinimumSize(new java.awt.Dimension(1350, 1900));
         jLabel3.setPreferredSize(new java.awt.Dimension(1350, 1900));
-        jPanel6.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 1870));
+        jPanel6.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, 1870));
 
         jTabbedPane1.addTab("Manyetik Parçacık Muayene Raporu", jPanel6);
 
@@ -2735,8 +2747,8 @@ public class Report extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(5, 5, 5)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -2744,8 +2756,7 @@ public class Report extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 789, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -2760,11 +2771,6 @@ public class Report extends javax.swing.JFrame {
         //this.setLocation((screenSize.width-this.getWidth()), (screenSize.height-this.getHeight())/4);
         //jPanel1.setSize(this.getSize());      
     }//GEN-LAST:event_formWindowOpened
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        collectDataRadiographic();
-        collectDataMagnetic();
-    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTabbedPane1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTabbedPane1MousePressed
         jTabbedPane1.setSize(1350, 2100);
@@ -2786,6 +2792,37 @@ public class Report extends javax.swing.JFrame {
     private void _inspectionPlaceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event__inspectionPlaceActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event__inspectionPlaceActionPerformed
+
+    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
+    	int index = jTabbedPane1.getSelectedIndex();
+        jLabel1.requestFocusInWindow();
+        if (index == 0) {
+            printReport(jPanel5, 0.38, 0.34);
+        }
+        else {
+            printReport(jPanel6, 0.38, 0.36);
+        }
+        
+        
+        /* 
+        try
+    	{
+    	 // create a PDF Printer Job
+    	 PDFPrinterJob printer = (PDFPrinterJob)PDFPrinterJob.getPrinterJob ();
+    	 // set the printable object 
+    	 printer.setPrintable (new PrintPanelToPDF());
+    	 // set number of copies to 1 
+    	 printer.setCopies (1);
+    	 // print and save the document
+    	 printer.print("C:\\test\\mydoc.pdf");
+    	 // output done message 
+    	 System.out.println("Done!");
+    	}
+    	catch (Throwable t)
+    	{
+    	 t.printStackTrace();
+    	}*/
+    }//GEN-LAST:event_jLabel1MouseClicked
 
     /**
      * @param args the command line arguments
@@ -3107,8 +3144,8 @@ public class Report extends javax.swing.JFrame {
     private javax.swing.JTextField _weldingType4;
     private javax.swing.JTextField _weldingType5;
     private javax.swing.JCheckBox _xRay;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel35;
@@ -3132,7 +3169,6 @@ public class Report extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel20;
     private javax.swing.JPanel jPanel21;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;

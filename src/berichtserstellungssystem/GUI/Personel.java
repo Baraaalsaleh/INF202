@@ -243,7 +243,7 @@ public class Personel extends javax.swing.JFrame {
         return temp;
     }
  
-    private void massege (int done) {
+    private void message (int done) {
         JDialog dialog = new JDialog();
         dialog.setAlwaysOnTop(true);
         String func = "Ekleme";
@@ -279,17 +279,17 @@ public class Personel extends javax.swing.JFrame {
         if (type == DatabaseManagement.getEMPLOYEE_STATUS()) {
             Employee toAdd = employeeDataCollector();
             int done = PersonManagement.insertEmployee(toAdd, me);      
-            massege(done);
+            message(done);
         }
         else if (type == DatabaseManagement.getMANAGER_STATUS()){
             Manager toAdd = managerDataCollector();
             int done = PersonManagement.insertManager(toAdd, DatabaseManagement.getMANAGER_STATUS());
-            massege(done);
+            message(done);
         }
         else {
             Manager toAdd = managerDataCollector();
             int done = PersonManagement.insertManager(toAdd, DatabaseManagement.getAdmin_STATUS());
-            massege(done);
+            message(done);
             this.dispose();
         }
     }
@@ -299,12 +299,12 @@ public class Personel extends javax.swing.JFrame {
             Employee toUpdate = employeeDataCollector();
             System.out.println(toUpdate.getName() + " " + toUpdate.getLastname());
             int done = PersonManagement.updateEmployee(toUpdate, me);      
-            massege(done);
+            message(done);
         }
         else if (type == DatabaseManagement.getMANAGER_STATUS()){
             Manager toUpdate = managerDataCollector();
             int done = PersonManagement.updateManager(toUpdate);
-            massege(done);
+            message(done);
         }
         else {
             Manager toUpdate = managerDataCollector();
@@ -312,7 +312,7 @@ public class Personel extends javax.swing.JFrame {
             System.out.println("It was successfully done, and as a profe, your name is " + toUpdate.getName() + " " + toUpdate.getLastname() + " " + toUpdate.getPersonalNr()
             + " and you were born on the " + toUpdate.getBirthDate() + " and this is another test " + Common.date_toString(toUpdate.getBirthDate()) + toUpdate.getUsername()
             + "    " +toUpdate.getPassword());
-            massege(done);
+            message(done);
         }
     }
     
@@ -320,7 +320,7 @@ public class Personel extends javax.swing.JFrame {
         
         long PNR = Long.parseLong(jTextField9.getText());
         process = 3;
-        massege(PersonManagement.deletePerson(PNR));
+        message(PersonManagement.deletePerson(PNR));
         this.dispose();
     }
 
@@ -367,6 +367,9 @@ public class Personel extends javax.swing.JFrame {
         setMinimumSize(new java.awt.Dimension(900, 600));
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 formWindowOpened(evt);
             }
@@ -808,6 +811,9 @@ public class Personel extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField11ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        if (type == 0 && process == 1) {
+            this.setDefaultCloseOperation(1);
+        }
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -961,6 +967,10 @@ public class Personel extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         new Verify((jTextField1.getText() + " " + jTextField2.getText() + "'in bilgileri silmekten emin misiniz?"),this, 1).setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // TODO add your handling code here:
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments
