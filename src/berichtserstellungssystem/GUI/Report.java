@@ -63,15 +63,15 @@ public class Report extends javax.swing.JFrame {
         StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
         doc.setParagraphAttributes(0, doc.getLength(), center, false);
         jScrollPane2.getVerticalScrollBar().setUnitIncrement(40);
-        /*panel1 = new test();
-        //jScrollPane1.setLayout(layout);
-        jPanel2.setLayout(layout);
-        GridBagConstraints grid = new GridBagConstraints();
-        grid.gridx = 0;
-        grid.gridy = 0;
-        jPanel2.add(panel1, grid);
-        //jScrollPane1.add(panel1, grid);
-        panel1.setVisible(true);*/
+    }
+    
+    public Report(Customer customer, String orderNr, String offerNr, Employee operator, Employee evaluator, Employee confirmation, MagneticEquipment equip1, RadiographicEquipment equip2,String proje, String surfaceCondition, String stageOfExamination) {
+        initComponents();
+        StyledDocument doc = _MPCarrier.getStyledDocument();
+        SimpleAttributeSet center = new SimpleAttributeSet();
+        StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
+        doc.setParagraphAttributes(0, doc.getLength(), center, false);
+        jScrollPane2.getVerticalScrollBar().setUnitIncrement(40);
     }
     
     private void printReport(JPanel panel, double a, double b) {
