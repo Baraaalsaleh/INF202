@@ -118,7 +118,7 @@ public class Common {
     }
     
     public static void writeUsingBufferedWriter(String data, int noOfLines) {
-        File file = new File("C:/Users/Baraa/Desktop/BufferedWriter.txt");
+        File file = new File("Data/BufferedWriter.txt");
         FileWriter fr = null;
         BufferedWriter br = null;
         String dataWithNewLine=data+System.getProperty("line.separator");
@@ -141,10 +141,9 @@ public class Common {
     }
 
     public static String readUsingBufferReader (){
-        String data = null;
+        String data = "";
         try {
-            data = "";
-            File file = new File("C:/Users/Baraa/Desktop/BufferedWriter.txt"); 
+            File file = new File("Data/BufferedWriter.txt"); 
             BufferedReader br = new BufferedReader(new FileReader(file)); 
             String st; 
             while ((st = br.readLine()) != null) 

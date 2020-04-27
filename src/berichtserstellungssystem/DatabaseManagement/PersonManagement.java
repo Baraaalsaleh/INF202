@@ -487,6 +487,10 @@ public class PersonManagement extends DatabaseManagement{
             }
         } catch (SQLException ex) {
             System.out.println("findAdmin " + ex);
+            if (ex.toString().equals("java.sql.SQLSyntaxErrorException: user lacks privilege or object not found: PERSON")) {
+                System.out.println ("there is no database");
+                DatabaseManagement.createDataBase();
+            }
         }
         return res;       
     }

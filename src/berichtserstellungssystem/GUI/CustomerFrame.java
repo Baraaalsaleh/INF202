@@ -156,6 +156,11 @@ public class CustomerFrame extends javax.swing.JFrame {
         setMaximumSize(new java.awt.Dimension(1000, 624));
         setMinimumSize(new java.awt.Dimension(1000, 624));
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(0, 0, 102));
 
@@ -455,6 +460,10 @@ public class CustomerFrame extends javax.swing.JFrame {
             update();
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        jButton3.setVisible(false);
+    }//GEN-LAST:event_formWindowOpened
 
     /**
      * @param args the command line arguments

@@ -288,7 +288,7 @@ public class Login extends javax.swing.JFrame {
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         String res = Common.readUsingBufferReader();
-        if (res != null) {
+        if (!res.equals("")) {
             String[] data = res.split(",");
             _username.setText(data[0]);
             _password.setText(data[1]);

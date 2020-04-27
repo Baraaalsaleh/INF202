@@ -143,7 +143,7 @@ public class Personel extends javax.swing.JFrame {
     
     private boolean everyThingIsOkay () {
         if (Verification.verifyName(jTextField1.getText().trim()) && Verification.verifyName(jTextField2.getText().trim()) && Verification.verifyTelephoneNumber(jTextField4.getText().trim())
-                && Verification.verifyEmail(jTextField5.getText().trim()) && jTextField6.getText().trim().length() > 10 && Verification.verifyDate(jTextField7.getText().trim()) 
+                && Verification.verifyEmail(jTextField5.getText().trim())  && Verification.verifyDate(jTextField7.getText().trim()) 
                 && Verification.verifyTCnumber(jTextField8.getText().trim()) && Verification.isNumber(jTextField9.getText().trim())){
             if (type == DatabaseManagement.getEMPLOYEE_STATUS()) {
                 if (Verification.verifyDate(jTextField10.getText().trim()) && Verification.isNumber(jTextField11.getText().trim())) {
