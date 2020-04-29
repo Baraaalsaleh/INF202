@@ -99,6 +99,7 @@ public class DatabaseTest {
             Assert.assertFalse("Manager: " + e, true);
         }
     }
+    
     @Test
     public void customerTableIsThere() {
         Connection con = DatabaseManagement.con;
@@ -112,6 +113,7 @@ public class DatabaseTest {
             Assert.assertFalse("Customer: " + e, true);
         }
     }
+    
     @Test
     public void customerOfferTableIsThere() {
         Connection con = DatabaseManagement.con;
@@ -125,6 +127,7 @@ public class DatabaseTest {
             Assert.assertFalse("Customer_Offer: " + e, true);
         }
     }
+    
     @Test
     public void customerOrderTableIsThere() {
         Connection con = DatabaseManagement.con;
@@ -138,6 +141,7 @@ public class DatabaseTest {
             Assert.assertFalse("Customer_Order: " + e, true);
         }
     }
+    
     @Test
     public void equipmentTableIsThere() {
         Connection con = DatabaseManagement.con;
@@ -151,6 +155,7 @@ public class DatabaseTest {
             Assert.assertFalse("Equipment: " + e, true);
         }
     }
+    
     @Test
     public void magneticEquipmentTableIsThere() {
         Connection con = DatabaseManagement.con;
@@ -164,6 +169,7 @@ public class DatabaseTest {
             Assert.assertFalse("MagneticEquipment: " + e, true);
         }
     }
+    
     @Test
     public void RadiographicEquipmentTableIsThere() {
         Connection con = DatabaseManagement.con;
@@ -177,6 +183,7 @@ public class DatabaseTest {
             Assert.assertFalse("RadiographicEquipment: " + e, true);
         }
     }
+    
     @Test
     public void reportTableIsThere() {
         Connection con = DatabaseManagement.con;
@@ -192,6 +199,7 @@ public class DatabaseTest {
             Assert.assertFalse("Report: " + e, true);
         }
     }
+    
     @Test
     public void magneticReportTableIsThere() {
         Connection con = DatabaseManagement.con;
@@ -206,6 +214,7 @@ public class DatabaseTest {
             Assert.assertFalse("MagneticReport: " + e, true);
         }
     }
+    
     @Test
     public void radiographicReportTableIsThere() {
         Connection con = DatabaseManagement.con;
@@ -220,6 +229,7 @@ public class DatabaseTest {
             Assert.assertFalse("RadiographicReport: " + e, true);
         }
     }
+    
     @Test
     public void magneticResultsTableIsThere() {
         Connection con = DatabaseManagement.con;
@@ -233,6 +243,7 @@ public class DatabaseTest {
             Assert.assertFalse("MagneticResults: " + e, true);
         }
     }
+    
     @Test
     public void radiographicResultsTableIsThere() {
         Connection con = DatabaseManagement.con;
@@ -247,6 +258,7 @@ public class DatabaseTest {
             Assert.assertFalse("RadiographicResults: " + e, true);
         }
     }
+    
     @Test
     public void lastModificationTableIsThere() {
         Connection con = DatabaseManagement.con;
@@ -260,6 +272,7 @@ public class DatabaseTest {
             Assert.assertFalse("LastModification: " + e, true);
         }
     }
+    
     @Test
     public void projectTableIsThere() {
         Connection con = DatabaseManagement.con;
@@ -273,6 +286,7 @@ public class DatabaseTest {
             Assert.assertFalse("Project: " + e, true);
         }
     }
+    
     @Test
     public void surfaceConditionTableIsThere() {
         Connection con = DatabaseManagement.con;
@@ -286,6 +300,7 @@ public class DatabaseTest {
             Assert.assertFalse("SurfaceCondition: " + e, true);
         }
     }
+    
     @Test
     public void stageOfExaminationTableIsThere() {
         Connection con = DatabaseManagement.con;

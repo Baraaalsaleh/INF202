@@ -10,6 +10,7 @@ package berichtserstellungssystem;
  * @author Baraa
  */
 public class DataPreparation {
+    //Diese Klasse ist da nur für spätere Änderungen, falls die eingegebenen Daten bearbeitet werden sollte, befor sie in der Datenbank gespeichert werden
     public static String prepareString (String string) {
         
         return string;

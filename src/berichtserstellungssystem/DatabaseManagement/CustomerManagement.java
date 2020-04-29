@@ -70,6 +70,7 @@ public class CustomerManagement extends DatabaseManagement{
         }
             catch (SQLException e) {
                 System.out.println("insertCustomer " + e);
+                //Falls das Einfügen nicht komplett funktionierte, wird die Verbindung an die Datenbank erneut und die Daten dieses Kundens komplett gelöscht
                 con = DatabaseManagement.connect();
                 deleteCustomer(customer.getName());
                 return -1;

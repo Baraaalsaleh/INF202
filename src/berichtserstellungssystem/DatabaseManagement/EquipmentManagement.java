@@ -56,6 +56,7 @@ public class EquipmentManagement extends DatabaseManagement{
                     return 1;
                     }
                 else {
+                    //Falls das Einfügen nicht erfolgreich war, wird die Verbindung an die Datenbank erneut und die Daten dieser Testmaschine komplett gelöscht
                     con = DatabaseManagement.connect();
                     deleteEquipment(equip.getName());
                     return -1;
@@ -66,6 +67,9 @@ public class EquipmentManagement extends DatabaseManagement{
             }
         }
             catch (SQLException e) {
+                //Falls das Einfügen nicht komplett funktionierte, wird die Verbindung an die Datenbank erneut und die Daten dieser Testmaschine komplett gelöscht
+                con = DatabaseManagement.connect();
+                deleteEquipment(equip.getName());
                 System.out.println("insertMagnetic " + e);
                 return -1;
             }
@@ -111,6 +115,7 @@ public class EquipmentManagement extends DatabaseManagement{
         }
             catch (SQLException e) {
                 System.out.println("insertRadiographic " + e);
+                //Falls das Einfügen nicht komplett funktionierte, wird die Verbindung an die Datenbank erneut und die Daten dieser Testmaschine komplett gelöscht
                 con = DatabaseManagement.connect();
                 deleteEquipment(equip.getName());
                 return -1;

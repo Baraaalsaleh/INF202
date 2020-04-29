@@ -392,6 +392,11 @@ public class Menu extends javax.swing.JFrame {
             }
         ));
         jTable4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jTable4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable4MouseClicked(evt);
+            }
+        });
         jScrollPane5.setViewportView(jTable4);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -868,7 +873,40 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem17ActionPerformed
 
     private void jTable3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable3MouseClicked
-        // TODO add your handling code here:
+        int row = jTable3.getSelectedRow();
+        if (jLabel1.getText().equals("Personel")) {
+            String personalNr = jTable3.getValueAt(row, 2).toString();
+            new Personel(DatabaseManagement.getEMPLOYEE_STATUS(), 2, Long.parseLong(personalNr), me).setVisible(true);
+        }
+        else if (jLabel1.getText().equals("Personel Yönetici")) {
+            String personalNr = jTable3.getValueAt(row, 2).toString();
+            new Personel(DatabaseManagement.getMANAGER_STATUS(), 2, Long.parseLong(personalNr), me).setVisible(true);
+        }
+        else if (jLabel1.getText().equals("Ekipmanlar")) {
+            String name = jTable3.getValueAt(row, 0).toString();
+            System.out.println(name);
+            int type;
+            if (jTable3.getValueAt(row, 1).equals("Manyetik")) {
+                type = DatabaseManagement.getMAGNETIC_TYPE();
+            }
+            else {
+                type = DatabaseManagement.getRADIOGRAPHIC_TYPE();
+            }
+            System.out.println(type);
+            new Ekipman(type, 2, name, me).setVisible(true);
+        }
+        else if (jLabel1.getText().equals("Projeler")) {
+            String proje = jTable3.getValueAt(row, 0).toString();
+            new Proje(1, 2, proje, me).setVisible(true);
+        }
+        else if (jLabel1.getText().equals("Yüzay Durumu")) {
+            String yuzay = jTable3.getValueAt(row, 0).toString();
+            new Proje(2, 2, yuzay, me).setVisible(true);
+        }
+        else if (jLabel1.getText().equals("Muayene Aşamaları")) {
+            String muayene = jTable3.getValueAt(row, 0).toString();
+            new Proje(3, 2, muayene, me).setVisible(true);
+        }
     }//GEN-LAST:event_jTable3MouseClicked
 
     private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
@@ -918,6 +956,43 @@ public class Menu extends javax.swing.JFrame {
         jLabel1.setText("Muayene Aşamaları");
         prepareTables(6);
     }//GEN-LAST:event_jMenuItem22ActionPerformed
+
+    private void jTable4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable4MouseClicked
+        int row = jTable4.getSelectedRow();
+        if (jLabel1.getText().equals("Personel")) {
+            String personalNr = jTable4.getValueAt(row, 2).toString();
+            new Personel(DatabaseManagement.getEMPLOYEE_STATUS(), 2, Long.parseLong(personalNr), me).setVisible(true);
+        }
+        else if (jLabel1.getText().equals("Personel Yönetici")) {
+            String personalNr = jTable4.getValueAt(row, 2).toString();
+            new Personel(DatabaseManagement.getMANAGER_STATUS(), 2, Long.parseLong(personalNr), me).setVisible(true);
+        }
+        else if (jLabel1.getText().equals("Ekipmanlar")) {
+            String name = jTable4.getValueAt(row, 0).toString();
+            System.out.println(name);
+            int type;
+            if (jTable4.getValueAt(row, 1).equals("Manyetik")) {
+                type = DatabaseManagement.getMAGNETIC_TYPE();
+            }
+            else {
+                type = DatabaseManagement.getRADIOGRAPHIC_TYPE();
+            }
+            System.out.println(type);
+            new Ekipman(type, 2, name, me).setVisible(true);
+        }
+        else if (jLabel1.getText().equals("Projeler")) {
+            String proje = jTable4.getValueAt(row, 0).toString();
+            new Proje(1, 2, proje, me).setVisible(true);
+        }
+        else if (jLabel1.getText().equals("Yüzay Durumu")) {
+            String yuzay = jTable4.getValueAt(row, 0).toString();
+            new Proje(2, 2, yuzay, me).setVisible(true);
+        }
+        else if (jLabel1.getText().equals("Muayene Aşamaları")) {
+            String muayene = jTable4.getValueAt(row, 0).toString();
+            new Proje(3, 2, muayene, me).setVisible(true);
+        }
+    }//GEN-LAST:event_jTable4MouseClicked
     
     private void showPanel (String s){
         this.setMinimumSize(this.getMinimumSize());

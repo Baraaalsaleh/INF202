@@ -17,7 +17,7 @@ import javax.swing.JOptionPane;
  * @author Baraa
  */
 public class Common {
-    
+    //Diese Funktion nimmt die Jahr, Monat und Taginformationen eines java.util.Date und gibt sie als ein String der Form "JJJJ-MM-TT"
     public static String date_toString(Date date){
         if (date != null) {
             return ((date.getYear()+1900) + "-" + (date.getMonth()+1) + "-" + date.getDate());
@@ -25,6 +25,7 @@ public class Common {
         return "";
     }
     
+    //Diese Funktion nimmt die Jahr, Monat und Taginformationen eines java.util.Date und gibt sie als ein String der Form "TT-MM-JJJJ"
     public static String date_toStringReverse(Date date){
         if (date != null) {
             return (date.getDate()+ "-" + (date.getMonth()+1) + "-" + (date.getYear()+1900));
@@ -32,6 +33,7 @@ public class Common {
         return "";
     } 
     
+    //Diese Funktion testet die Gültigkeit eines Datum
     private static Date makeItDate (String[] temp) {
         Date date = new Date();
         try {
@@ -96,10 +98,9 @@ public class Common {
         catch (NumberFormatException e) {
             return null;
         }
-    }  
+    }
     
-    
-    
+    //Diese Funktion versucht ein java.util.Date aus einem String der Form "TT-MM-JJJJ" oder "TT/MM/JJJJ" zu machen
     public static Date string_toDate(String s){
         Date date = new Date();
         String[] temp = s.split("-");
@@ -117,6 +118,7 @@ public class Common {
         }
     }
     
+    //Schreiben von Daten in eine Datei
     public static void writeUsingBufferedWriter(String data, int noOfLines) {
         File file = new File("Data/BufferedWriter.txt");
         FileWriter fr = null;
@@ -140,6 +142,7 @@ public class Common {
         }
     }
 
+    //Lesen von Daten aus einer Datei
     public static String readUsingBufferReader (){
         String data = "";
         try {
@@ -157,8 +160,9 @@ public class Common {
             System.out.println(e);
         }
         return data;
-        }
+    }
     
+    //Diese Methode macht den ersten Buchstaben Groß
     public static String makeFirstLetterCapital (String s) {
         String a = s.charAt(0) + " ";
         a = a.toUpperCase();

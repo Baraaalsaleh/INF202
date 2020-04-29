@@ -15,7 +15,7 @@ public class Verification {
     final private static int nameLength = 20;
     final private static int passwordLength = 20;    
     
-    
+    //Testet ob das eingegebene String ein Name sein kann
     public static boolean verifyName (String string) {
         if (string.length() <= nameLength && string.length() >= 3){
             if (string.contains("/") || string.contains("*") || string.contains("+") || string.contains("\\") || string.contains("%") || string.contains("$") || string.contains("'") || string.contains("!") || string.contains("@") || string.contains("#") 
@@ -35,6 +35,7 @@ public class Verification {
         }
     }
     
+    //Testet ob das eingegebene String keine türkische Buchstaben beinhaltet
     public static boolean justEnglish (String string) {
         if (string.toLowerCase().contains("ş") || string.toLowerCase().contains("ğ") || string.toLowerCase().contains("ü") || string.toLowerCase().contains("ç") || string.toLowerCase().contains("ö") || string.contains("İ")) {
             return false;
@@ -44,6 +45,7 @@ public class Verification {
         }
     }
     
+    //Testet ob das eingegebene String ein gültiger Benutzername ist
     public static boolean verifyUsername (String string) {
         if (string.length() <= nameLength && string.length() > 3){
             if (string.contains("/") || string.contains("*") || string.contains("+") || string.contains("\\") || string.contains("%") || string.contains("$") || string.contains("'") || string.contains("!") || string.contains("@") || string.contains("#") 
@@ -66,6 +68,7 @@ public class Verification {
         }
     }
     
+    //Testet ob das eingegebene String eine E-Mailadresse sein kann
     public static boolean verifyEmail (String string){
         if (string.length() <= 64 && string.length() > 3){
             if (string.contains("/") || string.contains("*") || string.contains("+") || string.contains("\\") || string.contains("%") || string.contains("$") || string.contains("'") || string.contains("!") || string.contains("#") 
@@ -90,6 +93,7 @@ public class Verification {
         }
     }
     
+    //Testet ob das eingegebene passwort gültig ist
     public static boolean verifyPassword (String string) {
         if (string.length() <= 32 && string.length() > 7){
             if (string.contains("'") || string.contains(" ") || string.contains("\"")){
@@ -109,8 +113,9 @@ public class Verification {
         }
     }
     
+    //Testet ob das eingegebene String eine Telephonenummer sein kann
     public static boolean verifyTelephoneNumber (String string) {
-        if (string.length() > 6 && string.length() < 20) {
+        if (string.length() > 3 && string.length() < 20) {
             return isNumber(string);
         }
         else {
@@ -119,6 +124,7 @@ public class Verification {
         }
     }
     
+    //Testet die Gültigkeit des eingegebene TC-Nummer
     public static boolean verifyTCnumber (String string) {
         if (string.length() == 11) {
             return isNumber(string);
@@ -129,6 +135,7 @@ public class Verification {
         }
     }
     
+    //Testet ob das eingegebene String eine Zahl ist
     public static boolean isNumber (String string) {
             try {
                 Long.parseLong(string);
@@ -140,6 +147,7 @@ public class Verification {
             }
     }
     
+    //Testet die Gültigkeit eines Datum
     public static boolean verifyDate (String string) {
         Date test = Common.string_toDate(string);
         if (test == null) {
