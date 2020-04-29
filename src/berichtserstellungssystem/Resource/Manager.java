@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  *
@@ -93,4 +94,24 @@ public class Manager extends Person{
     public String getPassword() {
         return password;
     }
+
+    @Override
+    public String toString() {
+        return "Manager{" + "username=" + username + ", password=" + password + super.toString() +'}';
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 29 * hash + Objects.hashCode(this.username);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+    
+    
+    
 }

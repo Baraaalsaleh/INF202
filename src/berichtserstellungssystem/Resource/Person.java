@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  *
@@ -169,13 +170,40 @@ public class Person {
         if (this.tcNr != other.tcNr) {
             return false;
         }
+        if (this.telephone != other.telephone) {
+            return false;
+        }
+        if (this.personalNr != other.personalNr) {
+            return false;
+        }
+        if (this.status != other.status) {
+            return false;
+        }
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        if (!Objects.equals(this.lastname, other.lastname)) {
+            return false;
+        }
+        if (!Objects.equals(this.gender, other.gender)) {
+            return false;
+        }
+        if (!Objects.equals(this.address, other.address)) {
+            return false;
+        }
+        if (!Objects.equals(this.email, other.email)) {
+            return false;
+        }
+        if (!Objects.equals(this.birthDate, other.birthDate)) {
+            return false;
+        }
         return true;
     }
 
     
-   
-    
-    
-    
-    
+
+    @Override
+    public String toString() {
+        return "Person{" + "name=" + name + ", lastname=" + lastname + ", gender=" + gender + ", address=" + address + ", email=" + email + ", tcNr=" + tcNr + ", telephone=" + telephone + ", personalNr=" + personalNr + ", birthDate=" + birthDate + ", status=" + status + '}';
+    }    
 }

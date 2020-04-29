@@ -18,7 +18,7 @@ public class Employee extends Person{
     private Date permitionEndDate = new Date();
 
     
-    public Employee(int level, String name, String lastname, String gender, String address, String email, long TCNr, long telephone, long personalNr, Date birthDate) {
+    public Employee(int level, String name, String lastname, String gender, String address, String email, long TCNr, long telephone, long personalNr, Date birthDate, Date permitionEndDate) {
         super(name, lastname, gender, address, email, TCNr, telephone, personalNr, birthDate);
         this.level = level;
     }
@@ -61,6 +61,13 @@ public class Employee extends Person{
     public void setPermitionEndDate(Date permitionEndDate) {
         this.permitionEndDate = permitionEndDate;
     }
+
+    @Override
+    public String toString() {
+        return "Employee{" + "level=" + level + ", permitionEndDate=" + permitionEndDate + super.toString() + '}';
+    }
+    
+    
     
     
 }

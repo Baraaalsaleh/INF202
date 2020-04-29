@@ -134,12 +134,15 @@ public class PersonManagement extends DatabaseManagement{
             rs = stmt.executeQuery("SELECT id FROM Person WHERE PersonalNr = " + personalNr + ";");
             if (rs.next()){
                 id = rs.getInt("id");
-                }      
+                }
+            else {
+                return 0;
+            }
             stmt.executeUpdate("DELETE FROM Person WHERE PersonalNr = " + personalNr + ";");         
             stmt.executeUpdate("DELETE FROM Employee WHERE Person_id = " + id + ";");         
             stmt.executeUpdate("DELETE FROM LastModification WHERE Element_id = " + id + ";");                 
             return 1;
-            } 
+            }
         catch (SQLException e) {
             System.out.println("deletePerson " + e);
             return -1;

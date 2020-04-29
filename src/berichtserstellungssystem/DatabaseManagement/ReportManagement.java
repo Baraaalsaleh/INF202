@@ -35,7 +35,7 @@ public class ReportManagement extends DatabaseManagement{
                 }
                 stmt.executeUpdate("INSERT INTO Report (id, customer, projectName, inspectionPlace, inspectionClass, evaluationStandard, inspectionProcedure, inspectionScope, drawingNo, "
                         + "surfaceCondition, stageOfExamination, page, reportNumber, reportDate, orderNumber, offerNumber, equipment, heatTreatment, inspectionDates, descriptionOfAttachments,"
-                        + " operator_Employee_id, evaluator_Employee_id, confirmation_Employee_id, customerName, customerLevel, bottom, type) VALUES\n"
+                        + " operator_Employee_id, evaluator_Employee_id, confirmation_Employee_id, bottom, type) VALUES\n"
                         + "(" + (id+1) + ", '" + DataPreparation.prepareString(report.getCustomer()) + "', '" + DataPreparation.prepareString(report.getProjectName()) + "', '" 
                         + DataPreparation.prepareString(report.getInspectionPlace()) + "', '" + DataPreparation.prepareString(report.getInspectionClass()) + "', '"
                         + DataPreparation.prepareString(report.getEvaluationStandard()) + "', '" + DataPreparation.prepareString(report.getInspectionProcedure()) + "', '" 
@@ -112,7 +112,7 @@ public class ReportManagement extends DatabaseManagement{
                 
                 stmt.executeUpdate("INSERT INTO Report (id, customer, projectName, inspectionPlace, inspectionClass, evaluationStandard, inspectionProcedure, inspectionScope, drawingNo, "
                         + "surfaceCondition, stageOfExamination, page, reportNumber, reportDate, orderNumber, offerNumber, equipment, heatTreatment, inspectionDates, descriptionOfAttachments,"
-                        + " operator_Employee_id, evaluator_Employee_id, confirmation_Employee_id, customerName, customerLevel, bottom, type) VALUES\n"
+                        + " operator_Employee_id, evaluator_Employee_id, confirmation_Employee_id, bottom, type) VALUES\n"
                         + "(" + (id+1) + ", '" + DataPreparation.prepareString(report.getCustomer()) + "', '" + DataPreparation.prepareString(report.getProjectName()) + "', '" 
                         + DataPreparation.prepareString(report.getInspectionPlace()) + "', '" + DataPreparation.prepareString(report.getInspectionClass()) + "', '"
                         + DataPreparation.prepareString(report.getEvaluationStandard()) + "', '" + DataPreparation.prepareString(report.getInspectionProcedure()) + "', '" 
@@ -347,7 +347,7 @@ public class ReportManagement extends DatabaseManagement{
             rs[0] = stmt.executeQuery("SELECT R.customer, R.projectName, R.inspectionPlace, R.inspectionClass, R.evaluationStandard, R.inspectionProcedure, R.inspectionScope, R.drawingNo," 
                     + " R.surfaceCondition, R.stageOfExamination, R.page, R.reportNumber, R.reportDate, R.orderNumber, R.offerNumber, R.equipment, R.heatTreatment, R.inspectionDates,"
                     + " R.descriptionOfAttachments, R.operator_Employee_id, R.evaluator_Employee_id, R.confirmation_Employee_id,"
-                    + " R.customerName, R.customerLevel, R.type FROM Report R JOIN MagneticReport MR ON MR.Report_id = R.id WHERE R.id = " + id + ";");
+                    + " R.type FROM Report R JOIN MagneticReport MR ON MR.Report_id = R.id WHERE R.id = " + id + ";");
             rs[1] = stmt.executeQuery("SELECT weldPieceNo, testLength, weldingProcess, thickness, diameter, defectType, defectLocation, result FROM MagneticResults "
                     + "WHERE Report_id = " + id + ";");
             rs[2] = stmt.executeQuery("SELECT Report_id, shootingArea, filmNo, materialType, weldingType, welderNr, position, thickness, penetremeter,"
