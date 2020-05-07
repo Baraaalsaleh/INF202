@@ -27,7 +27,7 @@ public class Employee extends Person{
         super(rs);
         try {       
             this.level = rs.getInt("level");
-            String[] date = rs.getString("birthdate").split("-");
+            String[] date = rs.getString("permition_End_Date").split("-");
             int year = Integer.parseInt(date[0]);
             int month = Integer.parseInt(date[1]);
             int day = Integer.parseInt(date[2]);

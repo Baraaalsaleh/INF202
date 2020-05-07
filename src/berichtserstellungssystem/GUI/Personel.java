@@ -9,12 +9,15 @@ import berichtserstellungssystem.Common;
 import berichtserstellungssystem.DatabaseManagement.*;
 import berichtserstellungssystem.Resource.*;
 import berichtserstellungssystem.Verification;
+import java.awt.Color;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 
 /**
  *
@@ -171,6 +174,153 @@ public class Personel extends javax.swing.JFrame {
             return false;
         }
     }
+    
+    private void everyThingIsOkay (int index) {
+        switch (index){
+            case 1:
+                 if (!Verification.verifyName(jTextField1.getText().trim())) {
+                     jTextField1.setBackground(Color.pink);
+                     break;
+                 }
+                 else {
+                     jTextField1.setBackground(Color.white);
+                     break;
+                 }
+            case 2:
+                if (!Verification.verifyName(jTextField2.getText().trim())) {
+                     jTextField2.setBackground(Color.pink);
+                     break;
+                 }
+                 else {
+                     jTextField2.setBackground(Color.white);
+                     break;
+                 }
+            case 4:
+                if (!Verification.verifyTelephoneNumber(jTextField4.getText().trim())) {
+                     jTextField4.setBackground(Color.pink);
+                     break;
+                 }
+                 else {
+                     jTextField4.setBackground(Color.white);
+                     break;
+                 }
+            case 5:
+                if (!Verification.verifyEmail(jTextField5.getText().trim())) {
+                     jTextField5.setBackground(Color.pink);
+                     break;
+                 }
+                 else {
+                     jTextField5.setBackground(Color.white);
+                     break;
+                 }
+            case 7:
+                if (!Verification.verifyDate(jTextField7.getText().trim())) {
+                     jTextField7.setBackground(Color.pink);
+                     break;
+                 }
+                 else {
+                     jTextField7.setBackground(Color.white);
+                     break;
+                 }
+            case 8:
+                if (!Verification.verifyTCnumber(jTextField8.getText().trim())) {
+                     jTextField8.setBackground(Color.pink);
+                     break;
+                 }
+                 else {
+                     jTextField8.setBackground(Color.white);
+                     break;
+                 }
+            case 9:
+                if (!Verification.isNumber(jTextField9.getText().trim())) {
+                     jTextField9.setBackground(Color.pink);
+                     break;
+                 }
+                 else {
+                     jTextField9.setBackground(Color.white);
+                     break;
+                 }
+            case 10:
+                if (type == DatabaseManagement.getEMPLOYEE_STATUS()) {
+                    if (!Verification.verifyDate(jTextField10.getText().trim())) {
+                        jTextField10.setBackground(Color.pink);
+                        break;
+                    }
+                    else {
+                        jTextField10.setBackground(Color.white);
+                        break;
+                    }
+                }
+                else {
+                    if (process == 2 && type == 0) {
+                        if (!Verification.verifyUsername(jTextField10.getText().trim())) {
+                            jTextField10.setBackground(Color.pink);
+                            break;
+                        }
+                        else {
+                            jTextField10.setBackground(Color.white);
+                            break;
+                        }
+                    }
+                    else {
+                        break;
+                    }
+                }
+            case 11:
+                if (type == DatabaseManagement.getEMPLOYEE_STATUS()) {
+                    if (!Verification.isNumber(jTextField11.getText().trim())) {
+                        jTextField11.setBackground(Color.pink);
+                        break;
+                    }
+                    else {
+                        jTextField11.setBackground(Color.white);
+                        break;
+                    }
+                }
+                else {
+                    if (process == 2 && type == 0) {
+                        if (!Verification.verifyPassword(jTextField11.getText().trim())) {
+                            jTextField11.setBackground(Color.pink);
+                            break;
+                        }
+                        else {
+                            jTextField11.setBackground(Color.white);
+                            break;
+                        }
+                    }
+                    else {
+                        break;
+                    }
+                }
+        }
+    }
+        /*&& 
+                &&  && ){
+            if (type == DatabaseManagement.getEMPLOYEE_STATUS()) {
+                if ( && ) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+            else {
+                if (process == 2 && type == 0) {
+                    if  && ) {
+                        return true;
+                    }
+                    else {
+                        return false;
+                    }
+                }
+                else {
+                    return true;
+                }
+            }
+        }
+        else {
+            return false;
+        }*/
     
     private void cleanAll () {
         jTextField1.setText("Adı");
@@ -401,6 +551,9 @@ public class Personel extends javax.swing.JFrame {
         jTextField1.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 jTextField1FocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jTextField1FocusLost(evt);
             }
         });
         jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -864,6 +1017,7 @@ public class Personel extends javax.swing.JFrame {
         else {
             jButton1.setEnabled(false);
         }
+        everyThingIsOkay(1);
     }//GEN-LAST:event_jTextField1KeyReleased
 
     private void formKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyReleased
@@ -877,6 +1031,7 @@ public class Personel extends javax.swing.JFrame {
         else {
             jButton1.setEnabled(false);
         }
+        everyThingIsOkay(2);
     }//GEN-LAST:event_jTextField2KeyReleased
 
     private void jTextField4KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField4KeyReleased
@@ -886,6 +1041,7 @@ public class Personel extends javax.swing.JFrame {
         else {
             jButton1.setEnabled(false);
         }
+        everyThingIsOkay(4);
     }//GEN-LAST:event_jTextField4KeyReleased
 
     private void jTextField5KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField5KeyReleased
@@ -895,6 +1051,7 @@ public class Personel extends javax.swing.JFrame {
         else {
             jButton1.setEnabled(false);
         }
+        everyThingIsOkay(5);
     }//GEN-LAST:event_jTextField5KeyReleased
 
     private void jTextField6KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField6KeyReleased
@@ -904,6 +1061,7 @@ public class Personel extends javax.swing.JFrame {
         else {
             jButton1.setEnabled(false);
         }
+        everyThingIsOkay(6);
     }//GEN-LAST:event_jTextField6KeyReleased
 
     private void jTextField7KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField7KeyReleased
@@ -913,6 +1071,7 @@ public class Personel extends javax.swing.JFrame {
         else {
             jButton1.setEnabled(false);
         }
+        everyThingIsOkay(7);
     }//GEN-LAST:event_jTextField7KeyReleased
 
     private void jTextField8KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField8KeyReleased
@@ -922,6 +1081,7 @@ public class Personel extends javax.swing.JFrame {
         else {
             jButton1.setEnabled(false);
         }
+        everyThingIsOkay(8);
     }//GEN-LAST:event_jTextField8KeyReleased
 
     private void jTextField9KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField9KeyReleased
@@ -931,6 +1091,7 @@ public class Personel extends javax.swing.JFrame {
         else {
             jButton1.setEnabled(false);
         }
+        everyThingIsOkay(9);
     }//GEN-LAST:event_jTextField9KeyReleased
 
     private void jTextField10KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField10KeyReleased
@@ -940,6 +1101,7 @@ public class Personel extends javax.swing.JFrame {
         else {
             jButton1.setEnabled(false);
         }
+        everyThingIsOkay(10);
     }//GEN-LAST:event_jTextField10KeyReleased
 
     private void jTextField11KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField11KeyReleased
@@ -949,6 +1111,7 @@ public class Personel extends javax.swing.JFrame {
         else {
             jButton1.setEnabled(false);
         }
+        everyThingIsOkay(11);
     }//GEN-LAST:event_jTextField11KeyReleased
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -971,6 +1134,10 @@ public class Personel extends javax.swing.JFrame {
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         // TODO add your handling code here:
     }//GEN-LAST:event_formWindowClosing
+
+    private void jTextField1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField1FocusLost
+        
+    }//GEN-LAST:event_jTextField1FocusLost
 
     /**
      * @param args the command line arguments
