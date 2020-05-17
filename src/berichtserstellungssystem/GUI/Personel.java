@@ -175,152 +175,164 @@ public class Personel extends javax.swing.JFrame {
         }
     }
     
-    private void everyThingIsOkay (int index) {
-        switch (index){
-            case 1:
-                 if (!Verification.verifyName(jTextField1.getText().trim())) {
-                     jTextField1.setBackground(Color.pink);
-                     break;
-                 }
-                 else {
-                     jTextField1.setBackground(Color.white);
-                     break;
-                 }
-            case 2:
-                if (!Verification.verifyName(jTextField2.getText().trim())) {
-                     jTextField2.setBackground(Color.pink);
-                     break;
-                 }
-                 else {
-                     jTextField2.setBackground(Color.white);
-                     break;
-                 }
-            case 4:
-                if (!Verification.verifyTelephoneNumber(jTextField4.getText().trim())) {
-                     jTextField4.setBackground(Color.pink);
-                     break;
-                 }
-                 else {
-                     jTextField4.setBackground(Color.white);
-                     break;
-                 }
-            case 5:
-                if (!Verification.verifyEmail(jTextField5.getText().trim())) {
-                     jTextField5.setBackground(Color.pink);
-                     break;
-                 }
-                 else {
-                     jTextField5.setBackground(Color.white);
-                     break;
-                 }
-            case 7:
-                if (!Verification.verifyDate(jTextField7.getText().trim())) {
-                     jTextField7.setBackground(Color.pink);
-                     break;
-                 }
-                 else {
-                     jTextField7.setBackground(Color.white);
-                     break;
-                 }
-            case 8:
-                if (!Verification.verifyTCnumber(jTextField8.getText().trim())) {
-                     jTextField8.setBackground(Color.pink);
-                     break;
-                 }
-                 else {
-                     jTextField8.setBackground(Color.white);
-                     break;
-                 }
-            case 9:
-                if (!Verification.isNumber(jTextField9.getText().trim())) {
-                     jTextField9.setBackground(Color.pink);
-                     break;
-                 }
-                 else {
-                     jTextField9.setBackground(Color.white);
-                     break;
-                 }
-            case 10:
-                if (type == DatabaseManagement.getEMPLOYEE_STATUS()) {
-                    if (!Verification.verifyDate(jTextField10.getText().trim())) {
-                        jTextField10.setBackground(Color.pink);
-                        break;
+    private void everyThingIsOkay (int[] index) {
+        for (Integer i : index){
+            switch (i){
+                case 1:
+                    if (!Verification.verifyName(jTextField1.getText().trim())) {
+                        jTextField1.setBackground(Color.pink);
+                        jTextField1.setToolTipText("Geçerli bir ad giriniz!");
                     }
                     else {
-                        jTextField10.setBackground(Color.white);
-                        break;
+                        if (jTextField1.getText().trim().equals("Adı")) {
+                            jTextField1.setBackground(Color.pink);
+                            jTextField1.setToolTipText("Adı girmeniz zorunludur!");
+                        }
+                        else {
+                            jTextField1.setBackground(Color.white);
+                            jTextField1.setToolTipText(null);
+                        }
                     }
-                }
-                else {
-                    if (process == 2 && type == 0) {
-                        if (!Verification.verifyUsername(jTextField10.getText().trim())) {
+                    break;
+                case 2:
+                    if (!Verification.verifyName(jTextField2.getText().trim())) {
+                        jTextField2.setBackground(Color.pink);
+                        jTextField2.setToolTipText("Geçerli bir ad giriniz!");
+                    }
+                    else {
+                        if (jTextField2.getText().trim().equals("Soyadı")) {
+                            jTextField2.setBackground(Color.pink);
+                            jTextField2.setToolTipText("Soyadı girmeniz zorunludur!");
+                        }
+                        else {
+                            jTextField2.setBackground(Color.white);
+                            jTextField2.setToolTipText(null);
+                        }
+                    }
+                    break;
+                case 4:
+                    if (!Verification.verifyTelephoneNumber(jTextField4.getText().trim())) {
+                        jTextField4.setBackground(Color.pink);
+                        jTextField4.setToolTipText("Geçerli bir telefon nummarasi giriniz!");
+                    }
+                    else {
+                        jTextField4.setBackground(Color.white);
+                        jTextField4.setToolTipText(null);
+                    }
+                    break;
+                case 5:
+                    if (!Verification.verifyEmail(jTextField5.getText().trim())) {
+                        jTextField5.setBackground(Color.pink);
+                        jTextField5.setToolTipText("Geçerli bir E-Posta adresi giriniz!");
+                    }
+                    else {
+                        jTextField5.setBackground(Color.white);
+                        jTextField5.setToolTipText(null);
+                    }
+                    break;
+                case 7:
+                    if (!Verification.verifyDate(jTextField7.getText().trim())) {
+                        jTextField7.setBackground(Color.pink);
+                        jTextField7.setToolTipText("Geçerli bir tarih giriniz!, tarih GG-AA-YYYY formatında olmalı");
+                    }
+                    else {
+                        jTextField7.setBackground(Color.white);
+                        jTextField7.setToolTipText(null);
+                    }
+                    break;
+                case 8:
+                    if (!Verification.verifyTCnumber(jTextField8.getText().trim())) {
+                        jTextField8.setBackground(Color.pink);
+                        jTextField8.setToolTipText("Geçerli bir TC-Numara giriniz! TC-Numarası 11 Haneden oluşur");
+                    }
+                    else {
+                        if (PersonManagement.tcummerAccepted(Long.parseLong(jTextField8.getText().trim()))) {
+                            jTextField8.setBackground(Color.white);
+                            jTextField8.setToolTipText(null);
+                        }
+                        else {
+                            jTextField8.setBackground(Color.pink);
+                            jTextField8.setToolTipText("Girdiğiniz TC-Numarası veri tabanında bulunduğu için tekrar kullanılmaz");
+                        }
+                    }
+                    break;
+                case 9:
+                    if (!Verification.isNumber(jTextField9.getText().trim())) {
+                        jTextField9.setBackground(Color.pink);
+                        jTextField9.setToolTipText("Geçerli bir personal nummara giriniz! Personal nummara sadece sayılardan oluşmalı!");
+                    }
+                    else {
+                        if (PersonManagement.personalNummerAccepted(Long.parseLong(jTextField9.getText().trim()))) {
+                            jTextField9.setBackground(Color.white);
+                            jTextField9.setToolTipText(null);
+                        }
+                        else {
+                            jTextField9.setBackground(Color.pink);
+                            jTextField9.setToolTipText("Girdiğiniz personal nummara veri tabanında bulunduğu için tekrar kullanılmaz");
+                        }
+                    }
+                    break;
+                case 10:
+                    if (type == DatabaseManagement.getEMPLOYEE_STATUS()) {
+                        if (!Verification.verifyDate(jTextField10.getText().trim())) {
                             jTextField10.setBackground(Color.pink);
-                            break;
+                            jTextField10.setToolTipText("Geçerli bir tarih giriniz!, tarih GG-AA-YYYY formatında olmalı");
                         }
                         else {
                             jTextField10.setBackground(Color.white);
-                            break;
+                            jTextField10.setToolTipText(null);
                         }
                     }
                     else {
-                        break;
-                    }
-                }
-            case 11:
-                if (type == DatabaseManagement.getEMPLOYEE_STATUS()) {
-                    if (!Verification.isNumber(jTextField11.getText().trim())) {
-                        jTextField11.setBackground(Color.pink);
-                        break;
-                    }
-                    else {
-                        jTextField11.setBackground(Color.white);
-                        break;
-                    }
-                }
-                else {
-                    if (process == 2 && type == 0) {
-                        if (!Verification.verifyPassword(jTextField11.getText().trim())) {
-                            jTextField11.setBackground(Color.pink);
-                            break;
+                        if (process == 2 && type == 0) {
+                            if (!Verification.verifyUsername(jTextField10.getText().trim())) {
+                                jTextField10.setBackground(Color.pink);
+                                jTextField10.setToolTipText("Geçerli bir kullanıcı adı giriniz! Kullanıcı adı sadece inglizce harfler ve sayılar içirebilir (boşluk olmaksızın)!");
+                            }
+                            else {
+                                jTextField10.setBackground(Color.white);
+                                jTextField10.setToolTipText(null);
+                            }
                         }
                         else {
-                            jTextField11.setBackground(Color.white);
-                            break;
+                        }
+                    }
+                    break;
+                case 11:
+                    if (type == DatabaseManagement.getEMPLOYEE_STATUS()) {
+                        if (!Verification.isNumber(jTextField11.getText().trim())) {
+                            jTextField11.setBackground(Color.pink);
+                            jTextField11.setToolTipText("Geçerli bir seviye giriniz! Seviye sadece 1 - 5 arasında bir sayı olabilir!");
+                        }
+                        else {
+                            if (Integer.parseInt(jTextField11.getText().trim()) < 6 && Integer.parseInt(jTextField11.getText().trim()) > 0) {
+                                jTextField11.setBackground(Color.white);
+                                jTextField11.setToolTipText(null);
+                            }
+                            else {
+                                jTextField11.setBackground(Color.pink);
+                                jTextField11.setToolTipText("Geçerli bir seviye giriniz! Seviye sadece 1 - 5 arasında bir sayı olabilir!");
+                            }
                         }
                     }
                     else {
-                        break;
+                        if (process == 2 && type == 0) {
+                            if (!Verification.verifyPassword(jTextField11.getText().trim())) {
+                                jTextField11.setBackground(Color.pink);
+                                jTextField10.setToolTipText("Geçerli bir şifre giriniz! Şifre sadece inglizce harfler, sayılar ve simbollar içirebilir (boşluk olmaksızın)! Uzunluğu ise 8 - 32 olabilir!");
+                            }
+                            else {
+                                jTextField11.setBackground(Color.white);
+                                jTextField11.setToolTipText(null);
+                            }
+                        }
+                        else {
+                        }
                     }
-                }
+                    break;
+            }
         }
     }
-        /*&& 
-                &&  && ){
-            if (type == DatabaseManagement.getEMPLOYEE_STATUS()) {
-                if ( && ) {
-                    return true;
-                }
-                else {
-                    return false;
-                }
-            }
-            else {
-                if (process == 2 && type == 0) {
-                    if  && ) {
-                        return true;
-                    }
-                    else {
-                        return false;
-                    }
-                }
-                else {
-                    return true;
-                }
-            }
-        }
-        else {
-            return false;
-        }*/
     
     private void cleanAll () {
         jTextField1.setText("Adı");
@@ -336,8 +348,8 @@ public class Personel extends javax.swing.JFrame {
             jTextField11.setText("Seviye");
         }
         else {
-            jTextField10.setText("Username");
-            jTextField11.setText("Password");
+            jTextField10.setText("Kullanıcı Adı");
+            jTextField11.setText("Şifre");
         }
         jButton1.setEnabled(false);
         
@@ -467,7 +479,6 @@ public class Personel extends javax.swing.JFrame {
     }
     
     void delete() {
-        
         long PNR = Long.parseLong(jTextField9.getText());
         process = 3;
         message(PersonManagement.deletePerson(PNR));
@@ -567,6 +578,11 @@ public class Personel extends javax.swing.JFrame {
         jTextField2.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 jTextField2FocusGained(evt);
+            }
+        });
+        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField2ActionPerformed(evt);
             }
         });
         jTextField2.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -797,6 +813,7 @@ public class Personel extends javax.swing.JFrame {
         jButton3.setBackground(new java.awt.Color(255, 51, 51));
         jButton3.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jButton3.setText("Sil");
+        jButton3.setToolTipText("");
         jButton3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1017,7 +1034,8 @@ public class Personel extends javax.swing.JFrame {
         else {
             jButton1.setEnabled(false);
         }
-        everyThingIsOkay(1);
+        int[] toCheck = {1};
+        everyThingIsOkay(toCheck);
     }//GEN-LAST:event_jTextField1KeyReleased
 
     private void formKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyReleased
@@ -1031,7 +1049,8 @@ public class Personel extends javax.swing.JFrame {
         else {
             jButton1.setEnabled(false);
         }
-        everyThingIsOkay(2);
+        int[] toCheck = {1, 2};
+        everyThingIsOkay(toCheck);
     }//GEN-LAST:event_jTextField2KeyReleased
 
     private void jTextField4KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField4KeyReleased
@@ -1041,7 +1060,8 @@ public class Personel extends javax.swing.JFrame {
         else {
             jButton1.setEnabled(false);
         }
-        everyThingIsOkay(4);
+        int[] toCheck = {1, 2, 4};
+        everyThingIsOkay(toCheck);
     }//GEN-LAST:event_jTextField4KeyReleased
 
     private void jTextField5KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField5KeyReleased
@@ -1051,7 +1071,8 @@ public class Personel extends javax.swing.JFrame {
         else {
             jButton1.setEnabled(false);
         }
-        everyThingIsOkay(5);
+        int[] toCheck = {1, 2, 4, 5};
+        everyThingIsOkay(toCheck);
     }//GEN-LAST:event_jTextField5KeyReleased
 
     private void jTextField6KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField6KeyReleased
@@ -1061,7 +1082,8 @@ public class Personel extends javax.swing.JFrame {
         else {
             jButton1.setEnabled(false);
         }
-        everyThingIsOkay(6);
+        int[] toCheck = {1, 2, 4, 5, 6};
+        everyThingIsOkay(toCheck);
     }//GEN-LAST:event_jTextField6KeyReleased
 
     private void jTextField7KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField7KeyReleased
@@ -1071,7 +1093,8 @@ public class Personel extends javax.swing.JFrame {
         else {
             jButton1.setEnabled(false);
         }
-        everyThingIsOkay(7);
+        int[] toCheck = {1, 2, 4, 5, 6, 7};
+        everyThingIsOkay(toCheck);
     }//GEN-LAST:event_jTextField7KeyReleased
 
     private void jTextField8KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField8KeyReleased
@@ -1081,7 +1104,8 @@ public class Personel extends javax.swing.JFrame {
         else {
             jButton1.setEnabled(false);
         }
-        everyThingIsOkay(8);
+        int[] toCheck = {1, 2, 4, 5, 6, 7, 8};
+        everyThingIsOkay(toCheck);
     }//GEN-LAST:event_jTextField8KeyReleased
 
     private void jTextField9KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField9KeyReleased
@@ -1091,7 +1115,8 @@ public class Personel extends javax.swing.JFrame {
         else {
             jButton1.setEnabled(false);
         }
-        everyThingIsOkay(9);
+        int[] toCheck = {1, 2, 4, 5, 6, 7, 8, 9};
+        everyThingIsOkay(toCheck);
     }//GEN-LAST:event_jTextField9KeyReleased
 
     private void jTextField10KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField10KeyReleased
@@ -1101,7 +1126,8 @@ public class Personel extends javax.swing.JFrame {
         else {
             jButton1.setEnabled(false);
         }
-        everyThingIsOkay(10);
+        int[] toCheck = {1, 2, 4, 5, 6, 7, 8, 9, 10};
+        everyThingIsOkay(toCheck);
     }//GEN-LAST:event_jTextField10KeyReleased
 
     private void jTextField11KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField11KeyReleased
@@ -1111,7 +1137,8 @@ public class Personel extends javax.swing.JFrame {
         else {
             jButton1.setEnabled(false);
         }
-        everyThingIsOkay(11);
+        int[] toCheck = {1, 2, 4, 5, 6, 7, 8, 9, 10, 11};
+        everyThingIsOkay(toCheck);
     }//GEN-LAST:event_jTextField11KeyReleased
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -1138,6 +1165,10 @@ public class Personel extends javax.swing.JFrame {
     private void jTextField1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField1FocusLost
         
     }//GEN-LAST:event_jTextField1FocusLost
+
+    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField2ActionPerformed
 
     /**
      * @param args the command line arguments

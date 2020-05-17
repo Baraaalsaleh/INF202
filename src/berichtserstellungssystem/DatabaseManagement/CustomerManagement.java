@@ -29,6 +29,7 @@ public class CustomerManagement extends DatabaseManagement{
         try {
             stmt = con.createStatement();
             rs = stmt.executeQuery("SELECT id FROM Customer WHERE name = '" + DataPreparation.prepareString(customer.getName()) + "';");
+            System.out.println(customer.getName());
             if (!rs.next()) {
                 int id = 0;
                 rs = stmt.executeQuery("SELECT MAX(id) as id FROM Customer;");
@@ -46,22 +47,28 @@ public class CustomerManagement extends DatabaseManagement{
                 }
                 ArrayList<String> offers = customer.getOfferNrs();
                 id = 0;
-                rs = stmt.executeQuery("SELECT MAX(id) as id FROM Customer_Offer;");
-                if (rs.next()) {
-                    id = rs.getInt("id");
-                }
-                for (int i = 0; i < offers.size(); i++) {
-                    stmt.executeUpdate("INSERT INTO Customer_Offer (id, Customer_id, Manager_id, OfferNr) VALUES (" + (id+1+i) + ", " + customer_id + ", " + manager_id + ", '" + DataPreparation.prepareString(offers.get(i)) + "');");
-                }
-                ArrayList<String> orders = customer.getOrderNrs();
-                id = 0;
-                for (int i = 0; i < orders.size(); i++) {
-                    rs = stmt.executeQuery("SELECT MAX(id) as id FROM Customer_Order;");
+                if (!offers.isEmpty()) {
+                    rs = stmt.executeQuery("SELECT MAX(id) as id FROM Customer_Offer;");
                     if (rs.next()) {
                         id = rs.getInt("id");
                     }
-                    stmt.executeUpdate("INSERT INTO Customer_Order (id, Customer_id, Manager_id, OrderNr) VALUES (" + (id+1) + ", " + customer_id + ", " + manager_id + ", '" + DataPreparation.prepareString(orders.get(i)) + "');");
+                    for (int i = 0; i < offers.size(); i++) {
+                        stmt.executeUpdate("INSERT INTO Customer_Offer (id, Customer_id, Manager_id, OfferNr) VALUES (" + (id+1+i) + ", " + customer_id + ", " + manager_id + ", '" + DataPreparation.prepareString(offers.get(i)) + "');");
+                    }
                 }
+                
+                ArrayList<String> orders = customer.getOrderNrs();
+                id = 0;
+                if (!orders.isEmpty()) {
+                    for (int i = 0; i < orders.size(); i++) {
+                        rs = stmt.executeQuery("SELECT MAX(id) as id FROM Customer_Order;");
+                        if (rs.next()) {
+                            id = rs.getInt("id");
+                        }
+                        stmt.executeUpdate("INSERT INTO Customer_Order (id, Customer_id, Manager_id, OrderNr) VALUES (" + (id+1+i) + ", " + customer_id + ", " + manager_id + ", '" + DataPreparation.prepareString(orders.get(i)) + "');");
+                    }
+                }
+                
                 return 1;
             }
             else {
@@ -161,23 +168,54 @@ public class CustomerManagement extends DatabaseManagement{
             }
     }
     //Abfragen von allen Kunden
-    public static ResultSet getCustomers (int limit) {
+    public static ArrayList<Customer> customers (int start, int limit, int type, Manager manager) {
+        ArrayList<Customer> res = new ArrayList();
+        Customer temp;
+        ResultSet rs = null;
+        int count = 0;
+        int i = start;
+        while (count < limit) {
+            try {
+                if (type == 1) {
+                    rs = getCustomers(i);
+                }
+                else if (type == 2) {
+                    rs = getAddedCustomers(i, manager);
+                }
+                else {
+                    rs = getEditedCustomers(i, manager);
+                }
+                if (rs.next()) {
+                    temp = new Customer(rs.getString("name"), rs.getString("address"));
+                    System.out.println(i);
+                    i += (rs.getInt("id")-i);
+                    System.out.println(temp.getName());
+                    res.add(temp);
+                    count++;
+                }
+                else {
+                    break;
+                }
+            } catch (SQLException ex) {
+                System.out.println("customers " + ex);
+                
+            }
+        }
+        return res;
+    }
+    
+    public static ResultSet getCustomers (int biggerThan) {
         ResultSet rs = null;
         try {
             stmt = con.createStatement();
-            rs = stmt.executeQuery("SELECT name, address FROM Customer LIMIT " + limit + ";");
-            if (rs.next()) {
-                return rs;
-            }   
-        }
-        catch (SQLException e){
+            rs = stmt.executeQuery("SELECT id, name, address FROM Customer WHERE id > " + biggerThan + " LIMIT 1;"); 
+        } catch (SQLException e){
             System.out.println("getCustomers " + e);
-            return rs;
         }
         return rs;
     }
     //Abfragen von allen Kunden, die von einem bestimmten Manager eingerfügt wurden
-    public static ResultSet getAddedCustomers (int limit, Manager manager) {
+    public static ResultSet getAddedCustomers (int biggerThan, Manager manager) {
         ResultSet rs = null;
         int manager_id = 0;
         try {
@@ -186,19 +224,15 @@ public class CustomerManagement extends DatabaseManagement{
             if (rs.next()){
                 manager_id = rs.getInt("id");
                 }            
-            rs = stmt.executeQuery("SELECT name, address FROM Customer WHERE Manager_id = " + manager_id + " LIMIT " + limit + ";");
-            if (rs.next()) {
-                return rs;
-            }   
+            rs = stmt.executeQuery("SELECT id, name, address FROM Customer WHERE Manager_id = " + manager_id + " AND id > " + biggerThan + " LIMIT 1;");
         }
         catch (SQLException e){
             System.out.println("getAddedCustomers " + e);
-            return rs;
         }
         return rs;
     }
     //Abfragen von allen Kunden, die von einem bestimmten Manager modifiziert wurden
-    public static ResultSet getEditedCustomers (int limit, Manager manager) {
+    public static ResultSet getEditedCustomers (int biggerThan, Manager manager) {
         ResultSet rs = null;
         int manager_id = 0;
         try {
@@ -206,37 +240,70 @@ public class CustomerManagement extends DatabaseManagement{
             rs = stmt.executeQuery("SELECT id FROM Person WHERE PersonalNr = " + manager.getPersonalNr() + ";");
             if (rs.next()){
                 manager_id = rs.getInt("id");
-                }            
-            rs = stmt.executeQuery("SELECT C.name, C.address FROM Customer C JOIN LastModification L ON C.id = L.Element_id WHERE L.Manager_id = " + manager_id 
-                    + " AND L.type = " + DatabaseManagement.getCUSTOMER_TYPE() + " LIMIT " + limit + ";");
-            if (rs.next()) {
-                return rs;
-            }   
+            }           
+            rs = stmt.executeQuery("SELECT C.id, C.name, C.address FROM Customer C JOIN LastModification L ON C.id = L.Element_id WHERE L.Manager_id = " + manager_id 
+                    + " AND L.type = " + DatabaseManagement.getCUSTOMER_TYPE() + " AND C.id > " + biggerThan + " LIMIT " + 1 + ";");
         }
         catch (SQLException e){
             System.out.println("getEditedCustomers " + e);
-            return rs;
         }
         return rs;
     }    
     //Abfragen von einem bestimmten Kunden
-    public static ResultSet[] getCustomer (String name) {
-        ResultSet[] rs = new ResultSet[3];
+    public static Customer getCustomer (String name) {
+        Customer temp = new Customer();
+        ResultSet rs = null;
         int customer_id = 0;
         try {
-            stmt = con.createStatement();            
-            rs[0] = stmt.executeQuery("SELECT id FROM Customer WHERE name = '" + DataPreparation.prepareString(name) + "';");
-            if (rs[0].next()){
-                customer_id = rs[0].getInt("id");
-            }            
-            rs[0] = stmt.executeQuery("SELECT C.name, C.address, P.name as adder_name, P.lastname as adder_lastname FROM Customer C JOIN Person P ON C.Manager_id = P.id WHERE C.id = " + customer_id + ";");
-            rs[1] = stmt.executeQuery("SELECT C.OfferNr, P.name as adder_name, P.lastname as adder_lastname FROM Customer_Offer C JOIN Person P ON C.Manager_id = P.id WHERE C.Customer_id = " + customer_id + ";");
-            rs[2] = stmt.executeQuery("SELECT C.OrderNr, P.name as adder_name, P.lastname as adder_lastname FROM Customer_Order C JOIN Person P ON C.Manager_id = P.id WHERE C.Customer_id " + customer_id + ";");            
+            stmt = con.createStatement();
+            System.out.println(name);
+            rs = stmt.executeQuery("SELECT * FROM Customer WHERE name = '" + DataPreparation.prepareString(name) + "';");
+            if (rs.next()){
+                customer_id = rs.getInt("id");
+                System.out.println(customer_id);
+                temp = new Customer(rs.getString("name"), rs.getString("address"));
+                temp.setOfferNrs(getAll(customer_id, 1));
+                temp.setOrderNrs(getAll(customer_id, 2));
+            }
         }
         catch (SQLException e){
             System.out.println("getCustomer " + e);
-            return rs;
         }
-        return rs;
-    }        
+        return temp;
+    }
+    
+    //Abfragen von Order_Nr und Offer_Nr eines Kunden
+    public static ArrayList<String> getAll(int customer_id, int type) {
+        ArrayList<String> temp = new ArrayList();
+        ResultSet rs = null;
+        String tempS = "OrderNr";
+        String table = "Customer_Order";
+        if (type == 1) {
+            tempS = "OfferNr";
+            table = "Customer_Offer";
+        }
+        try {
+            int last_id = 0;
+            rs = stmt.executeQuery("SELECT * FROM " + table + " WHERE Customer_id = " + customer_id + " LIMIT 1;");
+            if (rs.next()) {
+                last_id = rs.getInt("id");
+                temp.add(rs.getString(tempS));
+                System.out.println(tempS + " " + rs.getString(tempS));
+                while (true) {
+                    rs = stmt.executeQuery("SELECT * FROM " + table + " WHERE Customer_id = " + customer_id + " AND id > " + last_id + " LIMIT 1;");
+                    if (rs.next()) {
+                        last_id = rs.getInt("id");
+                        temp.add(rs.getString(tempS));
+                        System.out.println(tempS + " " + rs.getString(tempS));
+                    }
+                    else {
+                        break;
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("getALL for " + table + " " + e);
+        }
+        return temp;
+    }
 }

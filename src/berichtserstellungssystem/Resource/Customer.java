@@ -14,8 +14,8 @@ import java.util.ArrayList;
 public class Customer {
     private String name;
     private String address;
-    private ArrayList orderNrs = new ArrayList<String>();
-    private ArrayList offerNrs = new ArrayList<String>();
+    private ArrayList<String> orderNrs = new ArrayList();
+    private ArrayList<String> offerNrs = new ArrayList();
 
     public Customer(String name, String address) {
         this.name = name;
@@ -33,11 +33,11 @@ public class Customer {
         return address;
     }
 
-    public ArrayList getOrderNrs() {
+    public ArrayList<String> getOrderNrs() {
         return orderNrs;
     }
 
-    public ArrayList getOfferNrs() {
+    public ArrayList<String> getOfferNrs() {
         return offerNrs;
     }
 
@@ -66,4 +66,11 @@ public class Customer {
         this.offerNrs.remove(offerNr);
     }
 
+    public void setOrderNrs(ArrayList orderNrs) {
+        this.orderNrs = orderNrs;
+    }
+
+    public void setOfferNrs(ArrayList offerNrs) {
+        this.offerNrs = offerNrs;
+    }
 }

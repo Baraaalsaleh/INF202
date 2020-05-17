@@ -8,7 +8,9 @@ package berichtserstellungssystem.GUI;
 import berichtserstellungssystem.DatabaseManagement.CustomerManagement;
 import berichtserstellungssystem.DatabaseManagement.DatabaseManagement;
 import berichtserstellungssystem.Resource.*;
+import java.awt.Color;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -23,42 +25,63 @@ public class CustomerFrame extends javax.swing.JFrame {
     private int process = 0;
     private String name = "";
     private Manager me = null;
-    JTable table1;
-    JTable table2;
-    
+    private Customer i = new Customer();
+
     /**
      * Creates new form CustomerFrame
      */
     public CustomerFrame() {
-        this.table1 = jTable1;
-        this.table2 = jTable2;
         initComponents();
     }
     
     public CustomerFrame(int process, String name, Manager manager) {
-        this.table1 = jTable1;
-        this.table2 = jTable2;
         this.process = process;
         this.name = name;
         this.me = manager;
         initComponents();
+        if (process == 2) {
+            setEveryThing();
+        }
+        else {
+            jButton3.setVisible(false);
+        }
     }
-
+    
+    private void prepareTables(ArrayList<String> list, String col, JTable table) {
+        Object[] row = new Object[25];
+        DefaultTableModel model = new DefaultTableModel();
+        model.addColumn(col);
+        for (String s : list) {
+            row[0] = s;
+            model.addRow(row);
+        }
+        table.setModel(model);
+    }
+    
+    private void setEveryThing() {
+        i = CustomerManagement.getCustomer(this.name);
+        System.out.println(i.getName() + " " + i.getAddress());
+        jTextField1.setText(i.getName());
+        jTextField2.setText(i.getAddress());
+        prepareTables(i.getOrderNrs(), "İş Emri No", jTable1);
+        prepareTables(i.getOfferNrs(), "Teklif No", jTable2);
+        jButton1.setText("Güncelle");
+        jButton3.setVisible(true);
+    }
+    
     public void clearAll() {
         jTextField1.setText("Adı");
         jTextField2.setText("Adres");
         String col = "";
         DefaultTableModel model = new DefaultTableModel();
-        table1.setModel(model);
         col = "İş Emri No";
         model.addColumn(col);
         model.addRow(new Object[]{""});
-        table1.setModel(model);
-        table2.setModel(model);
+        jTable1.setModel(model);
         col = "Teklif No";
         model.addColumn(col);
         model.addRow(new Object[]{""});
-        table2.setModel(model); 
+        jTable2.setModel(model); 
     }
     
     private void message (int done) {
@@ -97,23 +120,69 @@ public class CustomerFrame extends javax.swing.JFrame {
         Customer temp = new Customer();
         temp.setName(jTextField1.getText());
         temp.setAddress(jTextField2.getText());
-        for (int i = 0; i < table1.getRowCount(); i++) {
-            String tempS = table1.getValueAt(i, 0).toString();
-            if (tempS.equals("")) {
-                temp.addOrderNrs(tempS);
+        
+        System.out.println(jTable2.getRowCount());
+        for (int i = 0; i < jTable1.getRowCount(); i++) {
+            if (jTable1.getValueAt(i, 0) != null) {
+                String tempS = jTable1.getValueAt(i, 0).toString();
+                if (!tempS.trim().equals("")) {
+                    System.out.println(tempS);
+                    temp.addOrderNrs(tempS);
+                }
+            }
+        } 
+        for (int i = 0; i < jTable2.getRowCount(); i++) {
+            if (jTable2.getValueAt(i, 0) != null) {
+                System.out.println(jTable2.getRowCount());
+                String tempS = jTable2.getValueAt(i, 0).toString();
+                System.out.println(tempS);
+                if (!tempS.trim().equals("")) {
+                    temp.addOfferNrs(tempS);
+                }
             }
         }
-        for (int i = 0; i < table2.getRowCount(); i++) {
-            String tempS = table2.getValueAt(i, 0).toString();
-            if (tempS.equals("")) {
-                temp.addOfferNrs(tempS);
-            }
-        }
+        System.out.println("I collected the data " + temp.getName() + " " + temp.getAddress());
         return temp;
     }
     
+    private boolean everyThingIsOkay() {
+        boolean res = false;
+        if (jTextField1.getText().trim().length() > 2 && jTextField1.getText().trim().length() < 128 && jTextField2.getText().trim().length() > 2 && jTextField2.getText().trim().length() < 256) {
+            res = true;
+        }
+        return res;
+    }
+    private void everyThingIsOkay (int[] index) {
+        for (Integer i : index){
+            switch (i){
+                case 1:
+                    if (jTextField1.getText().trim().length() > 2 && jTextField1.getText().trim().length() < 128) {
+                        jTextField1.setBackground(Color.white);
+                        jTextField1.setToolTipText(null);
+                    }
+                    else {
+                        jTextField1.setBackground(Color.pink);
+                        jTextField1.setToolTipText("Müşteri adı 3 - 128 karakterden oluşmalı");
+                    }
+                    break;
+                case 2:
+                    if (jTextField1.getText().trim().length() > 2 && jTextField1.getText().trim().length() < 256) {
+                        jTextField1.setBackground(Color.white);
+                        jTextField1.setToolTipText(null);
+                    }
+                    else {
+                        jTextField1.setBackground(Color.pink);
+                        jTextField1.setToolTipText("Müşteri adresi 3 - 256 karakterden oluşmalı");
+                    }
+                    break;
+            }
+        }
+    }
+    
     private void add() {
-        Customer toAdd = collectData();
+        Customer toAdd = new Customer();
+        toAdd = collectData();
+        System.out.println("WHyyyyy " + toAdd.getName() + "  " + toAdd.getAddress());
         int res = CustomerManagement.insertCustomer(toAdd, me);
         message(res);
     }
@@ -122,6 +191,12 @@ public class CustomerFrame extends javax.swing.JFrame {
         Customer toUpdate = collectData();
         int res = CustomerManagement.updateCustomer(toUpdate, me);
         message(res);
+    }
+    
+    void delete() {
+        process = 3;
+        message(CustomerManagement.deleteCustomer(jTextField1.getText().trim()));
+        this.dispose();
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -184,9 +259,19 @@ public class CustomerFrame extends javax.swing.JFrame {
 
         jTextField1.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jTextField1.setText("Adı");
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField1KeyReleased(evt);
+            }
+        });
 
         jTextField2.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jTextField2.setText("Adres");
+        jTextField2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField2KeyReleased(evt);
+            }
+        });
 
         jTable1.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -341,7 +426,7 @@ public class CustomerFrame extends javax.swing.JFrame {
                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(19, 19, 19))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -449,7 +534,7 @@ public class CustomerFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        new Verify((jTextField1.getText() + " " + jTextField2.getText() + "'in bilgileri silmekten emin misiniz?"),this, 1).setVisible(true);
+        new Verify((jTextField1.getText() + " " + jTextField2.getText() + "'in bilgileri silmekten emin misiniz?"),this, 3).setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -459,11 +544,34 @@ public class CustomerFrame extends javax.swing.JFrame {
         else {
             update();
         }
+        jTextField1.requestFocusInWindow();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        jButton3.setVisible(false);
+        
     }//GEN-LAST:event_formWindowOpened
+
+    private void jTextField1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyReleased
+        if (everyThingIsOkay()) {
+            jButton1.setEnabled(true);
+        }
+        else {
+            jButton1.setEnabled(false);
+        }
+        int[] toCheck = {1};
+        everyThingIsOkay(toCheck);
+    }//GEN-LAST:event_jTextField1KeyReleased
+
+    private void jTextField2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField2KeyReleased
+        if (everyThingIsOkay()) {
+            jButton1.setEnabled(true);
+        }
+        else {
+            jButton1.setEnabled(false);
+        }
+        int[] toCheck = {1, 2};
+        everyThingIsOkay(toCheck);
+    }//GEN-LAST:event_jTextField2KeyReleased
 
     /**
      * @param args the command line arguments

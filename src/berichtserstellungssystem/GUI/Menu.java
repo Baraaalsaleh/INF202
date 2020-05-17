@@ -157,6 +157,20 @@ public class Menu extends javax.swing.JFrame {
         table.setModel(model);
     }
     
+    private void addCustomers(ArrayList<Customer> list, JTable table) {
+        Object[] row = new Object[25];
+        DefaultTableModel model = new DefaultTableModel();
+        model.addColumn("Adı");
+        model.addColumn("Adres");
+        for (Customer e : list) {
+            row[0] = e.getName();
+            row[1] = e.getAddress();
+            System.out.println(e.getName() + " " + e.getAddress());
+            model.addRow(row);
+        }
+        table.setModel(model);
+    }
+    
     private void prepareTables (int table) {
         if (table == 1) {
                 ArrayList<Employee> res = PersonManagement.employees(0, 25, 1, me);
@@ -190,6 +204,14 @@ public class Menu extends javax.swing.JFrame {
             ArrayList<String> res = OthersManagement.stageOfExaminations(0, 25);
             addRows("Muayene aşaması", res, jTable2);
         }
+        else if (table == 7) {
+            ArrayList<Customer> res = CustomerManagement.customers(0, 25, 1, me);
+            addCustomers(res, jTable2);
+            res = CustomerManagement.customers(0, 25, 2, me);
+            addCustomers(res, jTable3);
+            res = CustomerManagement.customers(0, 25, 3, me);
+            addCustomers(res, jTable4);
+        }
         
     }
     
@@ -199,10 +221,7 @@ public class Menu extends javax.swing.JFrame {
         jTable4.setModel(null);
         
     }
-    
-    private void fillTable () {
-        
-    }
+
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -679,6 +698,11 @@ public class Menu extends javax.swing.JFrame {
         jMenuItem18.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/customer.png"))); // NOI18N
         jMenuItem18.setText("Firma - Müşteri");
         jMenuItem18.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jMenuItem18.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenuItem18MouseClicked(evt);
+            }
+        });
         jMenuItem18.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem18ActionPerformed(evt);
@@ -776,7 +800,7 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
     private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
-        new CustomerFrame().setVisible(true);
+        new CustomerFrame(1, "", me).setVisible(true);
     }//GEN-LAST:event_jMenuItem10ActionPerformed
 
     private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
@@ -784,7 +808,13 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem11ActionPerformed
 
     private void jMenuItem18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem18ActionPerformed
-        // TODO add your handling code here:
+        jScrollPane2.setVisible(true);
+        if (jTabbedPane1.getComponentCount() < 3) {
+            jTabbedPane1.addTab("Eklediklerim", jPanel2);
+            jTabbedPane1.addTab("Düzelttiklerim", jPanel4);
+        }
+        jLabel1.setText("Müşteriler");
+        prepareTables(7);
     }//GEN-LAST:event_jMenuItem18ActionPerformed
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
@@ -850,6 +880,10 @@ public class Menu extends javax.swing.JFrame {
         else if (jLabel1.getText().equals("Muayene Aşamaları")) {
             String muayene = jTable2.getValueAt(row, 0).toString();
             new Proje(3, 2, muayene, me).setVisible(true);
+        }
+        else if (jLabel1.getText().equals("Müşteriler")) {
+            String name = jTable2.getValueAt(row, 0).toString();
+            new CustomerFrame(2, name, me).setVisible(true);
         }
         
     }//GEN-LAST:event_jTable2MouseClicked
@@ -993,6 +1027,10 @@ public class Menu extends javax.swing.JFrame {
             new Proje(3, 2, muayene, me).setVisible(true);
         }
     }//GEN-LAST:event_jTable4MouseClicked
+
+    private void jMenuItem18MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem18MouseClicked
+        
+    }//GEN-LAST:event_jMenuItem18MouseClicked
     
     private void showPanel (String s){
         this.setMinimumSize(this.getMinimumSize());

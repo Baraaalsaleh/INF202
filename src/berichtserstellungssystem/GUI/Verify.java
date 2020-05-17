@@ -35,7 +35,7 @@ public class Verify extends javax.swing.JFrame {
         else if (type == 2) {
             this.frame2 = (Ekipman) frame;
         }
-        else if (type == 3 || type == 4) {
+        else if (type == 3) {
             this.frame3 = (CustomerFrame) frame;
         }
         else if (type > 4 && type < 8) {
@@ -157,6 +157,7 @@ public class Verify extends javax.swing.JFrame {
         }
         else if (type == 3) {
             frame3.clearAll();
+            frame3.delete();
         }
         else {
             frame4.delete();

@@ -256,6 +256,7 @@ public class PersonManagement extends DatabaseManagement{
         }
         return rs;
     }
+    
     public static ArrayList<Employee> employees (int start, int limit, int type, Manager manager) {
         ArrayList<Employee> res = new ArrayList();
         Employee temp;
@@ -496,5 +497,37 @@ public class PersonManagement extends DatabaseManagement{
             }
         }
         return res;       
+    }
+    
+    public static boolean tcummerAccepted(Long tcn) {
+        boolean res = true;
+        ResultSet rs = null;
+        try {
+            stmt = con.createStatement();
+            rs = stmt.executeQuery("SELECT id FROM Person WHERE TCNr = " + tcn + "");
+            if (rs.next()) {
+                res = false;
+            }
+        } catch (SQLException ex) {
+            System.out.println("tcummerAccepted " + ex);
+            res = false;
+        }
+        return res;
+    }
+    
+    public static boolean personalNummerAccepted(Long pnr) {
+        boolean res = true;
+        ResultSet rs = null;
+        try {
+            stmt = con.createStatement();
+            rs = stmt.executeQuery("SELECT id FROM Person WHERE PersonalNr = " + pnr + "");
+            if (rs.next()) {
+                res = false;
+            }
+        } catch (SQLException ex) {
+            System.out.println("personalNummerAccepted " + ex);
+            res = false;
+        }
+        return res;
     }
 }
