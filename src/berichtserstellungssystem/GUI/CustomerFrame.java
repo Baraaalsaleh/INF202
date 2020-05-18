@@ -44,7 +44,7 @@ public class CustomerFrame extends javax.swing.JFrame {
         }
         else {
             jButton3.setVisible(false);
-        }
+       }
     }
     
     private void prepareTables(ArrayList<String> list, String col, JTable table) {
@@ -62,6 +62,7 @@ public class CustomerFrame extends javax.swing.JFrame {
         i = CustomerManagement.getCustomer(this.name);
         System.out.println(i.getName() + " " + i.getAddress());
         jTextField1.setText(i.getName());
+        jTextField1.setEnabled(false);
         jTextField2.setText(i.getAddress());
         prepareTables(i.getOrderNrs(), "İş Emri No", jTable1);
         prepareTables(i.getOfferNrs(), "Teklif No", jTable2);
@@ -101,7 +102,12 @@ public class CustomerFrame extends javax.swing.JFrame {
             }
         }
         else if (done == 0) {
-            JOptionPane.showMessageDialog(dialog, "Girdiğiniz müşteri adı daha önce veri tabanında bulunduğu için kullanılmaz!", "Hatalı İşlem", JOptionPane.PLAIN_MESSAGE);
+            if (process == 1) {
+                JOptionPane.showMessageDialog(dialog, "Girdiğiniz müşteri adı daha önce veri tabanında bulunduğu için kullanılmaz!", "Hatalı İşlem", JOptionPane.PLAIN_MESSAGE);
+            }
+            else {
+                JOptionPane.showMessageDialog(dialog, "Girdiğiniz müşteri adı bulunmadı!", "Hatalı İşlem", JOptionPane.PLAIN_MESSAGE);
+            }
             if (process == 3) { process = 2;}
         }
         else {
@@ -166,36 +172,52 @@ public class CustomerFrame extends javax.swing.JFrame {
                     }
                     break;
                 case 2:
-                    if (jTextField1.getText().trim().length() > 2 && jTextField1.getText().trim().length() < 256) {
-                        jTextField1.setBackground(Color.white);
-                        jTextField1.setToolTipText(null);
+                    if (jTextField2.getText().trim().length() > 2 && jTextField2.getText().trim().length() < 256) {
+                        jTextField2.setBackground(Color.white);
+                        jTextField2.setToolTipText(null);
                     }
                     else {
-                        jTextField1.setBackground(Color.pink);
-                        jTextField1.setToolTipText("Müşteri adresi 3 - 256 karakterden oluşmalı");
+                        jTextField2.setBackground(Color.pink);
+                        jTextField2.setToolTipText("Müşteri adresi 3 - 256 karakterden oluşmalı");
                     }
                     break;
             }
         }
     }
     
+    private void deleteFirstRowIfNull() {
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        if (model.getValueAt(0, 0) == null) {
+                model.removeRow(0);
+        }
+        model.addRow(new Object[]{""});
+        jTable1.setModel(model);
+        model = (DefaultTableModel) jTable2.getModel();
+        if (model.getValueAt(0, 0) == null) {
+                model.removeRow(0);
+        }
+        model.addRow(new Object[]{""});
+        jTable2.setModel(model);
+    }
+    
     private void add() {
         Customer toAdd = new Customer();
         toAdd = collectData();
-        System.out.println("WHyyyyy " + toAdd.getName() + "  " + toAdd.getAddress());
         int res = CustomerManagement.insertCustomer(toAdd, me);
         message(res);
+        clearAll();
     }
     
     private void update() {
         Customer toUpdate = collectData();
         int res = CustomerManagement.updateCustomer(toUpdate, me);
         message(res);
+        this.dispose();
     }
     
     void delete() {
         process = 3;
-        message(CustomerManagement.deleteCustomer(jTextField1.getText().trim()));
+        message(CustomerManagement.deleteCustomer(this.name));
         this.dispose();
     }
     /**
@@ -295,6 +317,11 @@ public class CustomerFrame extends javax.swing.JFrame {
                 jTable1MouseClicked(evt);
             }
         });
+        jTable1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTable1KeyReleased(evt);
+            }
+        });
         jScrollPane3.setViewportView(jTable1);
 
         jTable2.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
@@ -317,6 +344,11 @@ public class CustomerFrame extends javax.swing.JFrame {
         jTable2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable2MouseClicked(evt);
+            }
+        });
+        jTable2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTable2KeyReleased(evt);
             }
         });
         jScrollPane4.setViewportView(jTable2);
@@ -508,10 +540,12 @@ public class CustomerFrame extends javax.swing.JFrame {
 
     private void jTable1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTable1FocusLost
         jLabel6.setEnabled(false);
+        jTable1.getCellEditor().stopCellEditing();
     }//GEN-LAST:event_jTable1FocusLost
 
     private void jTable2FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTable2FocusLost
         jLabel7.setEnabled(false);
+        jTable2.getCellEditor().stopCellEditing();
     }//GEN-LAST:event_jTable2FocusLost
 
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
@@ -534,17 +568,18 @@ public class CustomerFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        new Verify((jTextField1.getText() + " " + jTextField2.getText() + "'in bilgileri silmekten emin misiniz?"),this, 3).setVisible(true);
+        new Verify((jTextField1.getText() + "'in bilgileri silmekten emin misiniz?"),this, 3).setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        jTextField1.requestFocusInWindow();
+        deleteFirstRowIfNull();
         if (process == 1){
             add();
         }
         else {
             update();
         }
-        jTextField1.requestFocusInWindow();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
@@ -572,6 +607,18 @@ public class CustomerFrame extends javax.swing.JFrame {
         int[] toCheck = {1, 2};
         everyThingIsOkay(toCheck);
     }//GEN-LAST:event_jTextField2KeyReleased
+
+    private void jTable1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTable1KeyReleased
+        if (everyThingIsOkay()) {
+            jButton1.setEnabled(true);
+        }
+    }//GEN-LAST:event_jTable1KeyReleased
+
+    private void jTable2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTable2KeyReleased
+        if (everyThingIsOkay()) {
+            jButton1.setEnabled(true);
+        }
+    }//GEN-LAST:event_jTable2KeyReleased
 
     /**
      * @param args the command line arguments

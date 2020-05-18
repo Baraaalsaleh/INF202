@@ -119,8 +119,8 @@ public class CustomerManagement extends DatabaseManagement{
                 rs = stmt.executeQuery("SELECT id FROM Person WHERE PersonalNr = " + manager.getPersonalNr() + ";");
                 if (rs.next()){
                     manager_id = rs.getInt("id");
-                    }
-                stmt.executeUpdate("UPDATE Customer SET address = '" + DataPreparation.prepareString(customer.getAddress()) + "';");
+                }
+                stmt.executeUpdate("UPDATE Customer SET address = '" + DataPreparation.prepareString(customer.getAddress()) + "' WHERE name = '" + DataPreparation.prepareString(customer.getName()) + "';");
                 rs = stmt.executeQuery("SELECT id FROM Customer WHERE name = '" + DataPreparation.prepareString(customer.getName()) + "';");
                 if (rs.next()){
                     customer_id = rs.getInt("id");
@@ -155,7 +155,7 @@ public class CustomerManagement extends DatabaseManagement{
                 if (rs.next()) {
                     id = rs.getInt("id");
                 }
-                stmt.executeUpdate("INSERT INTO LastModification (id, Type, Manager_id, Element_id, date) VALUES (" + (id+1) + ", " + DatabaseManagement.getCUSTOMER_TYPE() + ", " + manager_id + ", " + customer_id + ", NOW();");                                
+                stmt.executeUpdate("INSERT INTO LastModification (id, Type, Manager_id, Element_id, date) VALUES (" + (id+1) + ", " + DatabaseManagement.getCUSTOMER_TYPE() + ", " + manager_id + ", " + customer_id + ", NOW());");                                
                 return 1;
             }
             else {
