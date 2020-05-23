@@ -101,7 +101,7 @@ public class Ekipman extends javax.swing.JFrame {
                 jTextField4.setText(toEdit1.getMagTechnic());
                 jTextField5.setText(toEdit1.getUvIntensity());
                 jTextField6.setText(toEdit1.getLightDistance());
-                jTextField7.setText(Common.date_toStringReverse(toEdit1.getCalibrationEndDate()));
+                jTextField7.setText(Common.date_toStringReverse(toEdit1.getCalibrationEndDate(), "-"));
             }
         }
         else {
@@ -120,7 +120,7 @@ public class Ekipman extends javax.swing.JFrame {
                 jTextField4.setText(toEdit2.getFilmFocusDistance());
                 jTextField5.setText(toEdit2.getPbScreens());
                 jTextField6.setText(toEdit2.getFilters());
-                jTextField7.setText(Common.date_toStringReverse(toEdit2.getCalibrationEndDate()));
+                jTextField7.setText(Common.date_toStringReverse(toEdit2.getCalibrationEndDate(), "-"));
                 jCheckBox1.setSelected(toEdit2.isIr192());
                 jCheckBox2.setSelected(toEdit2.isSe75());
                 jCheckBox3.setSelected(toEdit2.isxRay());

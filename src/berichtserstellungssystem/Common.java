@@ -26,12 +26,12 @@ public class Common {
     }
     
     //Diese Funktion nimmt die Jahr, Monat und Taginformationen eines java.util.Date und gibt sie als ein String der Form "TT-MM-JJJJ"
-    public static String date_toStringReverse(Date date){
+    public static String date_toStringReverse(Date date, String s){
         if (date != null) {
-            return (date.getDate()+ "-" + (date.getMonth()+1) + "-" + (date.getYear()+1900));
+            return (date.getDate()+ s + (date.getMonth()+1) + s + (date.getYear()+1900));
         }
         return "";
-    } 
+    }
     
     //Diese Funktion testet die Gültigkeit eines Datum
     private static Date makeItDate (String[] temp) {
@@ -113,7 +113,13 @@ public class Common {
                 return makeItDate(temp);
             }
             else {
-                return null;
+                temp = s.split(".");
+                if (temp.length == 3){
+                    return makeItDate(temp);
+                }
+                else {
+                    return null;
+                }
             }
         }
     }

@@ -361,4 +361,22 @@ public class ReportManagement extends DatabaseManagement{
         return rs;
     }
     
+    public static boolean reportNumberAccepted(String reportNo, String customerName) {
+        boolean res = true;
+        ResultSet rs = null;
+        try {
+            stmt = con.createStatement();
+            rs = stmt.executeQuery("SELECT id FROM Report WHERE Customer = '" + customerName + "' AND reportNumber = '" + reportNo + "' LIMIT 1;");
+            if (rs.next()) {
+                System.out.println(rs.getInt("id"));
+                res = false;
+            }
+        } catch (SQLException ex) {
+            System.out.println("reportNumberAccepted " + ex);
+            res = false;
+        }
+        System.out.println(res);
+        return res;
+    }
+    
 }

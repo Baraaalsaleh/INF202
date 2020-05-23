@@ -78,14 +78,14 @@ public class Personel extends javax.swing.JFrame {
         jComboBox1.setSelectedIndex(gender);
         jTextField5.setText(toEdit.getEmail());
         jTextField6.setText(toEdit.getAddress());
-        jTextField7.setText(Common.date_toStringReverse(toEdit.getBirthDate()));
+        jTextField7.setText(Common.date_toStringReverse(toEdit.getBirthDate(), "-"));
         jTextField8.setText(Long.toString(toEdit.getTcNr()));
         jTextField9.setText(Long.toString(toEdit.getPersonalNr()));
     }
     
     private void fillEmployeeData (Employee toEdit) {
         fillData(toEdit);
-        jTextField10.setText(Common.date_toStringReverse(toEdit.getPermitionEndDate()));
+        jTextField10.setText(Common.date_toStringReverse(toEdit.getPermitionEndDate(), "-"));
         jTextField11.setText(Integer.toString(toEdit.getLevel()));
     }
     

@@ -12,6 +12,10 @@ import berichtserstellungssystem.DatabaseManagement.*;
 import berichtserstellungssystem.Resource.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.io.FileOutputStream;
+import java.net.URL;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -24,7 +28,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.event.*;
 import javax.swing.table.*;
-import net.proteanit.sql.DbUtils;
 /**
  *
  * @author Baraa
@@ -42,9 +45,9 @@ public class Menu extends javax.swing.JFrame {
      */
     public Menu() {
         if (!PersonManagement.findAdmin()) {
-            
             new Personel(0, 1, me).setVisible(true);
         }
+        
         initComponents();
         /*
         panel1 = new ReportList();
@@ -55,6 +58,18 @@ public class Menu extends javax.swing.JFrame {
         jPanel3.add(panel1, grid);
         panel1.setVisible(false);
         */
+    }
+    
+    private void downloadTemplates() {
+        try {
+            URL website = new URL("https://raw.githubusercontent.com/Baraaalsaleh/INF202/master/MagneticTemplate.xlsx");
+            ReadableByteChannel rbc = Channels.newChannel(website.openStream());
+            FileOutputStream fos = new FileOutputStream("MagneticTemplate.xlsx");
+            fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+        }
+        catch (Exception e) {
+            System.out.println("downloadTemplates " + e);
+        }
     }
     
     public void isManager (boolean a){
@@ -497,7 +512,7 @@ public class Menu extends javax.swing.JFrame {
         jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Y, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem2.setBackground(new java.awt.Color(204, 255, 204));
         jMenuItem2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/report.png"))); // NOI18N
-        jMenuItem2.setText("Yeni Rapor Rluştur");
+        jMenuItem2.setText("Yeni Rapor Oluştur");
         jMenuItem2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -763,7 +778,7 @@ public class Menu extends javax.swing.JFrame {
 
     private int id = 0;
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        new FirstPage().setVisible(true);
+        new FirstPage(true).setVisible(true);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
