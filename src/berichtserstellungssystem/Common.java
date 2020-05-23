@@ -103,24 +103,14 @@ public class Common {
     //Diese Funktion versucht ein java.util.Date aus einem String der Form "TT-MM-JJJJ" oder "TT/MM/JJJJ" zu machen
     public static Date string_toDate(String s){
         Date date = new Date();
+        s = s.replace(".", "-");
+        s = s.replace("/", "-");
         String[] temp = s.split("-");
         if (temp.length == 3) {
             return makeItDate(temp);
         }
         else {
-            temp = s.split("/");
-            if (temp.length == 3){
-                return makeItDate(temp);
-            }
-            else {
-                temp = s.split(".");
-                if (temp.length == 3){
-                    return makeItDate(temp);
-                }
-                else {
-                    return null;
-                }
-            }
+            return null;
         }
     }
     
