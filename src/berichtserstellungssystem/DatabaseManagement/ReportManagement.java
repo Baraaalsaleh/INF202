@@ -19,11 +19,12 @@ public class ReportManagement extends DatabaseManagement{
     //Einfügen von Bericht (magnetic)
     public static int insertMagneticReport (MagneticReport report){
         ResultSet rs;
+        int step = 0;
         try {
             stmt = con.createStatement();
             rs = stmt.executeQuery("SELECT id FROM Report WHERE customer = '" + DataPreparation.prepareString(report.getCustomer()) + "' AND reportNumber = '" + DataPreparation.prepareString(report.getReportNumber()) + "';");
-
-            if (rs.next() == false) {
+            step = 1;
+            if (!rs.next()) {
                 String reportDate = Common.date_toString(report.getReportDate());
                 int operator_id = report.getOperator_id();
                 int evaluator_id = report.getEvaluator_id();
@@ -33,6 +34,7 @@ public class ReportManagement extends DatabaseManagement{
                 if (rs.next()) {
                     id = rs.getInt("id");
                 }
+                
                 stmt.executeUpdate("INSERT INTO Report (id, customer, projectName, inspectionPlace, inspectionClass, evaluationStandard, inspectionProcedure, inspectionScope, drawingNo, "
                         + "surfaceCondition, stageOfExamination, page, reportNumber, reportDate, orderNumber, offerNumber, equipment, heatTreatment, inspectionDates, descriptionOfAttachments,"
                         + " operator_Employee_id, evaluator_Employee_id, confirmation_Employee_id, bottom, type) VALUES\n"
@@ -41,22 +43,26 @@ public class ReportManagement extends DatabaseManagement{
                         + DataPreparation.prepareString(report.getEvaluationStandard()) + "', '" + DataPreparation.prepareString(report.getInspectionProcedure()) + "', '" 
                         + DataPreparation.prepareString(report.getInspectionScope()) + "', '" + DataPreparation.prepareString(report.getDrawingNo()) + "', '"
                         + DataPreparation.prepareString(report.getSurfaceCondition()) + "', '" + DataPreparation.prepareString(report.getStageOfExamination()) + "', '" 
-                        + DataPreparation.prepareString(report.getPage()) + "', '" + DataPreparation.prepareString(report.getReportNumber()) + "', '" + DataPreparation.prepareString(reportDate) 
-                        + "', '" + DataPreparation.prepareString(report.getOrderNumber()) + "', '" + DataPreparation.prepareString(report.getOfferNumber()) + "', '" + DataPreparation.prepareString(report.getEquipment())
+                        + DataPreparation.prepareString(report.getPage()) + "', '" + DataPreparation.prepareString(report.getReportNumber()) + "', '" + DataPreparation.prepareString(reportDate) + "', '"
+                        + DataPreparation.prepareString(report.getOrderNumber()) + "', '" + DataPreparation.prepareString(report.getOfferNumber()) + "', '" + DataPreparation.prepareString(report.getEquipment())
                         + "', '" + DataPreparation.prepareString(report.getHeatTreatment()) + "', '" + DataPreparation.prepareString(report.getInspectionDates())
                         + "', '" + DataPreparation.prepareString(report.getDescriptionOfAttachments()) + "', " + operator_id + ", " + evaluator_id + ", " + confirmation_id + ", '"
-                        + "', '" + DataPreparation.prepareString(report.getBottom()) + "', " + DatabaseManagement.getMAGNETIC_TYPE() + ");");
+                        + DataPreparation.prepareString(report.getBottom()) + "', " + DatabaseManagement.getMAGNETIC_TYPE() + ");");
+                
+                step = 2;
                 
                 int report_id = 0;
                 rs = stmt.executeQuery("SELECT id FROM Report WHERE customer = '" + DataPreparation.prepareString(report.getCustomer()) + "' AND reportNumber = '" + DataPreparation.prepareString(report.getReportNumber()) + "';");
                 if (rs.next()){
                     report_id = rs.getInt("id");
                 }
+                step = 3;
                 id = 0;
                 rs = stmt.executeQuery("SELECT MAX(id) as id FROM MagneticReport;");
                 if (rs.next()) {
                     id = rs.getInt("id");
                 }
+                step = 4;
                 stmt.executeUpdate("INSERT INTO MagneticReport (id, Report_id, poleDistance, MPCarrier, magTech, UVIntensity, distanceOfLight, examinationArea, currentType, Luxmeter,"
                 + " testMedium, demagnetization, surfaceTemperature, gaussFieldStrength, surfaceCondition2, identificationOfLightEquip, liftingTest, buttWeld, filletWeld, standardDeviations) VALUES\n"
                 + "(" + (id+1) + ", " + report_id + ", '" + DataPreparation.prepareString(report.getPoleDistance()) + "', '" + DataPreparation.prepareString(report.getMpCarrier()) + "', '" + DataPreparation.prepareString(report.getMagTech())
@@ -65,6 +71,8 @@ public class ReportManagement extends DatabaseManagement{
                 + "', '" + DataPreparation.prepareString(report.getDemagnetization()) + "', '" + DataPreparation.prepareString(report.getSurfaceTemperature()) + "', '" + DataPreparation.prepareString(report.getGaussFieldStrength())
                 + "', '" + DataPreparation.prepareString(report.getSurfaceCondition2()) + "', '" + DataPreparation.prepareString(report.getIdentificationOfLightEquip()) + "', '" + DataPreparation.prepareString(report.getLiftingTest())
                 + "', " + report.isButtWeld() + ", " + report.isFilletWeld() + ", '" + DataPreparation.prepareString(report.getStandardDeviations()) + "'); ");
+                
+                step = 5;
                 ArrayList<MagneticInspectionResult> results = report.getInspectionResults();
                 id = 0;
                 for (int i = 0; i < results.size(); i++) {
@@ -74,18 +82,19 @@ public class ReportManagement extends DatabaseManagement{
                     }
                     MagneticInspectionResult temp = results.get(i);
                     stmt.executeUpdate("INSERT INTO MagneticResults (id, Report_id, weldPieceNo, testLength, weldingProcess, thickness, diameter, defectType, defectLocation, result) "
-                    + "VALUES (" + (id+1+i) + ", " + report_id + ", '" + DataPreparation.prepareString(temp.getWeldPieceNo()) + "', '" + DataPreparation.prepareString(temp.getTestLength()) + "', '" 
+                    + "VALUES (" + (id+1) + ", " + report_id + ", '" + DataPreparation.prepareString(temp.getWeldPieceNo()) + "', '" + DataPreparation.prepareString(temp.getTestLength()) + "', '" 
                     + DataPreparation.prepareString(temp.getWeldingProcess()) + "', '" + DataPreparation.prepareString(temp.getThickness()) + "', '"
                     + DataPreparation.prepareString(temp.getDiameter()) + "', '" + DataPreparation.prepareString(temp.getDefectType()) + "', '" 
                     + DataPreparation.prepareString(temp.getDefectLocation()) + "', '" + DataPreparation.prepareString(temp.getResult()) + "');");
-                }                 
+                }
+                step = 6;
                 return 1;
             }
             else {
                 return 0;
             }
             } catch (SQLException e) {
-                System.out.println("insertMagneticReport " + e);
+                System.out.println("insertMagneticReport step " + step + "    " + e);
                 con = DatabaseManagement.connect();
                 deleteReport(report.getCustomer(), report.getReportNumber());
                 return -1;

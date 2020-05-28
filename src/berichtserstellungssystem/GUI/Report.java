@@ -15,6 +15,7 @@ import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.text.*;
@@ -61,12 +62,9 @@ public class Report extends javax.swing.JFrame {
     private String stageOfExamination = "";
     
     
-    int R_operator_id;
-    int R_evaluator_id;
-    int R_confirmation_id;
-    int M_operator_id;
-    int M_evaluator_id;
-    int M_confirmation_id;
+    int operator_id;
+    int evaluator_id;
+    int confirmation_id;
     
     
     /**
@@ -101,10 +99,6 @@ public class Report extends javax.swing.JFrame {
     
     private void start() {
         initComponents();
-        StyledDocument doc = _MPCarrier.getStyledDocument();
-        SimpleAttributeSet center = new SimpleAttributeSet();
-        StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
-        doc.setParagraphAttributes(0, doc.getLength(), center, false);
         jScrollPane2.getVerticalScrollBar().setUnitIncrement(40);
     }
     
@@ -202,7 +196,7 @@ public class Report extends javax.swing.JFrame {
                 _poleDistance.setText(equip1.getPolesDistance());
                 _Mequipment.setText(equip1.getName());
                 _MPCarrier.setText(equip1.getMpCarrier());
-                _magTech.setText(equip1.getMagTechnic());
+                _MPCarrier.setText(equip1.getMagTechnic());
                 _UV.setText(equip1.getUvIntensity());
                 _distanceOfLight.setText(equip1.getLightDistance());
                 _examinationArea.setText("KAYNAK+HAZ");
@@ -220,8 +214,8 @@ public class Report extends javax.swing.JFrame {
                 _butt.setSelected(false);
                 _fillet.setSelected(false);
                 _standardDeviations.setText("Standarttan sapma yoktur.");
-                _inspectionDates.setText(Common.date_toStringReverse(this.reportDate, "."));
-                _description.setText("");
+                _MinspectionDates.setText(Common.date_toStringReverse(this.reportDate, "."));
+                _Mdescription.setText("");
                 
                 _MoperatorName.setText(this.operator.getName() + " " + this.operator.getLastname());
                 _MevaluatorName.setText(this.evaluator.getName() + " " + this.evaluator.getLastname());
@@ -313,10 +307,12 @@ public class Report extends javax.swing.JFrame {
             _reportNo.setToolTipText("Zorunlu alan, en fazla 16 Harften oluşmalı");
             return false;
         }
-        else if (!ReportManagement.reportNumberAccepted(_reportNo.getText().trim(), this.theCustomer.getName())) {
-            _reportNo.setBackground(Color.pink);
-            _reportNo.setToolTipText("Girdiğiniz rapor numarası bu firma için daha önce kullanılmıştır!");
-            return false;
+        else if (process == 1) {
+            if (!ReportManagement.reportNumberAccepted(_reportNo.getText().trim(), this.theCustomer.getName())) {
+                _reportNo.setBackground(Color.pink);
+                _reportNo.setToolTipText("Girdiğiniz rapor numarası bu firma için daha önce kullanılmıştır!");
+                return false;
+            }
         }
         else {
             _reportNo.setBackground(Color.white);
@@ -768,10 +764,12 @@ public class Report extends javax.swing.JFrame {
             _MreportNo.setToolTipText("Zorunlu alan, en fazla 16 Harften oluşmalı");
             return false;
         }
-        else if (!ReportManagement.reportNumberAccepted(_MreportNo.getText().trim(), this.theCustomer.getName())) {
-            _MreportNo.setBackground(Color.pink);
-            _MreportNo.setToolTipText("Girdiğiniz rapor numarası bu firma için daha önce kullanılmıştır!");
-            return false;
+        else if (process == 1) {
+            if (!ReportManagement.reportNumberAccepted(_MreportNo.getText().trim(), this.theCustomer.getName())) {
+                _MreportNo.setBackground(Color.pink);
+                _MreportNo.setToolTipText("Girdiğiniz rapor numarası bu firma için daha önce kullanılmıştır!");
+                return false;
+            }
         }
         else {
             _MreportNo.setBackground(Color.white);
@@ -799,32 +797,31 @@ public class Report extends javax.swing.JFrame {
             _Mdescription.setBackground(Color.white);
             _Mdescription.setToolTipText(null);
         }
-        
-        /*
-        if (_shootingArea1.getText().trim().length() > 32) {
-            _shootingArea1.setBackground(Color.pink);
-            _shootingArea1.setToolTipText("En fazla 32 Harften oluşmalı");
+       
+        if (_pieceNo1.getText().trim().length() > 32) {
+            _pieceNo1.setBackground(Color.pink);
+            _pieceNo1.setToolTipText("En fazla 32 Harften oluşmalı");
             return false;
         }
-        else if (_shootingArea1.getText().trim().equals("")) {
-            for (JTextField t : this.radiographicResult1) {
+        else if (_pieceNo1.getText().trim().equals("")) {
+            for (JTextField t : this.magneticResult1) {
                 if (!t.getText().trim().equals("")) {
-                    _shootingArea1.setBackground(Color.pink);
-                    _shootingArea1.setToolTipText("Zorunlu alan");
+                    _pieceNo1.setBackground(Color.pink);
+                    _pieceNo1.setToolTipText("Zorunlu alan");
                     return false;
                 }
                 else {
-                    _shootingArea1.setBackground(Color.white);
-                    _shootingArea1.setToolTipText(null);
+                    _pieceNo1.setBackground(Color.white);
+                    _pieceNo1.setToolTipText(null);
                 }
             }
         }
         else {
-            _shootingArea1.setBackground(Color.white);
-            _shootingArea1.setToolTipText(null);
+            _pieceNo1.setBackground(Color.white);
+            _pieceNo1.setToolTipText(null);
         }
         
-        for (JTextField t : this.radiographicResult1) {
+        for (JTextField t : this.magneticResult1) {
             if (t.getText().trim().length() > 32) {
                 t.setBackground(Color.pink);
                 t.setToolTipText("En fazla 32 Harften oluşmalı");
@@ -836,30 +833,30 @@ public class Report extends javax.swing.JFrame {
             }
         }
         
-        if (_shootingArea2.getText().trim().length() > 32) {
-            _shootingArea2.setBackground(Color.pink);
-            _shootingArea2.setToolTipText("En fazla 32 Harften oluşmalı");
+        if (_pieceNo2.getText().trim().length() > 32) {
+            _pieceNo2.setBackground(Color.pink);
+            _pieceNo2.setToolTipText("En fazla 32 Harften oluşmalı");
             return false;
         }
-        else if (_shootingArea2.getText().trim().equals("")) {
-            for (JTextField t : this.radiographicResult2) {
+        else if (_pieceNo2.getText().trim().equals("")) {
+            for (JTextField t : this.magneticResult2) {
                 if (!t.getText().trim().equals("")) {
-                    _shootingArea2.setBackground(Color.pink);
-                    _shootingArea2.setToolTipText("Zorunlu alan");
+                    _pieceNo2.setBackground(Color.pink);
+                    _pieceNo2.setToolTipText("Zorunlu alan");
                     return false;
                 }
                 else {
-                    _shootingArea2.setBackground(Color.white);
-                    _shootingArea2.setToolTipText(null);
+                    _pieceNo2.setBackground(Color.white);
+                    _pieceNo2.setToolTipText(null);
                 }
             }
         }
         else {
-            _shootingArea2.setBackground(Color.white);
-            _shootingArea2.setToolTipText(null);
+            _pieceNo2.setBackground(Color.white);
+            _pieceNo2.setToolTipText(null);
         }
         
-        for (JTextField t : this.radiographicResult2) {
+        for (JTextField t : this.magneticResult2) {
             if (t.getText().trim().length() > 32) {
                 t.setBackground(Color.pink);
                 t.setToolTipText("En fazla 32 Harften oluşmalı");
@@ -871,30 +868,30 @@ public class Report extends javax.swing.JFrame {
             }
         }
         
-        if (_shootingArea3.getText().trim().length() > 32) {
-            _shootingArea3.setBackground(Color.pink);
-            _shootingArea3.setToolTipText("En fazla 32 Harften oluşmalı");
+        if (_pieceNo3.getText().trim().length() > 32) {
+            _pieceNo3.setBackground(Color.pink);
+            _pieceNo3.setToolTipText("En fazla 32 Harften oluşmalı");
             return false;
         }
-        else if (_shootingArea3.getText().trim().equals("")) {
-            for (JTextField t : this.radiographicResult3) {
+        else if (_pieceNo3.getText().trim().equals("")) {
+            for (JTextField t : this.magneticResult3) {
                 if (!t.getText().trim().equals("")) {
-                    _shootingArea3.setBackground(Color.pink);
-                    _shootingArea3.setToolTipText("Zorunlu alan");
+                    _pieceNo3.setBackground(Color.pink);
+                    _pieceNo3.setToolTipText("Zorunlu alan");
                     return false;
                 }
                 else {
-                    _shootingArea3.setBackground(Color.white);
-                    _shootingArea3.setToolTipText(null);
+                    _pieceNo3.setBackground(Color.white);
+                    _pieceNo3.setToolTipText(null);
                 }
             }
         }
         else {
-            _shootingArea3.setBackground(Color.white);
-            _shootingArea3.setToolTipText(null);
+            _pieceNo3.setBackground(Color.white);
+            _pieceNo3.setToolTipText(null);
         }
         
-        for (JTextField t : this.radiographicResult3) {
+        for (JTextField t : this.magneticResult3) {
             if (t.getText().trim().length() > 32) {
                 t.setBackground(Color.pink);
                 t.setToolTipText("En fazla 32 Harften oluşmalı");
@@ -906,30 +903,30 @@ public class Report extends javax.swing.JFrame {
             }
         }
         
-        if (_shootingArea4.getText().trim().length() > 32) {
-            _shootingArea4.setBackground(Color.pink);
-            _shootingArea4.setToolTipText("En fazla 32 Harften oluşmalı");
+        if (_pieceNo4.getText().trim().length() > 32) {
+            _pieceNo4.setBackground(Color.pink);
+            _pieceNo4.setToolTipText("En fazla 32 Harften oluşmalı");
             return false;
         }
-        else if (_shootingArea4.getText().trim().equals("")) {
-            for (JTextField t : this.radiographicResult4) {
+        else if (_pieceNo4.getText().trim().equals("")) {
+            for (JTextField t : this.magneticResult4) {
                 if (!t.getText().trim().equals("")) {
-                    _shootingArea4.setBackground(Color.pink);
-                    _shootingArea4.setToolTipText("Zorunlu alan");
+                    _pieceNo4.setBackground(Color.pink);
+                    _pieceNo4.setToolTipText("Zorunlu alan");
                     return false;
                 }
                 else {
-                    _shootingArea4.setBackground(Color.white);
-                    _shootingArea4.setToolTipText(null);
+                    _pieceNo4.setBackground(Color.white);
+                    _pieceNo4.setToolTipText(null);
                 }
             }
         }
         else {
-            _shootingArea4.setBackground(Color.white);
-            _shootingArea4.setToolTipText(null);
+            _pieceNo4.setBackground(Color.white);
+            _pieceNo4.setToolTipText(null);
         }
         
-        for (JTextField t : this.radiographicResult4) {
+        for (JTextField t : this.magneticResult4) {
             if (t.getText().trim().length() > 32) {
                 t.setBackground(Color.pink);
                 t.setToolTipText("En fazla 32 Harften oluşmalı");
@@ -941,30 +938,30 @@ public class Report extends javax.swing.JFrame {
             }
         }
         
-        if (_shootingArea5.getText().trim().length() > 32) {
-            _shootingArea5.setBackground(Color.pink);
-            _shootingArea5.setToolTipText("En fazla 32 Harften oluşmalı");
+        if (_pieceNo5.getText().trim().length() > 32) {
+            _pieceNo5.setBackground(Color.pink);
+            _pieceNo5.setToolTipText("En fazla 32 Harften oluşmalı");
             return false;
         }
-        else if (_shootingArea5.getText().trim().equals("")) {
-            for (JTextField t : this.radiographicResult5) {
+        else if (_pieceNo5.getText().trim().equals("")) {
+            for (JTextField t : this.magneticResult5) {
                 if (!t.getText().trim().equals("")) {
-                    _shootingArea5.setBackground(Color.pink);
-                    _shootingArea5.setToolTipText("Zorunlu alan");
+                    _pieceNo5.setBackground(Color.pink);
+                    _pieceNo5.setToolTipText("Zorunlu alan");
                     return false;
                 }
                 else {
-                    _shootingArea5.setBackground(Color.white);
-                    _shootingArea5.setToolTipText(null);
+                    _pieceNo5.setBackground(Color.white);
+                    _pieceNo5.setToolTipText(null);
                 }
             }
         }
         else {
-            _shootingArea5.setBackground(Color.white);
-            _shootingArea5.setToolTipText(null);
+            _pieceNo5.setBackground(Color.white);
+            _pieceNo5.setToolTipText(null);
         }
         
-        for (JTextField t : this.radiographicResult5) {
+        for (JTextField t : this.magneticResult5) {
             if (t.getText().trim().length() > 32) {
                 t.setBackground(Color.pink);
                 t.setToolTipText("En fazla 32 Harften oluşmalı");
@@ -975,8 +972,247 @@ public class Report extends javax.swing.JFrame {
                 t.setToolTipText(null);
             }
         }
-        */
+        
+        if (_pieceNo6.getText().trim().length() > 32) {
+            _pieceNo6.setBackground(Color.pink);
+            _pieceNo6.setToolTipText("En fazla 32 Harften oluşmalı");
+            return false;
+        }
+        else if (_pieceNo6.getText().trim().equals("")) {
+            for (JTextField t : this.magneticResult6) {
+                if (!t.getText().trim().equals("")) {
+                    _pieceNo6.setBackground(Color.pink);
+                    _pieceNo6.setToolTipText("Zorunlu alan");
+                    return false;
+                }
+                else {
+                    _pieceNo6.setBackground(Color.white);
+                    _pieceNo6.setToolTipText(null);
+                }
+            }
+        }
+        else {
+            _pieceNo6.setBackground(Color.white);
+            _pieceNo6.setToolTipText(null);
+        }
+        
+        for (JTextField t : this.magneticResult6) {
+            if (t.getText().trim().length() > 32) {
+                t.setBackground(Color.pink);
+                t.setToolTipText("En fazla 32 Harften oluşmalı");
+                return false;
+            }
+            else {
+                t.setBackground(Color.white);
+                t.setToolTipText(null);
+            }
+        }
+        
+        if (_pieceNo7.getText().trim().length() > 32) {
+            _pieceNo7.setBackground(Color.pink);
+            _pieceNo7.setToolTipText("En fazla 32 Harften oluşmalı");
+            return false;
+        }
+        else if (_pieceNo7.getText().trim().equals("")) {
+            for (JTextField t : this.magneticResult7) {
+                if (!t.getText().trim().equals("")) {
+                    _pieceNo7.setBackground(Color.pink);
+                    _pieceNo7.setToolTipText("Zorunlu alan");
+                    return false;
+                }
+                else {
+                    _pieceNo7.setBackground(Color.white);
+                    _pieceNo7.setToolTipText(null);
+                }
+            }
+        }
+        else {
+            _pieceNo7.setBackground(Color.white);
+            _pieceNo7.setToolTipText(null);
+        }
+        
+        for (JTextField t : this.magneticResult7) {
+            if (t.getText().trim().length() > 32) {
+                t.setBackground(Color.pink);
+                t.setToolTipText("En fazla 32 Harften oluşmalı");
+                return false;
+            }
+            else {
+                t.setBackground(Color.white);
+                t.setToolTipText(null);
+            }
+        }
+        
+        if (_pieceNo8.getText().trim().length() > 32) {
+            _pieceNo8.setBackground(Color.pink);
+            _pieceNo8.setToolTipText("En fazla 32 Harften oluşmalı");
+            return false;
+        }
+        else if (_pieceNo8.getText().trim().equals("")) {
+            for (JTextField t : this.magneticResult8) {
+                if (!t.getText().trim().equals("")) {
+                    _pieceNo8.setBackground(Color.pink);
+                    _pieceNo8.setToolTipText("Zorunlu alan");
+                    return false;
+                }
+                else {
+                    _pieceNo8.setBackground(Color.white);
+                    _pieceNo8.setToolTipText(null);
+                }
+            }
+        }
+        else {
+            _pieceNo8.setBackground(Color.white);
+            _pieceNo8.setToolTipText(null);
+        }
+        
+        for (JTextField t : this.magneticResult8) {
+            if (t.getText().trim().length() > 32) {
+                t.setBackground(Color.pink);
+                t.setToolTipText("En fazla 32 Harften oluşmalı");
+                return false;
+            }
+            else {
+                t.setBackground(Color.white);
+                t.setToolTipText(null);
+            }
+        }
+        
+        if (_pieceNo9.getText().trim().length() > 32) {
+            _pieceNo9.setBackground(Color.pink);
+            _pieceNo9.setToolTipText("En fazla 32 Harften oluşmalı");
+            return false;
+        }
+        else if (_pieceNo9.getText().trim().equals("")) {
+            for (JTextField t : this.magneticResult9) {
+                if (!t.getText().trim().equals("")) {
+                    _pieceNo9.setBackground(Color.pink);
+                    _pieceNo9.setToolTipText("Zorunlu alan");
+                    return false;
+                }
+                else {
+                    _pieceNo9.setBackground(Color.white);
+                    _pieceNo9.setToolTipText(null);
+                }
+            }
+        }
+        else {
+            _pieceNo9.setBackground(Color.white);
+            _pieceNo9.setToolTipText(null);
+        }
+        
+        for (JTextField t : this.magneticResult9) {
+            if (t.getText().trim().length() > 32) {
+                t.setBackground(Color.pink);
+                t.setToolTipText("En fazla 32 Harften oluşmalı");
+                return false;
+            }
+            else {
+                t.setBackground(Color.white);
+                t.setToolTipText(null);
+            }
+        }
+        
+        if (_pieceNo10.getText().trim().length() > 32) {
+            _pieceNo10.setBackground(Color.pink);
+            _pieceNo10.setToolTipText("En fazla 32 Harften oluşmalı");
+            return false;
+        }
+        else if (_pieceNo10.getText().trim().equals("")) {
+            for (JTextField t : this.magneticResult10) {
+                if (!t.getText().trim().equals("")) {
+                    _pieceNo10.setBackground(Color.pink);
+                    _pieceNo10.setToolTipText("Zorunlu alan");
+                    return false;
+                }
+                else {
+                    _pieceNo10.setBackground(Color.white);
+                    _pieceNo10.setToolTipText(null);
+                }
+            }
+        }
+        else {
+            _pieceNo10.setBackground(Color.white);
+            _pieceNo10.setToolTipText(null);
+        }
+        
+        for (JTextField t : this.magneticResult10) {
+            if (t.getText().trim().length() > 32) {
+                t.setBackground(Color.pink);
+                t.setToolTipText("En fazla 32 Harften oluşmalı");
+                return false;
+            }
+            else {
+                t.setBackground(Color.white);
+                t.setToolTipText(null);
+            }
+        }
+        
         return res;
+    }
+    
+    private void message (int done) {
+        JDialog dialog = new JDialog();
+        dialog.setAlwaysOnTop(true);
+        String func = "Kayit";
+        if (process == 2) {
+            func = "Güncelleme";
+        }
+        else if (process == 3) {
+            func = "Silme";
+        }
+        if (done == 1) {
+            JOptionPane.showMessageDialog(dialog, func  + " işlemi başarıyla tamamlanmıştır", "Başarılı İşlem", JOptionPane.PLAIN_MESSAGE);
+            if (process == 3) {
+                this.dispose();
+            }
+            else if (process == 1) {
+                jLabel2.setEnabled(false);
+                jLabel1.setEnabled(true);
+                jLabel4.setEnabled(true);
+                process = 2;
+            }
+        }
+        else if (done == 0) {
+            JOptionPane.showMessageDialog(dialog, "Girdiğiniz rapor numarasi bu firma için daha önce kullanıldı!", "Hatalı İşlem", JOptionPane.PLAIN_MESSAGE);
+            if (process == 3) { process = 2;}
+        }
+        else {
+            JOptionPane.showMessageDialog(dialog, "Veri tabanına bağlanırken hata oluştu!, Lütfen tekrar deneyin.", "Hatalı Bağlantı", JOptionPane.PLAIN_MESSAGE);
+            try {
+                DatabaseManagement.con.close();
+            } catch (SQLException ex) {
+                System.out.println(ex);
+            }
+            DatabaseManagement.con = DatabaseManagement.connect();
+            if (process == 3) { process = 2;}
+        }
+    }
+    
+    private void add() {
+        if (equip1 == null) {
+            RadiographicReport toAdd = collectDataRadiographic();
+            int res = ReportManagement.insertRadiographicReport(toAdd);
+            message(res);
+        }
+        else {
+            MagneticReport toAdd = collectDataMagnetic();
+            int res = ReportManagement.insertMagneticReport(toAdd);
+            message(res);
+        }
+    }
+    
+    private void update() {
+        if (equip1 == null) {
+            RadiographicReport toEdit = collectDataRadiographic();
+            int res = ReportManagement.updateRadiographicReport(toEdit);
+            message(res);
+        }
+        else {
+            MagneticReport toEdit = collectDataMagnetic();
+            int res = ReportManagement.updateMagneticReport(toEdit);
+            message(res);
+        }
     }
     
     private void printReport(JPanel panel, double a, double b) {
@@ -1212,13 +1448,12 @@ public class Report extends javax.swing.JFrame {
         _MreportDate = new javax.swing.JTextField();
         _MorderNo = new javax.swing.JTextField();
         jPanel9 = new javax.swing.JPanel();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        _MPCarrier = new javax.swing.JTextPane();
         _distanceOfLight = new javax.swing.JTextField();
         _poleDistance = new javax.swing.JTextField();
         _Mequipment = new javax.swing.JTextField();
-        _magTech = new javax.swing.JTextField();
+        _MPCarrier = new javax.swing.JTextField();
         _UV = new javax.swing.JTextField();
+        _magTech = new javax.swing.JTextField();
         jPanel10 = new javax.swing.JPanel();
         _MheatTreatment = new javax.swing.JTextField();
         _examinationArea = new javax.swing.JTextField();
@@ -1370,6 +1605,11 @@ public class Report extends javax.swing.JFrame {
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/save.png"))); // NOI18N
         jLabel2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jLabel2.setEnabled(false);
+        jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel2MouseClicked(evt);
+            }
+        });
 
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/XLSX.png"))); // NOI18N
@@ -3891,6 +4131,9 @@ public class Report extends javax.swing.JFrame {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 _weldingProcess7FocusGained(evt);
             }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                _MinspectionScopeFocusLost(evt);
+            }
         });
         _MinspectionScope.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -4149,25 +4392,6 @@ public class Report extends javax.swing.JFrame {
         jPanel9.setOpaque(false);
         jPanel9.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jScrollPane4.setBackground(new java.awt.Color(255, 255, 255));
-        jScrollPane4.setBorder(null);
-        jScrollPane4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-
-        _MPCarrier.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _MPCarrier.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _MPCarrier.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jScrollPane4.setViewportView(_MPCarrier);
-
-        jPanel9.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 109, 227, 46));
-
         _distanceOfLight.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         _distanceOfLight.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         _distanceOfLight.setToolTipText("");
@@ -4226,24 +4450,24 @@ public class Report extends javax.swing.JFrame {
         });
         jPanel9.add(_Mequipment, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 58, 227, 47));
 
-        _magTech.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _magTech.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _magTech.setToolTipText("");
-        _magTech.setBorder(null);
-        _magTech.setMinimumSize(new java.awt.Dimension(470, 46));
-        _magTech.setName(""); // NOI18N
-        _magTech.setPreferredSize(new java.awt.Dimension(470, 46));
-        _magTech.addFocusListener(new java.awt.event.FocusAdapter() {
+        _MPCarrier.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MPCarrier.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MPCarrier.setToolTipText("");
+        _MPCarrier.setBorder(null);
+        _MPCarrier.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MPCarrier.setName(""); // NOI18N
+        _MPCarrier.setPreferredSize(new java.awt.Dimension(470, 46));
+        _MPCarrier.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 _weldingProcess7FocusGained(evt);
             }
         });
-        _magTech.addKeyListener(new java.awt.event.KeyAdapter() {
+        _MPCarrier.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 _weldingProcess7KeyReleased(evt);
             }
         });
-        jPanel9.add(_magTech, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 159, 227, 47));
+        jPanel9.add(_MPCarrier, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 109, 227, 47));
 
         _UV.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         _UV.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -4263,6 +4487,25 @@ public class Report extends javax.swing.JFrame {
             }
         });
         jPanel9.add(_UV, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 210, 227, 47));
+
+        _magTech.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _magTech.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _magTech.setToolTipText("");
+        _magTech.setBorder(null);
+        _magTech.setMinimumSize(new java.awt.Dimension(470, 46));
+        _magTech.setName(""); // NOI18N
+        _magTech.setPreferredSize(new java.awt.Dimension(470, 46));
+        _magTech.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _magTech_weldingProcess7FocusGained(evt);
+            }
+        });
+        _magTech.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _magTech_weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel9.add(_magTech, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 159, 227, 47));
 
         jPanel6.add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 440, 230, 310));
 
@@ -6317,7 +6560,7 @@ public class Report extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(5, 5, 5)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1258, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -6336,7 +6579,10 @@ public class Report extends javax.swing.JFrame {
     
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         radiographicResultsCapsul();
-        magneticResultsCapsul();   
+        magneticResultsCapsul();
+        this.operator_id = PersonManagement.getPersonId(this.operator);
+        this.evaluator_id = PersonManagement.getPersonId(this.evaluator);
+        this.confirmation_id = PersonManagement.getPersonId(this.confirmator);
     }//GEN-LAST:event_formWindowOpened
 
     private void jTabbedPane1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTabbedPane1MousePressed
@@ -6392,6 +6638,8 @@ public class Report extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel1MouseClicked
 
     private void _descriptionKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event__descriptionKeyReleased
+        jLabel1.setEnabled(false);
+        jLabel4.setEnabled(false);
         if (everyThingIsOkayR()) {
             jLabel2.setEnabled(true);
         }
@@ -6419,6 +6667,8 @@ public class Report extends javax.swing.JFrame {
     }//GEN-LAST:event__heatTreatmentFocusLost
 
     private void _weldingProcess7KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event__weldingProcess7KeyReleased
+        jLabel1.setEnabled(false);
+        jLabel4.setEnabled(false);
         if (everyThingIsOkayM()) {
             jLabel2.setEnabled(true);
         }
@@ -6442,6 +6692,29 @@ public class Report extends javax.swing.JFrame {
     private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_jLabel4MouseClicked
+
+    private void _MinspectionScopeFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event__MinspectionScopeFocusLost
+        if (!_MinspectionScope.getText().trim().contains("%")){
+            _MinspectionScope.setText(_MinspectionScope.getText().trim() + " %");
+        }
+    }//GEN-LAST:event__MinspectionScopeFocusLost
+
+    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
+        if (process == 1) {
+            add();
+        }
+        else {
+            update();
+        }
+    }//GEN-LAST:event_jLabel2MouseClicked
+
+    private void _magTech_weldingProcess7FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event__magTech_weldingProcess7FocusGained
+        // TODO add your handling code here:
+    }//GEN-LAST:event__magTech_weldingProcess7FocusGained
+
+    private void _magTech_weldingProcess7KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event__magTech_weldingProcess7KeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event__magTech_weldingProcess7KeyReleased
 
     /**
      * @param args the command line arguments
@@ -6479,7 +6752,7 @@ public class Report extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextPane _MPCarrier;
+    private javax.swing.JTextField _MPCarrier;
     private javax.swing.JTextField _Mbottom;
     private javax.swing.JTextField _MconfirmationLevel;
     private javax.swing.JTextField _MconfirmationName;
@@ -6801,7 +7074,6 @@ public class Report extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTabbedPane jTabbedPane1;
     // End of variables declaration//GEN-END:variables
 
@@ -7040,9 +7312,9 @@ public class Report extends javax.swing.JFrame {
             report.setInspectionDates(_inspectionDates.getText());
             report.setDescriptionOfAttachments(_description.getText());
             report.setInspectionResults(getRadiographicResults());
-            report.setOperator_id(R_operator_id);
-            report.setEvaluator_id(R_evaluator_id);
-            report.setConfirmation_id(R_confirmation_id);
+            report.setOperator_id(this.operator_id);
+            report.setEvaluator_id(this.evaluator_id);
+            report.setConfirmation_id(this.confirmation_id);
             System.out.println(report.toString());
             return report;
     }
@@ -7219,7 +7491,7 @@ public class Report extends javax.swing.JFrame {
             report.setPoleDistance(_poleDistance.getText());
             report.setEquipment(_Mequipment.getText());
             report.setMpCarrier(_MPCarrier.getText());
-            report.setMagTech(_magTech.getText());
+            report.setMagTech(_MPCarrier.getText());
             report.setUvIntensity(_UV.getText());
             report.setDistanceOfLight(_distanceOfLight.getText());
             report.setExaminationArea(_examinationArea.getText());
@@ -7239,9 +7511,9 @@ public class Report extends javax.swing.JFrame {
             report.setInspectionDates(_MinspectionDates.getText());
             report.setDescriptionOfAttachments(_Mdescription.getText());
             report.setInspectionResults(getMagneticResults());
-            report.setOperator_id(M_operator_id);
-            report.setEvaluator_id(M_evaluator_id);
-            report.setConfirmation_id(M_confirmation_id);
+            report.setOperator_id(this.operator_id);
+            report.setEvaluator_id(this.evaluator_id);
+            report.setConfirmation_id(this.confirmation_id);
             report.setBottom(_Mbottom.getText());
             System.out.println(report.toString());
             return report;

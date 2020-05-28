@@ -105,6 +105,8 @@ public class Common {
         Date date = new Date();
         s = s.replace(".", "-");
         s = s.replace("/", "-");
+        s = s.replace("\\", "-");
+        s = s.replace(",", "-");
         String[] temp = s.split("-");
         if (temp.length == 3) {
             return makeItDate(temp);

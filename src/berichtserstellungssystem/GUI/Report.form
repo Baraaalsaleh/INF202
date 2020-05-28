@@ -39,7 +39,7 @@
           <Group type="102" alignment="0" attributes="0">
               <Component id="jPanel1" min="-2" pref="79" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
-              <Component id="jScrollPane2" max="32767" attributes="0"/>
+              <Component id="jScrollPane2" pref="1258" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -137,6 +137,9 @@
             </Property>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jLabel2MouseClicked"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel4">
           <Properties>
@@ -3741,6 +3744,7 @@
                           </Properties>
                           <Events>
                             <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="_weldingProcess7FocusGained"/>
+                            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="_MinspectionScopeFocusLost"/>
                             <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="_weldingProcess7KeyReleased"/>
                           </Events>
                           <Constraints>
@@ -4142,42 +4146,6 @@
                         <Property name="useNullLayout" type="boolean" value="false"/>
                       </Layout>
                       <SubComponents>
-                        <Container class="javax.swing.JScrollPane" name="jScrollPane4">
-                          <Properties>
-                            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                              <Color blue="ff" green="ff" red="ff" type="rgb"/>
-                            </Property>
-                            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                              <Border info="null"/>
-                            </Property>
-                            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                              <Font name="Arial" size="14" style="1"/>
-                            </Property>
-                          </Properties>
-                          <AuxValues>
-                            <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
-                          </AuxValues>
-                          <Constraints>
-                            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                              <AbsoluteConstraints x="1" y="109" width="227" height="46"/>
-                            </Constraint>
-                          </Constraints>
-
-                          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-                          <SubComponents>
-                            <Component class="javax.swing.JTextPane" name="_MPCarrier">
-                              <Properties>
-                                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                                  <Font name="Arial" size="14" style="1"/>
-                                </Property>
-                              </Properties>
-                              <Events>
-                                <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="_weldingProcess7FocusGained"/>
-                                <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="_weldingProcess7KeyReleased"/>
-                              </Events>
-                            </Component>
-                          </SubComponents>
-                        </Container>
                         <Component class="javax.swing.JTextField" name="_distanceOfLight">
                           <Properties>
                             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
@@ -4263,7 +4231,7 @@
                             </Constraint>
                           </Constraints>
                         </Component>
-                        <Component class="javax.swing.JTextField" name="_magTech">
+                        <Component class="javax.swing.JTextField" name="_MPCarrier">
                           <Properties>
                             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                               <Font name="Arial" size="14" style="1"/>
@@ -4287,7 +4255,7 @@
                           </Events>
                           <Constraints>
                             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                              <AbsoluteConstraints x="1" y="159" width="227" height="47"/>
+                              <AbsoluteConstraints x="1" y="109" width="227" height="47"/>
                             </Constraint>
                           </Constraints>
                         </Component>
@@ -4316,6 +4284,34 @@
                           <Constraints>
                             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
                               <AbsoluteConstraints x="1" y="210" width="227" height="47"/>
+                            </Constraint>
+                          </Constraints>
+                        </Component>
+                        <Component class="javax.swing.JTextField" name="_magTech">
+                          <Properties>
+                            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                              <Font name="Arial" size="14" style="1"/>
+                            </Property>
+                            <Property name="horizontalAlignment" type="int" value="0"/>
+                            <Property name="toolTipText" type="java.lang.String" value=""/>
+                            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                              <Border info="null"/>
+                            </Property>
+                            <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                              <Dimension value="[470, 46]"/>
+                            </Property>
+                            <Property name="name" type="java.lang.String" value="" noResource="true"/>
+                            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                              <Dimension value="[470, 46]"/>
+                            </Property>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="_magTech_weldingProcess7FocusGained"/>
+                            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="_magTech_weldingProcess7KeyReleased"/>
+                          </Events>
+                          <Constraints>
+                            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
+                              <AbsoluteConstraints x="1" y="159" width="227" height="47"/>
                             </Constraint>
                           </Constraints>
                         </Component>

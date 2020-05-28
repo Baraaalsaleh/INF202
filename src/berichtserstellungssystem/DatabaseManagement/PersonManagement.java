@@ -520,7 +520,7 @@ public class PersonManagement extends DatabaseManagement{
         ResultSet rs = null;
         try {
             stmt = con.createStatement();
-            rs = stmt.executeQuery("SELECT id FROM Person WHERE PersonalNr = " + pnr + "");
+            rs = stmt.executeQuery("SELECT id FROM Person WHERE PersonalNr = " + pnr + ";");
             if (rs.next()) {
                 res = false;
             }
@@ -528,6 +528,22 @@ public class PersonManagement extends DatabaseManagement{
             System.out.println("personalNummerAccepted " + ex);
             res = false;
         }
+        return res;
+    }
+    
+    public static int getPersonId(Person person) {
+        int res = -1;
+        ResultSet rs = null;
+        try {
+            stmt = con.createStatement();
+            rs = stmt.executeQuery("SELECT id FROM Person WHERE PersonalNr = " + person.getPersonalNr() + ";");
+            if (rs.next()) {
+                res = rs.getInt("id");
+            }
+        } catch (SQLException ex) {
+            System.out.println("personalNummerAccepted " + ex);
+        }
+        
         return res;
     }
 }
