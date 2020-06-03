@@ -5,6 +5,8 @@
  */
 package berichtserstellungssystem.Report;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Objects;
 
 /**
@@ -31,6 +33,23 @@ public class MagneticInspectionResult extends Result{
         this.defectType = defectType;
         this.defectLocation = defectLocation;
         this.result = result;
+    }
+    
+    public MagneticInspectionResult(ResultSet rs, int serialNo) {
+        super(serialNo);
+        try {
+            this.weldPieceNo = rs.getString("weldPieceNo");
+            this.testLength = rs.getString("testLength");
+            this.weldingProcess = rs.getString("weldingProcess");
+            this.thickness = rs.getString("thickness");
+            this.diameter = rs.getString("diameter");
+            this.defectType = rs.getString("defectType");
+            this.defectLocation = rs.getString("defectLocation");
+            this.result = rs.getString("result");
+        } catch(SQLException e) {
+            System.out.println("MagneticInspectionResult " + e);
+        }
+        
     }
 
     public MagneticInspectionResult () {

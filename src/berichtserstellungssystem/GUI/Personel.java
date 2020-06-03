@@ -28,6 +28,7 @@ public class Personel extends javax.swing.JFrame {
     int type;
     int process;
     long personalNr;
+    long tc;
     private Manager me;
     String name = "";
     String lastname = "";
@@ -80,6 +81,7 @@ public class Personel extends javax.swing.JFrame {
         jTextField6.setText(toEdit.getAddress());
         jTextField7.setText(Common.date_toStringReverse(toEdit.getBirthDate(), "-"));
         jTextField8.setText(Long.toString(toEdit.getTcNr()));
+        this.tc = toEdit.getTcNr();
         jTextField9.setText(Long.toString(toEdit.getPersonalNr()));
     }
     
@@ -246,14 +248,27 @@ public class Personel extends javax.swing.JFrame {
                         jTextField8.setToolTipText("Geçerli bir TC-Numara giriniz! TC-Numarası 11 Haneden oluşur");
                     }
                     else {
-                        if (PersonManagement.tcummerAccepted(Long.parseLong(jTextField8.getText().trim()))) {
-                            jTextField8.setBackground(Color.white);
-                            jTextField8.setToolTipText(null);
+                        if (process == 1) {
+                            if (PersonManagement.tcummerAccepted(Long.parseLong(jTextField8.getText().trim()))) {
+                                jTextField8.setBackground(Color.white);
+                                jTextField8.setToolTipText(null);
+                            }
+                            else {
+                                jTextField8.setBackground(Color.pink);
+                                jTextField8.setToolTipText("Girdiğiniz TC-Numarası veri tabanında bulunduğu için tekrar kullanılmaz");
+                            }
                         }
                         else {
-                            jTextField8.setBackground(Color.pink);
-                            jTextField8.setToolTipText("Girdiğiniz TC-Numarası veri tabanında bulunduğu için tekrar kullanılmaz");
+                            if (PersonManagement.tcummerAccepted(Long.parseLong(jTextField8.getText().trim())) || Long.toString(this.tc).equals(jTextField8.getText().trim())) {
+                                jTextField8.setBackground(Color.white);
+                                jTextField8.setToolTipText(null);
+                            }
+                            else {
+                                jTextField8.setBackground(Color.pink);
+                                jTextField8.setToolTipText("Girdiğiniz TC-Numarası veri tabanında bulunduğu için tekrar kullanılmaz");
+                            }
                         }
+                        
                     }
                     break;
                 case 9:

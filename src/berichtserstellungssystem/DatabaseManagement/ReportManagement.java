@@ -333,41 +333,163 @@ public class ReportManagement extends DatabaseManagement{
             }
     }
     //Abfragen von allen Berichten
-    public static ResultSet getReports (int limit) {
+    
+    public static ArrayList<Report> reports (int start, int limit) {
+        ArrayList<Report> res = new ArrayList();
+        Report temp;
+        ResultSet rs;
+        int count = 0;
+        int i = start;
+        while (count < limit) {
+            try {
+                rs = getReports(i);
+                if (rs.next()) {
+                    temp = new Report();
+                    temp.setCustomer(rs.getString("Customer"));
+                    temp.setReportNumber(rs.getString("reportNumber"));
+                    temp.setReportDate(rs.getDate("reportDate"));
+                    temp.setType(rs.getInt("type"));
+                    i += (rs.getInt("id")-i);
+                    res.add(temp);
+                    count++;
+                }
+                else {
+                    break;
+                }
+            } catch (SQLException ex) {
+                System.out.println("employees " + ex);
+            }
+        }
+        return res;
+    }
+    public static ResultSet getReports (int biggerThan) {
         ResultSet rs = null;
         try {
             stmt = con.createStatement();
-            rs = stmt.executeQuery("SELECT id, Customer, reportNumber, type, reportDate FROM Report LIMIT " + limit + ";");
-            if (rs.next()) {
-                return rs;
-            }   
+            rs = stmt.executeQuery("SELECT id, Customer, reportNumber, type, reportDate FROM Report WHERE id > " + biggerThan + " LIMIT 1;");
+            return rs;
         }
         catch (SQLException e){
             System.out.println("getReports " + e);
             return rs;
         }
+    }
+    //Abfragen von Reportinformationen Hiiieirr allle eeeee Probleeeemeeee
+    public static ResultSet getMagneticResult(int id, int biggerThan) {
+        ResultSet rs = null;
+        try {
+            rs = stmt.executeQuery("SELECT * FROM MagneticResults WHERE Report_id = " + id + " AND id > " + biggerThan + ";");
+            return rs;
+        } catch (SQLException e) {
+            System.out.println("getMagneticResult " + e);
+        }
         return rs;
     }
-    //Abfragen von Reportinformationen
-    public static ResultSet[] getReport (int id) {
-        ResultSet[] rs = new ResultSet[3];
+    
+    public static ResultSet getRadiographicResult(long id, int biggerThan) {
+        ResultSet rs = null;
+        try {
+            rs = stmt.executeQuery("SELECT * FROM RadiographicResults WHERE Report_id = " + id + " AND id > " + biggerThan + ";");
+            return rs;
+        } catch (SQLException e) {
+            System.out.println("getRadiographicResult " + e);
+        }
+        return rs;
+    }
+    
+    public static ArrayList<MagneticInspectionResult> magneticResults(int id) {
+        ArrayList<MagneticInspectionResult> results = new ArrayList();
+        ResultSet rs;
+        int biggerThan = 0;
+        int count = 1;
+        try {
+            while(true) {
+                rs = getMagneticResult(id, biggerThan);
+                if (rs.next()) {
+                    MagneticInspectionResult temp = new MagneticInspectionResult(rs, count);
+                    results.add(temp);
+                    biggerThan = rs.getInt("id");
+                    count++;
+                }
+                else {
+                    break;
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("magneticResults " + e);
+        }
+        return results;
+    }
+    
+    public static ArrayList<RadiographicInspectionResult> radiographicResults(long id) {
+        ArrayList<RadiographicInspectionResult> results = new ArrayList();
+        ResultSet rs;
+        int biggerThan = 0;
+        int count = 1;
+        try {
+            while(true) {
+                rs = getRadiographicResult(id, biggerThan);
+                if (rs.next()) {
+                    RadiographicInspectionResult temp = new RadiographicInspectionResult(rs, count);
+                    results.add(temp);
+                    biggerThan = rs.getInt("id");
+                    count++;
+                }
+                else {
+                    break;
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("radiographicResults " + e);
+        }
+        return results;
+    }
+    
+    public static MagneticReport getReport (int id) {
+        ResultSet rs;
+        MagneticReport report = null;
         try {
             stmt = con.createStatement();            
-            rs[0] = stmt.executeQuery("SELECT R.customer, R.projectName, R.inspectionPlace, R.inspectionClass, R.evaluationStandard, R.inspectionProcedure, R.inspectionScope, R.drawingNo," 
-                    + " R.surfaceCondition, R.stageOfExamination, R.page, R.reportNumber, R.reportDate, R.orderNumber, R.offerNumber, R.equipment, R.heatTreatment, R.inspectionDates,"
-                    + " R.descriptionOfAttachments, R.operator_Employee_id, R.evaluator_Employee_id, R.confirmation_Employee_id,"
-                    + " R.type FROM Report R JOIN MagneticReport MR ON MR.Report_id = R.id WHERE R.id = " + id + ";");
-            rs[1] = stmt.executeQuery("SELECT weldPieceNo, testLength, weldingProcess, thickness, diameter, defectType, defectLocation, result FROM MagneticResults "
-                    + "WHERE Report_id = " + id + ";");
-            rs[2] = stmt.executeQuery("SELECT Report_id, shootingArea, filmNo, materialType, weldingType, welderNr, position, thickness, penetremeter,"
+            rs = stmt.executeQuery("SELECT * FROM Report R JOIN MagneticReport MR ON MR.Report_id = R.id WHERE R.id = " + id + ";");
+            if (rs.next()) {
+                report = new MagneticReport(rs);
+                ArrayList<MagneticInspectionResult> results = magneticResults(id);
+                report.setInspectionResults(results);
+            }
+            else {
+                return null;
+            }
+            
+            /*
+            rs = stmt.executeQuery("SELECT Report_id, shootingArea, filmNo, materialType, weldingType, welderNr, position, thickness, penetremeter,"
                     + " visibleQ, density, f1012, f1016, f1024, f1036, f1048, f3040, defectType, preEvaluation, finalEvaluation FROM RadiographicResults "
-                    + "WHERE Report_id = " + id + ";");
+                    + "WHERE Report_id = " + id + ";");*/
         }
         catch (SQLException e){
             System.out.println("getReport " + e);
-            return rs;
         }
-        return rs;
+        return report;
+    }
+    
+    public static RadiographicReport getReport (long id) {
+        ResultSet rs;
+        RadiographicReport report = null;
+        try {
+            stmt = con.createStatement();            
+            rs = stmt.executeQuery("SELECT * FROM Report R JOIN RadiographicReport RR ON RR.Report_id = R.id WHERE R.id = " + id + ";");
+            if (rs.next()) {
+                report = new RadiographicReport(rs);
+                ArrayList<RadiographicInspectionResult> results = radiographicResults(id);
+                report.setInspectionResults(results);
+            }
+            else {
+                return null;
+            }
+        }
+        catch (SQLException e){
+            System.out.println("getReport " + e);
+        }
+        return report;
     }
     
     public static boolean reportNumberAccepted(String reportNo, String customerName) {
@@ -386,6 +508,22 @@ public class ReportManagement extends DatabaseManagement{
         }
         System.out.println(res);
         return res;
+    }
+    
+    public static int getReportId (String cus, String num) {
+        ResultSet rs = null;
+        int id = 0;
+        try {
+            stmt = con.createStatement();
+            rs = stmt.executeQuery("SELECT id FROM Report WHERE Customer = '" + cus + "' AND reportNumber = '" + num + "';");
+            if (rs.next()) {
+                id = rs.getInt("id");
+            }
+        }
+        catch (SQLException e){
+            System.out.println("getReports " + e);
+        }
+        return id;
     }
     
 }

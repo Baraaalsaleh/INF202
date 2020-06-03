@@ -7,6 +7,8 @@ package berichtserstellungssystem.Report;
 
 import berichtserstellungssystem.Resource.Employee;
 import berichtserstellungssystem.Report.Report;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -62,6 +64,37 @@ public class RadiographicReport extends Report{
         this.automatic = automatic;
         this.manuel = manuel;
         this.temp = temp;
+    }
+    
+    public RadiographicReport(ResultSet rs) {
+        super(rs);
+        try {
+            this.usedDevice = rs.getString("usedDevice");
+            this.ir192 = rs.getBoolean("ir192");
+            this.se75 = rs.getBoolean("se75");
+            this.xRay = rs.getBoolean("xRay");
+            this.focalSpotSize = rs.getString("focalSpotSize");
+            this.exposureTime = rs.getString("exposureTime");
+            this.filmFocusDistance = rs.getString("filmFocusDistance");
+            this.pbScreens = rs.getString("pbScreens");
+            this.filters = rs.getString("filters");
+            this.filmBrand = rs.getString("filmBrand");
+            this.d4MX125 = rs.getBoolean("d4MX125");
+            this.d5T200 = rs.getBoolean("d5T200");
+            this.d7AA400 = rs.getBoolean("d7AA400");
+            this.en = rs.getBoolean("en");
+            this.astm = rs.getBoolean("astm");
+            this.sourceSide = rs.getBoolean("sourceSide");
+            this.filmSide = rs.getBoolean("filmSide");
+            this.automatic = rs.getBoolean("automatic");
+            this.manuel = rs.getBoolean("manuel");
+            this.temp = rs.getString("temp");
+            setFilmQuantityString(rs.getString("filmQuantity"));
+            setTestArrangementsString(rs.getString("testArrangements"));
+        } catch(SQLException e) {
+            System.out.println("RadiographicReport " + e);
+        }
+        
     }
 
     @Override
@@ -183,7 +216,7 @@ public class RadiographicReport extends Report{
         boolean[] temp = new boolean[6];
         String[] tempS = testArrangements.split(",");
             if (tempS.length == 6) {
-                for (int i = 0; i < 8; i++) {
+                for (int i = 0; i < 6; i++) {
                     temp[i] = Boolean.parseBoolean(tempS[i]);
                 }
                 this.testArrangements = temp;

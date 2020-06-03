@@ -58,7 +58,7 @@ public class Person {
             this.status = rs.getInt("status");
         }
         catch (SQLException e){
-            
+            System.out.println("Person " + e);
         }
     }
     

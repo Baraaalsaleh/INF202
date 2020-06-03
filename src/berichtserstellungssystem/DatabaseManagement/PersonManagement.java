@@ -400,16 +400,15 @@ public class PersonManagement extends DatabaseManagement{
             stmt = con.createStatement();        
             rs = stmt.executeQuery("SELECT P.id, P.TCNr, P.PersonalNr, P.name as Employee_name, P.lastname as Employee_lastname, P.gender, P.birthdate, P.address,"
                     + " P.email, P.telephone, E.level, E.permition_End_Date, L.date, Per.name as adder_name, Per.lastname as adder_lastname, Person.name as changer_name, "
-                    + "Person.lastname as changer_lastname FROM Person P JOIN Employee E ON P.id = E.Employee_id JOIN Person Per ON E.Manager_id = Per.id"
+                    + "Person.lastname as changer_lastname FROM Person P JOIN Employee E ON P.id = E.Person_id JOIN Person Per ON E.Manager_id = Per.id"
                     + " JOIN LastModification L ON L.Element_id = P.id JOIN Person ON L.Manager_id = Person.id WHERE L.type = " + DatabaseManagement.getEMPLOYEE_TYPE() + 
                     " AND P.id = " + id + ";");
             if (rs.next()) {
                 return rs;
-            }   
+            }
         }
         catch (SQLException e){
             System.out.println("getEmployeeById " + e);
-            return rs;
         }
         return rs;
     } 

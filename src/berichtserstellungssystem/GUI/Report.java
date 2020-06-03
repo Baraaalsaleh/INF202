@@ -9,6 +9,7 @@ import berichtserstellungssystem.Common;
 import berichtserstellungssystem.DatabaseManagement.*;
 import berichtserstellungssystem.Resource.*;
 import berichtserstellungssystem.Report.*;
+import berichtserstellungssystem.Verification;
 import java.awt.Dimension;
 import java.awt.*;
 import java.awt.print.PageFormat;
@@ -26,6 +27,8 @@ import javax.swing.*;
  * @author Baraa
  */
 public class Report extends javax.swing.JFrame {
+    MagneticReport toEditM;
+    RadiographicReport toEditR;
     
     int process = 1;
 
@@ -76,7 +79,19 @@ public class Report extends javax.swing.JFrame {
     
     public Report(int type, String customer, String reportNo) {
         start();
+        int id = ReportManagement.getReportId(customer, reportNo);
+        System.out.println(id);
+        if (type == DatabaseManagement.getMAGNETIC_TYPE()) {
+            toEditM = ReportManagement.getReport(id);
+            getInfos((berichtserstellungssystem.Report.Report) toEditM);
+        }
+        else {
+            long i = id;
+            toEditR = ReportManagement.getReport(i);
+            getInfos((berichtserstellungssystem.Report.Report) toEditR);
+        }
         this.process = 2;
+        setEveryThing();
     }
     
     public Report(Customer customer, String orderNr, String offerNr, Employee operator, Employee evaluator, Employee confirmation, MagneticEquipment equip1, RadiographicEquipment equip2,String project, String surfaceCondition, String stageOfExamination, Date reportDate) {
@@ -100,6 +115,32 @@ public class Report extends javax.swing.JFrame {
     private void start() {
         initComponents();
         jScrollPane2.getVerticalScrollBar().setUnitIncrement(40);
+    }
+    
+    private void getInfos(berichtserstellungssystem.Report.Report r) {
+        String cus = r.getCustomer();
+        this.theCustomer = CustomerManagement.getCustomer(cus);
+        this.orderNr = r.getOrderNumber();
+        this.offerNr = r.getOfferNumber();
+        this.operator_id = r.getOperator_id();
+        this.evaluator_id = r.getEvaluator_id();
+        this.confirmation_id = r.getConfirmation_id();
+        System.out.println(r.toString());
+        System.out.println("getInfos: " + operator_id + " " + evaluator_id + " " + confirmation_id);
+        this.operator = new Employee(PersonManagement.getEmployeeById(this.operator_id));
+        this.evaluator = new Employee(PersonManagement.getEmployeeById(this.evaluator_id));
+        this.confirmator = new Employee(PersonManagement.getEmployeeById(this.confirmation_id));
+        String equip = r.getEquipment();
+        if (toEditM != null) {
+            this.equip1 = new MagneticEquipment(EquipmentManagement.getMagneticEquipment(equip));
+        }
+        else {
+            this.equip2 = new RadiographicEquipment(EquipmentManagement.getRadiographicEquipment(equip));
+        }
+        this.project = r.getProjectName();
+        this.surfaceCondition = r.getSurfaceCondition();
+        this.stageOfExamination = r.getStageOfExamination();
+        this.reportDate = r.getReportDate();
     }
     
     private void setEveryThing() {
@@ -196,7 +237,7 @@ public class Report extends javax.swing.JFrame {
                 _poleDistance.setText(equip1.getPolesDistance());
                 _Mequipment.setText(equip1.getName());
                 _MPCarrier.setText(equip1.getMpCarrier());
-                _MPCarrier.setText(equip1.getMagTechnic());
+                _magTech.setText(equip1.getMagTechnic());
                 _UV.setText(equip1.getUvIntensity());
                 _distanceOfLight.setText(equip1.getLightDistance());
                 _examinationArea.setText("KAYNAK+HAZ");
@@ -216,6 +257,188 @@ public class Report extends javax.swing.JFrame {
                 _standardDeviations.setText("Standarttan sapma yoktur.");
                 _MinspectionDates.setText(Common.date_toStringReverse(this.reportDate, "."));
                 _Mdescription.setText("");
+                
+                _MoperatorName.setText(this.operator.getName() + " " + this.operator.getLastname());
+                _MevaluatorName.setText(this.evaluator.getName() + " " + this.evaluator.getLastname());
+                _MconfirmationName.setText(this.confirmator.getName() + " " + this.confirmator.getLastname());
+                _MoperatorLevel.setText(Integer.toString(this.operator.getLevel()));
+                _MevaluatorLevel.setText(Integer.toString(this.evaluator.getLevel()));
+                _MconfirmationLevel.setText(Integer.toString(this.confirmator.getLevel()));
+                _Mdate1.setText(Common.date_toStringReverse(this.reportDate, "."));
+                _Mdate2.setText(Common.date_toStringReverse(this.reportDate, "."));
+                _Mdate3.setText(Common.date_toStringReverse(this.reportDate, "."));
+            }
+        }
+        else {
+            if (this.toEditR != null) {
+                jTabbedPane1.remove(1);
+                _customer.setText(toEditR.getCustomer());
+                _project.setText(toEditR.getProjectName());
+                _inspectionPlace.setText(toEditR.getInspectionPlace());
+                _inspectionClass.setText(toEditR.getInspectionClass());
+                _evaluationStandard.setText(toEditR.getEvaluationStandard());
+                _inspectionProcedure.setText(toEditR.getInspectionProcedure());
+                _inspectionScope.setText(toEditR.getInspectionScope());
+                _drawingNo.setText(toEditR.getDrawingNo());
+                _surfaceCondition.setText(toEditR.getSurfaceCondition());
+                _stageOfExamination.setText(toEditR.getStageOfExamination());
+                _page.setText(toEditR.getPage());
+                _reportNo.setText(toEditR.getReportNumber());
+                _reportDate.setText(Common.date_toStringReverse(toEditR.getReportDate(), "."));
+                _orderNo.setText(toEditR.getOrderNumber());
+                _offerNo.setText(toEditR.getOfferNumber());
+                
+                _equipment.setText(toEditR.getEquipment());
+                _usedDevice.setText(toEditR.getUsedDevice());
+                _ir192.setSelected(toEditR.isIr192());
+                _se75.setSelected(toEditR.isSe75());
+                _xRay.setSelected(toEditR.isxRay());
+                _focalSpotSize.setText(toEditR.getFocalSpotSize());
+                _exposureTime.setText(toEditR.getExposureTime());
+                _filmFocusDistance.setText(toEditR.getFilmFocusDistance());
+                _pbScreens.setText(toEditR.getPbScreens());
+                _filters.setText(toEditR.getFilters());
+                
+                _heatTreatment.setText(toEditR.getHeatTreatment());
+                _filmBrand.setText(toEditR.getFilmBrand());
+                _d4.setSelected(toEditR.isD4MX125());
+                _d5.setSelected(toEditR.isD5T200());
+                _d7.setSelected(toEditR.isD7AA400());
+                _en.setSelected(toEditR.isEn());
+                _astm.setSelected(toEditR.isAstm());
+                _sourceSide.setSelected(toEditR.isSourceSide());
+                _filmSide.setSelected(toEditR.isFilmSide());
+                _automatic.setSelected(toEditR.isAutomatic());
+                _manuel.setSelected(toEditR.isManuel());
+                _temp.setText(toEditR.getTemp());
+                int[] s = toEditR.getFilmQuantity();
+                _f1012.setText(Integer.toString(s[0]));
+                _f1016.setText(Integer.toString(s[1]));
+                _f1024.setText(Integer.toString(s[2]));
+                _f1036.setText(Integer.toString(s[3]));
+                _f1048.setText(Integer.toString(s[4]));
+                _f3040.setText(Integer.toString(s[5]));
+                _suitableFilm.setText(Integer.toString(s[6]));
+                _repairFilm.setText(Integer.toString(s[7]));
+                boolean[] b = toEditR.getTestArrangements();
+                _testArr1.setSelected(b[0]);
+                _testArr2.setSelected(b[1]);
+                _testArr3.setSelected(b[2]);
+                _testArr4.setSelected(b[3]);
+                _testArr5.setSelected(b[4]);
+                _testArr6.setSelected(b[5]);
+                
+                ArrayList<RadiographicInspectionResult> radioResults = toEditR.getInspectionResults();
+                JTextField[][] all = new JTextField[5][20];
+                all[0] = radiographicResult1;
+                all[1] = radiographicResult2;
+                all[2] = radiographicResult3;
+                all[3] = radiographicResult4;
+                all[4] = radiographicResult5;
+                for (int i = 0; i < radioResults.size(); i++) {
+                    RadiographicInspectionResult temp = radioResults.get(i);
+                    all[i][0].setText(temp.getShootingArea());
+                    all[i][1].setText(temp.getFilmNo());
+                    all[i][2].setText(temp.getMaterialType());
+                    all[i][3].setText(temp.getWeldingType());
+                    all[i][4].setText(temp.getWelderNr());
+                    all[i][5].setText(temp.getPosition());
+                    all[i][6].setText(temp.getThickness());
+                    all[i][7].setText(temp.getPenetremeter());
+                    all[i][8].setText(temp.getVisibleQ());
+                    all[i][9].setText(temp.getDensity());
+                    all[i][10].setText(temp.getF1012());
+                    all[i][11].setText(temp.getF1016());
+                    all[i][12].setText(temp.getF1024());
+                    all[i][13].setText(temp.getF1036());
+                    all[i][14].setText(temp.getF1048());
+                    all[i][15].setText(temp.getF3040());
+                    all[i][16].setText(temp.getDefectLocation());
+                    all[i][17].setText(temp.getDefectType());
+                    all[i][18].setText(temp.getPreEvaluation());
+                    all[i][19].setText(temp.getFinalEvaluation());
+                }
+                
+                _inspectionDates.setText(toEditR.getInspectionDates());
+                _description.setText(toEditR.getDescriptionOfAttachments());
+                _operatorName.setText(this.operator.getName() + " " + this.operator.getLastname());
+                _evaluatorName.setText(this.evaluator.getName() + " " + this.evaluator.getLastname());
+                _confirmationName.setText(this.confirmator.getName() + " " + this.confirmator.getLastname());
+                _operatorLevel.setText(Integer.toString(this.operator.getLevel()));
+                _evaluatorLevel.setText(Integer.toString(this.evaluator.getLevel()));
+                _confirmationLevel.setText(Integer.toString(this.confirmator.getLevel()));
+                _date1.setText(Common.date_toStringReverse(this.reportDate, "."));
+                _date2.setText(Common.date_toStringReverse(this.reportDate, "."));
+                _date3.setText(Common.date_toStringReverse(this.reportDate, "."));
+            }
+            else if (equip1 != null) {
+                jTabbedPane1.setSelectedIndex(1);
+                jTabbedPane1.remove(0);
+                
+                _Mcustomer.setText(toEditM.getCustomer());
+                _Mproject.setText(toEditM.getProjectName());
+                _MinspectionPlace.setText(toEditM.getInspectionPlace());
+                _MinspectionStandard.setText(toEditM.getInspectionClass());
+                _MevaluationStandard.setText(toEditM.getEvaluationStandard());
+                _MinspectionProcedure.setText(toEditM.getInspectionProcedure());
+                _MinspectionScope.setText(toEditM.getInspectionScope());
+                _MdrawingNo.setText(toEditM.getDrawingNo());
+                _MsurfaceCondition.setText(toEditM.getSurfaceCondition());
+                _MstageOfExamination.setText(toEditM.getStageOfExamination());
+                _Mpage.setText(toEditM.getPage());
+                _MreportNo.setText(toEditM.getReportNumber());
+                _MreportDate.setText(Common.date_toStringReverse(toEditM.getReportDate(), "."));
+                _MorderNo.setText(toEditM.getOrderNumber());
+                _MofferNo.setText(toEditM.getOfferNumber());
+
+                _poleDistance.setText(toEditM.getPoleDistance());
+                _Mequipment.setText(toEditM.getEquipment());
+                _MPCarrier.setText(toEditM.getMpCarrier());
+                _magTech.setText(toEditM.getMagTech());
+                _UV.setText(toEditM.getUvIntensity());
+                _distanceOfLight.setText(toEditM.getDistanceOfLight());
+                _examinationArea.setText(toEditM.getExaminationArea());
+                _currentType.setText(toEditM.getCurrentType());
+                _luxmeter.setText(toEditM.getLuxmeter());
+                _testMedium.setText(toEditM.getTestMedium());
+                _demagnetization.setText(toEditM.getDemagnetization());
+                _MheatTreatment.setText(toEditM.getHeatTreatment());
+                _surfaceTemperature.setText(toEditM.getSurfaceTemperature());
+                _gauss.setText(toEditM.getGaussFieldStrength());
+                _MsurfaceCondition2.setText(toEditM.getSurfaceCondition2());
+                _identification.setText(toEditM.getIdentificationOfLightEquip());
+                _liftingTestDate.setText(toEditM.getLiftingTest());
+                
+                _butt.setSelected(toEditM.isButtWeld());
+                _fillet.setSelected(toEditM.isFilletWeld());
+                _standardDeviations.setText(toEditM.getStandardDeviations());
+                _MinspectionDates.setText(toEditM.getInspectionDates());
+                _Mdescription.setText(toEditM.getDescriptionOfAttachments());
+                
+                ArrayList<MagneticInspectionResult> magneticResults = toEditM.getInspectionResults();
+                JTextField[][] magResults = new JTextField[10][8];
+                magResults[0] = magneticResult1;
+                magResults[1] = magneticResult2;
+                magResults[2] = magneticResult3;
+                magResults[3] = magneticResult4;
+                magResults[4] = magneticResult5;
+                magResults[5] = magneticResult6;
+                magResults[6] = magneticResult7;
+                magResults[7] = magneticResult8;
+                magResults[8] = magneticResult9;
+                magResults[9] = magneticResult10;
+                
+                for (int i = 0; i < magneticResults.size(); i++) {
+                    MagneticInspectionResult temp = magneticResults.get(i);
+                    magResults[i][0].setText(temp.getWeldPieceNo());
+                    magResults[i][1].setText(temp.getTestLength());
+                    magResults[i][2].setText(temp.getWeldingProcess());
+                    magResults[i][3].setText(temp.getThickness());
+                    magResults[i][4].setText(temp.getDiameter());
+                    magResults[i][5].setText(temp.getDefectType());
+                    magResults[i][6].setText(temp.getDefectLocation());
+                    magResults[i][0].setText(temp.getResult());
+                }                
                 
                 _MoperatorName.setText(this.operator.getName() + " " + this.operator.getLastname());
                 _MevaluatorName.setText(this.evaluator.getName() + " " + this.evaluator.getLastname());
@@ -312,6 +535,10 @@ public class Report extends javax.swing.JFrame {
                 _reportNo.setBackground(Color.pink);
                 _reportNo.setToolTipText("Girdiğiniz rapor numarası bu firma için daha önce kullanılmıştır!");
                 return false;
+            }
+            else {
+                _reportNo.setBackground(Color.white);
+                _reportNo.setToolTipText(null);
             }
         }
         else {
@@ -419,9 +646,9 @@ public class Report extends javax.swing.JFrame {
             _heatTreatment.setToolTipText(null);
         }
         
-        if (_f1012.getText().trim().length() > 12) {
+        if (!Verification.isNumber(_f1012.getText().trim()) && !_f1012.getText().trim().equals("")) {
             _f1012.setBackground(Color.pink);
-            _f1012.setToolTipText("En fazla 12 Harften oluşmalı");
+            _f1012.setToolTipText("Bu alan sayı olmalı!");
             return false;
         }
         else {
@@ -429,9 +656,9 @@ public class Report extends javax.swing.JFrame {
             _f1012.setToolTipText(null);
         }
         
-        if (_f1016.getText().trim().length() > 12) {
+        if (!Verification.isNumber(_f1016.getText().trim()) && !_f1016.getText().trim().equals("")) {
             _f1016.setBackground(Color.pink);
-            _f1016.setToolTipText("En fazla 12 Harften oluşmalı");
+            _f1016.setToolTipText("Bu alan sayı olmalı!");
             return false;
         }
         else {
@@ -439,9 +666,9 @@ public class Report extends javax.swing.JFrame {
             _f1016.setToolTipText(null);
         }
         
-        if (_f1024.getText().trim().length() > 12) {
+        if (!Verification.isNumber(_f1024.getText().trim()) && !_f1024.getText().trim().equals("")) {
             _f1024.setBackground(Color.pink);
-            _f1024.setToolTipText("En fazla 12 Harften oluşmalı");
+            _f1024.setToolTipText("Bu alan sayı olmalı!");
             return false;
         }
         else {
@@ -449,9 +676,9 @@ public class Report extends javax.swing.JFrame {
             _f1024.setToolTipText(null);
         }
         
-        if (_f1036.getText().trim().length() > 12) {
+        if (!Verification.isNumber(_f1036.getText().trim()) && !_f1036.getText().trim().equals("")) {
             _f1036.setBackground(Color.pink);
-            _f1036.setToolTipText("En fazla 12 Harften oluşmalı");
+            _f1036.setToolTipText("Bu alan sayı olmalı!");
             return false;
         }
         else {
@@ -459,9 +686,9 @@ public class Report extends javax.swing.JFrame {
             _f1036.setToolTipText(null);
         }
         
-        if (_f1048.getText().trim().length() > 12) {
+        if (!Verification.isNumber(_f1048.getText().trim()) && !_f1048.getText().trim().equals("")) {
             _f1048.setBackground(Color.pink);
-            _f1048.setToolTipText("En fazla 12 Harften oluşmalı");
+            _f1048.setToolTipText("Bu alan sayı olmalı!");
             return false;
         }
         else {
@@ -469,9 +696,9 @@ public class Report extends javax.swing.JFrame {
             _f1048.setToolTipText(null);
         }
         
-        if (_f3040.getText().trim().length() > 12) {
+        if (!Verification.isNumber(_f3040.getText().trim()) && !_f3040.getText().trim().equals("")) {
             _f3040.setBackground(Color.pink);
-            _f3040.setToolTipText("En fazla 12 Harften oluşmalı");
+            _f3040.setToolTipText("Bu alan sayı olmalı!");
             return false;
         }
         else {
@@ -479,9 +706,9 @@ public class Report extends javax.swing.JFrame {
             _f3040.setToolTipText(null);
         }
         
-        if (_suitableFilm.getText().trim().length() > 12) {
+        if (!Verification.isNumber(_suitableFilm.getText().trim()) && !_suitableFilm.getText().trim().equals("")) {
             _suitableFilm.setBackground(Color.pink);
-            _suitableFilm.setToolTipText("En fazla 12 Harften oluşmalı");
+            _suitableFilm.setToolTipText("Bu alan sayı olmalı!");
             return false;
         }
         else {
@@ -489,9 +716,9 @@ public class Report extends javax.swing.JFrame {
             _suitableFilm.setToolTipText(null);
         }
         
-        if (_repairFilm.getText().trim().length() > 12) {
+        if (!Verification.isNumber(_repairFilm.getText().trim()) && !_repairFilm.getText().trim().equals("")) {
             _repairFilm.setBackground(Color.pink);
-            _repairFilm.setToolTipText("En fazla 12 Harften oluşmalı");
+            _repairFilm.setToolTipText("Bu alan sayı olmalı!");
             return false;
         }
         else {
@@ -532,15 +759,29 @@ public class Report extends javax.swing.JFrame {
             _shootingArea1.setToolTipText(null);
         }
         
-        for (JTextField t : this.radiographicResult1) {
-            if (t.getText().trim().length() > 32) {
-                t.setBackground(Color.pink);
-                t.setToolTipText("En fazla 32 Harften oluşmalı");
-                return false;
+        for (int i = 0; i < this.radiographicResult1.length; i++) {
+            JTextField t = this.radiographicResult1[i];
+            if (i > 9 && i < 16) {
+                if (!t.getText().trim().equals("") && !Verification.isNumber(t.getText().trim())) {
+                    t.setBackground(Color.pink);
+                    t.setToolTipText("Bu alanda sadece sayi girilebilir!");
+                    return false;
+                }
+                else {
+                    t.setBackground(Color.white);
+                    t.setToolTipText(null);
+                }
             }
             else {
-                t.setBackground(Color.white);
-                t.setToolTipText(null);
+                if (t.getText().trim().length() > 32) {
+                    t.setBackground(Color.pink);
+                    t.setToolTipText("En fazla 32 Harften oluşmalı");
+                    return false;
+                }
+                else {
+                    t.setBackground(Color.white);
+                    t.setToolTipText(null);
+                }
             }
         }
         
@@ -567,15 +808,29 @@ public class Report extends javax.swing.JFrame {
             _shootingArea2.setToolTipText(null);
         }
         
-        for (JTextField t : this.radiographicResult2) {
-            if (t.getText().trim().length() > 32) {
-                t.setBackground(Color.pink);
-                t.setToolTipText("En fazla 32 Harften oluşmalı");
-                return false;
+        for (int i = 0; i < this.radiographicResult2.length; i++) {
+            JTextField t = this.radiographicResult2[i];
+            if (i > 9 && i < 16) {
+                if (!t.getText().trim().equals("") && !Verification.isNumber(t.getText().trim())) {
+                    t.setBackground(Color.pink);
+                    t.setToolTipText("Bu alanda sadece sayi girilebilir!");
+                    return false;
+                }
+                else {
+                    t.setBackground(Color.white);
+                    t.setToolTipText(null);
+                }
             }
             else {
-                t.setBackground(Color.white);
-                t.setToolTipText(null);
+                if (t.getText().trim().length() > 32) {
+                    t.setBackground(Color.pink);
+                    t.setToolTipText("En fazla 32 Harften oluşmalı");
+                    return false;
+                }
+                else {
+                    t.setBackground(Color.white);
+                    t.setToolTipText(null);
+                }
             }
         }
         
@@ -602,15 +857,29 @@ public class Report extends javax.swing.JFrame {
             _shootingArea3.setToolTipText(null);
         }
         
-        for (JTextField t : this.radiographicResult3) {
-            if (t.getText().trim().length() > 32) {
-                t.setBackground(Color.pink);
-                t.setToolTipText("En fazla 32 Harften oluşmalı");
-                return false;
+        for (int i = 0; i < this.radiographicResult3.length; i++) {
+            JTextField t = this.radiographicResult3[i];
+            if (i > 9 && i < 16) {
+                if (!t.getText().trim().equals("") && !Verification.isNumber(t.getText().trim())) {
+                    t.setBackground(Color.pink);
+                    t.setToolTipText("Bu alanda sadece sayi girilebilir!");
+                    return false;
+                }
+                else {
+                    t.setBackground(Color.white);
+                    t.setToolTipText(null);
+                }
             }
             else {
-                t.setBackground(Color.white);
-                t.setToolTipText(null);
+                if (t.getText().trim().length() > 32) {
+                    t.setBackground(Color.pink);
+                    t.setToolTipText("En fazla 32 Harften oluşmalı");
+                    return false;
+                }
+                else {
+                    t.setBackground(Color.white);
+                    t.setToolTipText(null);
+                }
             }
         }
         
@@ -637,15 +906,29 @@ public class Report extends javax.swing.JFrame {
             _shootingArea4.setToolTipText(null);
         }
         
-        for (JTextField t : this.radiographicResult4) {
-            if (t.getText().trim().length() > 32) {
-                t.setBackground(Color.pink);
-                t.setToolTipText("En fazla 32 Harften oluşmalı");
-                return false;
+        for (int i = 0; i < this.radiographicResult4.length; i++) {
+            JTextField t = this.radiographicResult4[i];
+            if (i > 9 && i < 16) {
+                if (!t.getText().trim().equals("") && !Verification.isNumber(t.getText().trim())) {
+                    t.setBackground(Color.pink);
+                    t.setToolTipText("Bu alanda sadece sayi girilebilir!");
+                    return false;
+                }
+                else {
+                    t.setBackground(Color.white);
+                    t.setToolTipText(null);
+                }
             }
             else {
-                t.setBackground(Color.white);
-                t.setToolTipText(null);
+                if (t.getText().trim().length() > 32) {
+                    t.setBackground(Color.pink);
+                    t.setToolTipText("En fazla 32 Harften oluşmalı");
+                    return false;
+                }
+                else {
+                    t.setBackground(Color.white);
+                    t.setToolTipText(null);
+                }
             }
         }
         
@@ -672,15 +955,29 @@ public class Report extends javax.swing.JFrame {
             _shootingArea5.setToolTipText(null);
         }
         
-        for (JTextField t : this.radiographicResult5) {
-            if (t.getText().trim().length() > 32) {
-                t.setBackground(Color.pink);
-                t.setToolTipText("En fazla 32 Harften oluşmalı");
-                return false;
+        for (int i = 0; i < this.radiographicResult5.length; i++) {
+            JTextField t = this.radiographicResult5[i];
+            if (i > 9 && i < 16) {
+                if (!t.getText().trim().equals("") && !Verification.isNumber(t.getText().trim())) {
+                    t.setBackground(Color.pink);
+                    t.setToolTipText("Bu alanda sadece sayi girilebilir!");
+                    return false;
+                }
+                else {
+                    t.setBackground(Color.white);
+                    t.setToolTipText(null);
+                }
             }
             else {
-                t.setBackground(Color.white);
-                t.setToolTipText(null);
+                if (t.getText().trim().length() > 32) {
+                    t.setBackground(Color.pink);
+                    t.setToolTipText("En fazla 32 Harften oluşmalı");
+                    return false;
+                }
+                else {
+                    t.setBackground(Color.white);
+                    t.setToolTipText(null);
+                }
             }
         }
         

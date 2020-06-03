@@ -28,6 +28,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.event.*;
 import javax.swing.table.*;
+import berichtserstellungssystem.Report.Report;
 /**
  *
  * @author Baraa
@@ -186,6 +187,28 @@ public class Menu extends javax.swing.JFrame {
         table.setModel(model);
     }
     
+    private void addReports(ArrayList<Report> list, JTable table) {
+        Object[] row = new Object[25];
+        DefaultTableModel model = new DefaultTableModel();
+        model.addColumn("Müşteri");
+        model.addColumn("Rapor Numarası");
+        model.addColumn("Rapor Tarihi");
+        model.addColumn("Rapor türü");
+        for (Report r : list) {
+            row[0] = r.getCustomer();
+            row[1] = r.getReportNumber();
+            row[2] = Common.date_toStringReverse(r.getReportDate(), "-");
+            if (r.getType() == DatabaseManagement.getMAGNETIC_TYPE()) {
+                row[3] = "Manyetik Parçacık Muayene";
+            }
+            else {
+                row[3] = "Radyografik Muayene";
+            }
+            model.addRow(row);
+        }
+        table.setModel(model);
+    }
+    
     private void prepareTables (int table) {
         if (table == 1) {
                 ArrayList<Employee> res = PersonManagement.employees(0, 25, 1, me);
@@ -227,6 +250,10 @@ public class Menu extends javax.swing.JFrame {
             res = CustomerManagement.customers(0, 25, 3, me);
             addCustomers(res, jTable4);
         }
+        else {
+            ArrayList<Report> res = ReportManagement.reports(0, 25);
+            addReports(res, jTable2);
+        }
         
     }
     
@@ -267,7 +294,6 @@ public class Menu extends javax.swing.JFrame {
         jMenu6 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
-        jMenuItem23 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem15 = new javax.swing.JMenuItem();
@@ -532,11 +558,6 @@ public class Menu extends javax.swing.JFrame {
             }
         });
         jMenu6.add(jMenuItem3);
-
-        jMenuItem23.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/continue.png"))); // NOI18N
-        jMenuItem23.setText("Tüm Raporları Göster");
-        jMenuItem23.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jMenu6.add(jMenuItem23);
 
         jMenuBar1.add(jMenu6);
 
@@ -806,8 +827,12 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowOpened
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        
-        // TODO add your handling code here:
+        jScrollPane2.setVisible(true);
+        while (jTabbedPane1.getComponentCount() > 1) {
+            jTabbedPane1.remove(1);
+        }
+        jLabel1.setText("Raporlar");
+        prepareTables(8);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
@@ -899,6 +924,18 @@ public class Menu extends javax.swing.JFrame {
         else if (jLabel1.getText().equals("Müşteriler")) {
             String name = jTable2.getValueAt(row, 0).toString();
             new CustomerFrame(2, name, me).setVisible(true);
+        }
+        else if (jLabel1.getText().equals("Raporlar")) {
+            String cus = jTable2.getValueAt(row, 0).toString();
+            String rapornum = jTable2.getValueAt(row, 1).toString();
+            int type = 0;
+            if (jTable2.getValueAt(row, 3).equals("Manyetik Parçacık Muayene")) {
+                type = DatabaseManagement.getMAGNETIC_TYPE();
+            }
+            else {
+                type = DatabaseManagement.getRADIOGRAPHIC_TYPE();
+            }
+            new berichtserstellungssystem.GUI.Report(type, cus, rapornum).setVisible(true);
         }
         
     }//GEN-LAST:event_jTable2MouseClicked
@@ -1112,7 +1149,6 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem20;
     private javax.swing.JMenuItem jMenuItem21;
     private javax.swing.JMenuItem jMenuItem22;
-    private javax.swing.JMenuItem jMenuItem23;
     private javax.swing.JMenuItem jMenuItem24;
     private javax.swing.JMenuItem jMenuItem25;
     private javax.swing.JMenuItem jMenuItem3;

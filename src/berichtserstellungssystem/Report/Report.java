@@ -6,6 +6,8 @@
 package berichtserstellungssystem.Report;
 
 import berichtserstellungssystem.Resource.Employee;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Date;
 
 /**
@@ -36,6 +38,7 @@ public class Report {
     private int evaluator_id = 0;
     private int confirmation_id = 0;
     private String bottom = "";
+    private int type = 0;
 
     public Report(String customer, String projectName, String inspectionPlace, String inspectionClass, String evaluationStandard, String inspectionProcedure, String inspectionScope, String drawingNo, String surfaceCondition, String stageOfExaminaiton, String page, String reportNumber, Date reportDate, String orderNumber, String offerNumber, String equipment, String heatTreatment, String inspectionDates, String descriptionOfAttachments, int operator, int evaluator, int confirmation, String bottom) {
         this.customer = customer;
@@ -62,6 +65,37 @@ public class Report {
         this.confirmation_id = confirmation;
         //heiiiieieieiieieeiir
         this.bottom = bottom;
+    }
+    
+    public Report(ResultSet ress) {
+        try {
+            this.customer = ress.getString("Customer");
+            this.projectName = ress.getString("projectName");
+            this.inspectionPlace = ress.getString("inspectionPlace");
+            this.inspectionClass = ress.getString("inspectionClass");
+            this.evaluationStandard = ress.getString("evaluationStandard");
+            this.inspectionProcedure = ress.getString("inspectionProcedure");
+            this.inspectionScope = ress.getString("inspectionScope");
+            this.drawingNo = ress.getString("drawingNo");
+            this.surfaceCondition = ress.getString("surfaceCondition");
+            this.stageOfExamination = ress.getString("stageOfExamination");
+            this.page = ress.getString("page");
+            this.reportNumber = ress.getString("reportNumber");
+            this.reportDate = ress.getDate("reportDate");
+            this.orderNumber = ress.getString("orderNumber");
+            this.offerNumber = ress.getString("offerNumber");
+            this.equipment = ress.getString("equipment");
+            this.heatTreatment = ress.getString("heatTreatment");
+            this.inspectionDates = ress.getString("inspectionDates");
+            this.descriptionOfAttachments = ress.getString("descriptionOfAttachments");
+            this.operator_id = ress.getInt("operator_Employee_id");
+            this.evaluator_id = ress.getInt("evaluator_Employee_id");
+            this.confirmation_id = ress.getInt("confirmation_Employee_id");
+            this.bottom = ress.getString("bottom");
+        } catch (SQLException e) {
+            System.out.println("Report " + e);
+        }
+        
     }
     
     public Report () {
@@ -160,6 +194,10 @@ public class Report {
     public void setBottom(String bottom) {
         this.bottom = bottom;
     }
+
+    public void setType(int type) {
+        this.type = type;
+    }
     
     public String getCustomer() {
         return customer;
@@ -253,7 +291,10 @@ public class Report {
         return bottom;
     }
 
-    
+    public int getType() {
+        return type;
+    }
+     
     @Override
     public int hashCode() {
         int hash = 7;

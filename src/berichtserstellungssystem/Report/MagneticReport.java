@@ -7,6 +7,8 @@ package berichtserstellungssystem.Report;
 
 import berichtserstellungssystem.Resource.Employee;
 import berichtserstellungssystem.Report.Report;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -56,6 +58,32 @@ public class MagneticReport extends Report{
         this.buttWeld = buttWeld;
         this.filletWeld = filletWeld;
         this.standardDeviations = standardDeviations;
+    }
+    
+    public MagneticReport(ResultSet ress) {
+        super(ress);
+        try {
+            this.poleDistance = ress.getString("poleDistance");
+            this.mpCarrier = ress.getString("MPCarrier");
+            this.magTech = ress.getString("magTech");
+            this.uvIntensity = ress.getString("UVIntensity");
+            this.distanceOfLight = ress.getString("distanceOfLight");
+            this.examinationArea = ress.getString("examinationArea");
+            this.currentType = ress.getString("currentType");
+            this.luxmeter = ress.getString("Luxmeter");
+            this.testMedium = ress.getString("testMedium");
+            this.demagnetization = ress.getString("demagnetization");
+            this.surfaceTemperature = ress.getString("surfaceTemperature");
+            this.gaussFieldStrength = ress.getString("gaussFieldStrength");
+            this.surfaceCondition2 = ress.getString("surfaceCondition2");
+            this.identificationOfLightEquip = ress.getString("identificationOfLightEquip");
+            this.liftingTest = ress.getString("liftingTest");
+            this.buttWeld = ress.getBoolean("buttWeld");
+            this.filletWeld = ress.getBoolean("filletWeld");
+            this.standardDeviations = ress.getString("standardDeviations"); 
+        } catch (SQLException e) {
+            System.out.println("MagneticReport " + e);
+        }
     }
 
     @Override

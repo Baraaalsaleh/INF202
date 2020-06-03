@@ -5,13 +5,15 @@
  */
 package berichtserstellungssystem.Report;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Objects;
 
 /**
  *
  * @author Baraa
  */
-public class RadiographicInspectionResult {
+public class RadiographicInspectionResult extends Result{
     private String shootingArea = "";
     private String filmNo = "";
     private String materialType = "";
@@ -33,7 +35,8 @@ public class RadiographicInspectionResult {
     private String preEvaluation = "";
     private String finalEvaluation = "";
 
-    public RadiographicInspectionResult(String shootingArea, String filmNo, String materialType, String weldingType, String welderNr, String position, String thickness, String penetremeter, String visibleQ, String density, String f1012, String f1016, String f1024, String f1036, String f1048, String f3040, String defectLocation, String defectType, String preEvaluation, String finalEvaluation) {
+    public RadiographicInspectionResult(String shootingArea, String filmNo, String materialType, String weldingType, String welderNr, String position, String thickness, String penetremeter, String visibleQ, String density, String f1012, String f1016, String f1024, String f1036, String f1048, String f3040, String defectLocation, String defectType, String preEvaluation, String finalEvaluation, int num) {
+        super(num);
         this.shootingArea = shootingArea;
         this.filmNo = filmNo;
         this.materialType = materialType;
@@ -54,6 +57,35 @@ public class RadiographicInspectionResult {
         this.defectType = defectType;
         this.preEvaluation = preEvaluation;
         this.finalEvaluation = finalEvaluation;
+    }
+    
+    public RadiographicInspectionResult(ResultSet rs, int num) {
+        super(num);
+        try {
+            this.shootingArea = rs.getString("shootingArea");
+            this.filmNo = rs.getString("filmNo");
+            this.materialType = rs.getString("materialType");
+            this.weldingType = rs.getString("weldingType");
+            this.welderNr = rs.getString("welderNr");
+            this.position = rs.getString("position");
+            this.thickness = rs.getString("thickness");
+            this.penetremeter = rs.getString("penetremeter");
+            this.visibleQ = rs.getString("visibleQ");
+            this.density = rs.getString("density");
+            this.f1012 = rs.getString("f1012");
+            this.f1016 = rs.getString("f1016");
+            this.f1024 = rs.getString("f1024");
+            this.f1036 = rs.getString("f1036");
+            this.f1048 = rs.getString("f1048");
+            this.f3040 = rs.getString("f3040");
+            this.defectLocation = rs.getString("defectLocation");
+            this.defectType = rs.getString("defectType");
+            this.preEvaluation = rs.getString("preEvaluation");
+            this.finalEvaluation = rs.getString("finalEvaluation");
+        } catch(SQLException e) {
+            System.out.println("RadiographicInspectionResult " + e);
+        }
+        
     }
 
     public RadiographicInspectionResult () {
