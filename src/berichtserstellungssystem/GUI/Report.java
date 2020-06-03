@@ -144,6 +144,8 @@ public class Report extends javax.swing.JFrame {
     }
     
     private void setEveryThing() {
+        radiographicResultsCapsul();
+        magneticResultsCapsul();
         if (process == 1) {
             if (equip2 != null) {
                 jTabbedPane1.remove(1);
@@ -270,6 +272,8 @@ public class Report extends javax.swing.JFrame {
             }
         }
         else {
+            jLabel1.setEnabled(true);
+            jLabel4.setEnabled(true);
             if (this.toEditR != null) {
                 jTabbedPane1.remove(1);
                 _customer.setText(toEditR.getCustomer());
@@ -430,6 +434,7 @@ public class Report extends javax.swing.JFrame {
                 
                 for (int i = 0; i < magneticResults.size(); i++) {
                     MagneticInspectionResult temp = magneticResults.get(i);
+                    System.out.println(i + ": " + temp.toString());
                     magResults[i][0].setText(temp.getWeldPieceNo());
                     magResults[i][1].setText(temp.getTestLength());
                     magResults[i][2].setText(temp.getWeldingProcess());
@@ -437,7 +442,7 @@ public class Report extends javax.swing.JFrame {
                     magResults[i][4].setText(temp.getDiameter());
                     magResults[i][5].setText(temp.getDefectType());
                     magResults[i][6].setText(temp.getDefectLocation());
-                    magResults[i][0].setText(temp.getResult());
+                    magResults[i][7].setText(temp.getResult());
                 }                
                 
                 _MoperatorName.setText(this.operator.getName() + " " + this.operator.getLastname());
@@ -1500,15 +1505,29 @@ public class Report extends javax.swing.JFrame {
     }
     
     private void update() {
-        if (equip1 == null) {
-            RadiographicReport toEdit = collectDataRadiographic();
-            int res = ReportManagement.updateRadiographicReport(toEdit);
-            message(res);
+        if (this.toEditR != null) {
+            int report_id = 0;
+            report_id = ReportManagement.getReportId(this.toEditR.getCustomer(), this.toEditR.getReportNumber());
+            if (report_id == 0) {
+                message(0);
+            }
+            else {
+                RadiographicReport toEdit = collectDataRadiographic();
+                int res = ReportManagement.updateRadiographicReport(toEdit, report_id);
+                message(res);
+            }
         }
         else {
-            MagneticReport toEdit = collectDataMagnetic();
-            int res = ReportManagement.updateMagneticReport(toEdit);
-            message(res);
+            int report_id = 0;
+            report_id = ReportManagement.getReportId(this.toEditM.getCustomer(), this.toEditM.getReportNumber());
+            if (report_id == 0) {
+                message(0);
+            }
+            else {
+                MagneticReport toEdit = collectDataMagnetic();
+                int res = ReportManagement.updateMagneticReport(toEdit, report_id);
+                message(res);
+            }
         }
     }
     
@@ -2465,6 +2484,11 @@ public class Report extends javax.swing.JFrame {
         _astm.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         _astm.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         _astm.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        _astm.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                _automaticMouseClicked(evt);
+            }
+        });
         jPanel17.add(_astm, new org.netbeans.lib.awtextra.AbsoluteConstraints(901, 132, 100, -1));
 
         _ir192.setBackground(new java.awt.Color(255, 255, 255));
@@ -2472,6 +2496,11 @@ public class Report extends javax.swing.JFrame {
         _ir192.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         _ir192.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         _ir192.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        _ir192.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                _automaticMouseClicked(evt);
+            }
+        });
         jPanel17.add(_ir192, new org.netbeans.lib.awtextra.AbsoluteConstraints(381, 30, 70, 40));
 
         _se75.setBackground(new java.awt.Color(255, 255, 255));
@@ -2479,12 +2508,22 @@ public class Report extends javax.swing.JFrame {
         _se75.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         _se75.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         _se75.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        _se75.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                _automaticMouseClicked(evt);
+            }
+        });
         jPanel17.add(_se75, new org.netbeans.lib.awtextra.AbsoluteConstraints(451, 30, 120, 40));
 
         _xRay.setBackground(new java.awt.Color(255, 255, 255));
         _xRay.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         _xRay.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         _xRay.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        _xRay.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                _automaticMouseClicked(evt);
+            }
+        });
         jPanel17.add(_xRay, new org.netbeans.lib.awtextra.AbsoluteConstraints(581, 30, 120, -1));
 
         _d4.setBackground(new java.awt.Color(255, 255, 255));
@@ -2492,6 +2531,11 @@ public class Report extends javax.swing.JFrame {
         _d4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         _d4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         _d4.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        _d4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                _automaticMouseClicked(evt);
+            }
+        });
         jPanel17.add(_d4, new org.netbeans.lib.awtextra.AbsoluteConstraints(445, 161, 100, 60));
 
         _d5.setBackground(new java.awt.Color(255, 255, 255));
@@ -2499,6 +2543,11 @@ public class Report extends javax.swing.JFrame {
         _d5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         _d5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         _d5.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        _d5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                _automaticMouseClicked(evt);
+            }
+        });
         jPanel17.add(_d5, new org.netbeans.lib.awtextra.AbsoluteConstraints(556, 161, 120, 60));
 
         _d7.setBackground(new java.awt.Color(255, 255, 255));
@@ -2506,6 +2555,11 @@ public class Report extends javax.swing.JFrame {
         _d7.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         _d7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         _d7.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        _d7.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                _automaticMouseClicked(evt);
+            }
+        });
         jPanel17.add(_d7, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 161, 100, 60));
 
         _sourceSide.setBackground(new java.awt.Color(255, 255, 255));
@@ -2513,6 +2567,11 @@ public class Report extends javax.swing.JFrame {
         _sourceSide.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         _sourceSide.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         _sourceSide.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        _sourceSide.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                _automaticMouseClicked(evt);
+            }
+        });
         jPanel17.add(_sourceSide, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 161, 100, 60));
 
         _filmSide.setBackground(new java.awt.Color(255, 255, 255));
@@ -2520,6 +2579,11 @@ public class Report extends javax.swing.JFrame {
         _filmSide.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         _filmSide.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         _filmSide.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        _filmSide.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                _automaticMouseClicked(evt);
+            }
+        });
         jPanel17.add(_filmSide, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 161, 90, 60));
 
         _automatic.setBackground(new java.awt.Color(255, 255, 255));
@@ -2527,6 +2591,11 @@ public class Report extends javax.swing.JFrame {
         _automatic.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         _automatic.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         _automatic.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        _automatic.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                _automaticMouseClicked(evt);
+            }
+        });
         jPanel17.add(_automatic, new org.netbeans.lib.awtextra.AbsoluteConstraints(1010, 131, 90, 90));
 
         _manuel.setBackground(new java.awt.Color(255, 255, 255));
@@ -2534,12 +2603,22 @@ public class Report extends javax.swing.JFrame {
         _manuel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         _manuel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         _manuel.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        _manuel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                _automaticMouseClicked(evt);
+            }
+        });
         jPanel17.add(_manuel, new org.netbeans.lib.awtextra.AbsoluteConstraints(1107, 131, 90, 90));
 
         _en.setBackground(new java.awt.Color(255, 255, 255));
         _en.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         _en.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         _en.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        _en.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                _automaticMouseClicked(evt);
+            }
+        });
         jPanel17.add(_en, new org.netbeans.lib.awtextra.AbsoluteConstraints(801, 132, 90, -1));
 
         jPanel5.add(jPanel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(13, 440, 1350, 340));
@@ -2552,6 +2631,11 @@ public class Report extends javax.swing.JFrame {
         _testArr6.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         _testArr6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         _testArr6.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        _testArr6.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                _automaticMouseClicked(evt);
+            }
+        });
         jPanel18.add(_testArr6, new org.netbeans.lib.awtextra.AbsoluteConstraints(1039, 9, 200, 200));
 
         _testArr2.setBackground(new java.awt.Color(255, 255, 255));
@@ -2560,6 +2644,11 @@ public class Report extends javax.swing.JFrame {
         _testArr2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         _testArr2.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
         _testArr2.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+        _testArr2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                _automaticMouseClicked(evt);
+            }
+        });
         jPanel18.add(_testArr2, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 9, 180, 200));
 
         _testArr3.setBackground(new java.awt.Color(255, 255, 255));
@@ -2567,6 +2656,11 @@ public class Report extends javax.swing.JFrame {
         _testArr3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         _testArr3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         _testArr3.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        _testArr3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                _automaticMouseClicked(evt);
+            }
+        });
         jPanel18.add(_testArr3, new org.netbeans.lib.awtextra.AbsoluteConstraints(445, 9, 170, 200));
 
         _testArr4.setBackground(new java.awt.Color(255, 255, 255));
@@ -2574,6 +2668,11 @@ public class Report extends javax.swing.JFrame {
         _testArr4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         _testArr4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         _testArr4.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        _testArr4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                _automaticMouseClicked(evt);
+            }
+        });
         jPanel18.add(_testArr4, new org.netbeans.lib.awtextra.AbsoluteConstraints(637, 9, 170, 200));
 
         _testArr5.setBackground(new java.awt.Color(255, 255, 255));
@@ -2581,6 +2680,11 @@ public class Report extends javax.swing.JFrame {
         _testArr5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         _testArr5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         _testArr5.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        _testArr5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                _automaticMouseClicked(evt);
+            }
+        });
         jPanel18.add(_testArr5, new org.netbeans.lib.awtextra.AbsoluteConstraints(839, 9, 170, 200));
 
         _testArr1.setBackground(new java.awt.Color(255, 255, 255));
@@ -2588,6 +2692,11 @@ public class Report extends javax.swing.JFrame {
         _testArr1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         _testArr1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         _testArr1.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        _testArr1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                _automaticMouseClicked(evt);
+            }
+        });
         jPanel18.add(_testArr1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 9, 190, 200));
 
         jPanel5.add(jPanel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(64, 820, 1290, 220));
@@ -5046,6 +5155,11 @@ public class Report extends javax.swing.JFrame {
         _fillet.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         _fillet.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         _fillet.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        _fillet.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                _buttMouseClicked(evt);
+            }
+        });
         _fillet.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 _filletActionPerformed(evt);
@@ -5072,6 +5186,11 @@ public class Report extends javax.swing.JFrame {
         _butt.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         _butt.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         _butt.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        _butt.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                _buttMouseClicked(evt);
+            }
+        });
         _butt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 _buttActionPerformed(evt);
@@ -6875,8 +6994,6 @@ public class Report extends javax.swing.JFrame {
         
     
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        radiographicResultsCapsul();
-        magneticResultsCapsul();
         this.operator_id = PersonManagement.getPersonId(this.operator);
         this.evaluator_id = PersonManagement.getPersonId(this.evaluator);
         this.confirmation_id = PersonManagement.getPersonId(this.confirmator);
@@ -7012,6 +7129,28 @@ public class Report extends javax.swing.JFrame {
     private void _magTech_weldingProcess7KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event__magTech_weldingProcess7KeyReleased
         // TODO add your handling code here:
     }//GEN-LAST:event__magTech_weldingProcess7KeyReleased
+
+    private void _automaticMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event__automaticMouseClicked
+        jLabel1.setEnabled(false);
+        jLabel4.setEnabled(false);
+        if (everyThingIsOkayR()) {
+            jLabel2.setEnabled(true);
+        }
+        else {
+            jLabel2.setEnabled(false);
+        }
+    }//GEN-LAST:event__automaticMouseClicked
+
+    private void _buttMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event__buttMouseClicked
+        jLabel1.setEnabled(false);
+        jLabel4.setEnabled(false);
+        if (everyThingIsOkayM()) {
+            jLabel2.setEnabled(true);
+        }
+        else {
+            jLabel2.setEnabled(false);
+        }
+    }//GEN-LAST:event__buttMouseClicked
 
     /**
      * @param args the command line arguments
