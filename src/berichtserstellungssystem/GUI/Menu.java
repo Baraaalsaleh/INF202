@@ -48,7 +48,7 @@ public class Menu extends javax.swing.JFrame {
         if (!PersonManagement.findAdmin()) {
             new Personel(0, 1, me).setVisible(true);
         }
-        
+        downloadTemplates();
         initComponents();
         /*
         panel1 = new ReportList();
@@ -63,10 +63,12 @@ public class Menu extends javax.swing.JFrame {
     
     private void downloadTemplates() {
         try {
-            URL website = new URL("https://raw.githubusercontent.com/Baraaalsaleh/INF202/master/MagneticTemplate.xlsx");
+            URL website = new URL("https://github.com/Baraaalsaleh/Templetes/raw/master/MagneticTemplate.xlsx");
             ReadableByteChannel rbc = Channels.newChannel(website.openStream());
-            FileOutputStream fos = new FileOutputStream("MagneticTemplate.xlsx");
+            FileOutputStream fos = new FileOutputStream("Data\\MagneticTemplate.xlsx");
             fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+            fos.close();
+            System.out.println("Download Done");
         }
         catch (Exception e) {
             System.out.println("downloadTemplates " + e);

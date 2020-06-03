@@ -16,11 +16,17 @@ import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.text.*;
 import javax.swing.*;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  *
@@ -1461,12 +1467,12 @@ public class Report extends javax.swing.JFrame {
             func = "Güncelleme";
         }
         else if (process == 3) {
-            func = "Silme";
+            func = "Excel Dosyasi oluşturma";
         }
         if (done == 1) {
             JOptionPane.showMessageDialog(dialog, func  + " işlemi başarıyla tamamlanmıştır", "Başarılı İşlem", JOptionPane.PLAIN_MESSAGE);
             if (process == 3) {
-                this.dispose();
+                process = 2;
             }
             else if (process == 1) {
                 jLabel2.setEnabled(false);
@@ -1555,6 +1561,179 @@ public class Report extends javax.swing.JFrame {
             } catch (PrinterException e){
                 JOptionPane.showMessageDialog(this, "Hatalı İşlem" + e.getMessage());
             }
+        }
+    }
+    
+    private int exportExcelM() {
+        try {
+            FileInputStream input = new FileInputStream("Data\\MagneticTemplate.xlsx");
+            XSSFWorkbook workbook = new XSSFWorkbook(input);
+            XSSFSheet sheet = workbook.getSheetAt(0);
+            //Report Information
+            XSSFRow row = sheet.getRow(2);
+            XSSFCell cell = row.getCell(3);
+            cell.setCellValue(toEditM.getCustomer());
+            cell = row.getCell(19);
+            cell.setCellValue(toEditM.getInspectionProcedure());
+            cell = row.getCell(26);
+            cell.setCellValue(toEditM.getPage());
+            
+            row = sheet.getRow(3);
+            cell = row.getCell(3);
+            cell.setCellValue(toEditM.getProjectName());
+            cell = row.getCell(19);
+            cell.setCellValue(toEditM.getInspectionScope());
+            cell = row.getCell(26);
+            cell.setCellValue(toEditM.getReportNumber());
+            
+            row = sheet.getRow(4);
+            cell = row.getCell(3);
+            cell.setCellValue(toEditM.getInspectionPlace());
+            cell = row.getCell(19);
+            cell.setCellValue(toEditM.getDrawingNo());
+            cell = row.getCell(26);
+            cell.setCellValue(Common.date_toStringReverse(toEditM.getReportDate(), "."));
+            
+            row = sheet.getRow(5);
+            cell = row.getCell(3);
+            cell.setCellValue(toEditM.getInspectionClass());
+            cell = row.getCell(19);
+            cell.setCellValue(toEditM.getSurfaceCondition());
+            cell = row.getCell(26);
+            cell.setCellValue(toEditM.getOrderNumber());
+            
+            row = sheet.getRow(6);
+            cell = row.getCell(3);
+            cell.setCellValue(toEditM.getEvaluationStandard());
+            cell = row.getCell(19);
+            cell.setCellValue(toEditM.getStageOfExamination());
+            cell = row.getCell(26);
+            cell.setCellValue(toEditM.getOfferNumber());
+            
+            //Equipment information
+            row = sheet.getRow(8);
+            cell = row.getCell(4);
+            cell.setCellValue(toEditM.getPoleDistance());
+            cell = row.getCell(16);
+            cell.setCellValue(toEditM.getExaminationArea());
+            cell = row.getCell(25);
+            cell.setCellValue(toEditM.getSurfaceTemperature());
+            
+            row = sheet.getRow(9);
+            cell = row.getCell(4);
+            cell.setCellValue(toEditM.getEquipment());
+            cell = row.getCell(16);
+            cell.setCellValue(toEditM.getCurrentType());
+            cell = row.getCell(25);
+            cell.setCellValue(toEditM.getGaussFieldStrength());
+            
+            row = sheet.getRow(10);
+            cell = row.getCell(4);
+            cell.setCellValue(toEditM.getMpCarrier());
+            cell = row.getCell(16);
+            cell.setCellValue(toEditM.getLuxmeter());
+            
+            row = sheet.getRow(11);
+            cell = row.getCell(4);
+            cell.setCellValue(toEditM.getMagTech());
+            cell = row.getCell(16);
+            cell.setCellValue(toEditM.getTestMedium());
+            cell = row.getCell(25);
+            cell.setCellValue(toEditM.getSurfaceCondition2());
+            
+            row = sheet.getRow(12);
+            cell = row.getCell(4);
+            cell.setCellValue(toEditM.getUvIntensity());
+            cell = row.getCell(16);
+            cell.setCellValue(toEditM.getDemagnetization());
+            cell = row.getCell(25);
+            cell.setCellValue(toEditM.getIdentificationOfLightEquip());
+            
+            row = sheet.getRow(13);
+            cell = row.getCell(4);
+            cell.setCellValue(toEditM.getDistanceOfLight());
+            cell = row.getCell(16);
+            cell.setCellValue(toEditM.getHeatTreatment());
+            cell = row.getCell(25);
+            cell.setCellValue(toEditM.getLiftingTest());
+            
+            row = sheet.getRow(14);
+            cell = row.getCell(0);
+            cell.setCellValue(toEditM.isButtWeld());
+            cell = row.getCell(7);
+            cell.setCellValue(toEditM.isFilletWeld());
+            
+            //General
+            row = sheet.getRow(19);
+            cell = row.getCell(7);
+            cell.setCellValue(toEditM.getStandardDeviations());
+            
+            row = sheet.getRow(20);
+            cell = row.getCell(7);
+            cell.setCellValue(toEditM.getInspectionDates());
+            
+            row = sheet.getRow(21);
+            cell = row.getCell(7);
+            cell.setCellValue(toEditM.getDescriptionOfAttachments());
+            //Results
+            
+            ArrayList<MagneticInspectionResult> reses = toEditM.getInspectionResults();
+            for (int i = 24; i < (reses.size()+24); i++) {
+                MagneticInspectionResult temp = reses.get(i-24);
+                row = sheet.getRow(i);
+                cell = row.getCell(1);
+                cell.setCellValue(temp.getWeldPieceNo());
+                cell = row.getCell(8);
+                cell.setCellValue(temp.getTestLength());
+                cell = row.getCell(11);
+                cell.setCellValue(temp.getWeldingProcess());
+                cell = row.getCell(17);
+                cell.setCellValue(temp.getThickness());
+                cell = row.getCell(18);
+                cell.setCellValue(temp.getDiameter());
+                cell = row.getCell(22);
+                cell.setCellValue(temp.getDefectType());
+                cell = row.getCell(24);
+                cell.setCellValue(temp.getDefectLocation());
+                cell = row.getCell(27);
+                cell.setCellValue(temp.getResult());
+            }
+            //Employees
+            row = sheet.getRow(35);
+            cell = row.getCell(5);
+            cell.setCellValue(_MoperatorName.getText().trim());
+            cell = row.getCell(15);
+            cell.setCellValue(_MevaluatorName.getText().trim());
+            cell = row.getCell(20);
+            cell.setCellValue(_MconfirmationName.getText().trim());
+            
+            row = sheet.getRow(36);
+            cell = row.getCell(5);
+            cell.setCellValue(this.operator.getLevel());
+            cell = row.getCell(15);
+            cell.setCellValue(this.evaluator.getLevel());
+            cell = row.getCell(20);
+            cell.setCellValue(this.confirmator.getLevel());
+            
+            row = sheet.getRow(37);
+            cell = row.getCell(5);
+            cell.setCellValue(this.reportDate);
+            cell = row.getCell(15);
+            cell.setCellValue(this.reportDate);
+            cell = row.getCell(20);
+            cell.setCellValue(this.reportDate);
+            
+            row = sheet.getRow(39);
+            cell = row.getCell(0);
+            cell.setCellValue(toEditM.getBottom());
+            
+            
+            FileOutputStream output = new FileOutputStream("C:\\Users\\Baraa\\Desktop\\Test1.xlsx");
+            workbook.write(output);
+            output.close();
+            return 1;
+        } catch(Exception e) {
+            return -1;
         }
     }
     /**
@@ -7104,7 +7283,15 @@ public class Report extends javax.swing.JFrame {
     }//GEN-LAST:event__customerFocusGained
 
     private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
-        // TODO add your handling code here:
+        int res = 0;
+        if (toEditM != null) {
+            res = exportExcelM();
+        }
+        else {
+            res = -2;
+        }
+        process = 3;
+        message(res);
     }//GEN-LAST:event_jLabel4MouseClicked
 
     private void _MinspectionScopeFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event__MinspectionScopeFocusLost
