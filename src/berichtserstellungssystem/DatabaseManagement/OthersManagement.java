@@ -42,6 +42,18 @@ public class OthersManagement extends DatabaseManagement{
         
     }
     
+    public static boolean checkProjectName(String name) {
+        ResultSet rs = null;
+        try {
+            stmt = con.createStatement();
+            rs = stmt.executeQuery("SELECT id FROM Project WHERE project = '" + name + "';");
+            return rs.next();
+        } catch (SQLException ex) {
+            System.out.println("insertProject " + ex);
+            return false;
+        }
+    }
+    
     public static int insertSurfaceCondition(String name) {
         ResultSet rs = null;
         try {
@@ -63,7 +75,18 @@ public class OthersManagement extends DatabaseManagement{
             System.out.println("insertSurfaceCondition " + ex);
             return -1;
         }
-        
+    }
+    
+    public static boolean checkSurfaceCondition(String name) {
+        ResultSet rs = null;
+        try {
+            stmt = con.createStatement();
+            rs = stmt.executeQuery("SELECT id FROM SurfaceCondition WHERE surfaceCondition = '" + name + "';");
+            return rs.next();
+        } catch (SQLException ex) {
+            System.out.println("insertSurfaceCondition " + ex);
+            return false;
+        }
     }
     
     public static int insertStageOfExamination(String name) {
@@ -87,7 +110,18 @@ public class OthersManagement extends DatabaseManagement{
             System.out.println("insertStageOfExamination " + ex);
             return -1;
         }
-        
+    }
+    
+    public static boolean checkStageOfExamination(String name) {
+        ResultSet rs = null;
+        try {
+            stmt = con.createStatement();
+            rs = stmt.executeQuery("SELECT id FROM StageOfExamination WHERE stageOfExamination = '" + name + "';");
+            return rs.next();
+        } catch (SQLException ex) {
+            System.out.println("insertStageOfExamination " + ex);
+            return false;
+        }
     }
     
     public static int updateProject(String oldName, String name) {

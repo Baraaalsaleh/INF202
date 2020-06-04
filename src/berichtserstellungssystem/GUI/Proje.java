@@ -9,6 +9,7 @@ import berichtserstellungssystem.DatabaseManagement.DatabaseManagement;
 import berichtserstellungssystem.DatabaseManagement.OthersManagement;
 import berichtserstellungssystem.Resource.Manager;
 import berichtserstellungssystem.Verification;
+import java.awt.Color;
 import java.sql.SQLException;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -60,6 +61,93 @@ public class Proje extends javax.swing.JFrame {
             jTextField1.setText(name);
         }
         jLabel3.setEnabled(false);
+    }
+    
+    private boolean everyThingIsOkay() {
+        if (type == 1) {
+            if (jTextField1.getText().length() > 2 && !jTextField1.getText().trim().equals("Proje") && OthersManagement.checkProjectName(jTextField1.getText().trim())) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        else if (type == 2) {
+            if (jTextField1.getText().length() > 2 && !jTextField1.getText().trim().equals("Yuzay Durumu") && OthersManagement.checkSurfaceCondition(jTextField1.getText().trim())) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        else {
+            if (jTextField1.getText().length() > 2 && !jTextField1.getText().trim().equals("Muayene Aşaması") && OthersManagement.checkStageOfExamination(jTextField1.getText().trim())) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    }
+    
+    private void everyThingIsOkay(int a) {
+        if (type == 1) {
+            jTextField1.setBackground(Color.pink);
+            if (jTextField1.getText().trim().equals("") || jTextField1.getText().trim().equals("Proje")) {
+                jTextField1.setToolTipText("Zorunlu alan!");
+            }
+            else if (jTextField1.getText().length() < 3 || jTextField1.getText().length() > 64) {
+                jTextField1.setToolTipText("Proje adı 2 - 64 harften oluşabilir!");
+            }
+            else if (OthersManagement.checkProjectName(jTextField1.getText().trim()) && process == 1) {
+                jTextField1.setToolTipText("Girdiğiniz proje adının veri tabanında bulunduğu için kullanılmaz! Farklı bir proje adı giriniz!");
+            }
+            else if (OthersManagement.checkProjectName(jTextField1.getText().trim()) && process == 2 && jTextField1.getText().trim().equals(name)) {
+                jTextField1.setToolTipText("Bir değişiklik yapılmadı!");
+            }
+            else {
+                jTextField1.setBackground(Color.white);
+                jTextField1.setToolTipText(null);
+            }
+        }
+        else if (type == 2) {
+            jTextField1.setBackground(Color.pink);
+            if (jTextField1.getText().trim().equals("") || jTextField1.getText().trim().equals("Yuzay Durumu")) {
+                jTextField1.setToolTipText("Zorunlu alan!");
+            }
+            else if (jTextField1.getText().length() < 3 || jTextField1.getText().length() > 64) {
+                jTextField1.setToolTipText("Yuzay durumu 2 - 64 harften oluşabilir!");
+            }
+            else if (OthersManagement.checkSurfaceCondition(jTextField1.getText().trim()) && process == 1) {
+                jTextField1.setToolTipText("Girdiğiniz yuzay durumunun veri tabanında bulunduğu için kullanılmaz! Farklı bir yuzay durumu giriniz!");
+            }
+            else if (OthersManagement.checkSurfaceCondition(jTextField1.getText().trim()) && process == 2 && jTextField1.getText().trim().equals(name)) {
+                jTextField1.setToolTipText("Bir değişiklik yapılmadı!");
+            }
+            else {
+                jTextField1.setBackground(Color.white);
+                jTextField1.setToolTipText(null);
+            }
+        }
+        else {
+            jTextField1.setBackground(Color.pink);
+            if (jTextField1.getText().trim().equals("") || jTextField1.getText().trim().equals("Muayene Aşaması")) {
+                jTextField1.setToolTipText("Zorunlu alan!");
+            }
+            else if (jTextField1.getText().length() < 3 || jTextField1.getText().length() > 64) {
+                jTextField1.setToolTipText("Muayene aşaması 2 - 64 harften oluşabilir!");
+            }
+            else if (OthersManagement.checkStageOfExamination(jTextField1.getText().trim()) && process == 1) {
+                jTextField1.setToolTipText("Girdiğiniz muayene aşaması veri tabanında bulunduğu için kullanılmaz! Farklı bir muayene aşaması giriniz!");
+            }
+            else if (OthersManagement.checkStageOfExamination(jTextField1.getText().trim()) && process == 2 && jTextField1.getText().trim().equals(name)) {
+                jTextField1.setToolTipText("Bir değişiklik yapılmadı!");
+            }
+            else {
+                jTextField1.setBackground(Color.white);
+                jTextField1.setToolTipText(null);
+            }
+        }
     }
     
     private void cleanAll() {
@@ -267,13 +355,13 @@ public class Proje extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField1FocusGained
 
     private void jTextField1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyReleased
-        if (jTextField1.getText().length() > 2 && !jTextField1.getText().trim().equals("Proje") && !jTextField1.getText().trim().equals("Yuzay Durumu")
-                && !jTextField1.getText().trim().equals("Muayene Aşaması") && Verification.justEnglish(jTextField1.getText())){
+        if (everyThingIsOkay()){
             jLabel3.setEnabled(true);
         }
         else {
             jLabel3.setEnabled(false);
         }
+        everyThingIsOkay(1);
     }//GEN-LAST:event_jTextField1KeyReleased
 
     private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
