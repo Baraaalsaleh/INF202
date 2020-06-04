@@ -10,6 +10,7 @@ import berichtserstellungssystem.DatabaseManagement.DatabaseManagement;
 import berichtserstellungssystem.DatabaseManagement.EquipmentManagement;
 import berichtserstellungssystem.Resource.*;
 import berichtserstellungssystem.Verification;
+import java.awt.Color;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -143,6 +144,111 @@ public class Ekipman extends javax.swing.JFrame {
             res = false;
         }        
         return res;
+    }
+    
+    private void everyThingIsOkay(int[] origin) {
+        for (Integer i : origin) {
+            switch(i) {
+                case 1:
+                    if (jTextField1.getText().trim().equals("") || jTextField1.getText().trim().equals("Adı")) {
+                        jTextField1.setBackground(Color.pink);
+                        jTextField1.setToolTipText("Zorunlu alan!");
+                    }
+                    else if (!Verification.justEnglish(jTextField1.getText().trim())) {
+                        jTextField1.setBackground(Color.pink);
+                        jTextField1.setToolTipText("Bu alan Türkçe harfi içermez!");
+                    }
+                    else if (jTextField1.getText().trim().length() < 2 && jTextField1.getText().trim().length() > 128) {
+                        jTextField1.setBackground(Color.pink);
+                        jTextField1.setToolTipText("Bu alan 2 ile 128 harften oluşabilir!");
+                    }
+                    else {
+                        jTextField1.setBackground(Color.white);
+                        jTextField1.setToolTipText(null);
+                    }
+                    break;
+                case 2:
+                    if (jTextField2.getText().trim().equals("Odak Boyutu") || jTextField2.getText().trim().equals("Kutup Mesafesi (mm)") || jTextField2.getText().trim().equals("") ) {
+                        jTextField2.setBackground(Color.pink);
+                        jTextField2.setToolTipText("Zorunlu alan!");
+                    }
+                    else if (jTextField2.getText().trim().length() > 32) {
+                        jTextField2.setBackground(Color.pink);
+                        jTextField2.setToolTipText("Bu alan en fazla 32 harften oluşabilir!");
+                    }
+                    else {
+                        jTextField2.setBackground(Color.white);
+                        jTextField2.setToolTipText(null);
+                    }
+                    break;
+                case 3:
+                    if (jTextField3.getText().trim().equals("Poz Süresi") || jTextField3.getText().trim().equals("MP Taşıyıcı Ortam") || jTextField3.getText().trim().equals("")) {
+                        jTextField3.setBackground(Color.pink);
+                        jTextField3.setToolTipText("Zorunlu alan!");
+                    }
+                    else if (jTextField3.getText().trim().length() > 32) {
+                        jTextField3.setBackground(Color.pink);
+                        jTextField3.setToolTipText("Bu alan en fazla 32 harften oluşabilir!");
+                    }
+                    else {
+                        jTextField3.setBackground(Color.white);
+                        jTextField3.setToolTipText(null);
+                    }
+                    break;
+                case 4:
+                    if (jTextField4.getText().trim().equals("Çekim Mesafesi") || jTextField4.getText().trim().equals("Mıknatıslama Tekniği") || jTextField4.getText().trim().equals("")) {
+                        jTextField4.setBackground(Color.pink);
+                        jTextField4.setToolTipText("Zorunlu alan!");
+                    }
+                    else if (jTextField4.getText().trim().length() > 32) {
+                        jTextField4.setBackground(Color.pink);
+                        jTextField4.setToolTipText("Bu alan en fazla 32 harften oluşabilir!");
+                    }
+                    else {
+                        jTextField4.setBackground(Color.white);
+                        jTextField4.setToolTipText(null);
+                    }
+                    break;
+                case 5:
+                    if (jTextField5.getText().trim().equals("Kurşun Ekranları") || jTextField5.getText().trim().equals("UV Işık Şiddeti") || jTextField5.getText().trim().equals("")) {
+                        jTextField5.setBackground(Color.pink);
+                        jTextField5.setToolTipText("Zorunlu alan!");
+                    }
+                    else if (jTextField5.getText().trim().length() > 32) {
+                        jTextField5.setBackground(Color.pink);
+                        jTextField5.setToolTipText("Bu alan en fazla 32 harften oluşabilir!");
+                    }
+                    else {
+                        jTextField5.setBackground(Color.white);
+                        jTextField5.setToolTipText(null);
+                    }
+                    break;
+                case 6:
+                    if (jTextField6.getText().trim().equals("Filtreler") || jTextField6.getText().trim().equals("Işık Mesafesi") || jTextField6.getText().trim().equals("")) {
+                        jTextField6.setBackground(Color.pink);
+                        jTextField6.setToolTipText("Zorunlu alan!");
+                    }
+                    else if (jTextField6.getText().trim().length() > 32) {
+                        jTextField6.setBackground(Color.pink);
+                        jTextField6.setToolTipText("Bu alan en fazla 32 harften oluşabilir!");
+                    }
+                    else {
+                        jTextField6.setBackground(Color.white);
+                        jTextField6.setToolTipText(null);
+                    }
+                    break;
+                case 7:
+                    if (!Verification.verifyDate(jTextField7.getText())) {
+                        jTextField7.setBackground(Color.pink);
+                        jTextField7.setToolTipText("Zorunlu alan! Tarih GG-AA-YYYY formatında olmalı!");
+                    }
+                    else {
+                        jTextField7.setBackground(Color.white);
+                        jTextField7.setToolTipText(null);
+                    }
+                    break;
+            }
+        }
     }
     
     private void cleanAll() {
@@ -711,6 +817,8 @@ public class Ekipman extends javax.swing.JFrame {
         else {
             jButton1.setEnabled(false);
         }
+        int[] ints = {1};
+        everyThingIsOkay(ints);
     }//GEN-LAST:event_jTextField1KeyReleased
 
     private void jTextField2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField2KeyReleased
@@ -720,6 +828,8 @@ public class Ekipman extends javax.swing.JFrame {
         else {
             jButton1.setEnabled(false);
         }
+        int[] ints = {1, 2};
+        everyThingIsOkay(ints);
     }//GEN-LAST:event_jTextField2KeyReleased
 
     private void jTextField3KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyReleased
@@ -729,6 +839,8 @@ public class Ekipman extends javax.swing.JFrame {
         else {
             jButton1.setEnabled(false);
         }
+        int[] ints = {1, 2, 3};
+        everyThingIsOkay(ints);
     }//GEN-LAST:event_jTextField3KeyReleased
 
     private void jTextField4KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField4KeyReleased
@@ -738,6 +850,8 @@ public class Ekipman extends javax.swing.JFrame {
         else {
             jButton1.setEnabled(false);
         }
+        int[] ints = {1, 2, 3, 4};
+        everyThingIsOkay(ints);
     }//GEN-LAST:event_jTextField4KeyReleased
 
     private void jTextField5KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField5KeyReleased
@@ -747,6 +861,8 @@ public class Ekipman extends javax.swing.JFrame {
         else {
             jButton1.setEnabled(false);
         }
+        int[] ints = {1, 2, 3, 4, 5};
+        everyThingIsOkay(ints);
     }//GEN-LAST:event_jTextField5KeyReleased
 
     private void jTextField6KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField6KeyReleased
@@ -756,6 +872,8 @@ public class Ekipman extends javax.swing.JFrame {
         else {
             jButton1.setEnabled(false);
         }
+        int[] ints = {1, 2, 3, 4, 5, 6};
+        everyThingIsOkay(ints);
     }//GEN-LAST:event_jTextField6KeyReleased
 
     private void jTextField7FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField7FocusGained
@@ -773,6 +891,8 @@ public class Ekipman extends javax.swing.JFrame {
         else {
             jButton1.setEnabled(false);
         }
+        int[] ints = {1, 2, 3, 4, 5, 6, 7};
+        everyThingIsOkay(ints);
     }//GEN-LAST:event_jTextField7KeyReleased
 
     private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
@@ -782,6 +902,8 @@ public class Ekipman extends javax.swing.JFrame {
         else {
             jButton1.setEnabled(false);
         }
+        int[] ints = {1, 2, 3, 4, 5, 6};
+        everyThingIsOkay(ints);
     }//GEN-LAST:event_jCheckBox1ActionPerformed
 
     private void jCheckBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox2ActionPerformed
@@ -791,6 +913,8 @@ public class Ekipman extends javax.swing.JFrame {
         else {
             jButton1.setEnabled(false);
         }
+        int[] ints = {1, 2, 3, 4, 5, 6};
+        everyThingIsOkay(ints);
     }//GEN-LAST:event_jCheckBox2ActionPerformed
 
     private void jCheckBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox3ActionPerformed
@@ -800,6 +924,8 @@ public class Ekipman extends javax.swing.JFrame {
         else {
             jButton1.setEnabled(false);
         }
+        int[] ints = {1, 2, 3, 4, 5, 6};
+        everyThingIsOkay(ints);
     }//GEN-LAST:event_jCheckBox3ActionPerformed
 
     /**
