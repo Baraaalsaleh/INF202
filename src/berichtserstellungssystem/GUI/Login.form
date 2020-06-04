@@ -243,9 +243,6 @@
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
             <Property name="horizontalAlignment" type="int" value="0"/>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="C:\Users\Baraa\Desktop\Picture3.png"/>
-            </Property>
             <Property name="text" type="java.lang.String" value="Giri&#x15f; Yap"/>
             <Property name="toolTipText" type="java.lang.String" value=""/>
           </Properties>

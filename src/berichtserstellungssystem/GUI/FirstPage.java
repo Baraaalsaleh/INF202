@@ -180,7 +180,7 @@ public class FirstPage extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        jDateChooser1 = new com.toedter.calendar.JDateChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(1204, 570));
@@ -428,13 +428,10 @@ public class FirstPage extends javax.swing.JFrame {
         jLabel19.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel19.setText("Rapor Tarihi:");
 
-        jTextField1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jTextField1.setText("GG.AA.YYYY");
-        jTextField1.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                jTextField1FocusGained(evt);
-            }
-        });
+        jDateChooser1.setToolTipText("Tarih seçilmezse bugünkü tarih kabul edilecek");
+        jDateChooser1.setDateFormatString("dd - MM - yyyy");
+        jDateChooser1.setMaxSelectableDate(new java.util.Date(4102441274000L));
+        jDateChooser1.setMinSelectableDate(new java.util.Date(946681274000L));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -463,10 +460,10 @@ public class FirstPage extends javax.swing.JFrame {
                                     .addComponent(jComboBox10, javax.swing.GroupLayout.PREFERRED_SIZE, 412, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jComboBox12, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 412, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                                     .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGap(18, 18, 18)
-                                    .addComponent(jTextField1))
+                                    .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -514,9 +511,9 @@ public class FirstPage extends javax.swing.JFrame {
                                     .addComponent(jComboBox9, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addComponent(jComboBox7, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel19, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -537,22 +534,19 @@ public class FirstPage extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
-        if (jTextField1.getText().trim().equals("GG.AA.YYYY") || jTextField1.getText().trim().equals("")) {
+        if (jDateChooser1.getDate() == null) {
             this.reportDate = new Date();
-            jTextField1.setBackground(Color.white);
-            jTextField1.setToolTipText(null);
+            jDateChooser1.setBackground(Color.white);
+            jDateChooser1.setToolTipText(null);
             new Report(this.theCustomer, jComboBox2.getSelectedItem().toString(), jComboBox3.getSelectedItem().toString(), this.operator, this.evaluator, this.confirmator, this.equip1, this.equip2, jComboBox7.getSelectedItem().toString(), jComboBox8.getSelectedItem().toString(), jComboBox9.getSelectedItem().toString(), this.reportDate).setVisible(true);
-        }
-        else if(Verification.verifyDate(jTextField1.getText().trim())) {
-            this.reportDate = Common.string_toDate(jTextField1.getText().trim());
-            jTextField1.setBackground(Color.white);
-            jTextField1.setToolTipText(null);
-            new Report(this.theCustomer, jComboBox2.getSelectedItem().toString(), jComboBox3.getSelectedItem().toString(), this.operator, this.evaluator, this.confirmator, this.equip1, this.equip2, jComboBox7.getSelectedItem().toString(), jComboBox8.getSelectedItem().toString(), jComboBox9.getSelectedItem().toString(), this.reportDate).setVisible(true);
+            this.dispose();
         }
         else {
-            jTextField1.setBackground(Color.pink);
-            jTextField1.selectAll();
-            jTextField1.setToolTipText("Girdiğiniz Tarih geçerli değil! Tarih GG.AA.YYYY formatında olması gerekir! Bu Alanı boş ya da değiştirmeden bırakırsanız bugünkü tarihi kabul edilecektir!");
+            this.reportDate = jDateChooser1.getDate();
+            jDateChooser1.setBackground(Color.white);
+            jDateChooser1.setToolTipText(null);
+            new Report(this.theCustomer, jComboBox2.getSelectedItem().toString(), jComboBox3.getSelectedItem().toString(), this.operator, this.evaluator, this.confirmator, this.equip1, this.equip2, jComboBox7.getSelectedItem().toString(), jComboBox8.getSelectedItem().toString(), jComboBox9.getSelectedItem().toString(), this.reportDate).setVisible(true);
+            this.dispose();
         }
     }//GEN-LAST:event_jLabel2MouseClicked
 
@@ -589,10 +583,6 @@ public class FirstPage extends javax.swing.JFrame {
             this.equip1 = null;
         }
     }//GEN-LAST:event_jComboBox12ActionPerformed
-
-    private void jTextField1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField1FocusGained
-        jTextField1.selectAll();
-    }//GEN-LAST:event_jTextField1FocusGained
 
     private void jComboBox4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox4ActionPerformed
         if (jComboBox4.getSelectedIndex() != -1) {
@@ -659,6 +649,7 @@ public class FirstPage extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> jComboBox7;
     private javax.swing.JComboBox<String> jComboBox8;
     private javax.swing.JComboBox<String> jComboBox9;
+    private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -679,6 +670,5 @@ public class FirstPage extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }

@@ -12,10 +12,12 @@ import berichtserstellungssystem.Verification;
 import java.awt.Color;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
@@ -36,12 +38,16 @@ public class Personel extends javax.swing.JFrame {
     String telephone = "";
     String address = "";
     String email = "";
-    String birthdate = "";
+    Date birthdate = null;
     String TCNr = "";
     String Pnr = "";
     String var1 = "";
     String var2 = "";
+    Date var3 = null;
     boolean verifiy;
+    
+    boolean testIt1 = false;
+    boolean testIt2 = false;
     
     
     /**
@@ -79,7 +85,7 @@ public class Personel extends javax.swing.JFrame {
         jComboBox1.setSelectedIndex(gender);
         jTextField5.setText(toEdit.getEmail());
         jTextField6.setText(toEdit.getAddress());
-        jTextField7.setText(Common.date_toStringReverse(toEdit.getBirthDate(), "-"));
+        jDateChooser1.setDate(toEdit.getBirthDate());
         jTextField8.setText(Long.toString(toEdit.getTcNr()));
         this.tc = toEdit.getTcNr();
         jTextField9.setText(Long.toString(toEdit.getPersonalNr()));
@@ -87,7 +93,7 @@ public class Personel extends javax.swing.JFrame {
     
     private void fillEmployeeData (Employee toEdit) {
         fillData(toEdit);
-        jTextField10.setText(Common.date_toStringReverse(toEdit.getPermitionEndDate(), "-"));
+        jDateChooser2.setDate(toEdit.getPermitionEndDate());
         jTextField11.setText(Integer.toString(toEdit.getLevel()));
     }
     
@@ -96,11 +102,13 @@ public class Personel extends javax.swing.JFrame {
             jButton3.setVisible(false);
             if (type == DatabaseManagement.getEMPLOYEE_STATUS()){
                 this.jLabel1.setText("Personel Ekle");
+                this.jTextField10.setVisible(false);
             }
             else if (type == DatabaseManagement.getMANAGER_STATUS()){
                 this.jLabel1.setText("Yönetici Ekle");
                 this.jLabel11.setVisible(false);
                 this.jTextField10.setVisible(false);
+                this.jDateChooser2.setVisible(false);
                 this.jLabel12.setVisible(false);
                 this.jTextField11.setVisible(false);
             }
@@ -108,6 +116,7 @@ public class Personel extends javax.swing.JFrame {
                 this.jLabel1.setText("Admin Ekle");
                 this.jLabel11.setVisible(false);
                 this.jTextField10.setVisible(false);
+                this.jDateChooser2.setVisible(false);
                 this.jLabel12.setVisible(false);
                 this.jTextField11.setVisible(false);
             }
@@ -123,11 +132,13 @@ public class Personel extends javax.swing.JFrame {
                     Employee toEdit = new Employee(rs);
                     System.out.println("this is me " + toEdit.getName());
                     fillEmployeeData(toEdit);
+                    jTextField10.setEnabled(false);
             }
             else if (type == DatabaseManagement.getMANAGER_STATUS()){
                 this.jLabel1.setText("Yönetici Güncelle");
                 this.jLabel11.setVisible(false);
                 this.jTextField10.setVisible(false);
+                this.jDateChooser2.setVisible(false);
                 this.jLabel12.setVisible(false);
                 this.jTextField11.setVisible(false);
                 ResultSet rs = PersonManagement.getManager(personalNr);
@@ -140,6 +151,7 @@ public class Personel extends javax.swing.JFrame {
                 this.jLabel1.setText("Benim Bilgilerim");
                 this.jLabel11.setText("Kullanıcı Adı");
                 this.jTextField10.setText("Kullanıcı Adı");
+                this.jDateChooser2.setVisible(false);
                 this.jLabel12.setText("Şifre");
                 this.jTextField11.setText("Şifre");
             }
@@ -148,10 +160,10 @@ public class Personel extends javax.swing.JFrame {
     
     private boolean everyThingIsOkay () {
         if (Verification.verifyName(jTextField1.getText().trim()) && Verification.verifyName(jTextField2.getText().trim()) && Verification.verifyTelephoneNumber(jTextField4.getText().trim())
-                && Verification.verifyEmail(jTextField5.getText().trim())  && Verification.verifyDate(jTextField7.getText().trim()) 
+                && Verification.verifyEmail(jTextField5.getText().trim())  && jDateChooser1.getDate() != null
                 && Verification.verifyTCnumber(jTextField8.getText().trim()) && Verification.isNumber(jTextField9.getText().trim())){
             if (type == DatabaseManagement.getEMPLOYEE_STATUS()) {
-                if (Verification.verifyDate(jTextField10.getText().trim()) && Verification.isNumber(jTextField11.getText().trim())) {
+                if (jDateChooser2.getDate() != null && Verification.isNumber(jTextField11.getText().trim())) {
                     return true;
                 }
                 else {
@@ -233,13 +245,13 @@ public class Personel extends javax.swing.JFrame {
                     }
                     break;
                 case 7:
-                    if (!Verification.verifyDate(jTextField7.getText().trim())) {
-                        jTextField7.setBackground(Color.pink);
-                        jTextField7.setToolTipText("Geçerli bir tarih giriniz!, tarih GG-AA-YYYY formatında olmalı");
+                    if (jDateChooser1.getDate() == null) {
+                        jDateChooser1.setBackground(Color.pink);
+                        jDateChooser1.setToolTipText("Zorunlu alan! Geçerli bir tarih seçiniz!");
                     }
                     else {
-                        jTextField7.setBackground(Color.white);
-                        jTextField7.setToolTipText(null);
+                        jDateChooser1.setBackground(Color.white);
+                        jDateChooser1.setToolTipText(null);
                     }
                     break;
                 case 8:
@@ -289,13 +301,13 @@ public class Personel extends javax.swing.JFrame {
                     break;
                 case 10:
                     if (type == DatabaseManagement.getEMPLOYEE_STATUS()) {
-                        if (!Verification.verifyDate(jTextField10.getText().trim())) {
-                            jTextField10.setBackground(Color.pink);
-                            jTextField10.setToolTipText("Geçerli bir tarih giriniz!, tarih GG-AA-YYYY formatında olmalı");
+                        if (jDateChooser2.getDate() == null) {
+                            jDateChooser2.setBackground(Color.pink);
+                            jDateChooser2.setToolTipText("Zorunlu alan! Geçerli bir tarih seçiniz!");
                         }
                         else {
-                            jTextField10.setBackground(Color.white);
-                            jTextField10.setToolTipText(null);
+                            jDateChooser2.setBackground(Color.white);
+                            jDateChooser2.setToolTipText(null);
                         }
                     }
                     else {
@@ -350,16 +362,18 @@ public class Personel extends javax.swing.JFrame {
     }
     
     private void cleanAll () {
+        testIt1 = false;
+        testIt2 = false;
         jTextField1.setText("Adı");
         jTextField2.setText("Soyadı");
         jTextField4.setText("Telefon");
         jTextField5.setText("E-Posta");
         jTextField6.setText("Adres");
-        jTextField7.setText("GG-AA-YYYY");
+        jDateChooser1.setDate(null);
         jTextField8.setText("TCNr");
         jTextField9.setText("Personel-Nr");
         if (type == DatabaseManagement.getEMPLOYEE_STATUS()) {
-            jTextField10.setText("GG-AA-YYYY");
+            jDateChooser2.setDate(null);
             jTextField11.setText("Seviye");
         }
         else {
@@ -367,7 +381,8 @@ public class Personel extends javax.swing.JFrame {
             jTextField11.setText("Şifre");
         }
         jButton1.setEnabled(false);
-        
+        testIt1 = true;
+        testIt2 = true;
     }
     
     private void getData () {
@@ -377,10 +392,15 @@ public class Personel extends javax.swing.JFrame {
         telephone = jTextField4.getText().trim();
         address = jTextField6.getText().trim();
         email = jTextField5.getText().trim();
-        birthdate = jTextField7.getText().trim();
+        birthdate = jDateChooser1.getDate();
         TCNr = jTextField8.getText().trim();
         Pnr = jTextField9.getText().trim();
-        var1 = jTextField10.getText().trim();
+        if (type == DatabaseManagement.getEMPLOYEE_STATUS()) {
+            var3 = jDateChooser2.getDate();
+        }
+        else {
+            var1 = jTextField10.getText().trim();
+        }
         var2 = jTextField11.getText().trim();
     }
     
@@ -393,10 +413,10 @@ public class Personel extends javax.swing.JFrame {
         temp.setTelephone(Long.parseLong(telephone));
         temp.setAddress(address);
         temp.setEmail(email);
-        temp.setBirthDate(Common.string_toDate(birthdate));
+        temp.setBirthDate(birthdate);
         temp.setTcNr(Long.parseLong(TCNr));
         temp.setPersonalNr(Long.parseLong(Pnr));
-        temp.setPermitionEndDate(Common.string_toDate(var1));
+        temp.setPermitionEndDate(var3);
         temp.setLevel(Integer.parseInt(var2));
         return temp;
     }
@@ -410,7 +430,7 @@ public class Personel extends javax.swing.JFrame {
         temp.setTelephone(Long.parseLong(telephone));
         temp.setAddress(address);
         temp.setEmail(email);
-        temp.setBirthDate(Common.string_toDate(birthdate));
+        temp.setBirthDate(birthdate);
         temp.setTcNr(Long.parseLong(TCNr));
         temp.setPersonalNr(Long.parseLong(Pnr));
         if (type == 0) {
@@ -521,7 +541,6 @@ public class Personel extends javax.swing.JFrame {
         jTextField5 = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jTextField6 = new javax.swing.JTextField();
-        jTextField7 = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
@@ -536,6 +555,8 @@ public class Personel extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jDateChooser2 = new com.toedter.calendar.JDateChooser();
+        jDateChooser1 = new com.toedter.calendar.JDateChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setAlwaysOnTop(true);
@@ -558,6 +579,7 @@ public class Personel extends javax.swing.JFrame {
         getContentPane().setLayout(null);
 
         jPanel1.setBackground(new java.awt.Color(0, 153, 153));
+        jPanel1.setLayout(null);
 
         jLabel1.setBackground(new java.awt.Color(0, 51, 51));
         jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 36)); // NOI18N
@@ -566,11 +588,15 @@ public class Personel extends javax.swing.JFrame {
         jLabel1.setText("Title");
         jLabel1.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED));
         jLabel1.setOpaque(true);
+        jPanel1.add(jLabel1);
+        jLabel1.setBounds(0, 0, 937, 68);
 
         jLabel2.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel2.setText("Adı:");
+        jPanel1.add(jLabel2);
+        jLabel2.setBounds(10, 98, 201, 42);
 
         jTextField1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jTextField1.setText("Adı");
@@ -587,6 +613,8 @@ public class Personel extends javax.swing.JFrame {
                 jTextField1KeyReleased(evt);
             }
         });
+        jPanel1.add(jTextField1);
+        jTextField1.setBounds(229, 100, 191, 42);
 
         jTextField2.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jTextField2.setText("Soyadı");
@@ -605,16 +633,22 @@ public class Personel extends javax.swing.JFrame {
                 jTextField2KeyReleased(evt);
             }
         });
+        jPanel1.add(jTextField2);
+        jTextField2.setBounds(657, 100, 191, 42);
 
         jLabel3.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel3.setText("Soyadı:");
+        jPanel1.add(jLabel3);
+        jLabel3.setBounds(438, 98, 201, 42);
 
         jLabel4.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel4.setText("Cinsiyet:");
+        jPanel1.add(jLabel4);
+        jLabel4.setBounds(10, 160, 201, 42);
 
         jTextField4.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jTextField4.setText("Telefon");
@@ -633,11 +667,15 @@ public class Personel extends javax.swing.JFrame {
                 jTextField4KeyReleased(evt);
             }
         });
+        jPanel1.add(jTextField4);
+        jTextField4.setBounds(657, 160, 191, 42);
 
         jLabel5.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel5.setText("Telefon");
+        jPanel1.add(jLabel5);
+        jLabel5.setBounds(438, 160, 201, 42);
 
         jTextField5.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jTextField5.setText("E-Posta");
@@ -656,11 +694,15 @@ public class Personel extends javax.swing.JFrame {
                 jTextField5KeyReleased(evt);
             }
         });
+        jPanel1.add(jTextField5);
+        jTextField5.setBounds(229, 222, 619, 42);
 
         jLabel6.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel6.setText("E-Posta");
+        jPanel1.add(jLabel6);
+        jLabel6.setBounds(10, 220, 201, 42);
 
         jTextField6.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jTextField6.setText("Adres");
@@ -679,39 +721,29 @@ public class Personel extends javax.swing.JFrame {
                 jTextField6KeyReleased(evt);
             }
         });
-
-        jTextField7.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jTextField7.setText("GG-AA-YYYY");
-        jTextField7.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                jTextField7FocusGained(evt);
-            }
-        });
-        jTextField7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField7ActionPerformed(evt);
-            }
-        });
-        jTextField7.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                jTextField7KeyReleased(evt);
-            }
-        });
+        jPanel1.add(jTextField6);
+        jTextField6.setBounds(229, 284, 619, 42);
 
         jLabel7.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel7.setText("Adres");
+        jPanel1.add(jLabel7);
+        jLabel7.setBounds(10, 282, 201, 42);
 
         jLabel8.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel8.setText("Doğum tarihi");
+        jPanel1.add(jLabel8);
+        jLabel8.setBounds(10, 344, 201, 42);
 
         jLabel9.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel9.setText("TC - Numarası:");
+        jPanel1.add(jLabel9);
+        jLabel9.setBounds(438, 344, 201, 42);
 
         jTextField8.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jTextField8.setText("TCNr");
@@ -730,6 +762,8 @@ public class Personel extends javax.swing.JFrame {
                 jTextField8KeyReleased(evt);
             }
         });
+        jPanel1.add(jTextField8);
+        jTextField8.setBounds(657, 346, 191, 42);
 
         jTextField9.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jTextField9.setText("Personel-Nr");
@@ -748,19 +782,27 @@ public class Personel extends javax.swing.JFrame {
                 jTextField9KeyReleased(evt);
             }
         });
+        jPanel1.add(jTextField9);
+        jTextField9.setBounds(229, 408, 191, 42);
 
         jLabel10.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
         jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel10.setText("Personel - Nr");
+        jPanel1.add(jLabel10);
+        jLabel10.setBounds(10, 406, 201, 42);
 
         jComboBox1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Erkek", "Kadın" }));
+        jPanel1.add(jComboBox1);
+        jComboBox1.setBounds(229, 160, 191, 42);
 
         jLabel11.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel11.setText("İzin Bitme tarihi");
+        jPanel1.add(jLabel11);
+        jLabel11.setBounds(438, 406, 201, 42);
 
         jTextField10.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jTextField10.setText("GG-AA-YYYY");
@@ -779,6 +821,8 @@ public class Personel extends javax.swing.JFrame {
                 jTextField10KeyReleased(evt);
             }
         });
+        jPanel1.add(jTextField10);
+        jTextField10.setBounds(657, 408, 191, 42);
 
         jTextField11.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jTextField11.setText("Seviye");
@@ -797,11 +841,15 @@ public class Personel extends javax.swing.JFrame {
                 jTextField11KeyReleased(evt);
             }
         });
+        jPanel1.add(jTextField11);
+        jTextField11.setBounds(448, 470, 191, 42);
 
         jLabel12.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(255, 255, 255));
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel12.setText("Seviye");
+        jPanel1.add(jLabel12);
+        jLabel12.setBounds(229, 468, 191, 42);
 
         jButton1.setBackground(new java.awt.Color(0, 153, 102));
         jButton1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
@@ -814,6 +862,8 @@ public class Personel extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
+        jPanel1.add(jButton1);
+        jButton1.setBounds(694, 523, 191, 44);
 
         jButton2.setBackground(new java.awt.Color(255, 255, 255));
         jButton2.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
@@ -824,6 +874,8 @@ public class Personel extends javax.swing.JFrame {
                 jButton2ActionPerformed(evt);
             }
         });
+        jPanel1.add(jButton2);
+        jButton2.setBounds(20, 523, 191, 44);
 
         jButton3.setBackground(new java.awt.Color(255, 51, 51));
         jButton3.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
@@ -835,126 +887,28 @@ public class Personel extends javax.swing.JFrame {
                 jButton3ActionPerformed(evt);
             }
         });
+        jPanel1.add(jButton3);
+        jButton3.setBounds(356, 523, 191, 44);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(145, 145, 145)
-                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(0, 147, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(52, 52, 52))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jTextField8))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jTextField10))))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jTextField6))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 619, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(89, Short.MAX_VALUE))))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE)
-                    .addComponent(jTextField4)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jComboBox1))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(28, 28, 28))
-        );
+        jDateChooser2.setDateFormatString("dd - MM - yyyy");
+        jDateChooser2.setMaxSelectableDate(new java.util.Date(2524604509000L));
+        jDateChooser2.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                jDateChooser2PropertyChange(evt);
+            }
+        });
+        jPanel1.add(jDateChooser2);
+        jDateChooser2.setBounds(657, 408, 191, 44);
+
+        jDateChooser1.setDateFormatString("dd - MM - yyyy");
+        jDateChooser1.setMaxSelectableDate(new java.util.Date(253370761266000L));
+        jDateChooser1.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                jDateChooser1PropertyChange(evt);
+            }
+        });
+        jPanel1.add(jDateChooser1);
+        jDateChooser1.setBounds(229, 344, 191, 44);
 
         getContentPane().add(jPanel1);
         jPanel1.setBounds(0, 0, 937, 595);
@@ -971,10 +925,6 @@ public class Personel extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField6ActionPerformed
 
-    private void jTextField7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField7ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField7ActionPerformed
-
     private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField5ActionPerformed
@@ -986,10 +936,6 @@ public class Personel extends javax.swing.JFrame {
     private void jTextField9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField9ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField9ActionPerformed
-
-    private void jTextField10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField10ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField10ActionPerformed
 
     private void jTextField11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField11ActionPerformed
         // TODO add your handling code here:
@@ -1018,10 +964,6 @@ public class Personel extends javax.swing.JFrame {
             jTextField5.selectAll();
     }//GEN-LAST:event_jTextField5FocusGained
 
-    private void jTextField7FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField7FocusGained
-        jTextField7.selectAll();
-    }//GEN-LAST:event_jTextField7FocusGained
-
     private void jTextField6FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField6FocusGained
         jTextField6.selectAll();
     }//GEN-LAST:event_jTextField6FocusGained
@@ -1033,10 +975,6 @@ public class Personel extends javax.swing.JFrame {
     private void jTextField9FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField9FocusGained
         jTextField9.selectAll();
     }//GEN-LAST:event_jTextField9FocusGained
-
-    private void jTextField10FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField10FocusGained
-        jTextField10.selectAll();
-    }//GEN-LAST:event_jTextField10FocusGained
 
     private void jTextField11FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField11FocusGained
         jTextField11.selectAll();
@@ -1101,17 +1039,6 @@ public class Personel extends javax.swing.JFrame {
         everyThingIsOkay(toCheck);
     }//GEN-LAST:event_jTextField6KeyReleased
 
-    private void jTextField7KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField7KeyReleased
-        if (everyThingIsOkay()) {
-            jButton1.setEnabled(true);
-        }
-        else {
-            jButton1.setEnabled(false);
-        }
-        int[] toCheck = {1, 2, 4, 5, 6, 7};
-        everyThingIsOkay(toCheck);
-    }//GEN-LAST:event_jTextField7KeyReleased
-
     private void jTextField8KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField8KeyReleased
         if (everyThingIsOkay()) {
             jButton1.setEnabled(true);
@@ -1134,17 +1061,6 @@ public class Personel extends javax.swing.JFrame {
         everyThingIsOkay(toCheck);
     }//GEN-LAST:event_jTextField9KeyReleased
 
-    private void jTextField10KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField10KeyReleased
-        if (everyThingIsOkay()) {
-            jButton1.setEnabled(true);
-        }
-        else {
-            jButton1.setEnabled(false);
-        }
-        int[] toCheck = {1, 2, 4, 5, 6, 7, 8, 9, 10};
-        everyThingIsOkay(toCheck);
-    }//GEN-LAST:event_jTextField10KeyReleased
-
     private void jTextField11KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField11KeyReleased
         if (everyThingIsOkay()) {
             jButton1.setEnabled(true);
@@ -1166,7 +1082,22 @@ public class Personel extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        //setEveryThing();
+        Date temp = new Date();
+        jDateChooser2.setMinSelectableDate(temp);
+        temp = new Date();
+        int year = temp.getYear();
+        temp.setYear(year+30);
+        jDateChooser2.setMaxSelectableDate(temp);
+        temp = new Date();
+        year = temp.getYear();
+        temp.setYear(year-18);
+        jDateChooser1.setMaxSelectableDate(temp);
+        temp = new Date();
+        year = temp.getYear();
+        temp.setYear(year-80);
+        jDateChooser1.setMinSelectableDate(temp);
+        testIt1 = true;
+        testIt2 = true;
     }//GEN-LAST:event_formWindowOpened
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -1184,6 +1115,59 @@ public class Personel extends javax.swing.JFrame {
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField2ActionPerformed
+
+    private void jTextField10KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField10KeyReleased
+        if (everyThingIsOkay()) {
+            jButton1.setEnabled(true);
+        }
+        else {
+            jButton1.setEnabled(false);
+        }
+        int[] toCheck = {1, 2, 4, 5, 6, 7, 8, 9, 10};
+        everyThingIsOkay(toCheck);
+    }//GEN-LAST:event_jTextField10KeyReleased
+
+    private void jTextField10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField10ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField10ActionPerformed
+
+    private void jTextField10FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField10FocusGained
+        jTextField10.selectAll();
+    }//GEN-LAST:event_jTextField10FocusGained
+
+    private void jDateChooser2PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jDateChooser2PropertyChange
+        if (testIt2) {
+            if (everyThingIsOkay()) {
+                jButton1.setEnabled(true);
+            }
+            else {
+                jButton1.setEnabled(false);
+            }
+            int[] toCheck = {1, 2, 4, 5, 6, 7, 8, 9, 10};
+            everyThingIsOkay(toCheck);
+        }
+    }//GEN-LAST:event_jDateChooser2PropertyChange
+
+    private void jDateChooser1PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jDateChooser1PropertyChange
+        if (testIt1) {
+            if (everyThingIsOkay()) {
+                jButton1.setEnabled(true);
+            }
+            else {
+                jButton1.setEnabled(false);
+            }
+            int[] toCheck = {1, 2, 4, 5, 6, 7};
+            everyThingIsOkay(toCheck);
+        }
+        Date temp = jDateChooser1.getDate();
+        if (temp != null) {
+            int year = temp.getYear();
+            temp.setYear(year+18);
+            testIt2 = false;
+            jDateChooser2.setMinSelectableDate(temp);
+            testIt2 = true;
+        }
+    }//GEN-LAST:event_jDateChooser1PropertyChange
 
     /**
      * @param args the command line arguments
@@ -1225,6 +1209,8 @@ public class Personel extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JComboBox<String> jComboBox1;
+    private com.toedter.calendar.JDateChooser jDateChooser1;
+    private com.toedter.calendar.JDateChooser jDateChooser2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1245,7 +1231,6 @@ public class Personel extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
     private javax.swing.JTextField jTextField8;
     private javax.swing.JTextField jTextField9;
     // End of variables declaration//GEN-END:variables

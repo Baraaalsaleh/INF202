@@ -9,6 +9,7 @@ import berichtserstellungssystem.Common;
 import berichtserstellungssystem.DatabaseManagement.*;
 import berichtserstellungssystem.Resource.*;
 import berichtserstellungssystem.Verification;
+import java.awt.Color;
 import java.io.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -316,13 +317,23 @@ public class Login extends javax.swing.JFrame {
         if(Verification.verifyUsername(_username.getText())){
             if (Verification.verifyPassword(_password.getText())){
                 jButton1.setEnabled(true);
+                _username.setBackground(Color.white);
+                _username.setToolTipText(null);
+                _username.setBackground(Color.white);
+                _username.setToolTipText(null);
             }
             else {
                 jButton1.setEnabled(false);
+                _password.setBackground(Color.pink);
+                _password.setToolTipText("Zorunlu alan! 8 - 32 Karakterden olu;mali!");
+                _username.setBackground(Color.white);
+                _username.setToolTipText(null);
             }
         }
         else{
-                jButton1.setEnabled(false);
+            _username.setBackground(Color.pink);
+            _username.setToolTipText("Zorunlu alan! 4 - 20 Karakterden olu;mali!");
+            jButton1.setEnabled(false);
         }
     }//GEN-LAST:event__usernameKeyReleased
 

@@ -13,6 +13,7 @@ import berichtserstellungssystem.Verification;
 import java.awt.Color;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JDialog;
@@ -38,8 +39,10 @@ public class Ekipman extends javax.swing.JFrame {
     boolean var6;
     boolean var7;
     boolean var8;
-    String var9 = "";
+    Date var9 = null;
     boolean verifiy;
+    
+    boolean testIt = false;
     
     /**
      * Creates new form Machine
@@ -102,7 +105,7 @@ public class Ekipman extends javax.swing.JFrame {
                 jTextField4.setText(toEdit1.getMagTechnic());
                 jTextField5.setText(toEdit1.getUvIntensity());
                 jTextField6.setText(toEdit1.getLightDistance());
-                jTextField7.setText(Common.date_toStringReverse(toEdit1.getCalibrationEndDate(), "-"));
+                jDateChooser1.setDate(toEdit1.getCalibrationEndDate());
             }
         }
         else {
@@ -121,7 +124,7 @@ public class Ekipman extends javax.swing.JFrame {
                 jTextField4.setText(toEdit2.getFilmFocusDistance());
                 jTextField5.setText(toEdit2.getPbScreens());
                 jTextField6.setText(toEdit2.getFilters());
-                jTextField7.setText(Common.date_toStringReverse(toEdit2.getCalibrationEndDate(), "-"));
+                jDateChooser1.setDate(toEdit2.getCalibrationEndDate());
                 jCheckBox1.setSelected(toEdit2.isIr192());
                 jCheckBox2.setSelected(toEdit2.isSe75());
                 jCheckBox3.setSelected(toEdit2.isxRay());
@@ -137,7 +140,7 @@ public class Ekipman extends javax.swing.JFrame {
             !jTextField4.getText().trim().equals("Çekim Mesafesi") && !jTextField4.getText().trim().equals("Mıknatıslama Tekniği") && jTextField4.getText().trim().length() > 0 &&
             !jTextField5.getText().trim().equals("Kurşun Ekranları") && !jTextField5.getText().trim().equals("UV Işık Şiddeti") && jTextField5.getText().trim().length() > 0 &&
             !jTextField6.getText().trim().equals("Filtreler") && !jTextField6.getText().trim().equals("Işık Mesafesi") && jTextField6.getText().trim().length() > 0 &&
-            Verification.verifyDate(jTextField7.getText())) {
+            jDateChooser1.getDate() != null) {
             res = true;
         }
         else {
@@ -238,13 +241,13 @@ public class Ekipman extends javax.swing.JFrame {
                     }
                     break;
                 case 7:
-                    if (!Verification.verifyDate(jTextField7.getText())) {
-                        jTextField7.setBackground(Color.pink);
-                        jTextField7.setToolTipText("Zorunlu alan! Tarih GG-AA-YYYY formatında olmalı!");
+                    if (jDateChooser1.getDate() == null) {
+                        jDateChooser1.setBackground(Color.pink);
+                        jDateChooser1.setToolTipText("Zorunlu alan! Geçerli bir tarih seçiniz!");
                     }
                     else {
-                        jTextField7.setBackground(Color.white);
-                        jTextField7.setToolTipText(null);
+                        jDateChooser1.setBackground(Color.white);
+                        jDateChooser1.setToolTipText(null);
                     }
                     break;
             }
@@ -252,9 +255,10 @@ public class Ekipman extends javax.swing.JFrame {
     }
     
     private void cleanAll() {
+        testIt = false;
         jTextField1.setText("Adı");
         jButton1.setEnabled(false);
-        jTextField7.setText("GG-AA-YYYY");
+        jDateChooser1.setDate(null);
         if (type == DatabaseManagement.getMAGNETIC_TYPE()) {
             jTextField2.setText("Kutup Mesafesi (mm)");
             jTextField3.setText("MP Taşıyıcı Ortam");
@@ -272,6 +276,7 @@ public class Ekipman extends javax.swing.JFrame {
             jCheckBox2.setSelected(false);
             jCheckBox3.setSelected(false);
         }
+        testIt = true;
     }
     
     private void massege (int done) {
@@ -313,7 +318,7 @@ public class Ekipman extends javax.swing.JFrame {
         var3 = jTextField4.getText();
         var4 = jTextField5.getText();
         var5 = jTextField6.getText();
-        var9 = jTextField7.getText();
+        var9 = jDateChooser1.getDate();
         
         if (type == DatabaseManagement.getRADIOGRAPHIC_TYPE()) {
             var6 = jCheckBox1.isSelected();
@@ -331,7 +336,7 @@ public class Ekipman extends javax.swing.JFrame {
         temp.setMagTechnic(var3);
         temp.setUvIntensity(var4);
         temp.setLightDistance(var5);
-        temp.setCalibrationEndDate(Common.string_toDate(var9));
+        temp.setCalibrationEndDate(var9);
         return temp;
     }
     
@@ -347,7 +352,7 @@ public class Ekipman extends javax.swing.JFrame {
         temp.setIr192(var6);
         temp.setSe75(var7);
         temp.setxRay(var8);
-        temp.setCalibrationEndDate(Common.string_toDate(var9));
+        temp.setCalibrationEndDate(var9);
         return temp;
     }
     
@@ -413,7 +418,7 @@ public class Ekipman extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
-        jTextField7 = new javax.swing.JTextField();
+        jDateChooser1 = new com.toedter.calendar.JDateChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setAlwaysOnTop(true);
@@ -559,6 +564,7 @@ public class Ekipman extends javax.swing.JFrame {
 
         jCheckBox1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jCheckBox1.setText("ir192");
+        jCheckBox1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jCheckBox1ActionPerformed(evt);
@@ -567,6 +573,7 @@ public class Ekipman extends javax.swing.JFrame {
 
         jCheckBox2.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jCheckBox2.setText("se75");
+        jCheckBox2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jCheckBox2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jCheckBox2ActionPerformed(evt);
@@ -575,6 +582,7 @@ public class Ekipman extends javax.swing.JFrame {
 
         jCheckBox3.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jCheckBox3.setText("xRay");
+        jCheckBox3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jCheckBox3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jCheckBox3ActionPerformed(evt);
@@ -617,21 +625,12 @@ public class Ekipman extends javax.swing.JFrame {
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel8.setText("Kalibrasyon Son Geçerlilik Tarihi:");
 
-        jTextField7.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jTextField7.setText("GG-AA-YYYY");
-        jTextField7.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                jTextField7FocusGained(evt);
-            }
-        });
-        jTextField7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField7ActionPerformed(evt);
-            }
-        });
-        jTextField7.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                jTextField7KeyReleased(evt);
+        jDateChooser1.setDateFormatString("dd - MM - yyyy");
+        jDateChooser1.setMaxSelectableDate(new java.util.Date(4102441274000L));
+        jDateChooser1.setMinSelectableDate(new java.util.Date(946681274000L));
+        jDateChooser1.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                jDateChooser1PropertyChange(evt);
             }
         });
 
@@ -689,7 +688,7 @@ public class Ekipman extends javax.swing.JFrame {
                                 .addGap(0, 434, Short.MAX_VALUE)
                                 .addComponent(jCheckBox3))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
@@ -722,10 +721,10 @@ public class Ekipman extends javax.swing.JFrame {
                         .addComponent(jCheckBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jCheckBox2, javax.swing.GroupLayout.DEFAULT_SIZE, 47, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)
+                    .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -783,7 +782,7 @@ public class Ekipman extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        //setEveryThing();    
+        testIt = true;
     }//GEN-LAST:event_formWindowOpened
 
     private void jTextField1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField1FocusGained
@@ -876,25 +875,6 @@ public class Ekipman extends javax.swing.JFrame {
         everyThingIsOkay(ints);
     }//GEN-LAST:event_jTextField6KeyReleased
 
-    private void jTextField7FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField7FocusGained
-        jTextField7.selectAll();
-    }//GEN-LAST:event_jTextField7FocusGained
-
-    private void jTextField7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField7ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField7ActionPerformed
-
-    private void jTextField7KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField7KeyReleased
-        if (everyThingIsOkay()) {
-            jButton1.setEnabled(true);
-        }
-        else {
-            jButton1.setEnabled(false);
-        }
-        int[] ints = {1, 2, 3, 4, 5, 6, 7};
-        everyThingIsOkay(ints);
-    }//GEN-LAST:event_jTextField7KeyReleased
-
     private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
         if (everyThingIsOkay()) {
             jButton1.setEnabled(true);
@@ -927,6 +907,19 @@ public class Ekipman extends javax.swing.JFrame {
         int[] ints = {1, 2, 3, 4, 5, 6};
         everyThingIsOkay(ints);
     }//GEN-LAST:event_jCheckBox3ActionPerformed
+
+    private void jDateChooser1PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jDateChooser1PropertyChange
+        if (testIt) {
+            if (everyThingIsOkay()) {
+                jButton1.setEnabled(true);
+            }
+            else {
+                jButton1.setEnabled(false);
+            }
+            int[] ints = {1, 2, 3, 4, 5, 6, 7};
+            everyThingIsOkay(ints);
+        }
+    }//GEN-LAST:event_jDateChooser1PropertyChange
 
     /**
      * @param args the command line arguments
@@ -973,6 +966,7 @@ public class Ekipman extends javax.swing.JFrame {
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JCheckBox jCheckBox3;
+    private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -988,6 +982,5 @@ public class Ekipman extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
     // End of variables declaration//GEN-END:variables
 }
