@@ -9,6 +9,8 @@ import berichtserstellungssystem.Common;
 import berichtserstellungssystem.DataPreparation;
 import java.awt.Frame;
 import berichtserstellungssystem.DatabaseManagement.*;
+import berichtserstellungssystem.Report.MagneticInspectionResult;
+import berichtserstellungssystem.Report.MagneticReport;
 import berichtserstellungssystem.Resource.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -29,6 +31,14 @@ import javax.swing.JTable;
 import javax.swing.event.*;
 import javax.swing.table.*;
 import berichtserstellungssystem.Report.Report;
+import java.io.File;
+import java.io.FileInputStream;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileFilter;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 /**
  *
  * @author Baraa
@@ -40,7 +50,8 @@ public class Menu extends javax.swing.JFrame {
     GridBagLayout layout = new GridBagLayout();
     //ReportList panel1;
     Manager me = new Manager();
-    
+    MagneticReport temp = null;
+    String[] data = new String[6];     
     /**
      * Creates new form Menu
      */
@@ -265,6 +276,211 @@ public class Menu extends javax.swing.JFrame {
         jTable4.setModel(null);
         
     }
+    
+    private int editExcelM(File f) {
+        temp = new MagneticReport();
+        int a = 0;
+        try {
+
+            XSSFWorkbook workbook = new XSSFWorkbook(f);
+            XSSFSheet sheet = workbook.getSheetAt(0);
+            //Report Information
+            XSSFRow row = sheet.getRow(2);
+            XSSFCell cell = row.getCell(3);
+            temp.setCustomer(cell.getStringCellValue());
+            cell = row.getCell(19);
+            temp.setInspectionProcedure(cell.getStringCellValue());
+            cell = row.getCell(26);
+            temp.setPage(cell.getStringCellValue());
+            
+            a = 1;
+            
+            row = sheet.getRow(3);
+            cell = row.getCell(3);
+            temp.setProjectName(cell.getStringCellValue());
+            cell = row.getCell(19);
+            temp.setInspectionScope(cell.getStringCellValue());
+            cell = row.getCell(26);
+            temp.setReportNumber(cell.getStringCellValue());
+            
+            a = 2;
+            
+            row = sheet.getRow(4);
+            cell = row.getCell(3);
+            temp.setInspectionPlace(cell.getStringCellValue());
+            cell = row.getCell(19);
+            temp.setDrawingNo(cell.getStringCellValue());
+            cell = row.getCell(26);
+            temp.setReportDate(Common.string_toDate(cell.getStringCellValue()));
+            
+            a = 3;
+            
+            row = sheet.getRow(5);
+            cell = row.getCell(3);
+            temp.setInspectionClass(cell.getStringCellValue());
+            cell = row.getCell(19);
+            temp.setSurfaceCondition(cell.getStringCellValue());
+            cell = row.getCell(26);
+            temp.setOrderNumber(cell.getStringCellValue());
+            
+            a = 4;
+            
+            row = sheet.getRow(6);
+            cell = row.getCell(3);
+            temp.setEvaluationStandard(cell.getStringCellValue());
+            cell = row.getCell(19);
+            temp.setStageOfExamination(cell.getStringCellValue());
+            cell = row.getCell(26);
+            temp.setOfferNumber(cell.getStringCellValue());
+            
+            a = 5;
+            
+            //Equipment information
+            row = sheet.getRow(8);
+            cell = row.getCell(4);
+            temp.setPoleDistance(cell.getStringCellValue());
+            cell = row.getCell(16);
+            temp.setExaminationArea(cell.getStringCellValue());
+            cell = row.getCell(25);
+            temp.setSurfaceTemperature(cell.getStringCellValue());
+            
+            a = 6;
+            
+            row = sheet.getRow(9);
+            cell = row.getCell(4);
+            temp.setEquipment(cell.getStringCellValue());
+            cell = row.getCell(16);
+            temp.setCurrentType(cell.getStringCellValue());
+            cell = row.getCell(25);
+            temp.setGaussFieldStrength(cell.getStringCellValue());
+            
+            a = 7;
+            
+            row = sheet.getRow(10);
+            cell = row.getCell(4);
+            temp.setMpCarrier(cell.getStringCellValue());
+            cell = row.getCell(16);
+            temp.setLuxmeter(cell.getStringCellValue());
+            
+            a = 8;
+            
+            row = sheet.getRow(11);
+            cell = row.getCell(4);
+            temp.setMagTech(cell.getStringCellValue());
+            cell = row.getCell(16);
+            temp.setTestMedium(cell.getStringCellValue());
+            cell = row.getCell(25);
+            temp.setSurfaceCondition2(cell.getStringCellValue());
+            
+            a = 9;
+            
+            row = sheet.getRow(12);
+            cell = row.getCell(4);
+            temp.setUvIntensity(cell.getStringCellValue());
+            cell = row.getCell(16);
+            temp.setDemagnetization(cell.getStringCellValue());
+            cell = row.getCell(25);
+            temp.setIdentificationOfLightEquip(cell.getStringCellValue());
+            
+            a = 10;
+            
+            row = sheet.getRow(13);
+            cell = row.getCell(4);
+            temp.setDistanceOfLight(cell.getStringCellValue());
+            cell = row.getCell(16);
+            temp.setHeatTreatment(cell.getStringCellValue());
+            cell = row.getCell(25);
+            temp.setLiftingTest(cell.getStringCellValue());
+            
+            a = 11;
+            
+            row = sheet.getRow(14);
+            cell = row.getCell(0);
+            temp.setButtWeld(cell.getBooleanCellValue());
+            cell = row.getCell(7);
+            temp.setFilletWeld(cell.getBooleanCellValue());
+            
+            a = 12;
+            
+            //General
+            row = sheet.getRow(19);
+            cell = row.getCell(7);
+            temp.setStandardDeviations(cell.getStringCellValue());
+            
+            a = 13;
+            
+            row = sheet.getRow(20);
+            cell = row.getCell(7);
+            temp.setInspectionDates(cell.getStringCellValue());
+            
+            a = 14;
+            
+            row = sheet.getRow(21);
+            cell = row.getCell(7);
+            temp.setDescriptionOfAttachments(cell.getStringCellValue());
+            //Results
+            
+            a = 15;
+            
+            ArrayList<MagneticInspectionResult> reses = new ArrayList();
+            for (int i = 24; i < 34; i++) {
+                MagneticInspectionResult mr = new MagneticInspectionResult();
+                row = sheet.getRow(i);
+                cell = row.getCell(1);
+                mr.setWeldPieceNo(cell.getStringCellValue());
+                cell = row.getCell(8);
+                mr.setTestLength(cell.getStringCellValue());
+                cell = row.getCell(11);
+                mr.setWeldingProcess(cell.getStringCellValue());
+                cell = row.getCell(17);
+                mr.setThickness(cell.getStringCellValue());
+                cell = row.getCell(18);
+                mr.setDiameter(cell.getStringCellValue());
+                cell = row.getCell(22);
+                mr.setDefectType(cell.getStringCellValue());
+                cell = row.getCell(24);
+                mr.setDefectLocation(cell.getStringCellValue());
+                cell = row.getCell(27);
+                mr.setResult(cell.getStringCellValue());
+                reses.add(mr);
+            }
+            
+            a = 16;
+            
+            temp.setInspectionResults(reses);
+            //Employees
+            row = sheet.getRow(35);
+            cell = row.getCell(5);
+            data[0] = cell.getStringCellValue();
+            cell = row.getCell(15);
+            data[1] = cell.getStringCellValue();
+            cell = row.getCell(20);
+            data[2] = cell.getStringCellValue();
+            
+            a = 17;
+            
+            row = sheet.getRow(36);
+            cell = row.getCell(5);
+            data[3] = cell.getStringCellValue();
+            cell = row.getCell(15);
+            data[4] = cell.getStringCellValue();
+            cell = row.getCell(20);
+            data[5] = cell.getStringCellValue();
+            
+            a = 18;
+            
+            row = sheet.getRow(39);
+            cell = row.getCell(0);
+            temp.setBottom(cell.getStringCellValue());
+            
+            a = 19;
+            
+            return 1;
+        } catch(Exception e) {
+            System.out.println(a + ": editExcelM " + e);
+            return -1;
+        }
+    }
 
     
     /**
@@ -289,6 +505,7 @@ public class Menu extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
         jTable4 = new javax.swing.JTable();
+        jLabel2 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem5 = new javax.swing.JMenuItem();
@@ -480,22 +697,36 @@ public class Menu extends javax.swing.JFrame {
 
         jScrollPane2.setViewportView(jTabbedPane1);
 
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/Open.png"))); // NOI18N
+        jLabel2.setToolTipText("Excel Dosyası");
+        jLabel2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel2MouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 378, Short.MAX_VALUE)
                 .addContainerGap())
@@ -825,10 +1056,12 @@ public class Menu extends javax.swing.JFrame {
         jMenu3.setVisible(false);
         jMenu7.setVisible(false);
         jScrollPane2.setVisible(false);
+        jLabel2.setVisible(false);
         
     }//GEN-LAST:event_formWindowOpened
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        jLabel2.setVisible(true);
         jScrollPane2.setVisible(true);
         while (jTabbedPane1.getComponentCount() > 1) {
             jTabbedPane1.remove(1);
@@ -850,6 +1083,7 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem11ActionPerformed
 
     private void jMenuItem18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem18ActionPerformed
+        jLabel2.setVisible(false);
         jScrollPane2.setVisible(true);
         if (jTabbedPane1.getComponentCount() < 3) {
             jTabbedPane1.addTab("Eklediklerim", jPanel2);
@@ -863,6 +1097,7 @@ public class Menu extends javax.swing.JFrame {
         me = new Manager();
         jScrollPane2.setVisible(false);
         jLabel1.setText("");
+        jLabel2.setVisible(false);
         isManager(false);
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
@@ -879,6 +1114,7 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem15ActionPerformed
 
     private void jMenuItem16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem16ActionPerformed
+        jLabel2.setVisible(false);
         jScrollPane2.setVisible(true);
         if (jTabbedPane1.getComponentCount() < 3) {
             jTabbedPane1.addTab("Eklediklerim", jPanel2);
@@ -951,6 +1187,7 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem24ActionPerformed
 
     private void jMenuItem17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem17ActionPerformed
+        jLabel2.setVisible(false);
         jScrollPane2.setVisible(true);
         if (jTabbedPane1.getComponentCount() < 3) {
             jTabbedPane1.addTab("Eklediklerim", jPanel2);
@@ -1010,6 +1247,7 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem14ActionPerformed
 
     private void jMenuItem25ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem25ActionPerformed
+        jLabel2.setVisible(false);
         jScrollPane2.setVisible(true);
         while (jTabbedPane1.getComponentCount() != 1) {
            jTabbedPane1.removeTabAt(1);
@@ -1019,6 +1257,7 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem25ActionPerformed
 
     private void jMenuItem20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem20ActionPerformed
+        jLabel2.setVisible(false);
         jScrollPane2.setVisible(true);
         while (jTabbedPane1.getComponentCount() != 1) {
            jTabbedPane1.removeTabAt(1);
@@ -1028,6 +1267,7 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem20ActionPerformed
 
     private void jMenuItem21ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem21ActionPerformed
+        jLabel2.setVisible(false);
         jScrollPane2.setVisible(true);
         while (jTabbedPane1.getComponentCount() != 1) {
            jTabbedPane1.removeTabAt(1);
@@ -1037,6 +1277,7 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem21ActionPerformed
 
     private void jMenuItem22ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem22ActionPerformed
+        jLabel2.setVisible(false);
         jScrollPane2.setVisible(true);
         while (jTabbedPane1.getComponentCount() != 1) {
            jTabbedPane1.removeTabAt(1);
@@ -1085,6 +1326,44 @@ public class Menu extends javax.swing.JFrame {
     private void jMenuItem18MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem18MouseClicked
         
     }//GEN-LAST:event_jMenuItem18MouseClicked
+
+    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
+        JFileChooser chooser = new JFileChooser();
+        FileFilter ff = new FileFilter() {
+            @Override
+            public boolean accept(File file) {
+                if (file.getAbsolutePath().contains(".xlsx")) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+
+            @Override
+            public String getDescription() {
+                return "Excel Files";
+            }
+        };
+        chooser.setAcceptAllFileFilterUsed(false);
+        chooser.addChoosableFileFilter(ff);
+        chooser.setMultiSelectionEnabled(false);
+        chooser.setDragEnabled(true);
+        chooser.showOpenDialog(null);
+        File f;
+        try {
+            f = chooser.getSelectedFile();
+            int res = editExcelM(f);
+            if (res == 1) {
+                new berichtserstellungssystem.GUI.Report(temp, data).setVisible(true);
+            }
+        }
+        catch(Exception e) {
+            System.out.println("Excel File Open " + e);
+        }
+        temp = null;
+        data = new String[6];
+    }//GEN-LAST:event_jLabel2MouseClicked
     
     private void showPanel (String s){
         this.setMinimumSize(this.getMinimumSize());
@@ -1129,6 +1408,7 @@ public class Menu extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;

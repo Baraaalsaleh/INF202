@@ -16,6 +16,7 @@ import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.sql.SQLException;
@@ -23,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.text.*;
 import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -99,6 +101,26 @@ public class Report extends javax.swing.JFrame {
         this.process = 2;
         setEveryThing();
     }
+    public Report(MagneticReport toEditM, String[] data) {
+        start();
+        this.toEditM = toEditM;
+        int type = DatabaseManagement.getMAGNETIC_TYPE();
+        process = 2;
+        
+        if (type == DatabaseManagement.getMAGNETIC_TYPE()) {
+            getInfosM((berichtserstellungssystem.Report.Report) toEditM, data);
+        }
+        setEveryThing();
+         for (int i = 0; i < 6; i++) {
+                System.out.println(data[i]);
+            }
+        _MoperatorName.setText(data[0]);
+        _MevaluatorName.setText(data[1]);
+        _MconfirmationName.setText(data[2]);
+        _MoperatorLevel.setText(data[3]);
+        _MevaluatorLevel.setText(data[4]);
+        _MconfirmationLevel.setText(data[5]);
+    }
     
     public Report(Customer customer, String orderNr, String offerNr, Employee operator, Employee evaluator, Employee confirmation, MagneticEquipment equip1, RadiographicEquipment equip2,String project, String surfaceCondition, String stageOfExamination, Date reportDate) {
         start();
@@ -133,6 +155,79 @@ public class Report extends javax.swing.JFrame {
         this.confirmation_id = r.getConfirmation_id();
         System.out.println(r.toString());
         System.out.println("getInfos: " + operator_id + " " + evaluator_id + " " + confirmation_id);
+        this.operator = new Employee(PersonManagement.getEmployeeById(this.operator_id));
+        this.evaluator = new Employee(PersonManagement.getEmployeeById(this.evaluator_id));
+        this.confirmator = new Employee(PersonManagement.getEmployeeById(this.confirmation_id));
+        String equip = r.getEquipment();
+        if (toEditM != null) {
+            this.equip1 = new MagneticEquipment(EquipmentManagement.getMagneticEquipment(equip));
+        }
+        else {
+            this.equip2 = new RadiographicEquipment(EquipmentManagement.getRadiographicEquipment(equip));
+        }
+        this.project = r.getProjectName();
+        this.surfaceCondition = r.getSurfaceCondition();
+        this.stageOfExamination = r.getStageOfExamination();
+        this.reportDate = r.getReportDate();
+    }
+    
+    private void getInfosM(berichtserstellungssystem.Report.Report r, String[] data) {
+        JDialog dialog = new JDialog();
+        dialog.setAlwaysOnTop(true);
+        String cus = r.getCustomer();
+        this.theCustomer = CustomerManagement.getCustomer(cus);
+        this.orderNr = r.getOrderNumber();
+        this.offerNr = r.getOfferNumber();
+        ArrayList<Employee> employees = PersonManagement.employees(0, 100, 1, null);
+        ArrayList<Integer> liste = new ArrayList();
+        for (Employee e : employees) {
+            String fullName = e.getName() + " " + e.getLastname();
+            if (data[0].equals(fullName)) {
+                int temp = PersonManagement.getPersonId((Person) e);
+                liste.add(temp);
+            }
+        }
+        if (!liste.isEmpty() && liste.size() == 1) {
+            this.operator_id = liste.get(0);
+            r.setOperator_id(operator_id);
+        }
+        else {
+            JOptionPane.showMessageDialog(dialog, "Operatör tanımlanmadı! Operatör adı, soyadı ve seviye ile tanımlanmadı!", "Hata", JOptionPane.PLAIN_MESSAGE);
+        }
+        
+        liste = new ArrayList();
+        for (Employee e : employees) {
+            String fullName = e.getName() + " " + e.getLastname();
+            if (data[1].equals(fullName)) {
+                int temp = PersonManagement.getPersonId((Person) e);
+                liste.add(temp);
+            }
+        }
+        if (!liste.isEmpty() && liste.size() == 1) {
+            this.evaluator_id = liste.get(0);
+            r.setEvaluator_id(evaluator_id);
+        }
+        else {
+            JOptionPane.showMessageDialog(dialog, "Değerlendiren tanımlanmadı! Değerlendiren adı, soyadı ve seviye ile tanımlanmadı!", "Hata", JOptionPane.PLAIN_MESSAGE);
+        }
+        
+        liste = new ArrayList();
+        for (Employee e : employees) {
+            String fullName = e.getName() + " " + e.getLastname();
+            if (data[2].equals(fullName)) {
+                int temp = PersonManagement.getPersonId((Person) e);
+                liste.add(temp);
+            }
+        }
+        if (!liste.isEmpty() && liste.size() == 1) {
+            this.confirmation_id = liste.get(0);
+            r.setConfirmation_id(confirmation_id);
+        }
+        else {
+            JOptionPane.showMessageDialog(dialog, "Onaylayan tanımlanmadı! Onaylayan adı, soyadı ve seviye ile tanımlanmadı!", "Hata", JOptionPane.PLAIN_MESSAGE);
+        }
+        
+        System.out.println("getInfosM: " + operator_id + " " + evaluator_id + " " + confirmation_id);
         this.operator = new Employee(PersonManagement.getEmployeeById(this.operator_id));
         this.evaluator = new Employee(PersonManagement.getEmployeeById(this.evaluator_id));
         this.confirmator = new Employee(PersonManagement.getEmployeeById(this.confirmation_id));
@@ -1564,7 +1659,7 @@ public class Report extends javax.swing.JFrame {
         }
     }
     
-    private int exportExcelM() {
+    private int exportExcelM(String path) {
         try {
             FileInputStream input = new FileInputStream("Data\\MagneticTemplate.xlsx");
             XSSFWorkbook workbook = new XSSFWorkbook(input);
@@ -1709,11 +1804,11 @@ public class Report extends javax.swing.JFrame {
             
             row = sheet.getRow(36);
             cell = row.getCell(5);
-            cell.setCellValue(this.operator.getLevel());
+            cell.setCellValue(Integer.toString(this.operator.getLevel()));
             cell = row.getCell(15);
-            cell.setCellValue(this.evaluator.getLevel());
+            cell.setCellValue(Integer.toString(this.evaluator.getLevel()));
             cell = row.getCell(20);
-            cell.setCellValue(this.confirmator.getLevel());
+            cell.setCellValue(Integer.toString(this.confirmator.getLevel()));
             
             row = sheet.getRow(37);
             cell = row.getCell(5);
@@ -1728,7 +1823,7 @@ public class Report extends javax.swing.JFrame {
             cell.setCellValue(toEditM.getBottom());
             
             
-            FileOutputStream output = new FileOutputStream("C:\\Users\\Baraa\\Desktop\\Test1.xlsx");
+            FileOutputStream output = new FileOutputStream(path + ".xlsx");
             workbook.write(output);
             output.close();
             return 1;
@@ -7285,7 +7380,32 @@ public class Report extends javax.swing.JFrame {
     private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
         int res = 0;
         if (toEditM != null) {
-            res = exportExcelM();
+            JFileChooser chooser = new JFileChooser();
+            FileFilter ff = new FileFilter() {
+                @Override
+                public boolean accept(File file) {
+                    if (file.getAbsolutePath().contains(".xlsx")) {
+                        return true;
+                    }
+                    else {
+                        return false;
+                    }
+                }
+
+                @Override
+                public String getDescription() {
+                    return "Excel Files";
+                }
+            };
+            chooser.setAcceptAllFileFilterUsed(false);
+            chooser.addChoosableFileFilter(ff);
+            chooser.setMultiSelectionEnabled(false);
+            chooser.setDragEnabled(false);
+            chooser.showSaveDialog(null);
+        
+        
+        File f = chooser.getSelectedFile();
+        res = exportExcelM(f.getAbsolutePath());
         }
         else {
             res = -2;
