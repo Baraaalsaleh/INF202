@@ -5,7 +5,7 @@
  */
 package berichtserstellungssystem.DatabaseManagement;
 
-import berichtserstellungssystem.DataPreparation;
+import berichtserstellungssystem.Security;
 import berichtserstellungssystem.Resource.Customer;
 import berichtserstellungssystem.DatabaseManagement.DatabaseManagement;
 import berichtserstellungssystem.Resource.Manager;
@@ -28,7 +28,7 @@ public class CustomerManagement extends DatabaseManagement{
         int customer_id = 0;
         try {
             stmt = con.createStatement();
-            rs = stmt.executeQuery("SELECT id FROM Customer WHERE name = '" + DataPreparation.prepareString(customer.getName()) + "';");
+            rs = stmt.executeQuery("SELECT id FROM Customer WHERE name = '" + Security.prepareString(customer.getName()) + "';");
             System.out.println(customer.getName());
             if (!rs.next()) {
                 int id = 0;
@@ -40,8 +40,8 @@ public class CustomerManagement extends DatabaseManagement{
                 if (rs.next()){
                     manager_id = rs.getInt("id");
                     }
-                stmt.executeUpdate("INSERT INTO Customer (id, Manager_id, name, address) VALUES ("+ (id+1) + ", " + manager_id + ", '" + DataPreparation.prepareString(customer.getName()) + "', '" + DataPreparation.prepareString(customer.getAddress()) + "');");
-                rs = stmt.executeQuery("SELECT id FROM Customer WHERE name = '" + DataPreparation.prepareString(customer.getName()) + "';");
+                stmt.executeUpdate("INSERT INTO Customer (id, Manager_id, name, address) VALUES ("+ (id+1) + ", " + manager_id + ", '" + Security.prepareString(customer.getName()) + "', '" + Security.prepareString(customer.getAddress()) + "');");
+                rs = stmt.executeQuery("SELECT id FROM Customer WHERE name = '" + Security.prepareString(customer.getName()) + "';");
                 if (rs.next()){
                     customer_id = rs.getInt("id");
                 }
@@ -53,7 +53,7 @@ public class CustomerManagement extends DatabaseManagement{
                         id = rs.getInt("id");
                     }
                     for (int i = 0; i < offers.size(); i++) {
-                        stmt.executeUpdate("INSERT INTO Customer_Offer (id, Customer_id, Manager_id, OfferNr) VALUES (" + (id+1+i) + ", " + customer_id + ", " + manager_id + ", '" + DataPreparation.prepareString(offers.get(i)) + "');");
+                        stmt.executeUpdate("INSERT INTO Customer_Offer (id, Customer_id, Manager_id, OfferNr) VALUES (" + (id+1+i) + ", " + customer_id + ", " + manager_id + ", '" + Security.prepareString(offers.get(i)) + "');");
                     }
                 }
                 
@@ -65,7 +65,7 @@ public class CustomerManagement extends DatabaseManagement{
                         if (rs.next()) {
                             id = rs.getInt("id");
                         }
-                        stmt.executeUpdate("INSERT INTO Customer_Order (id, Customer_id, Manager_id, OrderNr) VALUES (" + (id+1+i) + ", " + customer_id + ", " + manager_id + ", '" + DataPreparation.prepareString(orders.get(i)) + "');");
+                        stmt.executeUpdate("INSERT INTO Customer_Order (id, Customer_id, Manager_id, OrderNr) VALUES (" + (id+1+i) + ", " + customer_id + ", " + manager_id + ", '" + Security.prepareString(orders.get(i)) + "');");
                     }
                 }
                 
@@ -114,14 +114,14 @@ public class CustomerManagement extends DatabaseManagement{
         int last_id = 0;
         try {
             stmt = con.createStatement();
-            rs = stmt.executeQuery("SELECT id FROM Customer WHERE name = '" + DataPreparation.prepareString(customer.getName()) + "';");
+            rs = stmt.executeQuery("SELECT id FROM Customer WHERE name = '" + Security.prepareString(customer.getName()) + "';");
             if (rs.next()) {
                 rs = stmt.executeQuery("SELECT id FROM Person WHERE PersonalNr = " + manager.getPersonalNr() + ";");
                 if (rs.next()){
                     manager_id = rs.getInt("id");
                 }
-                stmt.executeUpdate("UPDATE Customer SET address = '" + DataPreparation.prepareString(customer.getAddress()) + "' WHERE name = '" + DataPreparation.prepareString(customer.getName()) + "';");
-                rs = stmt.executeQuery("SELECT id FROM Customer WHERE name = '" + DataPreparation.prepareString(customer.getName()) + "';");
+                stmt.executeUpdate("UPDATE Customer SET address = '" + Security.prepareString(customer.getAddress()) + "' WHERE name = '" + Security.prepareString(customer.getName()) + "';");
+                rs = stmt.executeQuery("SELECT id FROM Customer WHERE name = '" + Security.prepareString(customer.getName()) + "';");
                 if (rs.next()){
                     customer_id = rs.getInt("id");
                 }
@@ -134,7 +134,7 @@ public class CustomerManagement extends DatabaseManagement{
                     if (rs.next()) {
                         id = rs.getInt("id");
                     }
-                    stmt.executeUpdate("INSERT INTO Customer_Offer (id, Customer_id, Manager_id, OfferNr) VALUES (" + (id+1+i) + ", " + customer_id + ", " + manager_id + ", '" + DataPreparation.prepareString(offers.get(i)) + "');");
+                    stmt.executeUpdate("INSERT INTO Customer_Offer (id, Customer_id, Manager_id, OfferNr) VALUES (" + (id+1+i) + ", " + customer_id + ", " + manager_id + ", '" + Security.prepareString(offers.get(i)) + "');");
                 }
                 ArrayList<String> orders = customer.getOrderNrs();
                 id = 0;
@@ -143,7 +143,7 @@ public class CustomerManagement extends DatabaseManagement{
                     if (rs.next()) {
                         id = rs.getInt("id");
                     }
-                    stmt.executeUpdate("INSERT INTO Customer_Order (id, Customer_id, Manager_id, OrderNr) VALUES (" + (id+1+i) + ", " + customer_id + ", " + manager_id + ", '" + DataPreparation.prepareString(orders.get(i)) + "');");
+                    stmt.executeUpdate("INSERT INTO Customer_Order (id, Customer_id, Manager_id, OrderNr) VALUES (" + (id+1+i) + ", " + customer_id + ", " + manager_id + ", '" + Security.prepareString(orders.get(i)) + "');");
                 }
                 rs = stmt.executeQuery("SELECT id FROM LastModification WHERE Element_id = " + customer_id + " AND type = " + DatabaseManagement.getCUSTOMER_TYPE() + ";");
                 if (rs.next()){
@@ -257,7 +257,7 @@ public class CustomerManagement extends DatabaseManagement{
         try {
             stmt = con.createStatement();
             System.out.println(name);
-            rs = stmt.executeQuery("SELECT * FROM Customer WHERE name = '" + DataPreparation.prepareString(name) + "';");
+            rs = stmt.executeQuery("SELECT * FROM Customer WHERE name = '" + Security.prepareString(name) + "';");
             if (rs.next()){
                 customer_id = rs.getInt("id");
                 System.out.println(customer_id);

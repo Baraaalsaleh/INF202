@@ -37,6 +37,12 @@ public class Manager extends Person{
     
     public Manager (ResultSet rs) {
         super(rs);
+        try {
+            this.username = rs.getString("username");
+            this.password = rs.getString("password");
+        } catch (SQLException e) {
+            System.out.println("Manager RS " + e);
+        }
     }
 
     public Manager () {

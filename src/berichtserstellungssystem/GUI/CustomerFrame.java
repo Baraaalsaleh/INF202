@@ -572,12 +572,14 @@ public class CustomerFrame extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         jTextField1.requestFocusInWindow();
-        deleteFirstRowIfNull();
-        if (process == 1){
-            add();
-        }
-        else {
-            update();
+        if (jButton1.isEnabled()) {
+            deleteFirstRowIfNull();
+            if (process == 1){
+                add();
+            }
+            else {
+                update();
+            }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 

@@ -48,6 +48,11 @@ public class FirstPage extends javax.swing.JFrame {
     private Employee confirmator = new Employee();
     private MagneticEquipment equip1 = null;
     private RadiographicEquipment equip2 = null;
+    
+    private int process = 1;
+    private Report report = null;
+    
+    boolean[] changed = {false, false, false, false, false, false, false, false, false, false, false};
     /**
      * Creates new form FirstPage
      */
@@ -58,6 +63,97 @@ public class FirstPage extends javax.swing.JFrame {
     public FirstPage(boolean a) {
         initComponents();
         prepareComboBox();
+    }
+    
+    public FirstPage(String theCustomer, String orderNr, String offerNr, Employee operator, Employee evaluator, Employee confirmator, MagneticEquipment equip1, RadiographicEquipment equip2, String project, String surfaceCondition, String stageOfExamination, Date reportDate, Report report) {
+        initComponents();
+        prepareComboBox();
+        
+        process = 2;
+        this.report = report;
+        jLabel4.setVisible(true);
+        
+        jComboBox10.setEnabled(false);
+        for (int i = 0; i < jComboBox1.getItemCount(); i++) {
+            String temp = jComboBox1.getItemAt(i).toString();
+            if (temp.equals(theCustomer)){
+                jComboBox1.setSelectedIndex(i);
+            }
+        }
+        
+        for (int i = 0; i < jComboBox2.getItemCount(); i++) {
+            if (jComboBox2.getItemAt(i).toString().equals(orderNr)){
+                jComboBox2.setSelectedIndex(i);
+            }
+        }
+        
+        for (int i = 0; i < jComboBox3.getItemCount(); i++) {
+            if (jComboBox3.getItemAt(i).toString().equals(offerNr)){
+                jComboBox3.setSelectedIndex(i);
+            }
+        }
+        
+        for (int i = 0; i < jComboBox4.getItemCount(); i++) {
+            String[] temp = jComboBox4.getItemAt(i).toString().split(",");
+            if (temp[0].equals(operator.getName() + " " + operator.getLastname())){
+                jComboBox4.setSelectedIndex(i);
+            }
+        }
+        
+        for (int i = 0; i < jComboBox5.getItemCount(); i++) {
+            String[] temp = jComboBox5.getItemAt(i).toString().split(",");
+            if (temp[0].equals(evaluator.getName() + " " + evaluator.getLastname())){
+                jComboBox5.setSelectedIndex(i);
+            }
+        }
+        
+        for (int i = 0; i < jComboBox6.getItemCount(); i++) {
+            String[] temp = jComboBox6.getItemAt(i).toString().split(",");
+            if (temp[0].equals(confirmator.getName() + " " + confirmator.getLastname())){
+                jComboBox6.setSelectedIndex(i);
+            }
+        }
+        
+        String equip = "";
+        if (equip1 != null) {
+            jComboBox10.setSelectedIndex(0);
+            equip = equip1.getName();
+        }
+        else {
+            jComboBox10.setSelectedIndex(1);
+            equip = equip2.getName();
+        }
+        
+        for (int i = 0; i < jComboBox12.getItemCount(); i++) {
+            String temp = jComboBox12.getItemAt(i).toString();
+            if (temp.equals(equip)){
+                jComboBox12.setSelectedIndex(i);
+            }
+        }
+        
+        for (int i = 0; i < jComboBox7.getItemCount(); i++) {
+            String temp = jComboBox7.getItemAt(i).toString();
+            if (temp.equals(project)){
+                jComboBox7.setSelectedIndex(i);
+            }
+        }
+        
+        for (int i = 0; i < jComboBox8.getItemCount(); i++) {
+            String temp = jComboBox8.getItemAt(i).toString();
+            if (temp.equals(surfaceCondition)){
+                jComboBox8.setSelectedIndex(i);
+            }
+        }
+        
+        for (int i = 0; i < jComboBox9.getItemCount(); i++) {
+            String temp = jComboBox9.getItemAt(i).toString();
+            if (temp.equals(stageOfExamination)){
+                jComboBox9.setSelectedIndex(i);
+            }
+        }
+        
+        jDateChooser1.setDate(reportDate);
+        
     }
     
     private void prepareComboBox () {
@@ -140,6 +236,37 @@ public class FirstPage extends javax.swing.JFrame {
             }
         }
     }
+    
+    private String[] collectData() {
+        String[] data = new String[5];
+        data[0] = jComboBox2.getSelectedItem().toString();
+        data[1] = jComboBox3.getSelectedItem().toString();
+        data[2] = jComboBox7.getSelectedItem().toString();
+        data[3] = jComboBox8.getSelectedItem().toString();
+        data[4] = jComboBox9.getSelectedItem().toString();
+        return data;
+    }
+    
+    private void update() {
+        Employee[] e = {operator, evaluator, confirmator};
+        for (int i = 0; i < changed.length; i++) {
+            if (changed[i]) {
+                report.setValues(i, theCustomer, collectData(),  e, equip1, equip2, reportDate);
+            }
+        }
+    }
+    
+    private boolean everyThingIsOkay() {
+        if (jComboBox1.getSelectedIndex() != -1 && jComboBox2.getSelectedIndex() != -1 && jComboBox3.getSelectedIndex() != -1 && jComboBox4.getSelectedIndex() != -1
+                && jComboBox5.getSelectedIndex() != -1 && jComboBox6.getSelectedIndex() != -1 && jComboBox7.getSelectedIndex() != -1
+                && jComboBox8.getSelectedIndex() != -1 && jComboBox9.getSelectedIndex() != -1 && jComboBox10.getSelectedIndex() != -1
+                && jComboBox12.getSelectedIndex() != -1) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -181,11 +308,17 @@ public class FirstPage extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
         jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(1204, 570));
         setMinimumSize(new java.awt.Dimension(1204, 570));
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setPreferredSize(new java.awt.Dimension(1200, 740));
@@ -214,6 +347,11 @@ public class FirstPage extends javax.swing.JFrame {
 
         jComboBox1.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jComboBox1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jComboBox1.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBox1ItemStateChanged(evt);
+            }
+        });
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox1ActionPerformed(evt);
@@ -222,9 +360,21 @@ public class FirstPage extends javax.swing.JFrame {
 
         jComboBox2.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jComboBox2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox2ActionPerformed(evt);
+                Test(evt);
+            }
+        });
 
         jComboBox3.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jComboBox3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jComboBox3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Test(evt);
+                jComboBox3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -291,6 +441,7 @@ public class FirstPage extends javax.swing.JFrame {
         jComboBox4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox4ActionPerformed(evt);
+                Test(evt);
             }
         });
 
@@ -299,6 +450,7 @@ public class FirstPage extends javax.swing.JFrame {
         jComboBox5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox5ActionPerformed(evt);
+                Test(evt);
             }
         });
 
@@ -307,6 +459,7 @@ public class FirstPage extends javax.swing.JFrame {
         jComboBox6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox6ActionPerformed(evt);
+                Test(evt);
             }
         });
 
@@ -362,6 +515,12 @@ public class FirstPage extends javax.swing.JFrame {
 
         jComboBox7.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jComboBox7.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jComboBox7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Test(evt);
+                jComboBox7ActionPerformed(evt);
+            }
+        });
 
         jLabel15.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
@@ -373,9 +532,21 @@ public class FirstPage extends javax.swing.JFrame {
 
         jComboBox8.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jComboBox8.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jComboBox8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Test(evt);
+                jComboBox8ActionPerformed(evt);
+            }
+        });
 
         jComboBox9.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jComboBox9.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jComboBox9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Test(evt);
+                jComboBox9ActionPerformed(evt);
+            }
+        });
 
         jLabel17.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
@@ -396,6 +567,7 @@ public class FirstPage extends javax.swing.JFrame {
         jComboBox10.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox10ActionPerformed(evt);
+                Test(evt);
             }
         });
 
@@ -405,6 +577,7 @@ public class FirstPage extends javax.swing.JFrame {
         jComboBox12.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox12ActionPerformed(evt);
+                Test(evt);
             }
         });
 
@@ -432,19 +605,33 @@ public class FirstPage extends javax.swing.JFrame {
         jDateChooser1.setDateFormatString("dd - MM - yyyy");
         jDateChooser1.setMaxSelectableDate(new java.util.Date(4102441274000L));
         jDateChooser1.setMinSelectableDate(new java.util.Date(946681274000L));
+        jDateChooser1.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                jDateChooser1PropertyChange(evt);
+            }
+        });
+
+        jLabel4.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/delete.png"))); // NOI18N
+        jLabel4.setText("İptal et");
+        jLabel4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel4MouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -475,7 +662,11 @@ public class FirstPage extends javax.swing.JFrame {
                                             .addComponent(jComboBox7, javax.swing.GroupLayout.PREFERRED_SIZE, 412, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(jComboBox8, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 412, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addComponent(jComboBox9, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 412, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -515,7 +706,9 @@ public class FirstPage extends javax.swing.JFrame {
                     .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel19, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 54, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -534,19 +727,32 @@ public class FirstPage extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
-        if (jDateChooser1.getDate() == null) {
-            this.reportDate = new Date();
-            jDateChooser1.setBackground(Color.white);
-            jDateChooser1.setToolTipText(null);
-            new Report(this.theCustomer, jComboBox2.getSelectedItem().toString(), jComboBox3.getSelectedItem().toString(), this.operator, this.evaluator, this.confirmator, this.equip1, this.equip2, jComboBox7.getSelectedItem().toString(), jComboBox8.getSelectedItem().toString(), jComboBox9.getSelectedItem().toString(), this.reportDate).setVisible(true);
-            this.dispose();
-        }
-        else {
-            this.reportDate = jDateChooser1.getDate();
-            jDateChooser1.setBackground(Color.white);
-            jDateChooser1.setToolTipText(null);
-            new Report(this.theCustomer, jComboBox2.getSelectedItem().toString(), jComboBox3.getSelectedItem().toString(), this.operator, this.evaluator, this.confirmator, this.equip1, this.equip2, jComboBox7.getSelectedItem().toString(), jComboBox8.getSelectedItem().toString(), jComboBox9.getSelectedItem().toString(), this.reportDate).setVisible(true);
-            this.dispose();
+        if (jLabel2.isEnabled()) {
+            if (process == 1) {
+                String[] data = collectData();
+                if (jDateChooser1.getDate() == null) {
+                    this.reportDate = new Date();
+                    jDateChooser1.setBackground(Color.white);
+                    jDateChooser1.setToolTipText(null);
+                    new Report(this.theCustomer, data[0], data[1], this.operator, this.evaluator, this.confirmator, this.equip1, this.equip2, data[2], data[3], data[4], this.reportDate).setVisible(true);
+                    this.dispose();
+                }
+                else {
+                    this.reportDate = jDateChooser1.getDate();
+                    jDateChooser1.setBackground(Color.white);
+                    jDateChooser1.setToolTipText(null);
+                    new Report(this.theCustomer, data[0], data[1], this.operator, this.evaluator, this.confirmator, this.equip1, this.equip2, data[2], data[3], data[4], this.reportDate).setVisible(true);
+                    this.dispose();
+                }
+            }
+            else {
+                this.reportDate = new Date();
+                if (jDateChooser1.getDate() != null) {
+                    reportDate = jDateChooser1.getDate();
+                }
+                update();
+                this.dispose();
+            }
         }
     }//GEN-LAST:event_jLabel2MouseClicked
 
@@ -564,6 +770,13 @@ public class FirstPage extends javax.swing.JFrame {
             jComboBox3.setEnabled(false);
             jComboBox3.setSelectedItem(null);
         }
+        if (everyThingIsOkay()) {
+            jLabel2.setEnabled(true);
+        }
+        else {
+            jLabel2.setEnabled(false);
+        }
+        changed[0] = true;
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void jComboBox10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox10ActionPerformed
@@ -582,25 +795,81 @@ public class FirstPage extends javax.swing.JFrame {
             this.equip2 = new RadiographicEquipment(EquipmentManagement.getRadiographicEquipment(name));
             this.equip1 = null;
         }
+        changed[6] = true;
     }//GEN-LAST:event_jComboBox12ActionPerformed
 
     private void jComboBox4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox4ActionPerformed
         if (jComboBox4.getSelectedIndex() != -1) {
             this.operator = new Employee(PersonManagement.getEmployee(this.operators.get(jComboBox4.getSelectedIndex()).getPersonalNr()));
         }
+        changed[3] = true;
     }//GEN-LAST:event_jComboBox4ActionPerformed
 
     private void jComboBox5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox5ActionPerformed
         if (jComboBox5.getSelectedIndex() != -1) {
             this.evaluator = new Employee(PersonManagement.getEmployee(this.evaluators.get(jComboBox5.getSelectedIndex()).getPersonalNr()));
         }
+        changed[4] = true;
     }//GEN-LAST:event_jComboBox5ActionPerformed
 
     private void jComboBox6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox6ActionPerformed
         if (jComboBox6.getSelectedIndex() != -1) {
             this.confirmator = new Employee(PersonManagement.getEmployee(this.confirmators.get(jComboBox6.getSelectedIndex()).getPersonalNr()));
         }
+        changed[5] = true;
     }//GEN-LAST:event_jComboBox6ActionPerformed
+
+    private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged
+        
+    }//GEN-LAST:event_jComboBox1ItemStateChanged
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        jLabel2.setEnabled(false);
+        jLabel4.setVisible(false);
+    }//GEN-LAST:event_formWindowOpened
+
+    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
+        changed[1] = true;
+    }//GEN-LAST:event_jComboBox2ActionPerformed
+
+    private void Test(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Test
+        if (everyThingIsOkay()) {
+            jLabel2.setEnabled(true);
+        }
+        else {
+            jLabel2.setEnabled(false);
+        }
+    }//GEN-LAST:event_Test
+
+    private void jDateChooser1PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jDateChooser1PropertyChange
+        if (everyThingIsOkay()) {
+            jLabel2.setEnabled(true);
+        }
+        else {
+            jLabel2.setEnabled(false);
+        }
+        changed[10] = true;
+    }//GEN-LAST:event_jDateChooser1PropertyChange
+
+    private void jComboBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox3ActionPerformed
+        changed[2] = true;
+    }//GEN-LAST:event_jComboBox3ActionPerformed
+
+    private void jComboBox7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox7ActionPerformed
+        changed[7] = true;
+    }//GEN-LAST:event_jComboBox7ActionPerformed
+
+    private void jComboBox8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox8ActionPerformed
+        changed[8] = true;
+    }//GEN-LAST:event_jComboBox8ActionPerformed
+
+    private void jComboBox9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox9ActionPerformed
+        changed[9] = true;
+    }//GEN-LAST:event_jComboBox9ActionPerformed
+
+    private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
+        this.dispose();
+    }//GEN-LAST:event_jLabel4MouseClicked
 
     /**
      * @param args the command line arguments
@@ -663,6 +932,7 @@ public class FirstPage extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;

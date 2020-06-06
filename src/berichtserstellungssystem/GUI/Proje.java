@@ -99,10 +99,10 @@ public class Proje extends javax.swing.JFrame {
             else if (jTextField1.getText().length() < 3 || jTextField1.getText().length() > 64) {
                 jTextField1.setToolTipText("Proje adı 2 - 64 harften oluşabilir!");
             }
-            else if (OthersManagement.checkProjectName(jTextField1.getText().trim()) && process == 1) {
+            else if (!OthersManagement.checkProjectName(jTextField1.getText().trim()) && process == 1) {
                 jTextField1.setToolTipText("Girdiğiniz proje adının veri tabanında bulunduğu için kullanılmaz! Farklı bir proje adı giriniz!");
             }
-            else if (OthersManagement.checkProjectName(jTextField1.getText().trim()) && process == 2 && jTextField1.getText().trim().equals(name)) {
+            else if (!OthersManagement.checkProjectName(jTextField1.getText().trim()) && process == 2 && jTextField1.getText().trim().equals(name)) {
                 jTextField1.setToolTipText("Bir değişiklik yapılmadı!");
             }
             else {
@@ -118,10 +118,10 @@ public class Proje extends javax.swing.JFrame {
             else if (jTextField1.getText().length() < 3 || jTextField1.getText().length() > 64) {
                 jTextField1.setToolTipText("Yuzay durumu 2 - 64 harften oluşabilir!");
             }
-            else if (OthersManagement.checkSurfaceCondition(jTextField1.getText().trim()) && process == 1) {
+            else if (!OthersManagement.checkSurfaceCondition(jTextField1.getText().trim()) && process == 1) {
                 jTextField1.setToolTipText("Girdiğiniz yuzay durumunun veri tabanında bulunduğu için kullanılmaz! Farklı bir yuzay durumu giriniz!");
             }
-            else if (OthersManagement.checkSurfaceCondition(jTextField1.getText().trim()) && process == 2 && jTextField1.getText().trim().equals(name)) {
+            else if (!OthersManagement.checkSurfaceCondition(jTextField1.getText().trim()) && process == 2 && jTextField1.getText().trim().equals(name)) {
                 jTextField1.setToolTipText("Bir değişiklik yapılmadı!");
             }
             else {
@@ -137,10 +137,10 @@ public class Proje extends javax.swing.JFrame {
             else if (jTextField1.getText().length() < 3 || jTextField1.getText().length() > 64) {
                 jTextField1.setToolTipText("Muayene aşaması 2 - 64 harften oluşabilir!");
             }
-            else if (OthersManagement.checkStageOfExamination(jTextField1.getText().trim()) && process == 1) {
+            else if (!OthersManagement.checkStageOfExamination(jTextField1.getText().trim()) && process == 1) {
                 jTextField1.setToolTipText("Girdiğiniz muayene aşaması veri tabanında bulunduğu için kullanılmaz! Farklı bir muayene aşaması giriniz!");
             }
-            else if (OthersManagement.checkStageOfExamination(jTextField1.getText().trim()) && process == 2 && jTextField1.getText().trim().equals(name)) {
+            else if (!OthersManagement.checkStageOfExamination(jTextField1.getText().trim()) && process == 2 && jTextField1.getText().trim().equals(name)) {
                 jTextField1.setToolTipText("Bir değişiklik yapılmadı!");
             }
             else {
@@ -365,11 +365,13 @@ public class Proje extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField1KeyReleased
 
     private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
-        if (process == 1) {
-            add();
-        }
-        else {
-            update();
+        if (jLabel3.isEnabled()) {
+            if (process == 1) {
+                add();
+            }
+            else {
+                update();
+            }
         }
     }//GEN-LAST:event_jLabel3MouseClicked
 

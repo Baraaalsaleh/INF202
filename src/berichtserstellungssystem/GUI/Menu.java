@@ -6,7 +6,7 @@
 package berichtserstellungssystem.GUI;
 
 import berichtserstellungssystem.Common;
-import berichtserstellungssystem.DataPreparation;
+import berichtserstellungssystem.Security;
 import java.awt.Frame;
 import berichtserstellungssystem.DatabaseManagement.*;
 import berichtserstellungssystem.Report.MagneticInspectionResult;
@@ -61,6 +61,7 @@ public class Menu extends javax.swing.JFrame {
         }
         downloadTemplates();
         initComponents();
+
         /*
         panel1 = new ReportList();
         jPanel3.setLayout(layout);
@@ -89,7 +90,6 @@ public class Menu extends javax.swing.JFrame {
     public void isManager (boolean a){
         jMenuItem1.setVisible(!a);
         jMenuItem6.setVisible(a);
-        jMenuItem7.setVisible(a);
         jMenuItem15.setVisible(a);
         jMenu3.setVisible(a);
         jMenu7.setVisible(a);
@@ -516,7 +516,6 @@ public class Menu extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem15 = new javax.swing.JMenuItem();
-        jMenuItem7 = new javax.swing.JMenuItem();
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem8 = new javax.swing.JMenuItem();
@@ -818,16 +817,6 @@ public class Menu extends javax.swing.JFrame {
         });
         jMenu2.add(jMenuItem15);
 
-        jMenuItem7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/continue3.png"))); // NOI18N
-        jMenuItem7.setText("Kaldığın yerden devam et");
-        jMenuItem7.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem7ActionPerformed(evt);
-            }
-        });
-        jMenu2.add(jMenuItem7);
-
         jMenuItem6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/out.png"))); // NOI18N
         jMenuItem6.setText("Çıkış Yap");
         jMenuItem6.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -1051,7 +1040,6 @@ public class Menu extends javax.swing.JFrame {
         
         this.setMinimumSize(this.getMinimumSize());
         jMenuItem6.setVisible(false);
-        jMenuItem7.setVisible(false);
         jMenuItem15.setVisible(false);
         jMenu3.setVisible(false);
         jMenu7.setVisible(false);
@@ -1069,10 +1057,6 @@ public class Menu extends javax.swing.JFrame {
         jLabel1.setText("Raporlar");
         prepareTables(8);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
-
-    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem7ActionPerformed
 
     private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
         new CustomerFrame(1, "", me).setVisible(true);
@@ -1437,7 +1421,6 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
-    private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

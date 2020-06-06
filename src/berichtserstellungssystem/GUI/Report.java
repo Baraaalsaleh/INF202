@@ -1592,6 +1592,159 @@ public class Report extends javax.swing.JFrame {
         }
     }
     
+    public void setValues(int element, Customer cus, String[] s, Employee[] e, MagneticEquipment mq, RadiographicEquipment rq, Date date) {
+        switch(element) {
+            case 0:
+                this.theCustomer = cus;
+                if (equip1 != null) {
+                    _Mcustomer.setText(cus.getName());
+                    _MinspectionPlace.setText(cus.getAddress());
+                }
+                else {
+                    _customer.setText(cus.getName());
+                    _inspectionPlace.setText(cus.getAddress());
+                }
+
+                break;
+            case 1:
+                if (equip1 != null) {
+                    _MorderNo.setText(s[0]);
+                }
+                else {
+                    _orderNo.setText(s[0]);
+                }
+                
+                
+                break;
+            case 2:
+                if (equip1 != null) {
+                    _MofferNo.setText(s[1]);
+                }
+                else {
+                    _offerNo.setText(s[1]);
+                }
+                
+                
+                break;
+            case 3:
+                this.operator = e[0];
+                this.operator_id = PersonManagement.getPersonId((Person) operator);
+                if (equip1 != null) {
+                    _MoperatorName.setText(operator.getName() + " " + operator.getLastname());
+                    _MoperatorLevel.setText(Integer.toString(operator.getLevel()));
+                }
+                else {
+                    _operatorName.setText(operator.getName() + " " + operator.getLastname());
+                    _operatorLevel.setText(Integer.toString(operator.getLevel()));
+                }
+                break;
+                
+                
+            case 4:
+                this.evaluator = e[1];
+                this.evaluator_id = PersonManagement.getPersonId((Person) evaluator);
+                if (equip1 != null) {
+                    _MevaluatorName.setText(evaluator.getName() + " " + evaluator.getLastname());
+                    _MevaluatorLevel.setText(Integer.toString(evaluator.getLevel()));
+                }
+                else {
+                    _evaluatorName.setText(evaluator.getName() + " " + evaluator.getLastname());
+                    _evaluatorLevel.setText(Integer.toString(evaluator.getLevel()));
+                }
+                break;
+                
+                
+            case 5:
+                this.confirmator = e[2];
+                this.confirmation_id = PersonManagement.getPersonId((Person) confirmator);
+                if (equip1 != null) {
+                    _MconfirmationName.setText(confirmator.getName() + " " + confirmator.getLastname());
+                    _MconfirmationLevel.setText(Integer.toString(confirmator.getLevel()));
+                }
+                else {
+                    _confirmationName.setText(confirmator.getName() + " " + confirmator.getLastname());
+                    _confirmationLevel.setText(Integer.toString(confirmator.getLevel()));
+                }
+                
+                
+                break;
+            case 6:
+                if (equip1 != null) {
+                    this.equip1 = mq;
+                    _poleDistance.setText(equip1.getPolesDistance());
+                    _Mequipment.setText(equip1.getName());
+                    _MPCarrier.setText(equip1.getMpCarrier());
+                    _magTech.setText(equip1.getMagTechnic());
+                    _UV.setText(equip1.getUvIntensity());
+                    _distanceOfLight.setText(equip1.getLightDistance());
+                }
+                else {
+                    this.equip2 = rq;
+                    _equipment.setText(equip2.getName());
+                    _usedDevice.setText("");
+                    _ir192.setSelected(equip2.isIr192());
+                    _se75.setSelected(equip2.isSe75());
+                    _xRay.setSelected(equip2.isxRay());
+                    _focalSpotSize.setText(equip2.getFocalSpotSize());
+                    _exposureTime.setText(equip2.getExposureTime());
+                    _filmFocusDistance.setText(equip2.getFilmFocusDistance());
+                    _pbScreens.setText(equip2.getPbScreens());
+                    _filters.setText(equip2.getFilters());
+                }
+                break;
+                
+                
+            case 7:
+                if (equip1 != null) {
+                    _Mproject.setText(s[2]);
+                }
+                else {
+                    _project.setText(s[2]);
+                }
+                break;
+                
+                
+            case 8:
+                if (equip1 != null) {
+                    _MsurfaceCondition.setText(s[3]);
+                }
+                else {
+                    _surfaceCondition.setText(s[3]);
+                }
+                break;
+                
+                
+            case 9:
+                if (equip1 != null) {
+                    _MstageOfExamination.setText(s[4]);
+                }
+                else {
+                    _stageOfExamination.setText(s[4]);
+                }
+                break;
+                
+                
+                
+            case 10:
+                this.reportDate = date;
+                if (equip1 != null) {
+                    _MreportDate.setText(Common.date_toStringReverse(date, "."));
+                    _MinspectionDates.setText(Common.date_toStringReverse(date, "."));
+                    _Mdate1.setText(Common.date_toStringReverse(date, "."));
+                    _Mdate2.setText(Common.date_toStringReverse(date, "."));
+                    _Mdate3.setText(Common.date_toStringReverse(date, "."));
+                }
+                else {
+                    _reportDate.setText(Common.date_toStringReverse(date, "."));
+                    _inspectionDates.setText(Common.date_toStringReverse(date, "."));
+                    _date1.setText(Common.date_toStringReverse(date, "."));
+                    _date2.setText(Common.date_toStringReverse(date, "."));
+                    _date3.setText(Common.date_toStringReverse(date, "."));
+                }               
+                break;
+        }
+    }
+    
     private void add() {
         if (equip1 == null) {
             RadiographicReport toAdd = collectDataRadiographic();
@@ -1844,6 +1997,7 @@ public class Report extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jLayeredPane1 = new javax.swing.JLayeredPane();
         jTabbedPane1 = new javax.swing.JTabbedPane();
@@ -2211,15 +2365,25 @@ public class Report extends javax.swing.JFrame {
             }
         });
 
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/edit1.png"))); // NOI18N
+        jLabel5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel5MouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jLabel4)
                     .addComponent(jLabel1)
-                    .addComponent(jLabel2))
+                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -2231,6 +2395,8 @@ public class Report extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel5)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -7295,34 +7461,15 @@ public class Report extends javax.swing.JFrame {
     }//GEN-LAST:event__inspectionPlaceActionPerformed
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
-    	int index = jTabbedPane1.getSelectedIndex();
         jLabel1.requestFocusInWindow();
-        if (index == 0) {
-            printReport(jPanel5, 0.38, 0.34);
+        if (!jLabel2.isEnabled() && (everyThingIsOkayM() || everyThingIsOkayR())) {
+            if (equip1 != null) {
+                printReport(jPanel6, 0.38, 0.36);
+            }
+            else {
+                 printReport(jPanel5, 0.38, 0.34);
+            }
         }
-        else {
-            printReport(jPanel6, 0.38, 0.36);
-        }
-        
-        
-        /* 
-        try
-    	{
-    	 // create a PDF Printer Job
-    	 PDFPrinterJob printer = (PDFPrinterJob)PDFPrinterJob.getPrinterJob ();
-    	 // set the printable object 
-    	 printer.setPrintable (new PrintPanelToPDF());
-    	 // set number of copies to 1 
-    	 printer.setCopies (1);
-    	 // print and save the document
-    	 printer.print("C:\\test\\mydoc.pdf");
-    	 // output done message 
-    	 System.out.println("Done!");
-    	}
-    	catch (Throwable t)
-    	{
-    	 t.printStackTrace();
-    	}*/
     }//GEN-LAST:event_jLabel1MouseClicked
 
     private void _descriptionKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event__descriptionKeyReleased
@@ -7379,39 +7526,41 @@ public class Report extends javax.swing.JFrame {
 
     private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
         int res = 0;
-        if (toEditM != null) {
-            JFileChooser chooser = new JFileChooser();
-            FileFilter ff = new FileFilter() {
-                @Override
-                public boolean accept(File file) {
-                    if (file.getAbsolutePath().contains(".xlsx")) {
-                        return true;
+        if (!jLabel2.isEnabled() && (everyThingIsOkayM() || everyThingIsOkayR())) {
+            if (toEditM != null) {
+                JFileChooser chooser = new JFileChooser();
+                FileFilter ff = new FileFilter() {
+                    @Override
+                    public boolean accept(File file) {
+                        if (file.getAbsolutePath().contains(".xlsx")) {
+                            return true;
+                        }
+                        else {
+                            return false;
+                        }
                     }
-                    else {
-                        return false;
-                    }
-                }
 
-                @Override
-                public String getDescription() {
-                    return "Excel Files";
-                }
-            };
-            chooser.setAcceptAllFileFilterUsed(false);
-            chooser.addChoosableFileFilter(ff);
-            chooser.setMultiSelectionEnabled(false);
-            chooser.setDragEnabled(false);
-            chooser.showSaveDialog(null);
-        
-        
-        File f = chooser.getSelectedFile();
-        res = exportExcelM(f.getAbsolutePath());
+                    @Override
+                    public String getDescription() {
+                        return "Excel Files";
+                    }
+                };
+                chooser.setAcceptAllFileFilterUsed(false);
+                chooser.addChoosableFileFilter(ff);
+                chooser.setMultiSelectionEnabled(false);
+                chooser.setDragEnabled(false);
+                chooser.showSaveDialog(null);
+
+
+            File f = chooser.getSelectedFile();
+            res = exportExcelM(f.getAbsolutePath());
+            }
+            else {
+                res = -2;
+            }
+            process = 3;
+            message(res);
         }
-        else {
-            res = -2;
-        }
-        process = 3;
-        message(res);
     }//GEN-LAST:event_jLabel4MouseClicked
 
     private void _MinspectionScopeFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event__MinspectionScopeFocusLost
@@ -7421,12 +7570,15 @@ public class Report extends javax.swing.JFrame {
     }//GEN-LAST:event__MinspectionScopeFocusLost
 
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
-        if (process == 1) {
-            add();
+        if (everyThingIsOkayM() || everyThingIsOkayR()) {
+            if (process == 1) {
+                add();
+            }
+            else {
+               update();
+            }
         }
-        else {
-            update();
-        }
+        
     }//GEN-LAST:event_jLabel2MouseClicked
 
     private void _magTech_weldingProcess7FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event__magTech_weldingProcess7FocusGained
@@ -7458,6 +7610,10 @@ public class Report extends javax.swing.JFrame {
             jLabel2.setEnabled(false);
         }
     }//GEN-LAST:event__buttMouseClicked
+
+    private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
+        new FirstPage(theCustomer.getName() + ", " + theCustomer.getAddress(), orderNr, offerNr, operator, evaluator, confirmator, equip1, equip2, project, surfaceCondition, stageOfExamination, reportDate, this).setVisible(true);
+    }//GEN-LAST:event_jLabel5MouseClicked
 
     /**
      * @param args the command line arguments
@@ -7796,6 +7952,7 @@ public class Report extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel40;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLayeredPane jLayeredPane1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;

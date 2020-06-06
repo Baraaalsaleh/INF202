@@ -773,11 +773,13 @@ public class Ekipman extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        if (process == 1){
-            add();
-        }
-        else {
-            update();
+        if (jButton1.isEnabled()) {
+            if (process == 1){
+                add();
+            }
+            else {
+                update();
+            }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 

@@ -29,7 +29,7 @@ public class EquipmentManagement extends DatabaseManagement{
         int equip_id = 0;
         try {
             stmt = con.createStatement();
-            rs = stmt.executeQuery("SELECT id FROM Equipment WHERE name = '" + DataPreparation.prepareString(equip.getName()) + "';");
+            rs = stmt.executeQuery("SELECT id FROM Equipment WHERE name = '" + Security.prepareString(equip.getName()) + "';");
             if (rs.next() == false) {
                 int id = 0;
                 rs = stmt.executeQuery("SELECT MAX(id) as id FROM Equipment;");
@@ -40,9 +40,9 @@ public class EquipmentManagement extends DatabaseManagement{
                 if (rs.next()){
                     manager_id = rs.getInt("id");
                     }
-                stmt.executeUpdate("INSERT INTO Equipment (id, Manager_id, name, calibrationEndDate, type) VALUES (" + (id+1) + ", " + manager_id + ", '" + DataPreparation.prepareString(equip.getName()) 
+                stmt.executeUpdate("INSERT INTO Equipment (id, Manager_id, name, calibrationEndDate, type) VALUES (" + (id+1) + ", " + manager_id + ", '" + Security.prepareString(equip.getName()) 
                         + "', '" + Common.date_toString(equip.getCalibrationEndDate()) + "', " + DatabaseManagement.getMAGNETIC_TYPE() + ");");
-                rs = stmt.executeQuery("SELECT id FROM Equipment WHERE name = '" + DataPreparation.prepareString(equip.getName()) + "';");
+                rs = stmt.executeQuery("SELECT id FROM Equipment WHERE name = '" + Security.prepareString(equip.getName()) + "';");
                 if (rs.next()){
                     equip_id = rs.getInt("id");
                     id = 0;
@@ -51,7 +51,7 @@ public class EquipmentManagement extends DatabaseManagement{
                         id = rs.getInt("id");
                     }
                     stmt.executeUpdate("INSERT INTO MagneticEquipment (id, Equipment_id, poles_Distance, MPCarrier, MagTechnic, UVIntensity, lightDistance) VALUES (" + (id+1) + ", "
-                        + equip_id + ", '" + equip.getPolesDistance() + "', '" + DataPreparation.prepareString(equip.getMpCarrier()) + "', '" + DataPreparation.prepareString(equip.getMagTechnic())
+                        + equip_id + ", '" + equip.getPolesDistance() + "', '" + Security.prepareString(equip.getMpCarrier()) + "', '" + Security.prepareString(equip.getMagTechnic())
                         + "', '" + equip.getUvIntensity() + "', '" + equip.getLightDistance() + "');");
                     return 1;
                     }
@@ -81,7 +81,7 @@ public class EquipmentManagement extends DatabaseManagement{
         int equip_id = 0;
         try {
             stmt = con.createStatement();
-            rs = stmt.executeQuery("SELECT id FROM Equipment WHERE name = '" + DataPreparation.prepareString(equip.getName()) + "';");
+            rs = stmt.executeQuery("SELECT id FROM Equipment WHERE name = '" + Security.prepareString(equip.getName()) + "';");
             if (rs.next() == false) {
                 int id = 0;
                 rs = stmt.executeQuery("SELECT MAX(id) as id FROM Equipment;");
@@ -92,7 +92,7 @@ public class EquipmentManagement extends DatabaseManagement{
                 if (rs.next()){
                     manager_id = rs.getInt("id");
                     }
-                stmt.executeUpdate("INSERT INTO Equipment (id, Manager_id, name, calibrationEndDate, type) VALUES (" + (id+1) + ", " + manager_id + ", '" + DataPreparation.prepareString(equip.getName()) 
+                stmt.executeUpdate("INSERT INTO Equipment (id, Manager_id, name, calibrationEndDate, type) VALUES (" + (id+1) + ", " + manager_id + ", '" + Security.prepareString(equip.getName()) 
                         + "', '" + Common.date_toString(equip.getCalibrationEndDate()) + "', " + DatabaseManagement.getRADIOGRAPHIC_TYPE() + ");");
                 rs = stmt.executeQuery("SELECT id FROM Equipment WHERE name = '" + equip.getName() + "';");
                 if (rs.next()){
@@ -104,9 +104,9 @@ public class EquipmentManagement extends DatabaseManagement{
                     id = rs.getInt("id");
                 }
                 stmt.executeUpdate("INSERT INTO RadiographicEquipment (id, Equipment_id, ir192, se75, xRay, focalSpotSize, exposureTime, filmFocusDistance, pbScreens, filters) \n" +
-                "VALUES (" + (id+1) + ", " + equip_id + ", " + equip.isIr192() + ", " + equip.isSe75() + ", " + equip.isxRay() + ", '" + DataPreparation.prepareString(equip.getFocalSpotSize())
-                        + "', '" + DataPreparation.prepareString(equip.getExposureTime()) + "', '" + DataPreparation.prepareString(equip.getFilmFocusDistance()) + "', '" 
-                        + DataPreparation.prepareString(equip.getPbScreens()) + "', '" + DataPreparation.prepareString(equip.getFilters()) + "');");
+                "VALUES (" + (id+1) + ", " + equip_id + ", " + equip.isIr192() + ", " + equip.isSe75() + ", " + equip.isxRay() + ", '" + Security.prepareString(equip.getFocalSpotSize())
+                        + "', '" + Security.prepareString(equip.getExposureTime()) + "', '" + Security.prepareString(equip.getFilmFocusDistance()) + "', '" 
+                        + Security.prepareString(equip.getPbScreens()) + "', '" + Security.prepareString(equip.getFilters()) + "');");
                 return 1;
             }
             else {
@@ -151,7 +151,7 @@ public class EquipmentManagement extends DatabaseManagement{
         int equip_id = 0;
         try {
             stmt = con.createStatement();
-            rs = stmt.executeQuery("SELECT id FROM Equipment WHERE name = '" + DataPreparation.prepareString(equip.getName()) + "';");
+            rs = stmt.executeQuery("SELECT id FROM Equipment WHERE name = '" + Security.prepareString(equip.getName()) + "';");
             if (rs.next()) {
                 equip_id = rs.getInt("id");
                 rs = stmt.executeQuery("SELECT id FROM Person WHERE PersonalNr = " + manager.getPersonalNr() + ";");
@@ -159,8 +159,8 @@ public class EquipmentManagement extends DatabaseManagement{
                     manager_id = rs.getInt("id");
                     }
                 stmt.executeUpdate("UPDATE Equipment SET calibrationEndDate = '" + Common.date_toString(equip.getCalibrationEndDate()) + "' WHERE id = " + equip_id + ";");
-                stmt.executeUpdate("UPDATE MagneticEquipment SET poles_Distance = '" + equip.getPolesDistance() + "', MPCarrier = '" + DataPreparation.prepareString(equip.getMpCarrier())
-                        + "', MagTechnic = '" + DataPreparation.prepareString(equip.getMagTechnic()) + "', UVIntensity = '" + equip.getUvIntensity() + "', lightDistance = '" + equip.getLightDistance() + "' WHERE Equipment_id = " 
+                stmt.executeUpdate("UPDATE MagneticEquipment SET poles_Distance = '" + equip.getPolesDistance() + "', MPCarrier = '" + Security.prepareString(equip.getMpCarrier())
+                        + "', MagTechnic = '" + Security.prepareString(equip.getMagTechnic()) + "', UVIntensity = '" + equip.getUvIntensity() + "', lightDistance = '" + equip.getLightDistance() + "' WHERE Equipment_id = " 
                         + equip_id + ";");
                 rs = stmt.executeQuery("SELECT id FROM LastModification WHERE Element_id = " + equip_id + " AND type = " + DatabaseManagement.getEQUIPMENT_TYPE() + ";");
                 if (rs.next()){
@@ -193,7 +193,7 @@ public class EquipmentManagement extends DatabaseManagement{
         int equip_id = 0;
         try {
             stmt = con.createStatement();
-            rs = stmt.executeQuery("SELECT id FROM Equipment WHERE name = '" + DataPreparation.prepareString(equip.getName()) + "';");
+            rs = stmt.executeQuery("SELECT id FROM Equipment WHERE name = '" + Security.prepareString(equip.getName()) + "';");
             if (rs.next()) {
                 equip_id = rs.getInt("id");
                 rs = stmt.executeQuery("SELECT id FROM Person WHERE PersonalNr = " + manager.getPersonalNr() + ";");
@@ -202,9 +202,9 @@ public class EquipmentManagement extends DatabaseManagement{
                     }
                 stmt.executeUpdate("UPDATE Equipment SET calibrationEndDate = '" + Common.date_toString(equip.getCalibrationEndDate()) + "' WHERE id = " + equip_id + ";");
                 String query = "UPDATE RadiographicEquipment SET ir192 = " + equip.isIr192() + ", se75 = " + equip.isSe75() + ", xRay = " + equip.isxRay() +
-                        ", focalSpotSize = '" + DataPreparation.prepareString(equip.getFocalSpotSize()) + "', exposureTime = '" + DataPreparation.prepareString(equip.getExposureTime())
-                        + "', filmFocusDistance = '" + DataPreparation.prepareString(equip.getFilmFocusDistance()) + "', pbScreens = '" + DataPreparation.prepareString(equip.getPbScreens()) 
-                        + "', filters = '" + DataPreparation.prepareString(equip.getFilters()) + "' WHERE Equipment_id = " + equip_id + ";";
+                        ", focalSpotSize = '" + Security.prepareString(equip.getFocalSpotSize()) + "', exposureTime = '" + Security.prepareString(equip.getExposureTime())
+                        + "', filmFocusDistance = '" + Security.prepareString(equip.getFilmFocusDistance()) + "', pbScreens = '" + Security.prepareString(equip.getPbScreens()) 
+                        + "', filters = '" + Security.prepareString(equip.getFilters()) + "' WHERE Equipment_id = " + equip_id + ";";
                 System.out.println(query);
                 stmt.executeUpdate(query);
                 rs = stmt.executeQuery("SELECT id FROM LastModification WHERE Element_id = " + equip_id + " AND type = " + DatabaseManagement.getEQUIPMENT_TYPE() + ";");
@@ -324,7 +324,7 @@ public class EquipmentManagement extends DatabaseManagement{
         int equip_id = 0;
         try {
             stmt = con.createStatement();
-            rs = stmt.executeQuery("SELECT id FROM Equipment WHERE name = '" + DataPreparation.prepareString(name) + "';");
+            rs = stmt.executeQuery("SELECT id FROM Equipment WHERE name = '" + Security.prepareString(name) + "';");
                 if (rs.next()){
                     equip_id = rs.getInt("id");
                     System.out.println("I got it " +  equip_id);
@@ -347,7 +347,7 @@ public class EquipmentManagement extends DatabaseManagement{
         int equip_id = 0;
         try {
             stmt = con.createStatement();
-            rs = stmt.executeQuery("SELECT id FROM Equipment WHERE name = '" + DataPreparation.prepareString(name) + "';");
+            rs = stmt.executeQuery("SELECT id FROM Equipment WHERE name = '" + Security.prepareString(name) + "';");
                 if (rs.next()){
                     equip_id = rs.getInt("id");
                     }            

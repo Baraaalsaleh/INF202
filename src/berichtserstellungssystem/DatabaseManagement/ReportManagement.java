@@ -22,7 +22,7 @@ public class ReportManagement extends DatabaseManagement{
         int step = 0;
         try {
             stmt = con.createStatement();
-            rs = stmt.executeQuery("SELECT id FROM Report WHERE customer = '" + DataPreparation.prepareString(report.getCustomer()) + "' AND reportNumber = '" + DataPreparation.prepareString(report.getReportNumber()) + "';");
+            rs = stmt.executeQuery("SELECT id FROM Report WHERE customer = '" + Security.prepareString(report.getCustomer()) + "' AND reportNumber = '" + Security.prepareString(report.getReportNumber()) + "';");
             step = 1;
             if (!rs.next()) {
                 String reportDate = Common.date_toString(report.getReportDate());
@@ -38,21 +38,21 @@ public class ReportManagement extends DatabaseManagement{
                 stmt.executeUpdate("INSERT INTO Report (id, customer, projectName, inspectionPlace, inspectionClass, evaluationStandard, inspectionProcedure, inspectionScope, drawingNo, "
                         + "surfaceCondition, stageOfExamination, page, reportNumber, reportDate, orderNumber, offerNumber, equipment, heatTreatment, inspectionDates, descriptionOfAttachments,"
                         + " operator_Employee_id, evaluator_Employee_id, confirmation_Employee_id, bottom, type) VALUES\n"
-                        + "(" + (id+1) + ", '" + DataPreparation.prepareString(report.getCustomer()) + "', '" + DataPreparation.prepareString(report.getProjectName()) + "', '" 
-                        + DataPreparation.prepareString(report.getInspectionPlace()) + "', '" + DataPreparation.prepareString(report.getInspectionClass()) + "', '"
-                        + DataPreparation.prepareString(report.getEvaluationStandard()) + "', '" + DataPreparation.prepareString(report.getInspectionProcedure()) + "', '" 
-                        + DataPreparation.prepareString(report.getInspectionScope()) + "', '" + DataPreparation.prepareString(report.getDrawingNo()) + "', '"
-                        + DataPreparation.prepareString(report.getSurfaceCondition()) + "', '" + DataPreparation.prepareString(report.getStageOfExamination()) + "', '" 
-                        + DataPreparation.prepareString(report.getPage()) + "', '" + DataPreparation.prepareString(report.getReportNumber()) + "', '" + DataPreparation.prepareString(reportDate) + "', '"
-                        + DataPreparation.prepareString(report.getOrderNumber()) + "', '" + DataPreparation.prepareString(report.getOfferNumber()) + "', '" + DataPreparation.prepareString(report.getEquipment())
-                        + "', '" + DataPreparation.prepareString(report.getHeatTreatment()) + "', '" + DataPreparation.prepareString(report.getInspectionDates())
-                        + "', '" + DataPreparation.prepareString(report.getDescriptionOfAttachments()) + "', " + operator_id + ", " + evaluator_id + ", " + confirmation_id + ", '"
-                        + DataPreparation.prepareString(report.getBottom()) + "', " + DatabaseManagement.getMAGNETIC_TYPE() + ");");
+                        + "(" + (id+1) + ", '" + Security.prepareString(report.getCustomer()) + "', '" + Security.prepareString(report.getProjectName()) + "', '" 
+                        + Security.prepareString(report.getInspectionPlace()) + "', '" + Security.prepareString(report.getInspectionClass()) + "', '"
+                        + Security.prepareString(report.getEvaluationStandard()) + "', '" + Security.prepareString(report.getInspectionProcedure()) + "', '" 
+                        + Security.prepareString(report.getInspectionScope()) + "', '" + Security.prepareString(report.getDrawingNo()) + "', '"
+                        + Security.prepareString(report.getSurfaceCondition()) + "', '" + Security.prepareString(report.getStageOfExamination()) + "', '" 
+                        + Security.prepareString(report.getPage()) + "', '" + Security.prepareString(report.getReportNumber()) + "', '" + Security.prepareString(reportDate) + "', '"
+                        + Security.prepareString(report.getOrderNumber()) + "', '" + Security.prepareString(report.getOfferNumber()) + "', '" + Security.prepareString(report.getEquipment())
+                        + "', '" + Security.prepareString(report.getHeatTreatment()) + "', '" + Security.prepareString(report.getInspectionDates())
+                        + "', '" + Security.prepareString(report.getDescriptionOfAttachments()) + "', " + operator_id + ", " + evaluator_id + ", " + confirmation_id + ", '"
+                        + Security.prepareString(report.getBottom()) + "', " + DatabaseManagement.getMAGNETIC_TYPE() + ");");
                 
                 step = 2;
                 
                 int report_id = 0;
-                rs = stmt.executeQuery("SELECT id FROM Report WHERE customer = '" + DataPreparation.prepareString(report.getCustomer()) + "' AND reportNumber = '" + DataPreparation.prepareString(report.getReportNumber()) + "';");
+                rs = stmt.executeQuery("SELECT id FROM Report WHERE customer = '" + Security.prepareString(report.getCustomer()) + "' AND reportNumber = '" + Security.prepareString(report.getReportNumber()) + "';");
                 if (rs.next()){
                     report_id = rs.getInt("id");
                 }
@@ -65,12 +65,12 @@ public class ReportManagement extends DatabaseManagement{
                 step = 4;
                 stmt.executeUpdate("INSERT INTO MagneticReport (id, Report_id, poleDistance, MPCarrier, magTech, UVIntensity, distanceOfLight, examinationArea, currentType, Luxmeter,"
                 + " testMedium, demagnetization, surfaceTemperature, gaussFieldStrength, surfaceCondition2, identificationOfLightEquip, liftingTest, buttWeld, filletWeld, standardDeviations) VALUES\n"
-                + "(" + (id+1) + ", " + report_id + ", '" + DataPreparation.prepareString(report.getPoleDistance()) + "', '" + DataPreparation.prepareString(report.getMpCarrier()) + "', '" + DataPreparation.prepareString(report.getMagTech())
-                + "', '" + DataPreparation.prepareString(report.getUvIntensity()) + "', '" + DataPreparation.prepareString(report.getDistanceOfLight()) + "', '" + DataPreparation.prepareString(report.getExaminationArea())
-                + "', '" + DataPreparation.prepareString(report.getCurrentType()) + "', '" + DataPreparation.prepareString(report.getLuxmeter()) + "', '" + DataPreparation.prepareString(report.getTestMedium())
-                + "', '" + DataPreparation.prepareString(report.getDemagnetization()) + "', '" + DataPreparation.prepareString(report.getSurfaceTemperature()) + "', '" + DataPreparation.prepareString(report.getGaussFieldStrength())
-                + "', '" + DataPreparation.prepareString(report.getSurfaceCondition2()) + "', '" + DataPreparation.prepareString(report.getIdentificationOfLightEquip()) + "', '" + DataPreparation.prepareString(report.getLiftingTest())
-                + "', " + report.isButtWeld() + ", " + report.isFilletWeld() + ", '" + DataPreparation.prepareString(report.getStandardDeviations()) + "'); ");
+                + "(" + (id+1) + ", " + report_id + ", '" + Security.prepareString(report.getPoleDistance()) + "', '" + Security.prepareString(report.getMpCarrier()) + "', '" + Security.prepareString(report.getMagTech())
+                + "', '" + Security.prepareString(report.getUvIntensity()) + "', '" + Security.prepareString(report.getDistanceOfLight()) + "', '" + Security.prepareString(report.getExaminationArea())
+                + "', '" + Security.prepareString(report.getCurrentType()) + "', '" + Security.prepareString(report.getLuxmeter()) + "', '" + Security.prepareString(report.getTestMedium())
+                + "', '" + Security.prepareString(report.getDemagnetization()) + "', '" + Security.prepareString(report.getSurfaceTemperature()) + "', '" + Security.prepareString(report.getGaussFieldStrength())
+                + "', '" + Security.prepareString(report.getSurfaceCondition2()) + "', '" + Security.prepareString(report.getIdentificationOfLightEquip()) + "', '" + Security.prepareString(report.getLiftingTest())
+                + "', " + report.isButtWeld() + ", " + report.isFilletWeld() + ", '" + Security.prepareString(report.getStandardDeviations()) + "'); ");
                 
                 step = 5;
                 ArrayList<MagneticInspectionResult> results = report.getInspectionResults();
@@ -82,10 +82,10 @@ public class ReportManagement extends DatabaseManagement{
                     }
                     MagneticInspectionResult temp = results.get(i);
                     stmt.executeUpdate("INSERT INTO MagneticResults (id, Report_id, weldPieceNo, testLength, weldingProcess, thickness, diameter, defectType, defectLocation, result) "
-                    + "VALUES (" + (id+1) + ", " + report_id + ", '" + DataPreparation.prepareString(temp.getWeldPieceNo()) + "', '" + DataPreparation.prepareString(temp.getTestLength()) + "', '" 
-                    + DataPreparation.prepareString(temp.getWeldingProcess()) + "', '" + DataPreparation.prepareString(temp.getThickness()) + "', '"
-                    + DataPreparation.prepareString(temp.getDiameter()) + "', '" + DataPreparation.prepareString(temp.getDefectType()) + "', '" 
-                    + DataPreparation.prepareString(temp.getDefectLocation()) + "', '" + DataPreparation.prepareString(temp.getResult()) + "');");
+                    + "VALUES (" + (id+1) + ", " + report_id + ", '" + Security.prepareString(temp.getWeldPieceNo()) + "', '" + Security.prepareString(temp.getTestLength()) + "', '" 
+                    + Security.prepareString(temp.getWeldingProcess()) + "', '" + Security.prepareString(temp.getThickness()) + "', '"
+                    + Security.prepareString(temp.getDiameter()) + "', '" + Security.prepareString(temp.getDefectType()) + "', '" 
+                    + Security.prepareString(temp.getDefectLocation()) + "', '" + Security.prepareString(temp.getResult()) + "');");
                 }
                 step = 6;
                 return 1;
@@ -106,7 +106,7 @@ public class ReportManagement extends DatabaseManagement{
         ResultSet rs;
         try {
             stmt = con.createStatement();
-            rs = stmt.executeQuery("SELECT id FROM Report WHERE customer = '" + DataPreparation.prepareString(report.getCustomer()) + "' AND reportNumber = '" + DataPreparation.prepareString(report.getReportNumber()) + "';");
+            rs = stmt.executeQuery("SELECT id FROM Report WHERE customer = '" + Security.prepareString(report.getCustomer()) + "' AND reportNumber = '" + Security.prepareString(report.getReportNumber()) + "';");
 
             if (rs.next() == false) {
                 int id = 0;
@@ -122,19 +122,19 @@ public class ReportManagement extends DatabaseManagement{
                 stmt.executeUpdate("INSERT INTO Report (id, customer, projectName, inspectionPlace, inspectionClass, evaluationStandard, inspectionProcedure, inspectionScope, drawingNo, "
                         + "surfaceCondition, stageOfExamination, page, reportNumber, reportDate, orderNumber, offerNumber, equipment, heatTreatment, inspectionDates, descriptionOfAttachments,"
                         + " operator_Employee_id, evaluator_Employee_id, confirmation_Employee_id, bottom, type) VALUES\n"
-                        + "(" + (id+1) + ", '" + DataPreparation.prepareString(report.getCustomer()) + "', '" + DataPreparation.prepareString(report.getProjectName()) + "', '" 
-                        + DataPreparation.prepareString(report.getInspectionPlace()) + "', '" + DataPreparation.prepareString(report.getInspectionClass()) + "', '"
-                        + DataPreparation.prepareString(report.getEvaluationStandard()) + "', '" + DataPreparation.prepareString(report.getInspectionProcedure()) + "', '" 
-                        + DataPreparation.prepareString(report.getInspectionScope()) + "', '" + DataPreparation.prepareString(report.getDrawingNo()) + "', '"
-                        + DataPreparation.prepareString(report.getSurfaceCondition()) + "', '" + DataPreparation.prepareString(report.getStageOfExamination()) + "', '" 
-                        + DataPreparation.prepareString(report.getPage()) + "', '" + DataPreparation.prepareString(report.getReportNumber()) + "', '" + DataPreparation.prepareString(reportDate) + "', '"
-                        + DataPreparation.prepareString(report.getOrderNumber()) + "', '" + DataPreparation.prepareString(report.getOfferNumber()) + "', '" + DataPreparation.prepareString(report.getEquipment())
-                        + "', '" + DataPreparation.prepareString(report.getHeatTreatment()) + "', '" + DataPreparation.prepareString(report.getInspectionDates())
-                        + "', '" + DataPreparation.prepareString(report.getDescriptionOfAttachments()) + "', " + operator_id + ", " + evaluator_id + ", " + confirmation_id + ", '"
-                        + DataPreparation.prepareString(report.getBottom()) + "', " + DatabaseManagement.getRADIOGRAPHIC_TYPE() + ");");
+                        + "(" + (id+1) + ", '" + Security.prepareString(report.getCustomer()) + "', '" + Security.prepareString(report.getProjectName()) + "', '" 
+                        + Security.prepareString(report.getInspectionPlace()) + "', '" + Security.prepareString(report.getInspectionClass()) + "', '"
+                        + Security.prepareString(report.getEvaluationStandard()) + "', '" + Security.prepareString(report.getInspectionProcedure()) + "', '" 
+                        + Security.prepareString(report.getInspectionScope()) + "', '" + Security.prepareString(report.getDrawingNo()) + "', '"
+                        + Security.prepareString(report.getSurfaceCondition()) + "', '" + Security.prepareString(report.getStageOfExamination()) + "', '" 
+                        + Security.prepareString(report.getPage()) + "', '" + Security.prepareString(report.getReportNumber()) + "', '" + Security.prepareString(reportDate) + "', '"
+                        + Security.prepareString(report.getOrderNumber()) + "', '" + Security.prepareString(report.getOfferNumber()) + "', '" + Security.prepareString(report.getEquipment())
+                        + "', '" + Security.prepareString(report.getHeatTreatment()) + "', '" + Security.prepareString(report.getInspectionDates())
+                        + "', '" + Security.prepareString(report.getDescriptionOfAttachments()) + "', " + operator_id + ", " + evaluator_id + ", " + confirmation_id + ", '"
+                        + Security.prepareString(report.getBottom()) + "', " + DatabaseManagement.getRADIOGRAPHIC_TYPE() + ");");
                 
                 int report_id = 0;
-                rs = stmt.executeQuery("SELECT id FROM Report WHERE customer = '" + DataPreparation.prepareString(report.getCustomer()) + "' AND reportNumber = '" + DataPreparation.prepareString(report.getReportNumber()) + "';");
+                rs = stmt.executeQuery("SELECT id FROM Report WHERE customer = '" + Security.prepareString(report.getCustomer()) + "' AND reportNumber = '" + Security.prepareString(report.getReportNumber()) + "';");
                 if (rs.next()){
                     report_id = rs.getInt("id");
                 }
@@ -145,11 +145,11 @@ public class ReportManagement extends DatabaseManagement{
                 }
                 stmt.executeUpdate("INSERT INTO RadiographicReport (id, Report_id, usedDevice, ir192, se75, xRay, focalSpotSize , exposureTime, filmFocusDistance, pbScreens, filters,"
                         + " filmBrand, d4MX125, d5T200, d7AA400, en , astm, sourceSide, filmSide, automatic , manuel , temp , filmQuantity, testArrangements) VALUES "
-                        + "(" + (id+1) + ", " + report_id + ", '" + DataPreparation.prepareString(report.getUsedDevice()) + "', " + report.isIr192() + ", " + report.isSe75() + ", " + report.isxRay() + ", '" 
-                        + DataPreparation.prepareString(report.getFocalSpotSize()) + "' , '" + DataPreparation.prepareString(report.getExposureTime()) + "', '" + DataPreparation.prepareString(report.getFilmFocusDistance()) 
-                        + "', '" + DataPreparation.prepareString(report.getPbScreens()) + "', '" + DataPreparation.prepareString(report.getFilters()) + "', '"
+                        + "(" + (id+1) + ", " + report_id + ", '" + Security.prepareString(report.getUsedDevice()) + "', " + report.isIr192() + ", " + report.isSe75() + ", " + report.isxRay() + ", '" 
+                        + Security.prepareString(report.getFocalSpotSize()) + "' , '" + Security.prepareString(report.getExposureTime()) + "', '" + Security.prepareString(report.getFilmFocusDistance()) 
+                        + "', '" + Security.prepareString(report.getPbScreens()) + "', '" + Security.prepareString(report.getFilters()) + "', '"
                         + report.getFilmBrand() + "', " + report.isD4MX125() + ", " + report.isD5T200() + ", " + report.isD7AA400() + ", " + report.isEn() + ", " + report.isAstm() 
-                        + ", " + report.isSourceSide() + ", " + report.isFilmSide() + ", " + report.isAutomatic() + ", " + report.isManuel() + ", '" + DataPreparation.prepareString(report.getTemp()) + "', '"
+                        + ", " + report.isSourceSide() + ", " + report.isFilmSide() + ", " + report.isAutomatic() + ", " + report.isManuel() + ", '" + Security.prepareString(report.getTemp()) + "', '"
                         + report.getFilmQuantityString() + "', '" + report.getTestArrangementsString() + "');");
 
                 ArrayList<RadiographicInspectionResult> results = report.getInspectionResults();
@@ -162,14 +162,14 @@ public class ReportManagement extends DatabaseManagement{
                     RadiographicInspectionResult temp = results.get(i);
                     stmt.executeUpdate("INSERT INTO RadiographicResults (id, Report_id, shootingArea, filmNo, materialType, weldingType, welderNr, position, thickness, penetremeter,"
                             + " visibleQ, density, f1012, f1016, f1024, f1036, f1048, f3040, defectLocation, defectType, preEvaluation, finalEvaluation) VALUES "
-                            + "(" + (id+1) + ", " + report_id + ", '" + DataPreparation.prepareString(temp.getShootingArea()) + "', '" + DataPreparation.prepareString(temp.getFilmNo()) + "', '" 
-                            + DataPreparation.prepareString(temp.getMaterialType()) + "', '" + DataPreparation.prepareString(temp.getWeldingType()) + "', '" 
-                            + DataPreparation.prepareString(temp.getWelderNr()) + "', '" + DataPreparation.prepareString(temp.getPosition()) + "', '" + DataPreparation.prepareString(temp.getThickness())
-                            + "', '" + DataPreparation.prepareString(temp.getPenetremeter()) + "', '" + DataPreparation.prepareString(temp.getVisibleQ()) + "', '" + DataPreparation.prepareString(temp.getDensity()) 
-                            + "', '" + DataPreparation.prepareString(temp.getF1012()) + "', '" + DataPreparation.prepareString(temp.getF1016()) + "', '" + DataPreparation.prepareString(temp.getF1024()) + "', '"
-                            + DataPreparation.prepareString(temp.getF1036()) + "', '" + DataPreparation.prepareString(temp.getF1048()) + "', '" + DataPreparation.prepareString(temp.getF3040())
-                            + "', '" + DataPreparation.prepareString(temp.getDefectLocation()) + "', '" + DataPreparation.prepareString(temp.getDefectType()) + "', '" + DataPreparation.prepareString(temp.getPreEvaluation())
-                            + "', '" + DataPreparation.prepareString(temp.getFinalEvaluation()) + "')");
+                            + "(" + (id+1) + ", " + report_id + ", '" + Security.prepareString(temp.getShootingArea()) + "', '" + Security.prepareString(temp.getFilmNo()) + "', '" 
+                            + Security.prepareString(temp.getMaterialType()) + "', '" + Security.prepareString(temp.getWeldingType()) + "', '" 
+                            + Security.prepareString(temp.getWelderNr()) + "', '" + Security.prepareString(temp.getPosition()) + "', '" + Security.prepareString(temp.getThickness())
+                            + "', '" + Security.prepareString(temp.getPenetremeter()) + "', '" + Security.prepareString(temp.getVisibleQ()) + "', '" + Security.prepareString(temp.getDensity()) 
+                            + "', '" + Security.prepareString(temp.getF1012()) + "', '" + Security.prepareString(temp.getF1016()) + "', '" + Security.prepareString(temp.getF1024()) + "', '"
+                            + Security.prepareString(temp.getF1036()) + "', '" + Security.prepareString(temp.getF1048()) + "', '" + Security.prepareString(temp.getF3040())
+                            + "', '" + Security.prepareString(temp.getDefectLocation()) + "', '" + Security.prepareString(temp.getDefectType()) + "', '" + Security.prepareString(temp.getPreEvaluation())
+                            + "', '" + Security.prepareString(temp.getFinalEvaluation()) + "')");
                 }               
                 return 1;
             }
@@ -221,26 +221,26 @@ public class ReportManagement extends DatabaseManagement{
             int evaluator_id = report.getEvaluator_id();
             int confirmation_id = report.getConfirmation_id();                  
                 
-            stmt.executeUpdate("UPDATE Report SET customer = '" + DataPreparation.prepareString(report.getCustomer()) + "', projectName = '" + DataPreparation.prepareString(report.getProjectName()) 
-                        + "', inspectionPlace = '" + DataPreparation.prepareString(report.getInspectionPlace()) + "', inspectionClass = '" + DataPreparation.prepareString(report.getInspectionClass()) 
-                        + "', evaluationStandard = '" + DataPreparation.prepareString(report.getEvaluationStandard()) + "', inspectionProcedure = '" + DataPreparation.prepareString(report.getInspectionProcedure())
-                        + "', inspectionScope = '" + DataPreparation.prepareString(report.getInspectionScope()) + "', drawingNo = '" + DataPreparation.prepareString(report.getDrawingNo()) + "', surfaceCondition = '" 
-                        + DataPreparation.prepareString(report.getSurfaceCondition()) + "', stageOfExamination = '" + DataPreparation.prepareString(report.getStageOfExamination()) + "', page = '" 
-                        + DataPreparation.prepareString(report.getPage()) + "', reportNumber = '" + DataPreparation.prepareString(report.getReportNumber()) + "', reportDate = '" 
-                        + reportDate + "', orderNumber = '" + DataPreparation.prepareString(report.getOrderNumber()) + "', offerNumber = '" + DataPreparation.prepareString(report.getOfferNumber())
-                        + "', equipment = '" + DataPreparation.prepareString(report.getEquipment()) + "', heatTreatment = '" + DataPreparation.prepareString(report.getHeatTreatment()) + "', inspectionDates = '" 
-                        + DataPreparation.prepareString(report.getInspectionDates()) + "', descriptionOfAttachments = '" + DataPreparation.prepareString(report.getDescriptionOfAttachments()) 
+            stmt.executeUpdate("UPDATE Report SET customer = '" + Security.prepareString(report.getCustomer()) + "', projectName = '" + Security.prepareString(report.getProjectName()) 
+                        + "', inspectionPlace = '" + Security.prepareString(report.getInspectionPlace()) + "', inspectionClass = '" + Security.prepareString(report.getInspectionClass()) 
+                        + "', evaluationStandard = '" + Security.prepareString(report.getEvaluationStandard()) + "', inspectionProcedure = '" + Security.prepareString(report.getInspectionProcedure())
+                        + "', inspectionScope = '" + Security.prepareString(report.getInspectionScope()) + "', drawingNo = '" + Security.prepareString(report.getDrawingNo()) + "', surfaceCondition = '" 
+                        + Security.prepareString(report.getSurfaceCondition()) + "', stageOfExamination = '" + Security.prepareString(report.getStageOfExamination()) + "', page = '" 
+                        + Security.prepareString(report.getPage()) + "', reportNumber = '" + Security.prepareString(report.getReportNumber()) + "', reportDate = '" 
+                        + reportDate + "', orderNumber = '" + Security.prepareString(report.getOrderNumber()) + "', offerNumber = '" + Security.prepareString(report.getOfferNumber())
+                        + "', equipment = '" + Security.prepareString(report.getEquipment()) + "', heatTreatment = '" + Security.prepareString(report.getHeatTreatment()) + "', inspectionDates = '" 
+                        + Security.prepareString(report.getInspectionDates()) + "', descriptionOfAttachments = '" + Security.prepareString(report.getDescriptionOfAttachments()) 
                         + "', operator_Employee_id = " + operator_id + ", evaluator_Employee_id = " + evaluator_id + ", confirmation_Employee_id = " + confirmation_id + ", bottom = '" 
-                        + DataPreparation.prepareString(report.getBottom()) + "', type = " + DatabaseManagement.getMAGNETIC_TYPE() + " WHERE id = " + report_id + ";");
+                        + Security.prepareString(report.getBottom()) + "', type = " + DatabaseManagement.getMAGNETIC_TYPE() + " WHERE id = " + report_id + ";");
 
-            stmt.executeUpdate("UPDATE MagneticReport SET poleDistance =  '" + DataPreparation.prepareString(report.getPoleDistance()) + "', MPCarrier = '" + DataPreparation.prepareString(report.getMpCarrier()) + "', magTech = '"
-                        + DataPreparation.prepareString(report.getMagTech()) + "', UVIntensity = '" + DataPreparation.prepareString(report.getUvIntensity()) + "', distanceOfLight = '" + DataPreparation.prepareString(report.getDistanceOfLight()) + "', examinationArea = '"
-                        + DataPreparation.prepareString(report.getExaminationArea()) + "', currentType = '" + DataPreparation.prepareString(report.getCurrentType()) + "', Luxmeter = '" + DataPreparation.prepareString(report.getLuxmeter())
-                        + "', testMedium = '" + DataPreparation.prepareString(report.getTestMedium()) + "', demagnetization = '" + DataPreparation.prepareString(report.getDemagnetization()) + "', surfaceTemperature = '" 
-                        + DataPreparation.prepareString(report.getSurfaceTemperature()) + "', gaussFieldStrength = '" + DataPreparation.prepareString(report.getGaussFieldStrength()) + "', surfaceCondition2 = '" 
-                        + DataPreparation.prepareString(report.getSurfaceCondition2()) + "', identificationOfLightEquip = '" + DataPreparation.prepareString(report.getIdentificationOfLightEquip()) + "', liftingTest = '" 
-                        + DataPreparation.prepareString(report.getLiftingTest()) + "', buttWeld = " + report.isButtWeld() + ", filletWeld = " + report.isButtWeld() + ", standardDeviations = '" 
-                        + DataPreparation.prepareString(report.getStandardDeviations()) + "' WHERE Report_id = " + report_id + ";");
+            stmt.executeUpdate("UPDATE MagneticReport SET poleDistance =  '" + Security.prepareString(report.getPoleDistance()) + "', MPCarrier = '" + Security.prepareString(report.getMpCarrier()) + "', magTech = '"
+                        + Security.prepareString(report.getMagTech()) + "', UVIntensity = '" + Security.prepareString(report.getUvIntensity()) + "', distanceOfLight = '" + Security.prepareString(report.getDistanceOfLight()) + "', examinationArea = '"
+                        + Security.prepareString(report.getExaminationArea()) + "', currentType = '" + Security.prepareString(report.getCurrentType()) + "', Luxmeter = '" + Security.prepareString(report.getLuxmeter())
+                        + "', testMedium = '" + Security.prepareString(report.getTestMedium()) + "', demagnetization = '" + Security.prepareString(report.getDemagnetization()) + "', surfaceTemperature = '" 
+                        + Security.prepareString(report.getSurfaceTemperature()) + "', gaussFieldStrength = '" + Security.prepareString(report.getGaussFieldStrength()) + "', surfaceCondition2 = '" 
+                        + Security.prepareString(report.getSurfaceCondition2()) + "', identificationOfLightEquip = '" + Security.prepareString(report.getIdentificationOfLightEquip()) + "', liftingTest = '" 
+                        + Security.prepareString(report.getLiftingTest()) + "', buttWeld = " + report.isButtWeld() + ", filletWeld = " + report.isButtWeld() + ", standardDeviations = '" 
+                        + Security.prepareString(report.getStandardDeviations()) + "' WHERE Report_id = " + report_id + ";");
                 
             stmt.executeUpdate("DELETE FROM MagneticResults WHERE Report_id = " + report_id + ";");
             int id = 0;
@@ -252,9 +252,9 @@ public class ReportManagement extends DatabaseManagement{
                 }
                 MagneticInspectionResult temp = results.get(i);
                 stmt.executeUpdate("INSERT INTO MagneticResults (id, Report_id, weldPieceNo, testLength, weldingProcess, thickness, diameter, defectType, defectLocation, result) "
-                    + "VALUES (" + (id+1) + ", " + report_id + ", '" + DataPreparation.prepareString(temp.getWeldPieceNo()) + "', '" + DataPreparation.prepareString(temp.getTestLength()) + "', '" + DataPreparation.prepareString(temp.getWeldingProcess()) 
-                    + "', '" + DataPreparation.prepareString(temp.getThickness()) + "', '" + DataPreparation.prepareString(temp.getDiameter()) + "', '" + DataPreparation.prepareString(temp.getDefectType())
-                    + "', '" + DataPreparation.prepareString(temp.getDefectLocation()) + "', '" + DataPreparation.prepareString(temp.getResult()) + "');");
+                    + "VALUES (" + (id+1) + ", " + report_id + ", '" + Security.prepareString(temp.getWeldPieceNo()) + "', '" + Security.prepareString(temp.getTestLength()) + "', '" + Security.prepareString(temp.getWeldingProcess()) 
+                    + "', '" + Security.prepareString(temp.getThickness()) + "', '" + Security.prepareString(temp.getDiameter()) + "', '" + Security.prepareString(temp.getDefectType())
+                    + "', '" + Security.prepareString(temp.getDefectLocation()) + "', '" + Security.prepareString(temp.getResult()) + "');");
             }                
             return 1;
             
@@ -274,24 +274,24 @@ public class ReportManagement extends DatabaseManagement{
             int evaluator_id = report.getEvaluator_id();
             int confirmation_id = report.getConfirmation_id();
 
-            stmt.executeUpdate("UPDATE Report SET customer = '" + DataPreparation.prepareString(report.getCustomer()) + "', projectName = '" + DataPreparation.prepareString(report.getProjectName())
-                        + "', inspectionPlace = '" + DataPreparation.prepareString(report.getInspectionPlace()) + "', inspectionClass = '" + DataPreparation.prepareString(report.getInspectionClass()) 
-                        + "', evaluationStandard = '" + DataPreparation.prepareString(report.getEvaluationStandard()) + "', inspectionProcedure = '" + DataPreparation.prepareString(report.getInspectionProcedure()) 
+            stmt.executeUpdate("UPDATE Report SET customer = '" + Security.prepareString(report.getCustomer()) + "', projectName = '" + Security.prepareString(report.getProjectName())
+                        + "', inspectionPlace = '" + Security.prepareString(report.getInspectionPlace()) + "', inspectionClass = '" + Security.prepareString(report.getInspectionClass()) 
+                        + "', evaluationStandard = '" + Security.prepareString(report.getEvaluationStandard()) + "', inspectionProcedure = '" + Security.prepareString(report.getInspectionProcedure()) 
                         + "', inspectionScope = '" + report.getInspectionScope() + "', drawingNo = '" + report.getDrawingNo() + "', surfaceCondition = '" 
-                        + DataPreparation.prepareString(report.getSurfaceCondition()) + "', stageOfExamination = '" + DataPreparation.prepareString(report.getStageOfExamination()) + "', page = '" 
-                        + DataPreparation.prepareString(report.getPage()) + "', reportNumber = '" + DataPreparation.prepareString(report.getReportNumber()) + "', reportDate = '" + DataPreparation.prepareString(reportDate)
-                        + "', orderNumber = '" + DataPreparation.prepareString(report.getOrderNumber()) + "', offerNumber = '" + DataPreparation.prepareString(report.getOfferNumber())
-                        + "', equipment = '" + DataPreparation.prepareString(report.getEquipment()) + "', heatTreatment = '" + DataPreparation.prepareString(report.getHeatTreatment()) + "', inspectionDates = '" 
-                        + DataPreparation.prepareString(report.getInspectionDates()) + "', descriptionOfAttachments = '" + DataPreparation.prepareString(report.getDescriptionOfAttachments()) + "', operator_Employee_id = " 
+                        + Security.prepareString(report.getSurfaceCondition()) + "', stageOfExamination = '" + Security.prepareString(report.getStageOfExamination()) + "', page = '" 
+                        + Security.prepareString(report.getPage()) + "', reportNumber = '" + Security.prepareString(report.getReportNumber()) + "', reportDate = '" + Security.prepareString(reportDate)
+                        + "', orderNumber = '" + Security.prepareString(report.getOrderNumber()) + "', offerNumber = '" + Security.prepareString(report.getOfferNumber())
+                        + "', equipment = '" + Security.prepareString(report.getEquipment()) + "', heatTreatment = '" + Security.prepareString(report.getHeatTreatment()) + "', inspectionDates = '" 
+                        + Security.prepareString(report.getInspectionDates()) + "', descriptionOfAttachments = '" + Security.prepareString(report.getDescriptionOfAttachments()) + "', operator_Employee_id = " 
                         + operator_id + ", evaluator_Employee_id = " + evaluator_id + ", confirmation_Employee_id = " + confirmation_id + ", bottom = '" 
-                        + DataPreparation.prepareString(report.getBottom()) + "', type = " + DatabaseManagement.getRADIOGRAPHIC_TYPE() + " WHERE id = " + report_id + ";");
+                        + Security.prepareString(report.getBottom()) + "', type = " + DatabaseManagement.getRADIOGRAPHIC_TYPE() + " WHERE id = " + report_id + ";");
 
-            stmt.executeUpdate("UPDATE RadiographicReport SET usedDevice = '" + DataPreparation.prepareString(report.getUsedDevice()) + "', ir192 = " + report.isIr192() + ", se75 = " + report.isSe75() + ", xRay = " 
-                        + report.isxRay() + ", focalSpotSize = '" + DataPreparation.prepareString(report.getFocalSpotSize()) + "', exposureTime = '" + DataPreparation.prepareString(report.getExposureTime())
-                        + "', filmFocusDistance = '" + DataPreparation.prepareString(report.getFilmFocusDistance()) + "', pbScreens = '" + DataPreparation.prepareString(report.getPbScreens()) + "', filters = '" 
-                        + DataPreparation.prepareString(report.getFilters()) + "', filmBrand = '" + DataPreparation.prepareString(report.getFilmBrand()) + "', d4MX125 = " + report.isD4MX125() + ", d5T200 = " 
+            stmt.executeUpdate("UPDATE RadiographicReport SET usedDevice = '" + Security.prepareString(report.getUsedDevice()) + "', ir192 = " + report.isIr192() + ", se75 = " + report.isSe75() + ", xRay = " 
+                        + report.isxRay() + ", focalSpotSize = '" + Security.prepareString(report.getFocalSpotSize()) + "', exposureTime = '" + Security.prepareString(report.getExposureTime())
+                        + "', filmFocusDistance = '" + Security.prepareString(report.getFilmFocusDistance()) + "', pbScreens = '" + Security.prepareString(report.getPbScreens()) + "', filters = '" 
+                        + Security.prepareString(report.getFilters()) + "', filmBrand = '" + Security.prepareString(report.getFilmBrand()) + "', d4MX125 = " + report.isD4MX125() + ", d5T200 = " 
                         + report.isD5T200() + ", d7AA400 = " + report.isD7AA400() + ", en = " + report.isEn() + ", astm = " + report.isAstm() + ", sourceSide = " + report.isSourceSide() + ", filmSide = " + report.isFilmSide() 
-                        + ", automatic = " + report.isAutomatic() + ", manuel = " + report.isManuel() + ", temp ='" + DataPreparation.prepareString(report.getTemp()) + "', filmQuantity = '"+ report.getFilmQuantityString() 
+                        + ", automatic = " + report.isAutomatic() + ", manuel = " + report.isManuel() + ", temp ='" + Security.prepareString(report.getTemp()) + "', filmQuantity = '"+ report.getFilmQuantityString() 
                         + "', testArrangements = '" + report.getTestArrangementsString() + "' WHERE Report_id = " + report_id + ";");
             stmt.executeUpdate("DELETE FROM RadiographicResults WHERE Report_id = " + report_id + ";");                     
             ArrayList<RadiographicInspectionResult> results = report.getInspectionResults();
@@ -304,13 +304,13 @@ public class ReportManagement extends DatabaseManagement{
                 RadiographicInspectionResult temp = results.get(i);
                 stmt.executeUpdate("INSERT INTO RadiographicResults (id, Report_id, shootingArea, filmNo, materialType, weldingType, welderNr, position, thickness, penetremeter,"
                             + " visibleQ, density, f1012, f1016, f1024, f1036, f1048, f3040, defectLocation, defectType, preEvaluation, finalEvaluation) VALUES "
-                            + "(" + (id+1+i) + ", " + report_id + ", '" + DataPreparation.prepareString(temp.getShootingArea()) + "', '" + DataPreparation.prepareString(temp.getFilmNo()) + "', '" 
-                            + DataPreparation.prepareString(temp.getMaterialType()) + "', '" + DataPreparation.prepareString(temp.getWeldingType()) + "', '" + DataPreparation.prepareString(temp.getWelderNr())
-                            + "', '" + DataPreparation.prepareString(temp.getPosition()) + "', '" + DataPreparation.prepareString(temp.getThickness()) + "', '" + DataPreparation.prepareString(temp.getPenetremeter()) + "', '"
-                            + DataPreparation.prepareString(temp.getVisibleQ()) + "', '" + DataPreparation.prepareString(temp.getDensity()) + "', '" + DataPreparation.prepareString(temp.getF1012())
-                            + "', '" + DataPreparation.prepareString(temp.getF1016()) + "', '" + DataPreparation.prepareString(temp.getF1024()) + "', '" + DataPreparation.prepareString(temp.getF1036()) + "', '" 
-                            + DataPreparation.prepareString(temp.getF1048()) + "', '" + DataPreparation.prepareString(temp.getF3040()) + "', '" + DataPreparation.prepareString(temp.getDefectLocation())
-                            + "', '" + DataPreparation.prepareString(temp.getDefectType()) + "', '" + DataPreparation.prepareString(temp.getPreEvaluation()) + "', '" + DataPreparation.prepareString(temp.getFinalEvaluation()) + "')");
+                            + "(" + (id+1+i) + ", " + report_id + ", '" + Security.prepareString(temp.getShootingArea()) + "', '" + Security.prepareString(temp.getFilmNo()) + "', '" 
+                            + Security.prepareString(temp.getMaterialType()) + "', '" + Security.prepareString(temp.getWeldingType()) + "', '" + Security.prepareString(temp.getWelderNr())
+                            + "', '" + Security.prepareString(temp.getPosition()) + "', '" + Security.prepareString(temp.getThickness()) + "', '" + Security.prepareString(temp.getPenetremeter()) + "', '"
+                            + Security.prepareString(temp.getVisibleQ()) + "', '" + Security.prepareString(temp.getDensity()) + "', '" + Security.prepareString(temp.getF1012())
+                            + "', '" + Security.prepareString(temp.getF1016()) + "', '" + Security.prepareString(temp.getF1024()) + "', '" + Security.prepareString(temp.getF1036()) + "', '" 
+                            + Security.prepareString(temp.getF1048()) + "', '" + Security.prepareString(temp.getF3040()) + "', '" + Security.prepareString(temp.getDefectLocation())
+                            + "', '" + Security.prepareString(temp.getDefectType()) + "', '" + Security.prepareString(temp.getPreEvaluation()) + "', '" + Security.prepareString(temp.getFinalEvaluation()) + "')");
                 }               
                 return 1;
                 

@@ -44,8 +44,8 @@ public class PersonManagement extends DatabaseManagement{
                 String permitionEndDate = Common.date_toString(employee.getPermitionEndDate());
 
                 stmt.executeUpdate("INSERT INTO Person (id, TCNr, PersonalNr, name, lastname, gender, birthdate, address, email, telephone, status) " +
-                "VALUES (" + (id+1) + ", " + employee.getTcNr() + "," + employee.getPersonalNr() + ",'" + DataPreparation.prepareString(employee.getName()) + "','" + DataPreparation.prepareString(employee.getLastname()) + "','"
-                + DataPreparation.prepareString(employee.getGender()) + "', '" + birthdate + "','" + DataPreparation.prepareString(employee.getAddress()) + "','" + DataPreparation.prepareString(employee.getEmail())
+                "VALUES (" + (id+1) + ", " + employee.getTcNr() + "," + employee.getPersonalNr() + ",'" + Security.prepareString(employee.getName()) + "','" + Security.prepareString(employee.getLastname()) + "','"
+                + Security.prepareString(employee.getGender()) + "', '" + birthdate + "','" + Security.prepareString(employee.getAddress()) + "','" + Security.prepareString(employee.getEmail())
                         + "'," + employee.getTelephone() + ", " + DatabaseManagement.getEMPLOYEE_STATUS() + ");");                
                 System.out.println(id+3);
                 int employee_Id = 0;
@@ -98,8 +98,8 @@ public class PersonManagement extends DatabaseManagement{
                 }
                 String myDate = Common.date_toString(manager.getBirthDate());
                 stmt.executeUpdate("INSERT INTO Person (id, TCNr, PersonalNr, name, lastname, gender, birthdate, address, email, telephone, status) " +
-                "VALUES (" + id+1 + ", " + manager.getTcNr() + "," + manager.getPersonalNr() + ",'" + DataPreparation.prepareString(manager.getName()) + "','" + DataPreparation.prepareString(manager.getLastname()) + "', '"
-                 + DataPreparation.prepareString(manager.getGender()) + "','" + myDate + "','" + DataPreparation.prepareString(manager.getAddress()) + "','" + DataPreparation.prepareString(manager.getEmail())
+                "VALUES (" + id+1 + ", " + manager.getTcNr() + "," + manager.getPersonalNr() + ",'" + Security.prepareString(manager.getName()) + "','" + Security.prepareString(manager.getLastname()) + "', '"
+                 + Security.prepareString(manager.getGender()) + "','" + myDate + "','" + Security.prepareString(manager.getAddress()) + "','" + Security.prepareString(manager.getEmail())
                         + "'," + manager.getTelephone() + ", " + status + ");");
                 int manager_id = 0;
                 rs = stmt.executeQuery("SELECT id FROM Person WHERE PersonalNr = " + manager.getPersonalNr() + ";");
@@ -110,7 +110,7 @@ public class PersonManagement extends DatabaseManagement{
                     if (rs.next()) {
                         id = rs.getInt("id");
                     }
-                    stmt.executeUpdate("INSERT INTO Manager (id, Person_id, username, password) VALUES (" + id+1 + ", " + manager_id + ", '" + manager.getPersonalNr() + "', '" + manager.getTcNr() + "');");
+                    stmt.executeUpdate("INSERT INTO Manager (id, Person_id, username, password) VALUES (" + id+1 + ", " + manager_id + ", '" + manager.getPersonalNr() + "', '" + Security.generateHash(Long.toString(manager.getTcNr())) + "');");
                     return 1;
                 }
             }
@@ -158,9 +158,9 @@ public class PersonManagement extends DatabaseManagement{
                 String birthdate = Common.date_toString(employee.getBirthDate());          
                 String permitionEndDate = Common.date_toString(employee.getPermitionEndDate());
 
-                stmt.executeUpdate("UPDATE Person SET TCNr = " + employee.getTcNr() + ", name = '" + DataPreparation.prepareString(employee.getName()) + "', lastname = '" +
-                    DataPreparation.prepareString(employee.getLastname()) + "', gender = '" + DataPreparation.prepareString(employee.getGender()) + "', birthdate = '"  
-                    + birthdate + "', address = '" + DataPreparation.prepareString(employee.getAddress()) + "', email = '"  + DataPreparation.prepareString(employee.getEmail())
+                stmt.executeUpdate("UPDATE Person SET TCNr = " + employee.getTcNr() + ", name = '" + Security.prepareString(employee.getName()) + "', lastname = '" +
+                    Security.prepareString(employee.getLastname()) + "', gender = '" + Security.prepareString(employee.getGender()) + "', birthdate = '"  
+                    + birthdate + "', address = '" + Security.prepareString(employee.getAddress()) + "', email = '"  + Security.prepareString(employee.getEmail())
                     + "', telephone = " + employee.getTelephone() + " WHERE PersonalNr = " + employee.getPersonalNr() + ";");                
                 int employee_Id = 0;
                 int manager_Id = 0;            
@@ -203,9 +203,9 @@ public class PersonManagement extends DatabaseManagement{
             rs = stmt.executeQuery("SELECT id FROM Person WHERE PersonalNr = " + manager.getPersonalNr() + ";");
             if (rs.next()) {
                 String birthdate = Common.date_toString(manager.getBirthDate());
-                stmt.executeUpdate("UPDATE Person SET TCNr = " + manager.getTcNr() + ", name = '" + DataPreparation.prepareString(manager.getName()) + "', lastname = '" +
-                        DataPreparation.prepareString(manager.getLastname()) + "', gender = '" + DataPreparation.prepareString(manager.getGender()) + "', birthdate = '"  + birthdate 
-                        + "', address = '" + DataPreparation.prepareString(manager.getAddress()) + "', email = '"  + DataPreparation.prepareString(manager.getEmail())
+                stmt.executeUpdate("UPDATE Person SET TCNr = " + manager.getTcNr() + ", name = '" + Security.prepareString(manager.getName()) + "', lastname = '" +
+                        Security.prepareString(manager.getLastname()) + "', gender = '" + Security.prepareString(manager.getGender()) + "', birthdate = '"  + birthdate 
+                        + "', address = '" + Security.prepareString(manager.getAddress()) + "', email = '"  + Security.prepareString(manager.getEmail())
                         + "', telephone = " + manager.getTelephone() + " WHERE PersonalNr = " + manager.getPersonalNr() + ";");                
                 return 1;
             }
@@ -227,11 +227,11 @@ public class PersonManagement extends DatabaseManagement{
             if (rs.next()) {
                 int manager_id = rs.getInt("id");
                 
-                stmt.executeUpdate("UPDATE Person SET address = '" + DataPreparation.prepareString(manager.getAddress()) + "', email = '"  + DataPreparation.prepareString(manager.getEmail())
+                stmt.executeUpdate("UPDATE Person SET address = '" + Security.prepareString(manager.getAddress()) + "', email = '"  + Security.prepareString(manager.getEmail())
                         + "', telephone = " + manager.getTelephone() + " WHERE id = " + manager_id + ";");
                                 
-                stmt.executeUpdate("UPDATE Manager SET username = '" +  DataPreparation.prepareString(manager.getUsername()).toLowerCase() + "', password = '" 
-                        + DataPreparation.prepareString(manager.getPassword()) + "' WHERE Person_id = " + manager_id + ";");
+                stmt.executeUpdate("UPDATE Manager SET username = '" +  Security.prepareString(manager.getUsername()).toLowerCase() + "', password = '" 
+                        + Security.prepareString(manager.getPassword()) + "' WHERE Person_id = " + manager_id + ";");
                 
                 return 1;
             }
@@ -458,16 +458,30 @@ public class PersonManagement extends DatabaseManagement{
     //Login
     public static int login (String username, String password){
         int res = -1;
+        String pass = "";
         if (con != null){
             ResultSet rs = null;
             try {
-            stmt = con.createStatement();
-            rs = stmt.executeQuery("SELECT Person_id FROM Manager WHERE username = '" + DataPreparation.prepareString(username) + "' AND password = '" + DataPreparation.prepareString(password) + "';");
-            if (rs.next()) {
-                res = (rs.getInt("Person_id"));
+                stmt = con.createStatement();
+                rs = stmt.executeQuery("SELECT Person_id, password FROM Manager WHERE username = '" + Security.prepareString(username) + "';");
+                if (rs.next()) {
+                    res = (rs.getInt("Person_id"));
+                    pass = rs.getString("password");
+                    if (password.length() < 33) {
+                        System.out.println(pass.length());
+                        password = Security.generateHash(password);
+                        System.out.println(pass);
+                        System.out.println(password);
+                    }
+                    if (password.equals(pass)) {
+                        return res;
+                    }
+                    else {
+                        return 0;
+                    }
                 }
-            else {
-                res = 0;
+                else {
+                    res = 0;
                 }
             }
             catch (SQLException e){
@@ -525,6 +539,22 @@ public class PersonManagement extends DatabaseManagement{
             }
         } catch (SQLException ex) {
             System.out.println("personalNummerAccepted " + ex);
+            res = false;
+        }
+        return res;
+    }
+    
+    public static boolean userNameAccepted(String username) {
+        boolean res = true;
+        ResultSet rs = null;
+        try {
+            stmt = con.createStatement();
+            rs = stmt.executeQuery("SELECT id FROM Manager WHERE username = '" + username + "';");
+            if (rs.next()) {
+                res = false;
+            }
+        } catch (SQLException ex) {
+            System.out.println("userNameAccepted " + ex);
             res = false;
         }
         return res;

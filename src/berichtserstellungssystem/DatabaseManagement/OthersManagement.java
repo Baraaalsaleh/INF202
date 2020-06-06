@@ -47,7 +47,7 @@ public class OthersManagement extends DatabaseManagement{
         try {
             stmt = con.createStatement();
             rs = stmt.executeQuery("SELECT id FROM Project WHERE project = '" + name + "';");
-            return rs.next();
+            return !rs.next();
         } catch (SQLException ex) {
             System.out.println("insertProject " + ex);
             return false;
@@ -82,7 +82,7 @@ public class OthersManagement extends DatabaseManagement{
         try {
             stmt = con.createStatement();
             rs = stmt.executeQuery("SELECT id FROM SurfaceCondition WHERE surfaceCondition = '" + name + "';");
-            return rs.next();
+            return !rs.next();
         } catch (SQLException ex) {
             System.out.println("insertSurfaceCondition " + ex);
             return false;
@@ -117,7 +117,7 @@ public class OthersManagement extends DatabaseManagement{
         try {
             stmt = con.createStatement();
             rs = stmt.executeQuery("SELECT id FROM StageOfExamination WHERE stageOfExamination = '" + name + "';");
-            return rs.next();
+            return !rs.next();
         } catch (SQLException ex) {
             System.out.println("insertStageOfExamination " + ex);
             return false;

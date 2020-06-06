@@ -27,6 +27,8 @@ import java.util.logging.Logger;
 public class Login extends javax.swing.JFrame {
     
     static public Manager toVerify = null;
+    boolean loaded = false;
+    String password = "";
     
     
     private Menu menu = new Menu();
@@ -35,7 +37,7 @@ public class Login extends javax.swing.JFrame {
         return res;
     }
     
-    public static int loginVerification (String username, String password, boolean remember)  {
+    public static int loginVerification (String username, String password)  {
         int res = PersonManagement.login(username, password);
         JDialog dialog = new JDialog();
         dialog.setAlwaysOnTop(true);
@@ -58,6 +60,7 @@ public class Login extends javax.swing.JFrame {
             toVerify = new Manager(rs);
             System.out.println("It was successfully done, and as a profe, your name is " + toVerify.getName() + " " + toVerify.getLastname()
             + " and you were born on the " + toVerify.getBirthDate() + " and this is another test " + Common.date_toString(toVerify.getBirthDate()));
+            System.out.println(toVerify.getUsername() + " " + toVerify.getPassword());
             return 1;
         }
     }
@@ -90,15 +93,14 @@ public class Login extends javax.swing.JFrame {
         _username = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        remember = new javax.swing.JCheckBox();
         _password = new javax.swing.JPasswordField();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setAlwaysOnTop(true);
-        setMinimumSize(new java.awt.Dimension(400, 230));
-        setName("frame2"); // NOI18N
+        setMaximumSize(new java.awt.Dimension(400, 225));
+        setMinimumSize(new java.awt.Dimension(400, 225));
         setUndecorated(true);
         setResizable(false);
         setType(java.awt.Window.Type.POPUP);
@@ -119,6 +121,7 @@ public class Login extends javax.swing.JFrame {
         jLabel3.setText("Şifre:");
 
         _username.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        _username.setText("Kullanıcı Adı");
         _username.setToolTipText("");
         _username.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         _username.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -155,13 +158,7 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
-        remember.setText("Beni hatırlat");
-        remember.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rememberActionPerformed(evt);
-            }
-        });
-
+        _password.setText("Şifre");
         _password.setToolTipText("");
         _password.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -182,9 +179,9 @@ public class Login extends javax.swing.JFrame {
                 .addGap(23, 23, 23)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel2))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(29, 29, 29)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(_username)
@@ -193,32 +190,24 @@ public class Login extends javax.swing.JFrame {
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
                         .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(remember, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(150, 150, 150))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(_username, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(1, 1, 1)
-                        .addComponent(_password))
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(_username, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(remember)
-                .addContainerGap())
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
+                    .addComponent(_password, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(20, 20, 20))
         );
 
         jPanel2.setBackground(new java.awt.Color(0, 102, 102));
@@ -226,7 +215,6 @@ public class Login extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\Baraa\\Desktop\\Picture3.png")); // NOI18N
         jLabel1.setText("Giriş Yap");
         jLabel1.setToolTipText("");
 
@@ -255,8 +243,9 @@ public class Login extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0))
         );
 
         getAccessibleContext().setAccessibleParent(this);
@@ -270,35 +259,23 @@ public class Login extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void rememberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rememberActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rememberActionPerformed
-
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-            if (loginVerification(_username.getText().toLowerCase(), _password.getText(), remember.isSelected()) == 1){
-                if (remember.isSelected() == true){
-                    Common.writeUsingBufferedWriter(_username.getText() + "," + _password.getText(), 1);
-                    System.out.println("Userdata have been saved");
-                }
+        if (jButton1.isEnabled()) {
+            String temp = _password.getText().trim();
+            if (loaded) {
+                temp = password;
+            }
+            if (loginVerification(_username.getText().trim().toLowerCase(), temp) == 1) {
                 menu.me = toVerify;
                 menu.setEnabled(true);
                 menu.isManager(true);
                 this.dispose();
             }
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        String res = Common.readUsingBufferReader();
-        if (!res.equals("")) {
-            String[] data = res.split(",");
-            _username.setText(data[0]);
-            _password.setText(data[1]);
-        }
-        else {
-            _username.setText("Kullanıcı Adı Giriniz!");
-            _password.setText("Şifre Giriniz!");
-            jButton1.setEnabled(false);
-        }
+
     }//GEN-LAST:event_formWindowOpened
 
     private void _usernameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event__usernameFocusGained
@@ -314,40 +291,68 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event__usernameKeyTyped
 
     private void _usernameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event__usernameKeyReleased
+        loaded = false;
         if(Verification.verifyUsername(_username.getText())){
             if (Verification.verifyPassword(_password.getText())){
                 jButton1.setEnabled(true);
-                _username.setBackground(Color.white);
-                _username.setToolTipText(null);
-                _username.setBackground(Color.white);
-                _username.setToolTipText(null);
+                _password.setBackground(Color.white);
+                _password.setToolTipText(null);
             }
             else {
                 jButton1.setEnabled(false);
                 _password.setBackground(Color.pink);
-                _password.setToolTipText("Zorunlu alan! 8 - 32 Karakterden olu;mali!");
-                _username.setBackground(Color.white);
-                _username.setToolTipText(null);
+                _password.setToolTipText("Zorunlu alan! 8 - 32 Karakterden oluşmalı!");
             }
+            _username.setBackground(Color.white);
+            _username.setToolTipText(null);
         }
         else{
+            if (Verification.verifyPassword(_password.getText())){
+                jButton1.setEnabled(true);
+                _password.setBackground(Color.white);
+                _password.setToolTipText(null);
+            }
+            else {
+                _password.setBackground(Color.pink);
+                _password.setToolTipText("Zorunlu alan! 8 - 32 Karakterden oluşmalı!");
+
+            }
             _username.setBackground(Color.pink);
-            _username.setToolTipText("Zorunlu alan! 4 - 20 Karakterden olu;mali!");
+            _username.setToolTipText("Zorunlu alan! 4 - 20 Karakterden oluşmalı!");
             jButton1.setEnabled(false);
         }
     }//GEN-LAST:event__usernameKeyReleased
 
     private void _passwordKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event__passwordKeyReleased
-        if (Verification.verifyPassword(_password.getText())) {
-            if(Verification.verifyUsername(_username.getText())){
+        loaded = false;
+        if(Verification.verifyUsername(_username.getText())){
+            if (Verification.verifyPassword(_password.getText())){
                 jButton1.setEnabled(true);
+                _password.setBackground(Color.white);
+                _password.setToolTipText(null);
             }
             else {
                 jButton1.setEnabled(false);
+                _password.setBackground(Color.pink);
+                _password.setToolTipText("Zorunlu alan! 8 - 32 Karakterden oluşmalı!");
             }
+            _username.setBackground(Color.white);
+            _username.setToolTipText(null);
         }
-        else {
-                jButton1.setEnabled(false);
+        else{
+            if (Verification.verifyPassword(_password.getText())){
+                jButton1.setEnabled(true);
+                _password.setBackground(Color.white);
+                _password.setToolTipText(null);
+            }
+            else {
+                _password.setBackground(Color.pink);
+                _password.setToolTipText("Zorunlu alan! 8 - 32 Karakterden oluşmalı!");
+
+            }
+            _username.setBackground(Color.pink);
+            _username.setToolTipText("Zorunlu alan! 4 - 20 Karakterden oluşmalı!");
+            jButton1.setEnabled(false);
         }
     }//GEN-LAST:event__passwordKeyReleased
 
@@ -399,6 +404,5 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JCheckBox remember;
     // End of variables declaration//GEN-END:variables
 }

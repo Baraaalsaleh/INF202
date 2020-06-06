@@ -8,6 +8,7 @@ package berichtserstellungssystem.GUI;
 import berichtserstellungssystem.Common;
 import berichtserstellungssystem.DatabaseManagement.*;
 import berichtserstellungssystem.Resource.*;
+import berichtserstellungssystem.Security;
 import berichtserstellungssystem.Verification;
 import java.awt.Color;
 import java.sql.ResultSet;
@@ -172,7 +173,10 @@ public class Personel extends javax.swing.JFrame {
             }
             else {
                 if (process == 2 && type == 0) {
-                    if (Verification.verifyUsername(jTextField10.getText().trim()) && Verification.verifyPassword(jTextField11.getText().trim())) {
+                    if (Verification.verifyUsername(jTextField10.getText().trim()) && PersonManagement.userNameAccepted(jTextField10.getText().trim()) && Verification.verifyPassword(jTextField11.getText().trim())) {
+                        return true;
+                    }
+                    else if (Verification.verifyUsername(jTextField10.getText().trim()) && !PersonManagement.userNameAccepted(jTextField10.getText().trim()) && me.getUsername().equals(jTextField10.getText().trim()) && Verification.verifyPassword(jTextField11.getText().trim())) {
                         return true;
                     }
                     else {
@@ -316,6 +320,10 @@ public class Personel extends javax.swing.JFrame {
                                 jTextField10.setBackground(Color.pink);
                                 jTextField10.setToolTipText("Geçerli bir kullanıcı adı giriniz! Kullanıcı adı sadece inglizce harfler ve sayılar içirebilir (boşluk olmaksızın)!");
                             }
+                            else if (!PersonManagement.userNameAccepted(jTextField10.getText().trim()) && !me.getUsername().equals(jTextField10.getText().trim())) {
+                                jTextField10.setBackground(Color.pink);
+                                jTextField10.setToolTipText("Girdiğiniz kullanıcı adı başka bir kullanıcı tarıfından kullanılmaktadır! Farklı bir kullanıcı adı giriniz!");
+                            }
                             else {
                                 jTextField10.setBackground(Color.white);
                                 jTextField10.setToolTipText(null);
@@ -435,7 +443,7 @@ public class Personel extends javax.swing.JFrame {
         temp.setPersonalNr(Long.parseLong(Pnr));
         if (type == 0) {
             temp.setUsername(var1);
-            temp.setPassword(var2);
+            temp.setPassword(Security.generateHash(var2));
         }
         return temp;
     }
@@ -805,7 +813,7 @@ public class Personel extends javax.swing.JFrame {
         jLabel11.setBounds(438, 406, 201, 42);
 
         jTextField10.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jTextField10.setText("GG-AA-YYYY");
+        jTextField10.setText("Kullanıcı Adı");
         jTextField10.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 jTextField10FocusGained(evt);
@@ -911,7 +919,7 @@ public class Personel extends javax.swing.JFrame {
         jDateChooser1.setBounds(229, 344, 191, 44);
 
         getContentPane().add(jPanel1);
-        jPanel1.setBounds(0, 0, 937, 595);
+        jPanel1.setBounds(0, 0, 920, 590);
 
         pack();
         setLocationRelativeTo(null);
@@ -1073,11 +1081,13 @@ public class Personel extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField11KeyReleased
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        if (process == 1){
-            add();
-        }    
-        else {
-            update();
+        if (jButton1.isEnabled()) {
+            if (process == 1){
+                add();
+            }    
+            else {
+                update();
+            }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
