@@ -248,7 +248,7 @@ public class PersonManagement extends DatabaseManagement{
         ResultSet rs = null;
         try {
             stmt = con.createStatement();
-            rs = stmt.executeQuery("SELECT P.id, P.name, P.lastname, P.PersonalNr, E.level, E.permition_End_Date FROM Person P JOIN Employee E ON P.id = E.Person_id WHERE status = " + DatabaseManagement.getEMPLOYEE_STATUS() 
+            rs = stmt.executeQuery("SELECT P.id, P.name, P.lastname, P.PersonalNr, E.level, E.permition_End_Date, E.Manager_id FROM Person P JOIN Employee E ON P.id = E.Person_id WHERE status = " + DatabaseManagement.getEMPLOYEE_STATUS() 
                     + " AND P.id > " + biggerThan + " LIMIT 1;");
         }
         catch (SQLException e){
@@ -279,8 +279,17 @@ public class PersonManagement extends DatabaseManagement{
                     temp = new Employee(rs.getString("name"), rs.getString("lastname"), rs.getLong("PersonalNr"));
                     temp.setPermitionEndDate(rs.getDate("permition_End_Date"));
                     temp.setLevel(rs.getInt("level"));
-                    System.out.println(i);
-                    i += (rs.getInt("id")-i);
+                    int id = rs.getInt("id");
+                    Manager man = null;
+                    if (type == 1 || type == 3) {
+                        int manager_id = rs.getInt("Manager_id");
+                        man = new Manager(PersonManagement.getManagerById(manager_id));
+                        temp.setAdder(man);
+                    }
+                    if (type == 1 || type == 2) {
+                        temp.setLastChange(OthersManagement.getLastModiInfos(DatabaseManagement.getEMPLOYEE_TYPE(), id));
+                    }
+                    i += (id-i);
                     System.out.println(temp.getName());
                     res.add(temp);
                     count++;
@@ -323,7 +332,7 @@ public class PersonManagement extends DatabaseManagement{
             if (rs.next()){
                 manager_id = rs.getInt("id");
             }
-            rs = stmt.executeQuery("SELECT P.id, P.name, P.lastname, P.PersonalNr, E.level, E.permition_End_Date FROM Person P JOIN Employee E ON P.id = E.Person_id JOIN LastModification L ON P.id = L.Element_id WHERE P.status = " 
+            rs = stmt.executeQuery("SELECT P.id, P.name, P.lastname, P.PersonalNr, E.level, E.permition_End_Date, E.Manager_id FROM Person P JOIN Employee E ON P.id = E.Person_id JOIN LastModification L ON P.id = L.Element_id WHERE P.status = " 
                     + DatabaseManagement.getEMPLOYEE_STATUS() + " AND L.Manager_id = " + manager_id + " AND L.type = " + DatabaseManagement.getEMPLOYEE_TYPE() 
                     + " AND P.id > " + biggerThan + " LIMIT 1;");  
         }

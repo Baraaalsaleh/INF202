@@ -5,6 +5,7 @@
  */
 package berichtserstellungssystem;
 
+import java.io.File;
 import java.util.Date;
 
 /**
@@ -72,14 +73,14 @@ public class Verification {
     public static boolean verifyEmail (String string){
         if (string.length() <= 64 && string.length() > 3){
             if (string.contains("/") || string.contains("*") || string.contains("+") || string.contains("\\") || string.contains("%") || string.contains("$") || string.contains("'") || string.contains("!") || string.contains("#") 
-            || string.contains("^") || string.contains("&") || string.contains("(") || string.contains(")") || string.contains("=") || string.contains(";") || string.contains("?") || string.contains(":") ||
+            || string.contains("^") || string.contains("&") || string.contains("(") || string.contains(")") || string.contains("=") || string.contains(";") || string.contains("?") || string.contains(":") || string.contains(",") ||
             string.contains("\"") || string.contains("<") || string.contains(">") || string.contains("[") || string.contains("]") || string.contains("{") || string.contains("}") || string.contains("~") || string.contains("|") ||
                     string.contains(" ")) {
                 
                 System.out.println("Wrong Email");
                 return false;
             }
-            else if (justEnglish(string) && string.contains("@") && string.contains(".")){
+            else if (justEnglish(string) && string.contains("@") && string.contains(".") && string.charAt(string.length()-1) != '.'){
                     return true;
                 }
             else {
@@ -157,5 +158,16 @@ public class Verification {
         else {
             return true;
         }
+    }
+    
+    public static boolean templateExists() {
+        boolean res = false;
+        try {
+            File file = new File("Data/MagneticTemplate.xlsx"); 
+            res = file.exists();
+        } catch (Exception e) {
+            System.out.println("templateExists = False " + e);
+        }
+        return res;
     }
 }

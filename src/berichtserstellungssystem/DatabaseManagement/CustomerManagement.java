@@ -187,8 +187,17 @@ public class CustomerManagement extends DatabaseManagement{
                 }
                 if (rs.next()) {
                     temp = new Customer(rs.getString("name"), rs.getString("address"));
-                    System.out.println(i);
-                    i += (rs.getInt("id")-i);
+                    int id = rs.getInt("id");
+                    Manager man = null;
+                    if (type == 1 || type == 3) {
+                        int manager_id = rs.getInt("Manager_id");
+                        man = new Manager(PersonManagement.getManagerById(manager_id));
+                        temp.setAdder(man);
+                    }
+                    if (type == 1 || type == 2) {
+                        temp.setLastChange(OthersManagement.getLastModiInfos(DatabaseManagement.getCUSTOMER_TYPE(), id));
+                    }
+                    i += (id-i);
                     System.out.println(temp.getName());
                     res.add(temp);
                     count++;
@@ -208,7 +217,7 @@ public class CustomerManagement extends DatabaseManagement{
         ResultSet rs = null;
         try {
             stmt = con.createStatement();
-            rs = stmt.executeQuery("SELECT id, name, address FROM Customer WHERE id > " + biggerThan + " LIMIT 1;"); 
+            rs = stmt.executeQuery("SELECT id, name, address, Manager_id FROM Customer WHERE id > " + biggerThan + " LIMIT 1;"); 
         } catch (SQLException e){
             System.out.println("getCustomers " + e);
         }
@@ -241,7 +250,7 @@ public class CustomerManagement extends DatabaseManagement{
             if (rs.next()){
                 manager_id = rs.getInt("id");
             }           
-            rs = stmt.executeQuery("SELECT C.id, C.name, C.address FROM Customer C JOIN LastModification L ON C.id = L.Element_id WHERE L.Manager_id = " + manager_id 
+            rs = stmt.executeQuery("SELECT C.id, C.name, C.address, C.Manager_id FROM Customer C JOIN LastModification L ON C.id = L.Element_id WHERE L.Manager_id = " + manager_id 
                     + " AND L.type = " + DatabaseManagement.getCUSTOMER_TYPE() + " AND C.id > " + biggerThan + " LIMIT " + 1 + ";");
         }
         catch (SQLException e){

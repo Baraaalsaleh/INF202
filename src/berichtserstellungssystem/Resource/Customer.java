@@ -16,6 +16,8 @@ public class Customer {
     private String address;
     private ArrayList<String> orderNrs = new ArrayList();
     private ArrayList<String> offerNrs = new ArrayList();
+    private LastModification lastChange = null;
+    private Manager adder = new Manager();
 
     public Customer(String name, String address) {
         this.name = name;
@@ -40,7 +42,14 @@ public class Customer {
     public ArrayList<String> getOfferNrs() {
         return offerNrs;
     }
+    
+    public LastModification getLastChange() {
+        return lastChange;
+    }
 
+    public Manager getAdder() {
+        return adder;
+    }
     
     public void setName(String name) {
         this.name = name;
@@ -48,7 +57,7 @@ public class Customer {
 
     public void setAddress(String address) {
         this.address = address;
-    }
+    }    
 
     public void addOrderNrs(String orderNr) {
         this.orderNrs.add(orderNr);
@@ -72,5 +81,13 @@ public class Customer {
 
     public void setOfferNrs(ArrayList offerNrs) {
         this.offerNrs = offerNrs;
+    }
+    
+    public void setLastChange(LastModification lastChange) {
+        this.lastChange = lastChange;
+    }
+
+    public void setAdder(Manager adder) {
+        this.adder = adder;
     }
 }

@@ -15,7 +15,7 @@ import java.security.SecureRandom;
  */
 public class Security {
     static String algorithm = "SHA-512";
-    private final static char[] hexArray = "0123456789abcdef".toCharArray();
+    private final static char[] hexArray = "ACEGIKMOQSUWYZTL".toCharArray();
     //Diese Klasse ist da nur für spätere Änderungen, falls die eingegebenen Daten bearbeitet werden sollte, befor sie in der Datenbank gespeichert werden
     public static String prepareString (String string) {
         

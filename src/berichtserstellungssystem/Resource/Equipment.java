@@ -15,6 +15,8 @@ public class Equipment {
     private String name = "";
     private Date calibrationEndDate = new Date();
     private int type = 0;
+    private LastModification lastChange = null;
+    private Manager adder = new Manager();
 
     public Equipment(String name, Date calibrationEndDate) {
         this.name = name;
@@ -36,6 +38,14 @@ public class Equipment {
     public void setType(int type) {
         this.type = type;
     }
+    
+    public void setLastChange(LastModification lastChange) {
+        this.lastChange = lastChange;
+    }
+    
+    public void setAdder(Manager adder) {
+        this.adder = adder;
+    }
 
     public String getName() {
         return name;
@@ -49,5 +59,11 @@ public class Equipment {
         return type;
     }
     
+    public Manager getAdder() {
+        return adder;
+    }
     
+    public LastModification getLastChange() {
+        return lastChange;
+    }    
 }

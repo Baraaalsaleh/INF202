@@ -16,6 +16,8 @@ import java.util.Date;
 public class Employee extends Person{
     private int level = 0;
     private Date permitionEndDate = new Date();
+    private LastModification lastChange = null;
+    private Manager adder = new Manager();
 
     
     public Employee(int level, String name, String lastname, String gender, String address, String email, long TCNr, long telephone, long personalNr, Date birthDate, Date permitionEndDate) {
@@ -53,6 +55,14 @@ public class Employee extends Person{
     public Date getPermitionEndDate() {
         return permitionEndDate;
     }
+    
+    public LastModification getLastChange() {
+        return lastChange;
+    }
+    
+    public Manager getAdder() {
+        return adder;
+    }
 
     public void setLevel(int level) {
         this.level = level;
@@ -60,6 +70,14 @@ public class Employee extends Person{
 
     public void setPermitionEndDate(Date permitionEndDate) {
         this.permitionEndDate = permitionEndDate;
+    }
+    
+    public void setLastChange(LastModification lastChange) {
+        this.lastChange = lastChange;
+    }
+    
+    public void setAdder(Manager adder) {
+        this.adder = adder;
     }
 
     @Override

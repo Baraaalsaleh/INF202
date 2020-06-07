@@ -318,4 +318,22 @@ public class OthersManagement extends DatabaseManagement{
         }
         return res;
     }
+    
+    public static LastModification getLastModiInfos(int type, int element_id) {
+        ResultSet rs = null;
+        LastModification temp = null;
+        
+        try {
+            stmt = con.createStatement();
+            rs = stmt.executeQuery("SELECT Manager_id, date FROM LastModification WHERE Element_id = " + element_id + " AND type = " + type);
+            if (rs.next()) {
+                int manager_id = rs.getInt("Manager_id");
+                Manager man = new Manager(PersonManagement.getManagerById(manager_id));
+                temp = new LastModification(rs.getDate("date"), man);
+            }
+        } catch(SQLException e) {
+            System.out.println("getLastModiInfos " + e);
+        }
+        return temp;
+    }
 }

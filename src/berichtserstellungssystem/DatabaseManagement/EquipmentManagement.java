@@ -252,8 +252,17 @@ public class EquipmentManagement extends DatabaseManagement{
                 if (rs.next()) {
                     temp = new Equipment(rs.getString("name"), rs.getDate("calibrationEndDate"));
                     temp.setType(rs.getInt("type"));
-                    i += (rs.getInt("id")-i);
-                    System.out.println(temp.getName());
+                    int id = rs.getInt("id");
+                    Manager man = null;
+                    if (type == 1 || type == 3) {
+                        int manager_id = rs.getInt("Manager_id");
+                        man = new Manager(PersonManagement.getManagerById(manager_id));
+                        temp.setAdder(man);
+                    }
+                    if (type == 1 || type == 2) {
+                        temp.setLastChange(OthersManagement.getLastModiInfos(DatabaseManagement.getEQUIPMENT_TYPE(), id));
+                    }
+                    i += (id-i);
                     res.add(temp);
                     count++;
                 }
@@ -273,7 +282,7 @@ public class EquipmentManagement extends DatabaseManagement{
         ResultSet rs = null;
         try {
             stmt = con.createStatement();
-            rs = stmt.executeQuery("SELECT id, name, calibrationEndDate, type FROM Equipment WHERE id > " + biggerThan + " LIMIT 1;");
+            rs = stmt.executeQuery("SELECT id, name, calibrationEndDate, type, Manager_id FROM Equipment WHERE id > " + biggerThan + " LIMIT 1;");
             return rs;
         }
         catch (SQLException e){
@@ -309,7 +318,7 @@ public class EquipmentManagement extends DatabaseManagement{
             if (rs.next()){
                 manager_id = rs.getInt("id");
                 }            
-            rs = stmt.executeQuery("SELECT E.id, E.name, E.calibrationEndDate, E.type FROM Equipment E JOIN LastModification L ON E.id = L.Element_id WHERE (L.Manager_id = " + manager_id 
+            rs = stmt.executeQuery("SELECT E.id, E.name, E.calibrationEndDate, E.type, E.Manager_id FROM Equipment E JOIN LastModification L ON E.id = L.Element_id WHERE (L.Manager_id = " + manager_id 
                     + " AND L.type = " + DatabaseManagement.getEQUIPMENT_TYPE() + " AND E.id > " + biggerThan + ") LIMIT 1;");
                 return rs;
         }

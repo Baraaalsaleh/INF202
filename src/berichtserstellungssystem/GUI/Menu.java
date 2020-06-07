@@ -31,9 +31,14 @@ import javax.swing.JTable;
 import javax.swing.event.*;
 import javax.swing.table.*;
 import berichtserstellungssystem.Report.Report;
+import berichtserstellungssystem.Verification;
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.concurrent.TimeUnit;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JProgressBar;
+import javax.swing.SwingWorker;
 import javax.swing.filechooser.FileFilter;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -59,7 +64,7 @@ public class Menu extends javax.swing.JFrame {
         if (!PersonManagement.findAdmin()) {
             new Personel(0, 1, me).setVisible(true);
         }
-        downloadTemplates();
+        
         initComponents();
 
         /*
@@ -74,16 +79,35 @@ public class Menu extends javax.swing.JFrame {
     }
     
     private void downloadTemplates() {
-        try {
-            URL website = new URL("https://github.com/Baraaalsaleh/Templetes/raw/master/MagneticTemplate.xlsx");
-            ReadableByteChannel rbc = Channels.newChannel(website.openStream());
-            FileOutputStream fos = new FileOutputStream("Data\\MagneticTemplate.xlsx");
-            fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-            fos.close();
-            System.out.println("Download Done");
-        }
-        catch (Exception e) {
-            System.out.println("downloadTemplates " + e);
+         
+        if (!Verification.templateExists()) {
+            JDialog dialog = new JDialog(this, true);
+            SwingWorker<Void,Void> worker = new SwingWorker<Void,Void>()
+            {
+                @Override
+                protected Void doInBackground()
+                {
+                    try {
+                        URL website = new URL("https://github.com/Baraaalsaleh/Templetes/raw/master/MagneticTemplate.xlsx");
+                        ReadableByteChannel rbc = Channels.newChannel(website.openStream());
+                        FileOutputStream fos = new FileOutputStream("Data\\MagneticTemplate.xlsx");
+                        fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+                        fos.close();
+                    }
+                    catch (Exception e) {
+                        JOptionPane.showMessageDialog(dialog, "MagneticTemplate.xlsx indirilemedi", "Hatalı İşlem", JOptionPane.PLAIN_MESSAGE);
+                    }
+                    return null;
+                }
+
+                @Override
+                protected void done()
+                {
+                    dialog.dispose();
+                }
+            };
+            worker.execute();
+            JOptionPane.showMessageDialog(dialog, "MagneticTemplate.xlsx indiriliyor, Lütfen Bekleyin!", "Lütfen Bekleyin", JOptionPane.PLAIN_MESSAGE);
         }
     }
     
@@ -104,7 +128,7 @@ public class Menu extends javax.swing.JFrame {
         }
     }
     
-    private void addEmployees (ArrayList<Employee> list, JTable t) {
+    private void addEmployees (ArrayList<Employee> list, JTable t, boolean showModiInfo, boolean showManInfo) {
         Object[] row = new Object[25];
         DefaultTableModel model = new DefaultTableModel();
         model.addColumn("Adı");
@@ -112,6 +136,15 @@ public class Menu extends javax.swing.JFrame {
         model.addColumn("PNR");
         model.addColumn("Seviye");
         model.addColumn("İzinli");
+        if (me.getStatus() == DatabaseManagement.getAdmin_STATUS()) {
+            if (showManInfo) {
+                model.addColumn("Ekleyen");
+            }
+            if (showModiInfo){
+                model.addColumn("Düzeltme Yapan");
+                model.addColumn("Son Düzeltme Tarihi");
+            }
+        }
         Date now = new Date();
         for (Employee e : list) {
             row[0] = e.getName();
@@ -124,6 +157,32 @@ public class Menu extends javax.swing.JFrame {
             else {
                 row[4] = "Hayır";
             }
+            if (me.getStatus() == DatabaseManagement.getAdmin_STATUS()) {
+                if (showManInfo) {
+                    row[5] = e.getAdder().getName() + " " + e.getAdder().getLastname() + ", PNR: " + e.getAdder().getPersonalNr();
+                }
+                if (showManInfo && showModiInfo){
+                    if (e.getLastChange() != null) {
+                        row[6] = e.getLastChange().getModificator().getName() + " " + e.getLastChange().getModificator().getLastname() + ", PNR: " + e.getLastChange().getModificator().getPersonalNr();
+                        row[7] = Common.date_toStringReverse(e.getLastChange().getModificationDate(), "-");
+                    }
+                    else {
+                        row[6] = "-";
+                        row[7] = "-";
+                    }
+                }
+                else if (!showManInfo && showModiInfo){
+                    if (e.getLastChange() != null) {
+                        row[5] = e.getLastChange().getModificator().getName() + " " + e.getLastChange().getModificator().getLastname() + ", PNR: " + e.getLastChange().getModificator().getPersonalNr();
+                        row[6] = Common.date_toStringReverse(e.getLastChange().getModificationDate(), "-");
+                    }
+                    else {
+                        row[5] = "-";
+                        row[6] = "-";
+                    }
+                }
+            }
+            
             System.out.println(e.getName() + " " + e.getLastname());
             model.addRow(row);
         }
@@ -146,13 +205,22 @@ public class Menu extends javax.swing.JFrame {
         t.setModel(model);
     }
 
-    private void addEquipments (ArrayList<Equipment> list, JTable t) {
+    private void addEquipments (ArrayList<Equipment> list, JTable t, boolean showModiInfo, boolean showManInfo) {
         Object[] row = new Object[25];
         DefaultTableModel model = new DefaultTableModel();
         model.addColumn("Ekipman");
         model.addColumn("Tipi");
         model.addColumn("Kalibrasyon Son Geçerlilik Tarihi");
         model.addColumn("Geçerli");
+        if (me.getStatus() == DatabaseManagement.getAdmin_STATUS()) {
+            if (showManInfo) {
+                model.addColumn("Ekleyen");
+            }
+            if (showModiInfo){
+                model.addColumn("Düzeltme Yapan");
+                model.addColumn("Son Düzeltme Tarihi");
+            }
+        }
         Date now = new Date();
         for (Equipment e : list) {
             row[0] = e.getName();
@@ -168,6 +236,31 @@ public class Menu extends javax.swing.JFrame {
             }
             else {
                 row[3] = "Hayır";
+            }
+            if (me.getStatus() == DatabaseManagement.getAdmin_STATUS()) {
+                if (showManInfo) {
+                    row[4] = e.getAdder().getName() + " " + e.getAdder().getLastname() + ", PNR: " + e.getAdder().getPersonalNr();
+                }
+                if (showManInfo && showModiInfo){
+                    if (e.getLastChange() != null) {
+                        row[5] = e.getLastChange().getModificator().getName() + " " + e.getLastChange().getModificator().getLastname() + ", PNR: " + e.getLastChange().getModificator().getPersonalNr();
+                        row[6] = Common.date_toStringReverse(e.getLastChange().getModificationDate(), "-");
+                    }
+                    else {
+                        row[5] = "-";
+                        row[6] = "-";
+                    }
+                }
+                else if (!showManInfo && showModiInfo){
+                    if (e.getLastChange() != null) {
+                        row[4] = e.getLastChange().getModificator().getName() + " " + e.getLastChange().getModificator().getLastname() + ", PNR: " + e.getLastChange().getModificator().getPersonalNr();
+                        row[5] = Common.date_toStringReverse(e.getLastChange().getModificationDate(), "-");
+                    }
+                    else {
+                        row[4] = "-";
+                        row[5] = "-";
+                    }
+                }
             }
             System.out.println(e.getName());
             model.addRow(row);
@@ -186,14 +279,48 @@ public class Menu extends javax.swing.JFrame {
         table.setModel(model);
     }
     
-    private void addCustomers(ArrayList<Customer> list, JTable table) {
+    private void addCustomers(ArrayList<Customer> list, JTable table, boolean showModiInfo, boolean showManInfo) {
         Object[] row = new Object[25];
         DefaultTableModel model = new DefaultTableModel();
         model.addColumn("Adı");
         model.addColumn("Adres");
+        if (me.getStatus() == DatabaseManagement.getAdmin_STATUS()) {
+            if (showManInfo) {
+                model.addColumn("Ekleyen");
+            }
+            if (showModiInfo){
+                model.addColumn("Düzeltme Yapan");
+                model.addColumn("Son Düzeltme Tarihi");
+            }
+        }
         for (Customer e : list) {
             row[0] = e.getName();
             row[1] = e.getAddress();
+            if (me.getStatus() == DatabaseManagement.getAdmin_STATUS()) {
+                if (showManInfo) {
+                    row[2] = e.getAdder().getName() + " " + e.getAdder().getLastname() + ", PNR: " + e.getAdder().getPersonalNr();
+                }
+                if (showManInfo && showModiInfo){
+                    if (e.getLastChange() != null) {
+                        row[3] = e.getLastChange().getModificator().getName() + " " + e.getLastChange().getModificator().getLastname() + ", PNR: " + e.getLastChange().getModificator().getPersonalNr();
+                        row[4] = Common.date_toStringReverse(e.getLastChange().getModificationDate(), "-");
+                    }
+                    else {
+                        row[3] = "-";
+                        row[4] = "-";
+                    }
+                }
+                else if (!showManInfo && showModiInfo){
+                    if (e.getLastChange() != null) {
+                        row[2] = e.getLastChange().getModificator().getName() + " " + e.getLastChange().getModificator().getLastname() + ", PNR: " + e.getLastChange().getModificator().getPersonalNr();
+                        row[3] = Common.date_toStringReverse(e.getLastChange().getModificationDate(), "-");
+                    }
+                    else {
+                        row[2] = "-";
+                        row[3] = "-";
+                    }
+                }
+            }
             System.out.println(e.getName() + " " + e.getAddress());
             model.addRow(row);
         }
@@ -223,13 +350,16 @@ public class Menu extends javax.swing.JFrame {
     }
     
     private void prepareTables (int table) {
+        /*if (me.getStatus() == DatabaseManagement.getAdmin_STATUS() && (table == 1 || table == 3 || table == 7)) {
+            jTable2.setSize(id, id);
+        }*/
         if (table == 1) {
                 ArrayList<Employee> res = PersonManagement.employees(0, 25, 1, me);
-                addEmployees(res, jTable2);
+                addEmployees(res, jTable2, true, true);
                 res = PersonManagement.employees(0, 25, 2, me);
-                addEmployees(res, jTable3);
+                addEmployees(res, jTable3, true, false);
                 res = PersonManagement.employees(0, 25, 3, me);
-                addEmployees(res, jTable4);
+                addEmployees(res, jTable4, false, true);
         }
         else if (table == 2) {
                 ArrayList<Manager> res = PersonManagement.managers(0, 25);
@@ -237,11 +367,11 @@ public class Menu extends javax.swing.JFrame {
         }
         else if (table == 3) {
                 ArrayList<Equipment> res = EquipmentManagement.equipments(0, 25, 1, me);
-                addEquipments(res, jTable2);
+                addEquipments(res, jTable2, true, true);
                 res = EquipmentManagement.equipments(0, 25, 2, me);
-                addEquipments(res, jTable3);
+                addEquipments(res, jTable3, true, false);
                 res = EquipmentManagement.equipments(0, 25, 3, me);
-                addEquipments(res, jTable4);
+                addEquipments(res, jTable4, false, true);
         }
         else if (table == 4) {
             ArrayList<String> res = OthersManagement.projects(0, 25);
@@ -257,11 +387,11 @@ public class Menu extends javax.swing.JFrame {
         }
         else if (table == 7) {
             ArrayList<Customer> res = CustomerManagement.customers(0, 25, 1, me);
-            addCustomers(res, jTable2);
+            addCustomers(res, jTable2, true, true);
             res = CustomerManagement.customers(0, 25, 2, me);
-            addCustomers(res, jTable3);
+            addCustomers(res, jTable3, true, false);
             res = CustomerManagement.customers(0, 25, 3, me);
-            addCustomers(res, jTable4);
+            addCustomers(res, jTable4, false, true);
         }
         else {
             ArrayList<Report> res = ReportManagement.reports(0, 25);
@@ -560,8 +690,14 @@ public class Menu extends javax.swing.JFrame {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         jScrollPane2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jScrollPane2.setMaximumSize(new java.awt.Dimension(912, 526));
+        jScrollPane2.setMinimumSize(new java.awt.Dimension(912, 526));
 
         jTabbedPane1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jTabbedPane1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+
+        jScrollPane3.setMaximumSize(new java.awt.Dimension(452, 402));
+        jScrollPane3.setMinimumSize(new java.awt.Dimension(452, 402));
 
         jTable2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
@@ -609,18 +745,19 @@ public class Menu extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 763, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 933, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 496, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 680, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Tümü", jPanel1);
+
+        jScrollPane4.setMaximumSize(new java.awt.Dimension(452, 402));
+        jScrollPane4.setMinimumSize(new java.awt.Dimension(452, 402));
 
         jTable3.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -645,18 +782,17 @@ public class Menu extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 763, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 933, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 496, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 680, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Eklediklerim", jPanel2);
+
+        jScrollPane5.setMaximumSize(new java.awt.Dimension(452, 402));
+        jScrollPane5.setMinimumSize(new java.awt.Dimension(452, 402));
 
         jTable4.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -681,15 +817,11 @@ public class Menu extends javax.swing.JFrame {
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 763, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 933, Short.MAX_VALUE)
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 496, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 680, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Düzelttiklerim", jPanel4);
@@ -709,14 +841,16 @@ public class Menu extends javax.swing.JFrame {
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+            .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 714, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 774, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(1, 1, 1)))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -727,8 +861,8 @@ public class Menu extends javax.swing.JFrame {
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 378, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 382, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jMenuBar1.setBackground(new java.awt.Color(0, 0, 102));
@@ -741,6 +875,7 @@ public class Menu extends javax.swing.JFrame {
 
         jMenu1.setText("Dosya");
         jMenu1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jMenu1.setFont(new java.awt.Font("Times New Roman", 3, 14)); // NOI18N
 
         jMenuItem5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/minimize.png"))); // NOI18N
         jMenuItem5.setText("Küçült");
@@ -766,6 +901,7 @@ public class Menu extends javax.swing.JFrame {
 
         jMenu6.setText("Rapor");
         jMenu6.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jMenu6.setFont(new java.awt.Font("Times New Roman", 3, 14)); // NOI18N
 
         jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Y, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem2.setBackground(new java.awt.Color(204, 255, 204));
@@ -795,6 +931,7 @@ public class Menu extends javax.swing.JFrame {
 
         jMenu2.setText("Personel");
         jMenu2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jMenu2.setFont(new java.awt.Font("Times New Roman", 3, 14)); // NOI18N
 
         jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/person.png"))); // NOI18N
@@ -831,6 +968,7 @@ public class Menu extends javax.swing.JFrame {
 
         jMenu3.setText("Ekle");
         jMenu3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jMenu3.setFont(new java.awt.Font("Times New Roman", 3, 14)); // NOI18N
 
         jMenuItem8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/person2.png"))); // NOI18N
         jMenuItem8.setText("Personel");
@@ -922,6 +1060,7 @@ public class Menu extends javax.swing.JFrame {
 
         jMenu7.setText("Düzelt");
         jMenu7.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jMenu7.setFont(new java.awt.Font("Times New Roman", 3, 14)); // NOI18N
 
         jMenuItem16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/person2.png"))); // NOI18N
         jMenuItem16.setText("Personel");
@@ -1046,6 +1185,7 @@ public class Menu extends javax.swing.JFrame {
         jScrollPane2.setVisible(false);
         jLabel2.setVisible(false);
         
+        downloadTemplates();
     }//GEN-LAST:event_formWindowOpened
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
@@ -1098,7 +1238,7 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem15ActionPerformed
 
     private void jMenuItem16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem16ActionPerformed
-        jLabel2.setVisible(false);
+       jLabel2.setVisible(false);
         jScrollPane2.setVisible(true);
         if (jTabbedPane1.getComponentCount() < 3) {
             jTabbedPane1.addTab("Eklediklerim", jPanel2);
