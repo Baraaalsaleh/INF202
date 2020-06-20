@@ -168,7 +168,7 @@ public class OthersManagement extends DatabaseManagement{
             stmt = con.createStatement();
             rs = stmt.executeQuery("SELECT id FROM StageOfExamination WHERE stageOfExamination = '" + name + "';");
             if (!rs.next()){
-                stmt.executeUpdate("UPDATE StageOfExamination stageOfExamination = '" + name + "' WHERE stageOfExamination = '" + oldName + "';");
+                stmt.executeUpdate("UPDATE StageOfExamination SET stageOfExamination = '" + name + "' WHERE stageOfExamination = '" + oldName + "';");
                 return 1;
             }
             else {

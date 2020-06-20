@@ -38,6 +38,8 @@ public class Report extends javax.swing.JFrame {
     MagneticReport toEditM;
     RadiographicReport toEditR;
     
+    private int type = 0;
+    
     int process = 1;
 
     GridBagLayout layout = new GridBagLayout();
@@ -87,6 +89,7 @@ public class Report extends javax.swing.JFrame {
     
     public Report(int type, String customer, String reportNo) {
         start();
+        this.type = type;
         int id = ReportManagement.getReportId(customer, reportNo);
         System.out.println(id);
         if (type == DatabaseManagement.getMAGNETIC_TYPE()) {
@@ -101,10 +104,11 @@ public class Report extends javax.swing.JFrame {
         this.process = 2;
         setEveryThing();
     }
+    
     public Report(MagneticReport toEditM, String[] data) {
         start();
         this.toEditM = toEditM;
-        int type = DatabaseManagement.getMAGNETIC_TYPE();
+        type = DatabaseManagement.getMAGNETIC_TYPE();
         process = 2;
         
         if (type == DatabaseManagement.getMAGNETIC_TYPE()) {
@@ -132,6 +136,12 @@ public class Report extends javax.swing.JFrame {
         this.confirmator = confirmation;
         this.equip1 = equip1;
         this.equip2 = equip2;
+        if (equip1 != null) {
+            this.type = DatabaseManagement.getMAGNETIC_TYPE();
+        }
+        else {
+            this.type = DatabaseManagement.getRADIOGRAPHIC_TYPE();
+        }
         this.project = project;
         this.surfaceCondition = surfaceCondition;
         this.stageOfExamination = stageOfExamination;
@@ -248,8 +258,8 @@ public class Report extends javax.swing.JFrame {
         radiographicResultsCapsul();
         magneticResultsCapsul();
         if (process == 1) {
-            if (equip2 != null) {
-                jTabbedPane1.remove(1);
+            if (this.type == DatabaseManagement.getRADIOGRAPHIC_TYPE()) {
+                jTabbedPane1.remove(0);
                 _customer.setText(this.theCustomer.getName());
                 _project.setText(this.project);
                 _inspectionPlace.setText(this.theCustomer.getAddress());
@@ -318,9 +328,8 @@ public class Report extends javax.swing.JFrame {
                 _date2.setText(Common.date_toStringReverse(this.reportDate, "."));
                 _date3.setText(Common.date_toStringReverse(this.reportDate, "."));
             }
-            else if (equip1 != null) {
-                jTabbedPane1.setSelectedIndex(1);
-                jTabbedPane1.remove(0);
+            else if (this.type == DatabaseManagement.getMAGNETIC_TYPE()) {
+                jTabbedPane1.remove(1);
                 _Mcustomer.setText(this.theCustomer.getName());
                 _Mproject.setText(this.project);
                 _MinspectionPlace.setText(this.theCustomer.getAddress());
@@ -374,9 +383,9 @@ public class Report extends javax.swing.JFrame {
         }
         else {
             jLabel1.setEnabled(true);
-            jLabel4.setEnabled(true);
-            if (this.toEditR != null) {
-                jTabbedPane1.remove(1);
+            jLabel6.setEnabled(true);
+            if (this.type == DatabaseManagement.getRADIOGRAPHIC_TYPE()) {
+                jTabbedPane1.remove(0);
                 _customer.setText(toEditR.getCustomer());
                 _project.setText(toEditR.getProjectName());
                 _inspectionPlace.setText(toEditR.getInspectionPlace());
@@ -476,10 +485,9 @@ public class Report extends javax.swing.JFrame {
                 _date2.setText(Common.date_toStringReverse(this.reportDate, "."));
                 _date3.setText(Common.date_toStringReverse(this.reportDate, "."));
             }
-            else if (equip1 != null) {
-                jTabbedPane1.setSelectedIndex(1);
-                jTabbedPane1.remove(0);
-                
+            else if (this.type == DatabaseManagement.getMAGNETIC_TYPE()) {
+                jTabbedPane1.remove(1);
+                jLabel4.setEnabled(true);
                 _Mcustomer.setText(toEditM.getCustomer());
                 _Mproject.setText(toEditM.getProjectName());
                 _MinspectionPlace.setText(toEditM.getInspectionPlace());
@@ -1173,6 +1181,10 @@ public class Report extends javax.swing.JFrame {
                 _MreportNo.setToolTipText("Girdiğiniz rapor numarası bu firma için daha önce kullanılmıştır!");
                 return false;
             }
+            else {
+                _MreportNo.setBackground(Color.white);
+                _MreportNo.setToolTipText(null);
+            }
         }
         else {
             _MreportNo.setBackground(Color.white);
@@ -1564,39 +1576,70 @@ public class Report extends javax.swing.JFrame {
         else if (process == 3) {
             func = "Excel Dosyasi oluşturma";
         }
+        else if (process == 4) {
+            func = "Silme";
+        }
         if (done == 1) {
             JOptionPane.showMessageDialog(dialog, func  + " işlemi başarıyla tamamlanmıştır", "Başarılı İşlem", JOptionPane.PLAIN_MESSAGE);
             if (process == 3) {
                 process = 2;
             }
-            else if (process == 1) {
+            else if (process == 4) {
+                this.dispose();
+            }
+            else if (process == 1 || process == 2) {
                 jLabel2.setEnabled(false);
                 jLabel1.setEnabled(true);
-                jLabel4.setEnabled(true);
+                jLabel6.setEnabled(true);
+                if (!jTabbedPane1.getTitleAt(0).equals("Radyografik Muayene Raporu")) {
+                    jLabel4.setEnabled(true);
+                }
                 process = 2;
             }
         }
         else if (done == 0) {
-            JOptionPane.showMessageDialog(dialog, "Girdiğiniz rapor numarasi bu firma için daha önce kullanıldı!", "Hatalı İşlem", JOptionPane.PLAIN_MESSAGE);
-            if (process == 3) { process = 2;}
+            if (process == 1) {
+                JOptionPane.showMessageDialog(dialog, "Girdiğiniz rapor numarasi bu firma için daha önce kullanıldı!", "Hatalı İşlem", JOptionPane.PLAIN_MESSAGE);
+            }
+            else {
+                JOptionPane.showMessageDialog(dialog, "Girdiğiniz rapor numarasi ve firma adi veri tabanında bulunmadı, bu raporu kaydetmek için tekrar deneyin!", "Hatalı İşlem", JOptionPane.PLAIN_MESSAGE);
+                process = 1;
+            }
+            
+            if (process == 3 || process == 4) { process = 2;}
         }
         else {
-            JOptionPane.showMessageDialog(dialog, "Veri tabanına bağlanırken hata oluştu!, Lütfen tekrar deneyin.", "Hatalı Bağlantı", JOptionPane.PLAIN_MESSAGE);
-            try {
-                DatabaseManagement.con.close();
-            } catch (SQLException ex) {
-                System.out.println(ex);
+            if (process != 3) {
+                JOptionPane.showMessageDialog(dialog, "Veri tabanına bağlanırken hata oluştu!, Lütfen tekrar deneyin.", "Hatalı Bağlantı", JOptionPane.PLAIN_MESSAGE);
+                try {
+                    DatabaseManagement.con.close();
+                } catch (SQLException ex) {
+                    System.out.println(ex);
+                }
+                DatabaseManagement.con = DatabaseManagement.connect();
             }
-            DatabaseManagement.con = DatabaseManagement.connect();
-            if (process == 3) { process = 2;}
+            else {
+                JOptionPane.showMessageDialog(dialog, func  + " işlemi tamamlanamadı", "Hatalı İşlem", JOptionPane.PLAIN_MESSAGE);
+            }
+            if (process == 3 || process == 4) { process = 2;}
         }
     }
     
     public void setValues(int element, Customer cus, String[] s, Employee[] e, MagneticEquipment mq, RadiographicEquipment rq, Date date) {
+        jLabel1.setEnabled(false);
+        jLabel4.setEnabled(false);
+        jLabel6.setEnabled(false);
+        if (everyThingIsOkayM() || everyThingIsOkayR()) {
+            jLabel2.setEnabled(true);
+        }
+        boolean mag = false;
+        if (this.type == DatabaseManagement.getMAGNETIC_TYPE()) {
+            mag = true;
+        }
         switch(element) {
             case 0:
                 this.theCustomer = cus;
-                if (equip1 != null) {
+                if (mag) {
                     _Mcustomer.setText(cus.getName());
                     _MinspectionPlace.setText(cus.getAddress());
                 }
@@ -1607,7 +1650,7 @@ public class Report extends javax.swing.JFrame {
 
                 break;
             case 1:
-                if (equip1 != null) {
+                if (mag) {
                     _MorderNo.setText(s[0]);
                 }
                 else {
@@ -1617,7 +1660,7 @@ public class Report extends javax.swing.JFrame {
                 
                 break;
             case 2:
-                if (equip1 != null) {
+                if (mag) {
                     _MofferNo.setText(s[1]);
                 }
                 else {
@@ -1629,7 +1672,7 @@ public class Report extends javax.swing.JFrame {
             case 3:
                 this.operator = e[0];
                 this.operator_id = PersonManagement.getPersonId((Person) operator);
-                if (equip1 != null) {
+                if (mag) {
                     _MoperatorName.setText(operator.getName() + " " + operator.getLastname());
                     _MoperatorLevel.setText(Integer.toString(operator.getLevel()));
                 }
@@ -1643,7 +1686,7 @@ public class Report extends javax.swing.JFrame {
             case 4:
                 this.evaluator = e[1];
                 this.evaluator_id = PersonManagement.getPersonId((Person) evaluator);
-                if (equip1 != null) {
+                if (mag) {
                     _MevaluatorName.setText(evaluator.getName() + " " + evaluator.getLastname());
                     _MevaluatorLevel.setText(Integer.toString(evaluator.getLevel()));
                 }
@@ -1657,7 +1700,7 @@ public class Report extends javax.swing.JFrame {
             case 5:
                 this.confirmator = e[2];
                 this.confirmation_id = PersonManagement.getPersonId((Person) confirmator);
-                if (equip1 != null) {
+                if (mag) {
                     _MconfirmationName.setText(confirmator.getName() + " " + confirmator.getLastname());
                     _MconfirmationLevel.setText(Integer.toString(confirmator.getLevel()));
                 }
@@ -1669,7 +1712,7 @@ public class Report extends javax.swing.JFrame {
                 
                 break;
             case 6:
-                if (equip1 != null) {
+                if (mag) {
                     this.equip1 = mq;
                     _poleDistance.setText(equip1.getPolesDistance());
                     _Mequipment.setText(equip1.getName());
@@ -1695,7 +1738,7 @@ public class Report extends javax.swing.JFrame {
                 
                 
             case 7:
-                if (equip1 != null) {
+                if (mag) {
                     _Mproject.setText(s[2]);
                 }
                 else {
@@ -1705,7 +1748,7 @@ public class Report extends javax.swing.JFrame {
                 
                 
             case 8:
-                if (equip1 != null) {
+                if (mag) {
                     _MsurfaceCondition.setText(s[3]);
                 }
                 else {
@@ -1715,7 +1758,7 @@ public class Report extends javax.swing.JFrame {
                 
                 
             case 9:
-                if (equip1 != null) {
+                if (mag) {
                     _MstageOfExamination.setText(s[4]);
                 }
                 else {
@@ -1727,7 +1770,7 @@ public class Report extends javax.swing.JFrame {
                 
             case 10:
                 this.reportDate = date;
-                if (equip1 != null) {
+                if (mag) {
                     _MreportDate.setText(Common.date_toStringReverse(date, "."));
                     _MinspectionDates.setText(Common.date_toStringReverse(date, "."));
                     _Mdate1.setText(Common.date_toStringReverse(date, "."));
@@ -1746,20 +1789,22 @@ public class Report extends javax.swing.JFrame {
     }
     
     private void add() {
-        if (equip1 == null) {
+        if (this.type != DatabaseManagement.getMAGNETIC_TYPE()) {
             RadiographicReport toAdd = collectDataRadiographic();
             int res = ReportManagement.insertRadiographicReport(toAdd);
+            this.toEditR = toAdd;
             message(res);
         }
         else {
             MagneticReport toAdd = collectDataMagnetic();
             int res = ReportManagement.insertMagneticReport(toAdd);
+            this.toEditM = toAdd;
             message(res);
         }
     }
     
     private void update() {
-        if (this.toEditR != null) {
+        if (this.type != DatabaseManagement.getMAGNETIC_TYPE()) {
             int report_id = 0;
             report_id = ReportManagement.getReportId(this.toEditR.getCustomer(), this.toEditR.getReportNumber());
             if (report_id == 0) {
@@ -1783,6 +1828,16 @@ public class Report extends javax.swing.JFrame {
                 message(res);
             }
         }
+    }
+    
+    void delete() {
+        String repNo = _reportNo.getText().trim();;
+        if (this.type == DatabaseManagement.getMAGNETIC_TYPE()) {
+            repNo = _MreportNo.getText().trim();
+        }
+        int res = ReportManagement.deleteReport(this.theCustomer.getName(), repNo);
+        this.process = 4;
+        message(res);
     }
     
     private void printReport(JPanel panel, double a, double b) {
@@ -1998,9 +2053,155 @@ public class Report extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jLayeredPane1 = new javax.swing.JLayeredPane();
         jTabbedPane1 = new javax.swing.JTabbedPane();
+        jPanel6 = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
+        _MstageOfExamination = new javax.swing.JTextField();
+        _MinspectionProcedure = new javax.swing.JTextField();
+        _MinspectionScope = new javax.swing.JTextField();
+        _MdrawingNo = new javax.swing.JTextField();
+        _MsurfaceCondition = new javax.swing.JTextField();
+        jPanel2 = new javax.swing.JPanel();
+        _MevaluationStandard = new javax.swing.JTextField();
+        _Mcustomer = new javax.swing.JTextField();
+        _Mproject = new javax.swing.JTextField();
+        _MinspectionPlace = new javax.swing.JTextField();
+        _MinspectionStandard = new javax.swing.JTextField();
+        jPanel8 = new javax.swing.JPanel();
+        _MofferNo = new javax.swing.JTextField();
+        _Mpage = new javax.swing.JTextField();
+        _MreportNo = new javax.swing.JTextField();
+        _MreportDate = new javax.swing.JTextField();
+        _MorderNo = new javax.swing.JTextField();
+        jPanel9 = new javax.swing.JPanel();
+        _distanceOfLight = new javax.swing.JTextField();
+        _poleDistance = new javax.swing.JTextField();
+        _Mequipment = new javax.swing.JTextField();
+        _MPCarrier = new javax.swing.JTextField();
+        _UV = new javax.swing.JTextField();
+        _magTech = new javax.swing.JTextField();
+        jPanel10 = new javax.swing.JPanel();
+        _MheatTreatment = new javax.swing.JTextField();
+        _examinationArea = new javax.swing.JTextField();
+        _currentType = new javax.swing.JTextField();
+        _luxmeter = new javax.swing.JTextField();
+        _testMedium = new javax.swing.JTextField();
+        _demagnetization = new javax.swing.JTextField();
+        jPanel11 = new javax.swing.JPanel();
+        _gauss = new javax.swing.JTextField();
+        _liftingTestDate = new javax.swing.JTextField();
+        _surfaceTemperature = new javax.swing.JTextField();
+        _MsurfaceCondition2 = new javax.swing.JTextField();
+        _identification = new javax.swing.JTextField();
+        jPanel12 = new javax.swing.JPanel();
+        jLabel20 = new javax.swing.JLabel();
+        jLabel35 = new javax.swing.JLabel();
+        _fillet = new javax.swing.JCheckBox();
+        jLabel36 = new javax.swing.JLabel();
+        jLabel37 = new javax.swing.JLabel();
+        _butt = new javax.swing.JCheckBox();
+        jLabel39 = new javax.swing.JLabel();
+        jLabel40 = new javax.swing.JLabel();
+        jPanel14 = new javax.swing.JPanel();
+        _Mdescription = new javax.swing.JTextField();
+        _standardDeviations = new javax.swing.JTextField();
+        _MinspectionDates = new javax.swing.JTextField();
+        jPanel13 = new javax.swing.JPanel();
+        _result1 = new javax.swing.JTextField();
+        _pieceNo1 = new javax.swing.JTextField();
+        _testLength1 = new javax.swing.JTextField();
+        _weldingProcess1 = new javax.swing.JTextField();
+        _Mthickness1 = new javax.swing.JTextField();
+        _diameter1 = new javax.swing.JTextField();
+        _MdefectType1 = new javax.swing.JTextField();
+        _MdefectLocation1 = new javax.swing.JTextField();
+        _result2 = new javax.swing.JTextField();
+        _MdefectLocation2 = new javax.swing.JTextField();
+        _MdefectType2 = new javax.swing.JTextField();
+        _diameter2 = new javax.swing.JTextField();
+        _Mthickness2 = new javax.swing.JTextField();
+        _weldingProcess2 = new javax.swing.JTextField();
+        _testLength2 = new javax.swing.JTextField();
+        _pieceNo2 = new javax.swing.JTextField();
+        _MdefectType3 = new javax.swing.JTextField();
+        _testLength3 = new javax.swing.JTextField();
+        _result3 = new javax.swing.JTextField();
+        _weldingProcess3 = new javax.swing.JTextField();
+        _diameter3 = new javax.swing.JTextField();
+        _Mthickness3 = new javax.swing.JTextField();
+        _MdefectLocation3 = new javax.swing.JTextField();
+        _pieceNo3 = new javax.swing.JTextField();
+        _MdefectType4 = new javax.swing.JTextField();
+        _Mthickness4 = new javax.swing.JTextField();
+        _testLength4 = new javax.swing.JTextField();
+        _result4 = new javax.swing.JTextField();
+        _diameter4 = new javax.swing.JTextField();
+        _MdefectLocation4 = new javax.swing.JTextField();
+        _weldingProcess4 = new javax.swing.JTextField();
+        _pieceNo4 = new javax.swing.JTextField();
+        _testLength8 = new javax.swing.JTextField();
+        _weldingProcess8 = new javax.swing.JTextField();
+        _Mthickness8 = new javax.swing.JTextField();
+        _result8 = new javax.swing.JTextField();
+        _pieceNo8 = new javax.swing.JTextField();
+        _MdefectLocation8 = new javax.swing.JTextField();
+        _diameter8 = new javax.swing.JTextField();
+        _MdefectType8 = new javax.swing.JTextField();
+        _pieceNo7 = new javax.swing.JTextField();
+        _pieceNo6 = new javax.swing.JTextField();
+        _pieceNo5 = new javax.swing.JTextField();
+        _testLength5 = new javax.swing.JTextField();
+        _testLength6 = new javax.swing.JTextField();
+        _testLength7 = new javax.swing.JTextField();
+        _weldingProcess7 = new javax.swing.JTextField();
+        _weldingProcess6 = new javax.swing.JTextField();
+        _weldingProcess5 = new javax.swing.JTextField();
+        _Mthickness5 = new javax.swing.JTextField();
+        _Mthickness6 = new javax.swing.JTextField();
+        _Mthickness7 = new javax.swing.JTextField();
+        _diameter7 = new javax.swing.JTextField();
+        _diameter6 = new javax.swing.JTextField();
+        _diameter5 = new javax.swing.JTextField();
+        _MdefectType5 = new javax.swing.JTextField();
+        _MdefectType6 = new javax.swing.JTextField();
+        _MdefectType7 = new javax.swing.JTextField();
+        _MdefectLocation7 = new javax.swing.JTextField();
+        _MdefectLocation6 = new javax.swing.JTextField();
+        _MdefectLocation5 = new javax.swing.JTextField();
+        _result5 = new javax.swing.JTextField();
+        _result6 = new javax.swing.JTextField();
+        _result7 = new javax.swing.JTextField();
+        _diameter9 = new javax.swing.JTextField();
+        _testLength9 = new javax.swing.JTextField();
+        _Mthickness9 = new javax.swing.JTextField();
+        _result10 = new javax.swing.JTextField();
+        _pieceNo10 = new javax.swing.JTextField();
+        _MdefectLocation9 = new javax.swing.JTextField();
+        _Mthickness10 = new javax.swing.JTextField();
+        _diameter10 = new javax.swing.JTextField();
+        _testLength10 = new javax.swing.JTextField();
+        _weldingProcess10 = new javax.swing.JTextField();
+        _result9 = new javax.swing.JTextField();
+        _pieceNo9 = new javax.swing.JTextField();
+        _MdefectType10 = new javax.swing.JTextField();
+        _MdefectType9 = new javax.swing.JTextField();
+        _MdefectLocation10 = new javax.swing.JTextField();
+        _weldingProcess9 = new javax.swing.JTextField();
+        jPanel15 = new javax.swing.JPanel();
+        _MoperatorName = new javax.swing.JTextField();
+        _MevaluatorName = new javax.swing.JTextField();
+        _MconfirmationName = new javax.swing.JTextField();
+        _MoperatorLevel = new javax.swing.JTextField();
+        _MconfirmationLevel = new javax.swing.JTextField();
+        _MevaluatorLevel = new javax.swing.JTextField();
+        _Mdate1 = new javax.swing.JTextField();
+        _Mdate2 = new javax.swing.JTextField();
+        _Mdate3 = new javax.swing.JTextField();
+        _Mbottom = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jPanel16 = new javax.swing.JPanel();
         _page = new javax.swing.JTextField();
@@ -2167,161 +2368,15 @@ public class Report extends javax.swing.JFrame {
         _operatorLevel = new javax.swing.JTextField();
         _evaluatorLevel = new javax.swing.JTextField();
         _confirmationLevel = new javax.swing.JTextField();
-        _bottom = new javax.swing.JTextField();
         _date1 = new javax.swing.JTextField();
         _date2 = new javax.swing.JTextField();
         _date3 = new javax.swing.JTextField();
+        _bottom = new javax.swing.JTextField();
         jLabel38 = new javax.swing.JLabel();
-        jPanel6 = new javax.swing.JPanel();
-        jPanel4 = new javax.swing.JPanel();
-        _MstageOfExamination = new javax.swing.JTextField();
-        _MinspectionProcedure = new javax.swing.JTextField();
-        _MinspectionScope = new javax.swing.JTextField();
-        _MdrawingNo = new javax.swing.JTextField();
-        _MsurfaceCondition = new javax.swing.JTextField();
-        jPanel2 = new javax.swing.JPanel();
-        _MevaluationStandard = new javax.swing.JTextField();
-        _Mcustomer = new javax.swing.JTextField();
-        _Mproject = new javax.swing.JTextField();
-        _MinspectionPlace = new javax.swing.JTextField();
-        _MinspectionStandard = new javax.swing.JTextField();
-        jPanel8 = new javax.swing.JPanel();
-        _MofferNo = new javax.swing.JTextField();
-        _Mpage = new javax.swing.JTextField();
-        _MreportNo = new javax.swing.JTextField();
-        _MreportDate = new javax.swing.JTextField();
-        _MorderNo = new javax.swing.JTextField();
-        jPanel9 = new javax.swing.JPanel();
-        _distanceOfLight = new javax.swing.JTextField();
-        _poleDistance = new javax.swing.JTextField();
-        _Mequipment = new javax.swing.JTextField();
-        _MPCarrier = new javax.swing.JTextField();
-        _UV = new javax.swing.JTextField();
-        _magTech = new javax.swing.JTextField();
-        jPanel10 = new javax.swing.JPanel();
-        _MheatTreatment = new javax.swing.JTextField();
-        _examinationArea = new javax.swing.JTextField();
-        _currentType = new javax.swing.JTextField();
-        _luxmeter = new javax.swing.JTextField();
-        _testMedium = new javax.swing.JTextField();
-        _demagnetization = new javax.swing.JTextField();
-        jPanel11 = new javax.swing.JPanel();
-        _gauss = new javax.swing.JTextField();
-        _liftingTestDate = new javax.swing.JTextField();
-        _surfaceTemperature = new javax.swing.JTextField();
-        _MsurfaceCondition2 = new javax.swing.JTextField();
-        _identification = new javax.swing.JTextField();
-        jPanel12 = new javax.swing.JPanel();
-        jLabel20 = new javax.swing.JLabel();
-        jLabel35 = new javax.swing.JLabel();
-        _fillet = new javax.swing.JCheckBox();
-        jLabel36 = new javax.swing.JLabel();
-        jLabel37 = new javax.swing.JLabel();
-        _butt = new javax.swing.JCheckBox();
-        jLabel39 = new javax.swing.JLabel();
-        jLabel40 = new javax.swing.JLabel();
-        jPanel14 = new javax.swing.JPanel();
-        _Mdescription = new javax.swing.JTextField();
-        _standardDeviations = new javax.swing.JTextField();
-        _MinspectionDates = new javax.swing.JTextField();
-        jPanel13 = new javax.swing.JPanel();
-        _result1 = new javax.swing.JTextField();
-        _pieceNo1 = new javax.swing.JTextField();
-        _testLength1 = new javax.swing.JTextField();
-        _weldingProcess1 = new javax.swing.JTextField();
-        _Mthickness1 = new javax.swing.JTextField();
-        _diameter1 = new javax.swing.JTextField();
-        _MdefectType1 = new javax.swing.JTextField();
-        _MdefectLocation1 = new javax.swing.JTextField();
-        _result2 = new javax.swing.JTextField();
-        _MdefectLocation2 = new javax.swing.JTextField();
-        _MdefectType2 = new javax.swing.JTextField();
-        _diameter2 = new javax.swing.JTextField();
-        _Mthickness2 = new javax.swing.JTextField();
-        _weldingProcess2 = new javax.swing.JTextField();
-        _testLength2 = new javax.swing.JTextField();
-        _pieceNo2 = new javax.swing.JTextField();
-        _MdefectType3 = new javax.swing.JTextField();
-        _testLength3 = new javax.swing.JTextField();
-        _result3 = new javax.swing.JTextField();
-        _weldingProcess3 = new javax.swing.JTextField();
-        _diameter3 = new javax.swing.JTextField();
-        _Mthickness3 = new javax.swing.JTextField();
-        _MdefectLocation3 = new javax.swing.JTextField();
-        _pieceNo3 = new javax.swing.JTextField();
-        _MdefectType4 = new javax.swing.JTextField();
-        _Mthickness4 = new javax.swing.JTextField();
-        _testLength4 = new javax.swing.JTextField();
-        _result4 = new javax.swing.JTextField();
-        _diameter4 = new javax.swing.JTextField();
-        _MdefectLocation4 = new javax.swing.JTextField();
-        _weldingProcess4 = new javax.swing.JTextField();
-        _pieceNo4 = new javax.swing.JTextField();
-        _testLength8 = new javax.swing.JTextField();
-        _weldingProcess8 = new javax.swing.JTextField();
-        _Mthickness8 = new javax.swing.JTextField();
-        _result8 = new javax.swing.JTextField();
-        _pieceNo8 = new javax.swing.JTextField();
-        _MdefectLocation8 = new javax.swing.JTextField();
-        _diameter8 = new javax.swing.JTextField();
-        _MdefectType8 = new javax.swing.JTextField();
-        _pieceNo7 = new javax.swing.JTextField();
-        _pieceNo6 = new javax.swing.JTextField();
-        _pieceNo5 = new javax.swing.JTextField();
-        _testLength5 = new javax.swing.JTextField();
-        _testLength6 = new javax.swing.JTextField();
-        _testLength7 = new javax.swing.JTextField();
-        _weldingProcess7 = new javax.swing.JTextField();
-        _weldingProcess6 = new javax.swing.JTextField();
-        _weldingProcess5 = new javax.swing.JTextField();
-        _Mthickness5 = new javax.swing.JTextField();
-        _Mthickness6 = new javax.swing.JTextField();
-        _Mthickness7 = new javax.swing.JTextField();
-        _diameter7 = new javax.swing.JTextField();
-        _diameter6 = new javax.swing.JTextField();
-        _diameter5 = new javax.swing.JTextField();
-        _MdefectType5 = new javax.swing.JTextField();
-        _MdefectType6 = new javax.swing.JTextField();
-        _MdefectType7 = new javax.swing.JTextField();
-        _MdefectLocation7 = new javax.swing.JTextField();
-        _MdefectLocation6 = new javax.swing.JTextField();
-        _MdefectLocation5 = new javax.swing.JTextField();
-        _result5 = new javax.swing.JTextField();
-        _result6 = new javax.swing.JTextField();
-        _result7 = new javax.swing.JTextField();
-        _diameter9 = new javax.swing.JTextField();
-        _testLength9 = new javax.swing.JTextField();
-        _Mthickness9 = new javax.swing.JTextField();
-        _result10 = new javax.swing.JTextField();
-        _pieceNo10 = new javax.swing.JTextField();
-        _MdefectLocation9 = new javax.swing.JTextField();
-        _Mthickness10 = new javax.swing.JTextField();
-        _diameter10 = new javax.swing.JTextField();
-        _testLength10 = new javax.swing.JTextField();
-        _weldingProcess10 = new javax.swing.JTextField();
-        _result9 = new javax.swing.JTextField();
-        _pieceNo9 = new javax.swing.JTextField();
-        _MdefectType10 = new javax.swing.JTextField();
-        _MdefectType9 = new javax.swing.JTextField();
-        _MdefectLocation10 = new javax.swing.JTextField();
-        _weldingProcess9 = new javax.swing.JTextField();
-        jPanel15 = new javax.swing.JPanel();
-        _MoperatorName = new javax.swing.JTextField();
-        _MevaluatorName = new javax.swing.JTextField();
-        _MconfirmationName = new javax.swing.JTextField();
-        _MoperatorLevel = new javax.swing.JTextField();
-        _Mbottom = new javax.swing.JTextField();
-        _MconfirmationLevel = new javax.swing.JTextField();
-        _MevaluatorLevel = new javax.swing.JTextField();
-        _Mdate1 = new javax.swing.JTextField();
-        _Mdate2 = new javax.swing.JTextField();
-        _Mdate3 = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBounds(new java.awt.Rectangle(0, 0, 0, 0));
         setFocusTraversalPolicyProvider(true);
-        setMaximumSize(new java.awt.Dimension(1200, 800));
         setMinimumSize(new java.awt.Dimension(1200, 800));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowOpened(java.awt.event.WindowEvent evt) {
@@ -2374,6 +2429,16 @@ public class Report extends javax.swing.JFrame {
             }
         });
 
+        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/delete2.png"))); // NOI18N
+        jLabel6.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel6.setEnabled(false);
+        jLabel6.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel6MouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -2383,7 +2448,8 @@ public class Report extends javax.swing.JFrame {
                     .addComponent(jLabel4)
                     .addComponent(jLabel1)
                     .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -2397,7 +2463,8 @@ public class Report extends javax.swing.JFrame {
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel5)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 367, Short.MAX_VALUE)
+                .addComponent(jLabel6))
         );
 
         jScrollPane2.setMaximumSize(new java.awt.Dimension(781, 778));
@@ -2417,6 +2484,2500 @@ public class Report extends javax.swing.JFrame {
                 jTabbedPane1MousePressed(evt);
             }
         });
+
+        jPanel6.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel6.setMaximumSize(new java.awt.Dimension(1350, 2000));
+        jPanel6.setMinimumSize(new java.awt.Dimension(1350, 2000));
+        jPanel6.setName(""); // NOI18N
+        jPanel6.setPreferredSize(new java.awt.Dimension(1350, 2000));
+        jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jPanel4.setOpaque(false);
+        jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        _MstageOfExamination.setEditable(false);
+        _MstageOfExamination.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MstageOfExamination.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MstageOfExamination.setToolTipText("");
+        _MstageOfExamination.setBorder(null);
+        _MstageOfExamination.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MstageOfExamination.setName(""); // NOI18N
+        _MstageOfExamination.setPreferredSize(new java.awt.Dimension(470, 46));
+        _MstageOfExamination.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _MstageOfExamination.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel4.add(_MstageOfExamination, new org.netbeans.lib.awtextra.AbsoluteConstraints(3, 211, 193, 48));
+
+        _MinspectionProcedure.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MinspectionProcedure.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MinspectionProcedure.setToolTipText("");
+        _MinspectionProcedure.setBorder(null);
+        _MinspectionProcedure.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MinspectionProcedure.setName(""); // NOI18N
+        _MinspectionProcedure.setPreferredSize(new java.awt.Dimension(470, 46));
+        _MinspectionProcedure.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _MinspectionProcedure.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel4.add(_MinspectionProcedure, new org.netbeans.lib.awtextra.AbsoluteConstraints(3, 6, 193, 46));
+
+        _MinspectionScope.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MinspectionScope.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MinspectionScope.setToolTipText("");
+        _MinspectionScope.setBorder(null);
+        _MinspectionScope.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MinspectionScope.setName(""); // NOI18N
+        _MinspectionScope.setPreferredSize(new java.awt.Dimension(470, 46));
+        _MinspectionScope.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                _MinspectionScopeFocusLost(evt);
+            }
+        });
+        _MinspectionScope.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel4.add(_MinspectionScope, new org.netbeans.lib.awtextra.AbsoluteConstraints(3, 56, 193, 48));
+
+        _MdrawingNo.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MdrawingNo.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MdrawingNo.setToolTipText("");
+        _MdrawingNo.setBorder(null);
+        _MdrawingNo.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MdrawingNo.setName(""); // NOI18N
+        _MdrawingNo.setPreferredSize(new java.awt.Dimension(470, 46));
+        _MdrawingNo.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _MdrawingNo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel4.add(_MdrawingNo, new org.netbeans.lib.awtextra.AbsoluteConstraints(3, 108, 193, 48));
+
+        _MsurfaceCondition.setEditable(false);
+        _MsurfaceCondition.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MsurfaceCondition.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MsurfaceCondition.setToolTipText("");
+        _MsurfaceCondition.setBorder(null);
+        _MsurfaceCondition.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MsurfaceCondition.setName(""); // NOI18N
+        _MsurfaceCondition.setPreferredSize(new java.awt.Dimension(470, 46));
+        _MsurfaceCondition.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _MsurfaceCondition.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel4.add(_MsurfaceCondition, new org.netbeans.lib.awtextra.AbsoluteConstraints(3, 160, 193, 47));
+
+        jPanel6.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 150, 200, 260));
+
+        jPanel2.setOpaque(false);
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        _MevaluationStandard.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MevaluationStandard.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MevaluationStandard.setToolTipText("");
+        _MevaluationStandard.setBorder(null);
+        _MevaluationStandard.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MevaluationStandard.setName(""); // NOI18N
+        _MevaluationStandard.setPreferredSize(new java.awt.Dimension(470, 46));
+        _MevaluationStandard.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _MevaluationStandard.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel2.add(_MevaluationStandard, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 211, 465, 48));
+
+        _Mcustomer.setEditable(false);
+        _Mcustomer.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _Mcustomer.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _Mcustomer.setToolTipText("");
+        _Mcustomer.setBorder(null);
+        _Mcustomer.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        _Mcustomer.setMinimumSize(new java.awt.Dimension(470, 46));
+        _Mcustomer.setName(""); // NOI18N
+        _Mcustomer.setPreferredSize(new java.awt.Dimension(470, 46));
+        _Mcustomer.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _Mcustomer.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel2.add(_Mcustomer, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 6, 465, 46));
+
+        _Mproject.setEditable(false);
+        _Mproject.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _Mproject.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _Mproject.setToolTipText("");
+        _Mproject.setBorder(null);
+        _Mproject.setMinimumSize(new java.awt.Dimension(470, 46));
+        _Mproject.setName(""); // NOI18N
+        _Mproject.setPreferredSize(new java.awt.Dimension(470, 46));
+        _Mproject.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _Mproject.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel2.add(_Mproject, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 56, 465, 48));
+
+        _MinspectionPlace.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MinspectionPlace.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MinspectionPlace.setToolTipText("");
+        _MinspectionPlace.setBorder(null);
+        _MinspectionPlace.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MinspectionPlace.setName(""); // NOI18N
+        _MinspectionPlace.setPreferredSize(new java.awt.Dimension(470, 46));
+        _MinspectionPlace.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _MinspectionPlace.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel2.add(_MinspectionPlace, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 108, 465, 48));
+
+        _MinspectionStandard.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MinspectionStandard.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MinspectionStandard.setToolTipText("");
+        _MinspectionStandard.setBorder(null);
+        _MinspectionStandard.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MinspectionStandard.setName(""); // NOI18N
+        _MinspectionStandard.setPreferredSize(new java.awt.Dimension(470, 46));
+        _MinspectionStandard.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _MinspectionStandard.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel2.add(_MinspectionStandard, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 160, 465, 47));
+
+        jPanel6.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 150, 470, 260));
+
+        jPanel8.setOpaque(false);
+        jPanel8.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        _MofferNo.setEditable(false);
+        _MofferNo.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MofferNo.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MofferNo.setToolTipText("");
+        _MofferNo.setBorder(null);
+        _MofferNo.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MofferNo.setName(""); // NOI18N
+        _MofferNo.setPreferredSize(new java.awt.Dimension(470, 46));
+        _MofferNo.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _MofferNo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel8.add(_MofferNo, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 211, 148, 48));
+
+        _Mpage.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _Mpage.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _Mpage.setToolTipText("");
+        _Mpage.setBorder(null);
+        _Mpage.setMinimumSize(new java.awt.Dimension(470, 46));
+        _Mpage.setName(""); // NOI18N
+        _Mpage.setPreferredSize(new java.awt.Dimension(470, 46));
+        _Mpage.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _Mpage.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel8.add(_Mpage, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 6, 148, 46));
+
+        _MreportNo.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MreportNo.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MreportNo.setToolTipText("");
+        _MreportNo.setBorder(null);
+        _MreportNo.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MreportNo.setName(""); // NOI18N
+        _MreportNo.setPreferredSize(new java.awt.Dimension(470, 46));
+        _MreportNo.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _MreportNo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel8.add(_MreportNo, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 56, 148, 48));
+
+        _MreportDate.setEditable(false);
+        _MreportDate.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MreportDate.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MreportDate.setToolTipText("");
+        _MreportDate.setBorder(null);
+        _MreportDate.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MreportDate.setName(""); // NOI18N
+        _MreportDate.setPreferredSize(new java.awt.Dimension(470, 46));
+        _MreportDate.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _MreportDate.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel8.add(_MreportDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 108, 148, 48));
+
+        _MorderNo.setEditable(false);
+        _MorderNo.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MorderNo.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MorderNo.setToolTipText("");
+        _MorderNo.setBorder(null);
+        _MorderNo.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MorderNo.setName(""); // NOI18N
+        _MorderNo.setPreferredSize(new java.awt.Dimension(470, 46));
+        _MorderNo.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _MorderNo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel8.add(_MorderNo, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 160, 148, 47));
+
+        jPanel6.add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(1200, 150, 160, 260));
+
+        jPanel9.setOpaque(false);
+        jPanel9.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        _distanceOfLight.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _distanceOfLight.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _distanceOfLight.setToolTipText("");
+        _distanceOfLight.setBorder(null);
+        _distanceOfLight.setMinimumSize(new java.awt.Dimension(470, 46));
+        _distanceOfLight.setName(""); // NOI18N
+        _distanceOfLight.setPreferredSize(new java.awt.Dimension(470, 46));
+        _distanceOfLight.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _distanceOfLight.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel9.add(_distanceOfLight, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 260, 227, 46));
+
+        _poleDistance.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _poleDistance.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _poleDistance.setToolTipText("");
+        _poleDistance.setBorder(null);
+        _poleDistance.setMinimumSize(new java.awt.Dimension(470, 46));
+        _poleDistance.setName(""); // NOI18N
+        _poleDistance.setPreferredSize(new java.awt.Dimension(470, 46));
+        _poleDistance.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _poleDistance.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel9.add(_poleDistance, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 7, 227, 48));
+
+        _Mequipment.setEditable(false);
+        _Mequipment.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _Mequipment.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _Mequipment.setToolTipText("");
+        _Mequipment.setBorder(null);
+        _Mequipment.setMinimumSize(new java.awt.Dimension(470, 46));
+        _Mequipment.setName(""); // NOI18N
+        _Mequipment.setPreferredSize(new java.awt.Dimension(470, 46));
+        _Mequipment.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _Mequipment.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                _MequipmentActionPerformed(evt);
+            }
+        });
+        _Mequipment.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel9.add(_Mequipment, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 58, 227, 47));
+
+        _MPCarrier.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MPCarrier.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MPCarrier.setToolTipText("");
+        _MPCarrier.setBorder(null);
+        _MPCarrier.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MPCarrier.setName(""); // NOI18N
+        _MPCarrier.setPreferredSize(new java.awt.Dimension(470, 46));
+        _MPCarrier.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _MPCarrier.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel9.add(_MPCarrier, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 109, 227, 47));
+
+        _UV.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _UV.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _UV.setToolTipText("");
+        _UV.setBorder(null);
+        _UV.setMinimumSize(new java.awt.Dimension(470, 46));
+        _UV.setName(""); // NOI18N
+        _UV.setPreferredSize(new java.awt.Dimension(470, 46));
+        _UV.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _UV.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel9.add(_UV, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 210, 227, 47));
+
+        _magTech.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _magTech.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _magTech.setToolTipText("");
+        _magTech.setBorder(null);
+        _magTech.setMinimumSize(new java.awt.Dimension(470, 46));
+        _magTech.setName(""); // NOI18N
+        _magTech.setPreferredSize(new java.awt.Dimension(470, 46));
+        _magTech.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _magTech_weldingProcess7FocusGained(evt);
+            }
+        });
+        _magTech.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _magTech_weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel9.add(_magTech, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 159, 227, 47));
+
+        jPanel6.add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 440, 230, 310));
+
+        jPanel10.setOpaque(false);
+        jPanel10.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        _MheatTreatment.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MheatTreatment.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MheatTreatment.setToolTipText("");
+        _MheatTreatment.setBorder(null);
+        _MheatTreatment.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MheatTreatment.setName(""); // NOI18N
+        _MheatTreatment.setPreferredSize(new java.awt.Dimension(470, 46));
+        _MheatTreatment.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _MheatTreatment.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel10.add(_MheatTreatment, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 260, 283, 46));
+
+        _examinationArea.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _examinationArea.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _examinationArea.setToolTipText("");
+        _examinationArea.setBorder(null);
+        _examinationArea.setMinimumSize(new java.awt.Dimension(470, 46));
+        _examinationArea.setName(""); // NOI18N
+        _examinationArea.setPreferredSize(new java.awt.Dimension(470, 46));
+        _examinationArea.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _examinationArea.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel10.add(_examinationArea, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 7, 283, 48));
+
+        _currentType.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _currentType.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _currentType.setToolTipText("");
+        _currentType.setBorder(null);
+        _currentType.setMinimumSize(new java.awt.Dimension(470, 46));
+        _currentType.setName(""); // NOI18N
+        _currentType.setPreferredSize(new java.awt.Dimension(470, 46));
+        _currentType.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _currentType.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel10.add(_currentType, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 58, 283, 47));
+
+        _luxmeter.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _luxmeter.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _luxmeter.setToolTipText("");
+        _luxmeter.setBorder(null);
+        _luxmeter.setMinimumSize(new java.awt.Dimension(470, 46));
+        _luxmeter.setName(""); // NOI18N
+        _luxmeter.setPreferredSize(new java.awt.Dimension(470, 46));
+        _luxmeter.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _luxmeter.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel10.add(_luxmeter, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 109, 283, 46));
+
+        _testMedium.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _testMedium.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _testMedium.setToolTipText("");
+        _testMedium.setBorder(null);
+        _testMedium.setMinimumSize(new java.awt.Dimension(470, 46));
+        _testMedium.setName(""); // NOI18N
+        _testMedium.setPreferredSize(new java.awt.Dimension(470, 46));
+        _testMedium.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _testMedium.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel10.add(_testMedium, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 159, 283, 47));
+
+        _demagnetization.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _demagnetization.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _demagnetization.setToolTipText("");
+        _demagnetization.setBorder(null);
+        _demagnetization.setMinimumSize(new java.awt.Dimension(470, 46));
+        _demagnetization.setName(""); // NOI18N
+        _demagnetization.setPreferredSize(new java.awt.Dimension(470, 46));
+        _demagnetization.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _demagnetization.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel10.add(_demagnetization, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 210, 283, 47));
+
+        jPanel6.add(jPanel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 440, 290, 310));
+
+        jPanel11.setOpaque(false);
+        jPanel11.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        _gauss.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _gauss.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _gauss.setToolTipText("");
+        _gauss.setBorder(null);
+        _gauss.setMinimumSize(new java.awt.Dimension(470, 46));
+        _gauss.setName(""); // NOI18N
+        _gauss.setPreferredSize(new java.awt.Dimension(470, 46));
+        _gauss.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _gauss.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel11.add(_gauss, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 58, 197, 97));
+
+        _liftingTestDate.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _liftingTestDate.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _liftingTestDate.setToolTipText("");
+        _liftingTestDate.setBorder(null);
+        _liftingTestDate.setMinimumSize(new java.awt.Dimension(470, 46));
+        _liftingTestDate.setName(""); // NOI18N
+        _liftingTestDate.setPreferredSize(new java.awt.Dimension(470, 46));
+        _liftingTestDate.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _liftingTestDate.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel11.add(_liftingTestDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 260, 197, 46));
+
+        _surfaceTemperature.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _surfaceTemperature.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _surfaceTemperature.setToolTipText("");
+        _surfaceTemperature.setBorder(null);
+        _surfaceTemperature.setMinimumSize(new java.awt.Dimension(470, 46));
+        _surfaceTemperature.setName(""); // NOI18N
+        _surfaceTemperature.setPreferredSize(new java.awt.Dimension(470, 46));
+        _surfaceTemperature.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _surfaceTemperature.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel11.add(_surfaceTemperature, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 7, 197, 48));
+
+        _MsurfaceCondition2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MsurfaceCondition2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MsurfaceCondition2.setToolTipText("");
+        _MsurfaceCondition2.setBorder(null);
+        _MsurfaceCondition2.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MsurfaceCondition2.setName(""); // NOI18N
+        _MsurfaceCondition2.setPreferredSize(new java.awt.Dimension(470, 46));
+        _MsurfaceCondition2.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _MsurfaceCondition2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel11.add(_MsurfaceCondition2, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 159, 197, 47));
+
+        _identification.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _identification.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _identification.setToolTipText("");
+        _identification.setBorder(null);
+        _identification.setMinimumSize(new java.awt.Dimension(470, 46));
+        _identification.setName(""); // NOI18N
+        _identification.setPreferredSize(new java.awt.Dimension(470, 46));
+        _identification.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _identification.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel11.add(_identification, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 210, 197, 47));
+
+        jPanel6.add(jPanel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(1150, 440, 210, 310));
+
+        jPanel12.setOpaque(false);
+        jPanel12.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel20.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel20.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        jLabel20.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel20.setText("Butt Weld");
+        jLabel20.setOpaque(true);
+        jPanel12.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 130, 110, 20));
+
+        jLabel35.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel35.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel35.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel35.setText("Alın Kaynağı");
+        jLabel35.setOpaque(true);
+        jPanel12.add(jLabel35, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 104, 110, 30));
+
+        _fillet.setBackground(new java.awt.Color(255, 255, 255));
+        _fillet.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        _fillet.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        _fillet.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        _fillet.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                _buttMouseClicked(evt);
+            }
+        });
+        _fillet.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                _filletActionPerformed(evt);
+            }
+        });
+        jPanel12.add(_fillet, new org.netbeans.lib.awtextra.AbsoluteConstraints(308, 10, 350, 170));
+
+        jLabel36.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel36.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel36.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel36.setText("Köşe Kaynağı");
+        jLabel36.setOpaque(true);
+        jPanel12.add(jLabel36, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 120, 110, 30));
+
+        jLabel37.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel37.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        jLabel37.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel37.setText("Fillet Weld");
+        jLabel37.setOpaque(true);
+        jPanel12.add(jLabel37, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 140, 110, 30));
+
+        _butt.setBackground(new java.awt.Color(255, 255, 255));
+        _butt.setToolTipText("");
+        _butt.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        _butt.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        _butt.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        _butt.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                _buttMouseClicked(evt);
+            }
+        });
+        _butt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                _buttActionPerformed(evt);
+            }
+        });
+        jPanel12.add(_butt, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 290, 170));
+
+        jLabel39.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel39.setOpaque(true);
+        jPanel12.add(jLabel39, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 130, 80, 40));
+
+        jLabel40.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel40.setOpaque(true);
+        jPanel12.add(jLabel40, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 124, 80, 40));
+
+        jPanel6.add(jPanel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 750, 660, 180));
+
+        jPanel14.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel14.setOpaque(false);
+        jPanel14.setLayout(null);
+
+        _Mdescription.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _Mdescription.setToolTipText("");
+        _Mdescription.setBorder(null);
+        _Mdescription.setMinimumSize(new java.awt.Dimension(470, 46));
+        _Mdescription.setName(""); // NOI18N
+        _Mdescription.setPreferredSize(new java.awt.Dimension(470, 46));
+        _Mdescription.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _Mdescription.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel14.add(_Mdescription);
+        _Mdescription.setBounds(3, 100, 1040, 44);
+
+        _standardDeviations.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _standardDeviations.setToolTipText("");
+        _standardDeviations.setBorder(null);
+        _standardDeviations.setMinimumSize(new java.awt.Dimension(470, 46));
+        _standardDeviations.setName(""); // NOI18N
+        _standardDeviations.setPreferredSize(new java.awt.Dimension(470, 46));
+        _standardDeviations.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _standardDeviations.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel14.add(_standardDeviations);
+        _standardDeviations.setBounds(3, 6, 1040, 43);
+
+        _MinspectionDates.setEditable(false);
+        _MinspectionDates.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MinspectionDates.setForeground(new java.awt.Color(255, 0, 51));
+        _MinspectionDates.setToolTipText("");
+        _MinspectionDates.setBorder(null);
+        _MinspectionDates.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MinspectionDates.setName(""); // NOI18N
+        _MinspectionDates.setPreferredSize(new java.awt.Dimension(470, 46));
+        _MinspectionDates.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _MinspectionDates.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel14.add(_MinspectionDates);
+        _MinspectionDates.setBounds(3, 53, 1040, 44);
+
+        jPanel6.add(jPanel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 930, 1050, 150));
+
+        jPanel13.setOpaque(false);
+        jPanel13.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        _result1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _result1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _result1.setToolTipText("");
+        _result1.setBorder(null);
+        _result1.setMinimumSize(new java.awt.Dimension(470, 46));
+        _result1.setName(""); // NOI18N
+        _result1.setPreferredSize(new java.awt.Dimension(470, 46));
+        _result1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _result1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_result1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1266, 2, 77, 36));
+
+        _pieceNo1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _pieceNo1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _pieceNo1.setToolTipText("");
+        _pieceNo1.setBorder(null);
+        _pieceNo1.setMinimumSize(new java.awt.Dimension(470, 46));
+        _pieceNo1.setName(""); // NOI18N
+        _pieceNo1.setPreferredSize(new java.awt.Dimension(470, 46));
+        _pieceNo1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _pieceNo1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_pieceNo1, new org.netbeans.lib.awtextra.AbsoluteConstraints(81, 2, 253, 36));
+
+        _testLength1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _testLength1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _testLength1.setToolTipText("");
+        _testLength1.setBorder(null);
+        _testLength1.setMinimumSize(new java.awt.Dimension(470, 46));
+        _testLength1.setName(""); // NOI18N
+        _testLength1.setPreferredSize(new java.awt.Dimension(470, 46));
+        _testLength1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _testLength1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_testLength1, new org.netbeans.lib.awtextra.AbsoluteConstraints(338, 2, 150, 36));
+
+        _weldingProcess1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _weldingProcess1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _weldingProcess1.setToolTipText("");
+        _weldingProcess1.setBorder(null);
+        _weldingProcess1.setMinimumSize(new java.awt.Dimension(470, 46));
+        _weldingProcess1.setName(""); // NOI18N
+        _weldingProcess1.setPreferredSize(new java.awt.Dimension(470, 46));
+        _weldingProcess1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _weldingProcess1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_weldingProcess1, new org.netbeans.lib.awtextra.AbsoluteConstraints(492, 2, 204, 36));
+
+        _Mthickness1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _Mthickness1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _Mthickness1.setToolTipText("");
+        _Mthickness1.setBorder(null);
+        _Mthickness1.setMinimumSize(new java.awt.Dimension(470, 46));
+        _Mthickness1.setName(""); // NOI18N
+        _Mthickness1.setPreferredSize(new java.awt.Dimension(470, 46));
+        _Mthickness1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _Mthickness1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_Mthickness1, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 2, 108, 36));
+
+        _diameter1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _diameter1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _diameter1.setToolTipText("");
+        _diameter1.setBorder(null);
+        _diameter1.setMinimumSize(new java.awt.Dimension(470, 46));
+        _diameter1.setName(""); // NOI18N
+        _diameter1.setPreferredSize(new java.awt.Dimension(470, 46));
+        _diameter1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _diameter1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_diameter1, new org.netbeans.lib.awtextra.AbsoluteConstraints(812, 2, 132, 36));
+
+        _MdefectType1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MdefectType1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MdefectType1.setToolTipText("");
+        _MdefectType1.setBorder(null);
+        _MdefectType1.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MdefectType1.setName(""); // NOI18N
+        _MdefectType1.setPreferredSize(new java.awt.Dimension(470, 46));
+        _MdefectType1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _MdefectType1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_MdefectType1, new org.netbeans.lib.awtextra.AbsoluteConstraints(948, 2, 134, 36));
+
+        _MdefectLocation1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MdefectLocation1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MdefectLocation1.setToolTipText("");
+        _MdefectLocation1.setBorder(null);
+        _MdefectLocation1.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MdefectLocation1.setName(""); // NOI18N
+        _MdefectLocation1.setPreferredSize(new java.awt.Dimension(470, 46));
+        _MdefectLocation1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _MdefectLocation1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_MdefectLocation1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1086, 2, 176, 36));
+
+        _result2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _result2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _result2.setToolTipText("");
+        _result2.setBorder(null);
+        _result2.setMinimumSize(new java.awt.Dimension(470, 46));
+        _result2.setName(""); // NOI18N
+        _result2.setPreferredSize(new java.awt.Dimension(470, 46));
+        _result2.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _result2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_result2, new org.netbeans.lib.awtextra.AbsoluteConstraints(1266, 42, 77, 36));
+
+        _MdefectLocation2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MdefectLocation2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MdefectLocation2.setToolTipText("");
+        _MdefectLocation2.setBorder(null);
+        _MdefectLocation2.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MdefectLocation2.setName(""); // NOI18N
+        _MdefectLocation2.setPreferredSize(new java.awt.Dimension(470, 46));
+        _MdefectLocation2.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _MdefectLocation2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_MdefectLocation2, new org.netbeans.lib.awtextra.AbsoluteConstraints(1086, 42, 176, 36));
+
+        _MdefectType2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MdefectType2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MdefectType2.setToolTipText("");
+        _MdefectType2.setBorder(null);
+        _MdefectType2.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MdefectType2.setName(""); // NOI18N
+        _MdefectType2.setPreferredSize(new java.awt.Dimension(470, 46));
+        _MdefectType2.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _MdefectType2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_MdefectType2, new org.netbeans.lib.awtextra.AbsoluteConstraints(948, 42, 134, 36));
+
+        _diameter2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _diameter2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _diameter2.setToolTipText("");
+        _diameter2.setBorder(null);
+        _diameter2.setMinimumSize(new java.awt.Dimension(470, 46));
+        _diameter2.setName(""); // NOI18N
+        _diameter2.setPreferredSize(new java.awt.Dimension(470, 46));
+        _diameter2.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _diameter2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_diameter2, new org.netbeans.lib.awtextra.AbsoluteConstraints(812, 42, 132, 36));
+
+        _Mthickness2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _Mthickness2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _Mthickness2.setToolTipText("");
+        _Mthickness2.setBorder(null);
+        _Mthickness2.setMinimumSize(new java.awt.Dimension(470, 46));
+        _Mthickness2.setName(""); // NOI18N
+        _Mthickness2.setPreferredSize(new java.awt.Dimension(470, 46));
+        _Mthickness2.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _Mthickness2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_Mthickness2, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 42, 108, 36));
+
+        _weldingProcess2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _weldingProcess2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _weldingProcess2.setToolTipText("");
+        _weldingProcess2.setBorder(null);
+        _weldingProcess2.setMinimumSize(new java.awt.Dimension(470, 46));
+        _weldingProcess2.setName(""); // NOI18N
+        _weldingProcess2.setPreferredSize(new java.awt.Dimension(470, 46));
+        _weldingProcess2.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _weldingProcess2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_weldingProcess2, new org.netbeans.lib.awtextra.AbsoluteConstraints(492, 42, 204, 36));
+
+        _testLength2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _testLength2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _testLength2.setToolTipText("");
+        _testLength2.setBorder(null);
+        _testLength2.setMinimumSize(new java.awt.Dimension(470, 46));
+        _testLength2.setName(""); // NOI18N
+        _testLength2.setPreferredSize(new java.awt.Dimension(470, 46));
+        _testLength2.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _testLength2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_testLength2, new org.netbeans.lib.awtextra.AbsoluteConstraints(338, 42, 150, 36));
+
+        _pieceNo2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _pieceNo2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _pieceNo2.setToolTipText("");
+        _pieceNo2.setBorder(null);
+        _pieceNo2.setMinimumSize(new java.awt.Dimension(470, 46));
+        _pieceNo2.setName(""); // NOI18N
+        _pieceNo2.setPreferredSize(new java.awt.Dimension(470, 46));
+        _pieceNo2.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _pieceNo2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_pieceNo2, new org.netbeans.lib.awtextra.AbsoluteConstraints(81, 42, 253, 36));
+
+        _MdefectType3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MdefectType3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MdefectType3.setToolTipText("");
+        _MdefectType3.setBorder(null);
+        _MdefectType3.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MdefectType3.setName(""); // NOI18N
+        _MdefectType3.setPreferredSize(new java.awt.Dimension(470, 46));
+        _MdefectType3.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _MdefectType3.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_MdefectType3, new org.netbeans.lib.awtextra.AbsoluteConstraints(948, 82, 134, 36));
+
+        _testLength3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _testLength3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _testLength3.setToolTipText("");
+        _testLength3.setBorder(null);
+        _testLength3.setMinimumSize(new java.awt.Dimension(470, 46));
+        _testLength3.setName(""); // NOI18N
+        _testLength3.setPreferredSize(new java.awt.Dimension(470, 46));
+        _testLength3.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _testLength3.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_testLength3, new org.netbeans.lib.awtextra.AbsoluteConstraints(338, 82, 150, 36));
+
+        _result3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _result3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _result3.setToolTipText("");
+        _result3.setBorder(null);
+        _result3.setMinimumSize(new java.awt.Dimension(470, 46));
+        _result3.setName(""); // NOI18N
+        _result3.setPreferredSize(new java.awt.Dimension(470, 46));
+        _result3.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _result3.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_result3, new org.netbeans.lib.awtextra.AbsoluteConstraints(1266, 82, 77, 36));
+
+        _weldingProcess3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _weldingProcess3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _weldingProcess3.setToolTipText("");
+        _weldingProcess3.setBorder(null);
+        _weldingProcess3.setMinimumSize(new java.awt.Dimension(470, 46));
+        _weldingProcess3.setName(""); // NOI18N
+        _weldingProcess3.setPreferredSize(new java.awt.Dimension(470, 46));
+        _weldingProcess3.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _weldingProcess3.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_weldingProcess3, new org.netbeans.lib.awtextra.AbsoluteConstraints(492, 82, 204, 36));
+
+        _diameter3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _diameter3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _diameter3.setToolTipText("");
+        _diameter3.setBorder(null);
+        _diameter3.setMinimumSize(new java.awt.Dimension(470, 46));
+        _diameter3.setName(""); // NOI18N
+        _diameter3.setPreferredSize(new java.awt.Dimension(470, 46));
+        _diameter3.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _diameter3.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_diameter3, new org.netbeans.lib.awtextra.AbsoluteConstraints(812, 82, 132, 36));
+
+        _Mthickness3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _Mthickness3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _Mthickness3.setToolTipText("");
+        _Mthickness3.setBorder(null);
+        _Mthickness3.setMinimumSize(new java.awt.Dimension(470, 46));
+        _Mthickness3.setName(""); // NOI18N
+        _Mthickness3.setPreferredSize(new java.awt.Dimension(470, 46));
+        _Mthickness3.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _Mthickness3.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_Mthickness3, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 82, 108, 36));
+
+        _MdefectLocation3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MdefectLocation3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MdefectLocation3.setToolTipText("");
+        _MdefectLocation3.setBorder(null);
+        _MdefectLocation3.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MdefectLocation3.setName(""); // NOI18N
+        _MdefectLocation3.setPreferredSize(new java.awt.Dimension(470, 46));
+        _MdefectLocation3.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _MdefectLocation3.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_MdefectLocation3, new org.netbeans.lib.awtextra.AbsoluteConstraints(1086, 82, 176, 36));
+
+        _pieceNo3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _pieceNo3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _pieceNo3.setToolTipText("");
+        _pieceNo3.setBorder(null);
+        _pieceNo3.setMinimumSize(new java.awt.Dimension(470, 46));
+        _pieceNo3.setName(""); // NOI18N
+        _pieceNo3.setPreferredSize(new java.awt.Dimension(470, 46));
+        _pieceNo3.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _pieceNo3.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_pieceNo3, new org.netbeans.lib.awtextra.AbsoluteConstraints(81, 82, 253, 36));
+
+        _MdefectType4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MdefectType4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MdefectType4.setToolTipText("");
+        _MdefectType4.setBorder(null);
+        _MdefectType4.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MdefectType4.setName(""); // NOI18N
+        _MdefectType4.setPreferredSize(new java.awt.Dimension(470, 46));
+        _MdefectType4.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _MdefectType4.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_MdefectType4, new org.netbeans.lib.awtextra.AbsoluteConstraints(948, 122, 134, 35));
+
+        _Mthickness4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _Mthickness4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _Mthickness4.setToolTipText("");
+        _Mthickness4.setBorder(null);
+        _Mthickness4.setMinimumSize(new java.awt.Dimension(470, 46));
+        _Mthickness4.setName(""); // NOI18N
+        _Mthickness4.setPreferredSize(new java.awt.Dimension(470, 46));
+        _Mthickness4.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _Mthickness4.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_Mthickness4, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 122, 108, 35));
+
+        _testLength4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _testLength4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _testLength4.setToolTipText("");
+        _testLength4.setBorder(null);
+        _testLength4.setMinimumSize(new java.awt.Dimension(470, 46));
+        _testLength4.setName(""); // NOI18N
+        _testLength4.setPreferredSize(new java.awt.Dimension(470, 46));
+        _testLength4.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _testLength4.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_testLength4, new org.netbeans.lib.awtextra.AbsoluteConstraints(338, 122, 150, 35));
+
+        _result4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _result4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _result4.setToolTipText("");
+        _result4.setBorder(null);
+        _result4.setMinimumSize(new java.awt.Dimension(470, 46));
+        _result4.setName(""); // NOI18N
+        _result4.setPreferredSize(new java.awt.Dimension(470, 46));
+        _result4.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _result4.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_result4, new org.netbeans.lib.awtextra.AbsoluteConstraints(1266, 122, 77, 35));
+
+        _diameter4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _diameter4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _diameter4.setToolTipText("");
+        _diameter4.setBorder(null);
+        _diameter4.setMinimumSize(new java.awt.Dimension(470, 46));
+        _diameter4.setName(""); // NOI18N
+        _diameter4.setPreferredSize(new java.awt.Dimension(470, 46));
+        _diameter4.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _diameter4.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_diameter4, new org.netbeans.lib.awtextra.AbsoluteConstraints(812, 122, 132, 35));
+
+        _MdefectLocation4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MdefectLocation4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MdefectLocation4.setToolTipText("");
+        _MdefectLocation4.setBorder(null);
+        _MdefectLocation4.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MdefectLocation4.setName(""); // NOI18N
+        _MdefectLocation4.setPreferredSize(new java.awt.Dimension(470, 46));
+        _MdefectLocation4.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _MdefectLocation4.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_MdefectLocation4, new org.netbeans.lib.awtextra.AbsoluteConstraints(1086, 122, 176, 35));
+
+        _weldingProcess4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _weldingProcess4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _weldingProcess4.setToolTipText("");
+        _weldingProcess4.setBorder(null);
+        _weldingProcess4.setMinimumSize(new java.awt.Dimension(470, 46));
+        _weldingProcess4.setName(""); // NOI18N
+        _weldingProcess4.setPreferredSize(new java.awt.Dimension(470, 46));
+        _weldingProcess4.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _weldingProcess4.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_weldingProcess4, new org.netbeans.lib.awtextra.AbsoluteConstraints(492, 122, 204, 35));
+
+        _pieceNo4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _pieceNo4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _pieceNo4.setToolTipText("");
+        _pieceNo4.setBorder(null);
+        _pieceNo4.setMinimumSize(new java.awt.Dimension(470, 46));
+        _pieceNo4.setName(""); // NOI18N
+        _pieceNo4.setPreferredSize(new java.awt.Dimension(470, 46));
+        _pieceNo4.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _pieceNo4.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_pieceNo4, new org.netbeans.lib.awtextra.AbsoluteConstraints(81, 122, 253, 35));
+
+        _testLength8.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _testLength8.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _testLength8.setToolTipText("");
+        _testLength8.setBorder(null);
+        _testLength8.setMinimumSize(new java.awt.Dimension(470, 46));
+        _testLength8.setName(""); // NOI18N
+        _testLength8.setPreferredSize(new java.awt.Dimension(470, 46));
+        _testLength8.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _testLength8.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_testLength8, new org.netbeans.lib.awtextra.AbsoluteConstraints(338, 281, 150, 35));
+
+        _weldingProcess8.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _weldingProcess8.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _weldingProcess8.setToolTipText("");
+        _weldingProcess8.setBorder(null);
+        _weldingProcess8.setMinimumSize(new java.awt.Dimension(470, 46));
+        _weldingProcess8.setName(""); // NOI18N
+        _weldingProcess8.setPreferredSize(new java.awt.Dimension(470, 46));
+        _weldingProcess8.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _weldingProcess8.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_weldingProcess8, new org.netbeans.lib.awtextra.AbsoluteConstraints(492, 281, 204, 35));
+
+        _Mthickness8.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _Mthickness8.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _Mthickness8.setToolTipText("");
+        _Mthickness8.setBorder(null);
+        _Mthickness8.setMinimumSize(new java.awt.Dimension(470, 46));
+        _Mthickness8.setName(""); // NOI18N
+        _Mthickness8.setPreferredSize(new java.awt.Dimension(470, 46));
+        _Mthickness8.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _Mthickness8.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_Mthickness8, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 281, 108, 35));
+
+        _result8.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _result8.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _result8.setToolTipText("");
+        _result8.setBorder(null);
+        _result8.setMinimumSize(new java.awt.Dimension(470, 46));
+        _result8.setName(""); // NOI18N
+        _result8.setPreferredSize(new java.awt.Dimension(470, 46));
+        _result8.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _result8.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_result8, new org.netbeans.lib.awtextra.AbsoluteConstraints(1266, 281, 77, 35));
+
+        _pieceNo8.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _pieceNo8.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _pieceNo8.setToolTipText("");
+        _pieceNo8.setBorder(null);
+        _pieceNo8.setMinimumSize(new java.awt.Dimension(470, 46));
+        _pieceNo8.setName(""); // NOI18N
+        _pieceNo8.setPreferredSize(new java.awt.Dimension(470, 46));
+        _pieceNo8.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _pieceNo8.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_pieceNo8, new org.netbeans.lib.awtextra.AbsoluteConstraints(81, 281, 253, 35));
+
+        _MdefectLocation8.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MdefectLocation8.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MdefectLocation8.setToolTipText("");
+        _MdefectLocation8.setBorder(null);
+        _MdefectLocation8.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MdefectLocation8.setName(""); // NOI18N
+        _MdefectLocation8.setPreferredSize(new java.awt.Dimension(470, 46));
+        _MdefectLocation8.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _MdefectLocation8.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_MdefectLocation8, new org.netbeans.lib.awtextra.AbsoluteConstraints(1086, 281, 176, 35));
+
+        _diameter8.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _diameter8.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _diameter8.setToolTipText("");
+        _diameter8.setBorder(null);
+        _diameter8.setMinimumSize(new java.awt.Dimension(470, 46));
+        _diameter8.setName(""); // NOI18N
+        _diameter8.setPreferredSize(new java.awt.Dimension(470, 46));
+        _diameter8.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _diameter8.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_diameter8, new org.netbeans.lib.awtextra.AbsoluteConstraints(812, 281, 132, 35));
+
+        _MdefectType8.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MdefectType8.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MdefectType8.setToolTipText("");
+        _MdefectType8.setBorder(null);
+        _MdefectType8.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MdefectType8.setName(""); // NOI18N
+        _MdefectType8.setPreferredSize(new java.awt.Dimension(470, 46));
+        _MdefectType8.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _MdefectType8.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_MdefectType8, new org.netbeans.lib.awtextra.AbsoluteConstraints(948, 281, 134, 35));
+
+        _pieceNo7.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _pieceNo7.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _pieceNo7.setToolTipText("");
+        _pieceNo7.setBorder(null);
+        _pieceNo7.setMinimumSize(new java.awt.Dimension(470, 46));
+        _pieceNo7.setName(""); // NOI18N
+        _pieceNo7.setPreferredSize(new java.awt.Dimension(470, 46));
+        _pieceNo7.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _pieceNo7.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_pieceNo7, new org.netbeans.lib.awtextra.AbsoluteConstraints(81, 241, 253, 36));
+
+        _pieceNo6.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _pieceNo6.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _pieceNo6.setToolTipText("");
+        _pieceNo6.setBorder(null);
+        _pieceNo6.setMinimumSize(new java.awt.Dimension(470, 46));
+        _pieceNo6.setName(""); // NOI18N
+        _pieceNo6.setPreferredSize(new java.awt.Dimension(470, 46));
+        _pieceNo6.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _pieceNo6.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_pieceNo6, new org.netbeans.lib.awtextra.AbsoluteConstraints(81, 201, 253, 36));
+
+        _pieceNo5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _pieceNo5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _pieceNo5.setToolTipText("");
+        _pieceNo5.setBorder(null);
+        _pieceNo5.setMinimumSize(new java.awt.Dimension(470, 46));
+        _pieceNo5.setName(""); // NOI18N
+        _pieceNo5.setPreferredSize(new java.awt.Dimension(470, 46));
+        _pieceNo5.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _pieceNo5.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_pieceNo5, new org.netbeans.lib.awtextra.AbsoluteConstraints(81, 161, 253, 36));
+
+        _testLength5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _testLength5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _testLength5.setToolTipText("");
+        _testLength5.setBorder(null);
+        _testLength5.setMinimumSize(new java.awt.Dimension(470, 46));
+        _testLength5.setName(""); // NOI18N
+        _testLength5.setPreferredSize(new java.awt.Dimension(470, 46));
+        _testLength5.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _testLength5.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_testLength5, new org.netbeans.lib.awtextra.AbsoluteConstraints(338, 161, 150, 36));
+
+        _testLength6.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _testLength6.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _testLength6.setToolTipText("");
+        _testLength6.setBorder(null);
+        _testLength6.setMinimumSize(new java.awt.Dimension(470, 46));
+        _testLength6.setName(""); // NOI18N
+        _testLength6.setPreferredSize(new java.awt.Dimension(470, 46));
+        _testLength6.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _testLength6.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_testLength6, new org.netbeans.lib.awtextra.AbsoluteConstraints(338, 201, 150, 36));
+
+        _testLength7.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _testLength7.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _testLength7.setToolTipText("");
+        _testLength7.setBorder(null);
+        _testLength7.setMinimumSize(new java.awt.Dimension(470, 46));
+        _testLength7.setName(""); // NOI18N
+        _testLength7.setPreferredSize(new java.awt.Dimension(470, 46));
+        _testLength7.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _testLength7.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_testLength7, new org.netbeans.lib.awtextra.AbsoluteConstraints(338, 241, 150, 36));
+
+        _weldingProcess7.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _weldingProcess7.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _weldingProcess7.setToolTipText("");
+        _weldingProcess7.setBorder(null);
+        _weldingProcess7.setMinimumSize(new java.awt.Dimension(470, 46));
+        _weldingProcess7.setName(""); // NOI18N
+        _weldingProcess7.setPreferredSize(new java.awt.Dimension(470, 46));
+        _weldingProcess7.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _weldingProcess7.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_weldingProcess7, new org.netbeans.lib.awtextra.AbsoluteConstraints(492, 241, 204, 36));
+
+        _weldingProcess6.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _weldingProcess6.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _weldingProcess6.setToolTipText("");
+        _weldingProcess6.setBorder(null);
+        _weldingProcess6.setMinimumSize(new java.awt.Dimension(470, 46));
+        _weldingProcess6.setName(""); // NOI18N
+        _weldingProcess6.setPreferredSize(new java.awt.Dimension(470, 46));
+        _weldingProcess6.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _weldingProcess6.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_weldingProcess6, new org.netbeans.lib.awtextra.AbsoluteConstraints(492, 201, 204, 36));
+
+        _weldingProcess5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _weldingProcess5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _weldingProcess5.setToolTipText("");
+        _weldingProcess5.setBorder(null);
+        _weldingProcess5.setMinimumSize(new java.awt.Dimension(470, 46));
+        _weldingProcess5.setName(""); // NOI18N
+        _weldingProcess5.setPreferredSize(new java.awt.Dimension(470, 46));
+        _weldingProcess5.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _weldingProcess5.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_weldingProcess5, new org.netbeans.lib.awtextra.AbsoluteConstraints(492, 161, 204, 36));
+
+        _Mthickness5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _Mthickness5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _Mthickness5.setToolTipText("");
+        _Mthickness5.setBorder(null);
+        _Mthickness5.setMinimumSize(new java.awt.Dimension(470, 46));
+        _Mthickness5.setName(""); // NOI18N
+        _Mthickness5.setPreferredSize(new java.awt.Dimension(470, 46));
+        _Mthickness5.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _Mthickness5.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_Mthickness5, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 161, 108, 36));
+
+        _Mthickness6.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _Mthickness6.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _Mthickness6.setToolTipText("");
+        _Mthickness6.setBorder(null);
+        _Mthickness6.setMinimumSize(new java.awt.Dimension(470, 46));
+        _Mthickness6.setName(""); // NOI18N
+        _Mthickness6.setPreferredSize(new java.awt.Dimension(470, 46));
+        _Mthickness6.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _Mthickness6.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_Mthickness6, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 201, 108, 36));
+
+        _Mthickness7.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _Mthickness7.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _Mthickness7.setToolTipText("");
+        _Mthickness7.setBorder(null);
+        _Mthickness7.setMinimumSize(new java.awt.Dimension(470, 46));
+        _Mthickness7.setName(""); // NOI18N
+        _Mthickness7.setPreferredSize(new java.awt.Dimension(470, 46));
+        _Mthickness7.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _Mthickness7.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_Mthickness7, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 241, 108, 36));
+
+        _diameter7.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _diameter7.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _diameter7.setToolTipText("");
+        _diameter7.setBorder(null);
+        _diameter7.setMinimumSize(new java.awt.Dimension(470, 46));
+        _diameter7.setName(""); // NOI18N
+        _diameter7.setPreferredSize(new java.awt.Dimension(470, 46));
+        _diameter7.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _diameter7.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_diameter7, new org.netbeans.lib.awtextra.AbsoluteConstraints(812, 241, 132, 36));
+
+        _diameter6.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _diameter6.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _diameter6.setToolTipText("");
+        _diameter6.setBorder(null);
+        _diameter6.setMinimumSize(new java.awt.Dimension(470, 46));
+        _diameter6.setName(""); // NOI18N
+        _diameter6.setPreferredSize(new java.awt.Dimension(470, 46));
+        _diameter6.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _diameter6.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_diameter6, new org.netbeans.lib.awtextra.AbsoluteConstraints(812, 201, 132, 36));
+
+        _diameter5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _diameter5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _diameter5.setToolTipText("");
+        _diameter5.setBorder(null);
+        _diameter5.setMinimumSize(new java.awt.Dimension(470, 46));
+        _diameter5.setName(""); // NOI18N
+        _diameter5.setPreferredSize(new java.awt.Dimension(470, 46));
+        _diameter5.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _diameter5.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_diameter5, new org.netbeans.lib.awtextra.AbsoluteConstraints(812, 161, 132, 36));
+
+        _MdefectType5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MdefectType5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MdefectType5.setToolTipText("");
+        _MdefectType5.setBorder(null);
+        _MdefectType5.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MdefectType5.setName(""); // NOI18N
+        _MdefectType5.setPreferredSize(new java.awt.Dimension(470, 46));
+        _MdefectType5.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _MdefectType5.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_MdefectType5, new org.netbeans.lib.awtextra.AbsoluteConstraints(948, 161, 134, 36));
+
+        _MdefectType6.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MdefectType6.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MdefectType6.setToolTipText("");
+        _MdefectType6.setBorder(null);
+        _MdefectType6.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MdefectType6.setName(""); // NOI18N
+        _MdefectType6.setPreferredSize(new java.awt.Dimension(470, 46));
+        _MdefectType6.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _MdefectType6.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_MdefectType6, new org.netbeans.lib.awtextra.AbsoluteConstraints(948, 201, 134, 36));
+
+        _MdefectType7.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MdefectType7.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MdefectType7.setToolTipText("");
+        _MdefectType7.setBorder(null);
+        _MdefectType7.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MdefectType7.setName(""); // NOI18N
+        _MdefectType7.setPreferredSize(new java.awt.Dimension(470, 46));
+        _MdefectType7.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _MdefectType7.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_MdefectType7, new org.netbeans.lib.awtextra.AbsoluteConstraints(948, 241, 134, 36));
+
+        _MdefectLocation7.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MdefectLocation7.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MdefectLocation7.setToolTipText("");
+        _MdefectLocation7.setBorder(null);
+        _MdefectLocation7.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MdefectLocation7.setName(""); // NOI18N
+        _MdefectLocation7.setPreferredSize(new java.awt.Dimension(470, 46));
+        _MdefectLocation7.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _MdefectLocation7.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_MdefectLocation7, new org.netbeans.lib.awtextra.AbsoluteConstraints(1086, 241, 176, 36));
+
+        _MdefectLocation6.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MdefectLocation6.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MdefectLocation6.setToolTipText("");
+        _MdefectLocation6.setBorder(null);
+        _MdefectLocation6.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MdefectLocation6.setName(""); // NOI18N
+        _MdefectLocation6.setPreferredSize(new java.awt.Dimension(470, 46));
+        _MdefectLocation6.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _MdefectLocation6.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_MdefectLocation6, new org.netbeans.lib.awtextra.AbsoluteConstraints(1086, 201, 176, 36));
+
+        _MdefectLocation5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MdefectLocation5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MdefectLocation5.setToolTipText("");
+        _MdefectLocation5.setBorder(null);
+        _MdefectLocation5.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MdefectLocation5.setName(""); // NOI18N
+        _MdefectLocation5.setPreferredSize(new java.awt.Dimension(470, 46));
+        _MdefectLocation5.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _MdefectLocation5.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_MdefectLocation5, new org.netbeans.lib.awtextra.AbsoluteConstraints(1086, 161, 176, 36));
+
+        _result5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _result5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _result5.setToolTipText("");
+        _result5.setBorder(null);
+        _result5.setMinimumSize(new java.awt.Dimension(470, 46));
+        _result5.setName(""); // NOI18N
+        _result5.setPreferredSize(new java.awt.Dimension(470, 46));
+        _result5.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _result5.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_result5, new org.netbeans.lib.awtextra.AbsoluteConstraints(1266, 161, 77, 36));
+
+        _result6.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _result6.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _result6.setToolTipText("");
+        _result6.setBorder(null);
+        _result6.setMinimumSize(new java.awt.Dimension(470, 46));
+        _result6.setName(""); // NOI18N
+        _result6.setPreferredSize(new java.awt.Dimension(470, 46));
+        _result6.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _result6.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_result6, new org.netbeans.lib.awtextra.AbsoluteConstraints(1266, 201, 77, 36));
+
+        _result7.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _result7.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _result7.setToolTipText("");
+        _result7.setBorder(null);
+        _result7.setMinimumSize(new java.awt.Dimension(470, 46));
+        _result7.setName(""); // NOI18N
+        _result7.setPreferredSize(new java.awt.Dimension(470, 46));
+        _result7.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _result7.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_result7, new org.netbeans.lib.awtextra.AbsoluteConstraints(1266, 241, 77, 36));
+
+        _diameter9.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _diameter9.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _diameter9.setToolTipText("");
+        _diameter9.setBorder(null);
+        _diameter9.setMinimumSize(new java.awt.Dimension(470, 46));
+        _diameter9.setName(""); // NOI18N
+        _diameter9.setPreferredSize(new java.awt.Dimension(470, 46));
+        _diameter9.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _diameter9.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_diameter9, new org.netbeans.lib.awtextra.AbsoluteConstraints(812, 321, 132, 35));
+
+        _testLength9.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _testLength9.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _testLength9.setToolTipText("");
+        _testLength9.setBorder(null);
+        _testLength9.setMinimumSize(new java.awt.Dimension(470, 46));
+        _testLength9.setName(""); // NOI18N
+        _testLength9.setPreferredSize(new java.awt.Dimension(470, 46));
+        _testLength9.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _testLength9.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_testLength9, new org.netbeans.lib.awtextra.AbsoluteConstraints(338, 321, 150, 35));
+
+        _Mthickness9.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _Mthickness9.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _Mthickness9.setToolTipText("");
+        _Mthickness9.setBorder(null);
+        _Mthickness9.setMinimumSize(new java.awt.Dimension(470, 46));
+        _Mthickness9.setName(""); // NOI18N
+        _Mthickness9.setPreferredSize(new java.awt.Dimension(470, 46));
+        _Mthickness9.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _Mthickness9.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_Mthickness9, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 321, 108, 35));
+
+        _result10.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _result10.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _result10.setToolTipText("");
+        _result10.setBorder(null);
+        _result10.setMinimumSize(new java.awt.Dimension(470, 46));
+        _result10.setName(""); // NOI18N
+        _result10.setPreferredSize(new java.awt.Dimension(470, 46));
+        _result10.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _result10.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_result10, new org.netbeans.lib.awtextra.AbsoluteConstraints(1266, 360, 77, 35));
+
+        _pieceNo10.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _pieceNo10.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _pieceNo10.setToolTipText("");
+        _pieceNo10.setBorder(null);
+        _pieceNo10.setMinimumSize(new java.awt.Dimension(470, 46));
+        _pieceNo10.setName(""); // NOI18N
+        _pieceNo10.setPreferredSize(new java.awt.Dimension(470, 46));
+        _pieceNo10.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _pieceNo10.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_pieceNo10, new org.netbeans.lib.awtextra.AbsoluteConstraints(81, 360, 253, 35));
+
+        _MdefectLocation9.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MdefectLocation9.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MdefectLocation9.setToolTipText("");
+        _MdefectLocation9.setBorder(null);
+        _MdefectLocation9.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MdefectLocation9.setName(""); // NOI18N
+        _MdefectLocation9.setPreferredSize(new java.awt.Dimension(470, 46));
+        _MdefectLocation9.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _MdefectLocation9.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_MdefectLocation9, new org.netbeans.lib.awtextra.AbsoluteConstraints(1086, 321, 176, 35));
+
+        _Mthickness10.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _Mthickness10.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _Mthickness10.setToolTipText("");
+        _Mthickness10.setBorder(null);
+        _Mthickness10.setMinimumSize(new java.awt.Dimension(470, 46));
+        _Mthickness10.setName(""); // NOI18N
+        _Mthickness10.setPreferredSize(new java.awt.Dimension(470, 46));
+        _Mthickness10.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _Mthickness10.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_Mthickness10, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 360, 108, 35));
+
+        _diameter10.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _diameter10.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _diameter10.setToolTipText("");
+        _diameter10.setBorder(null);
+        _diameter10.setMinimumSize(new java.awt.Dimension(470, 46));
+        _diameter10.setName(""); // NOI18N
+        _diameter10.setPreferredSize(new java.awt.Dimension(470, 46));
+        _diameter10.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _diameter10.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_diameter10, new org.netbeans.lib.awtextra.AbsoluteConstraints(812, 360, 132, 35));
+
+        _testLength10.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _testLength10.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _testLength10.setToolTipText("");
+        _testLength10.setBorder(null);
+        _testLength10.setMinimumSize(new java.awt.Dimension(470, 46));
+        _testLength10.setName(""); // NOI18N
+        _testLength10.setPreferredSize(new java.awt.Dimension(470, 46));
+        _testLength10.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _testLength10.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_testLength10, new org.netbeans.lib.awtextra.AbsoluteConstraints(338, 360, 150, 35));
+
+        _weldingProcess10.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _weldingProcess10.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _weldingProcess10.setToolTipText("");
+        _weldingProcess10.setBorder(null);
+        _weldingProcess10.setMinimumSize(new java.awt.Dimension(470, 46));
+        _weldingProcess10.setName(""); // NOI18N
+        _weldingProcess10.setPreferredSize(new java.awt.Dimension(470, 46));
+        _weldingProcess10.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _weldingProcess10.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_weldingProcess10, new org.netbeans.lib.awtextra.AbsoluteConstraints(492, 360, 204, 35));
+
+        _result9.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _result9.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _result9.setToolTipText("");
+        _result9.setBorder(null);
+        _result9.setMinimumSize(new java.awt.Dimension(470, 46));
+        _result9.setName(""); // NOI18N
+        _result9.setPreferredSize(new java.awt.Dimension(470, 46));
+        _result9.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _result9.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_result9, new org.netbeans.lib.awtextra.AbsoluteConstraints(1266, 321, 77, 35));
+
+        _pieceNo9.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _pieceNo9.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _pieceNo9.setToolTipText("");
+        _pieceNo9.setBorder(null);
+        _pieceNo9.setMinimumSize(new java.awt.Dimension(470, 46));
+        _pieceNo9.setName(""); // NOI18N
+        _pieceNo9.setPreferredSize(new java.awt.Dimension(470, 46));
+        _pieceNo9.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _pieceNo9.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_pieceNo9, new org.netbeans.lib.awtextra.AbsoluteConstraints(81, 321, 253, 35));
+
+        _MdefectType10.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MdefectType10.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MdefectType10.setToolTipText("");
+        _MdefectType10.setBorder(null);
+        _MdefectType10.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MdefectType10.setName(""); // NOI18N
+        _MdefectType10.setPreferredSize(new java.awt.Dimension(470, 46));
+        _MdefectType10.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _MdefectType10.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_MdefectType10, new org.netbeans.lib.awtextra.AbsoluteConstraints(948, 360, 134, 35));
+
+        _MdefectType9.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MdefectType9.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MdefectType9.setToolTipText("");
+        _MdefectType9.setBorder(null);
+        _MdefectType9.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MdefectType9.setName(""); // NOI18N
+        _MdefectType9.setPreferredSize(new java.awt.Dimension(470, 46));
+        _MdefectType9.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _MdefectType9.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_MdefectType9, new org.netbeans.lib.awtextra.AbsoluteConstraints(948, 321, 134, 35));
+
+        _MdefectLocation10.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MdefectLocation10.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MdefectLocation10.setToolTipText("");
+        _MdefectLocation10.setBorder(null);
+        _MdefectLocation10.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MdefectLocation10.setName(""); // NOI18N
+        _MdefectLocation10.setPreferredSize(new java.awt.Dimension(470, 46));
+        _MdefectLocation10.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _MdefectLocation10.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_MdefectLocation10, new org.netbeans.lib.awtextra.AbsoluteConstraints(1086, 360, 176, 35));
+
+        _weldingProcess9.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _weldingProcess9.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _weldingProcess9.setToolTipText("");
+        _weldingProcess9.setBorder(null);
+        _weldingProcess9.setMinimumSize(new java.awt.Dimension(470, 46));
+        _weldingProcess9.setName(""); // NOI18N
+        _weldingProcess9.setPreferredSize(new java.awt.Dimension(470, 46));
+        _weldingProcess9.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _weldingProcess9.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                _weldingProcess7KeyReleased(evt);
+            }
+        });
+        jPanel13.add(_weldingProcess9, new org.netbeans.lib.awtextra.AbsoluteConstraints(492, 321, 204, 35));
+
+        jPanel6.add(jPanel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 1170, 1350, 400));
+
+        jPanel15.setOpaque(false);
+        jPanel15.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        _MoperatorName.setEditable(false);
+        _MoperatorName.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MoperatorName.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MoperatorName.setToolTipText("");
+        _MoperatorName.setBorder(null);
+        _MoperatorName.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MoperatorName.setName(""); // NOI18N
+        _MoperatorName.setPreferredSize(new java.awt.Dimension(470, 46));
+        _MoperatorName.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        jPanel15.add(_MoperatorName, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 6, 310, 41));
+
+        _MevaluatorName.setEditable(false);
+        _MevaluatorName.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MevaluatorName.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MevaluatorName.setToolTipText("");
+        _MevaluatorName.setBorder(null);
+        _MevaluatorName.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MevaluatorName.setName(""); // NOI18N
+        _MevaluatorName.setPreferredSize(new java.awt.Dimension(470, 46));
+        _MevaluatorName.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        jPanel15.add(_MevaluatorName, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 6, 330, 41));
+
+        _MconfirmationName.setEditable(false);
+        _MconfirmationName.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MconfirmationName.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MconfirmationName.setToolTipText("");
+        _MconfirmationName.setBorder(null);
+        _MconfirmationName.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MconfirmationName.setName(""); // NOI18N
+        _MconfirmationName.setPreferredSize(new java.awt.Dimension(470, 46));
+        _MconfirmationName.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        jPanel15.add(_MconfirmationName, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 6, 230, 41));
+
+        _MoperatorLevel.setEditable(false);
+        _MoperatorLevel.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MoperatorLevel.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MoperatorLevel.setToolTipText("");
+        _MoperatorLevel.setBorder(null);
+        _MoperatorLevel.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MoperatorLevel.setName(""); // NOI18N
+        _MoperatorLevel.setPreferredSize(new java.awt.Dimension(470, 46));
+        _MoperatorLevel.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        jPanel15.add(_MoperatorLevel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 55, 310, 40));
+
+        _MconfirmationLevel.setEditable(false);
+        _MconfirmationLevel.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MconfirmationLevel.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MconfirmationLevel.setToolTipText("");
+        _MconfirmationLevel.setBorder(null);
+        _MconfirmationLevel.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MconfirmationLevel.setName(""); // NOI18N
+        _MconfirmationLevel.setPreferredSize(new java.awt.Dimension(470, 46));
+        _MconfirmationLevel.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        jPanel15.add(_MconfirmationLevel, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 55, 230, 40));
+
+        _MevaluatorLevel.setEditable(false);
+        _MevaluatorLevel.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _MevaluatorLevel.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _MevaluatorLevel.setToolTipText("");
+        _MevaluatorLevel.setBorder(null);
+        _MevaluatorLevel.setMinimumSize(new java.awt.Dimension(470, 46));
+        _MevaluatorLevel.setName(""); // NOI18N
+        _MevaluatorLevel.setPreferredSize(new java.awt.Dimension(470, 46));
+        _MevaluatorLevel.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        jPanel15.add(_MevaluatorLevel, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 55, 330, 40));
+
+        _Mdate1.setEditable(false);
+        _Mdate1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _Mdate1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _Mdate1.setToolTipText("");
+        _Mdate1.setBorder(null);
+        _Mdate1.setMinimumSize(new java.awt.Dimension(470, 46));
+        _Mdate1.setName(""); // NOI18N
+        _Mdate1.setPreferredSize(new java.awt.Dimension(470, 46));
+        _Mdate1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        jPanel15.add(_Mdate1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, 310, 40));
+
+        _Mdate2.setEditable(false);
+        _Mdate2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _Mdate2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _Mdate2.setToolTipText("");
+        _Mdate2.setBorder(null);
+        _Mdate2.setMinimumSize(new java.awt.Dimension(470, 46));
+        _Mdate2.setName(""); // NOI18N
+        _Mdate2.setPreferredSize(new java.awt.Dimension(470, 46));
+        _Mdate2.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        jPanel15.add(_Mdate2, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 100, 330, 40));
+
+        _Mdate3.setEditable(false);
+        _Mdate3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        _Mdate3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _Mdate3.setToolTipText("");
+        _Mdate3.setBorder(null);
+        _Mdate3.setMinimumSize(new java.awt.Dimension(470, 46));
+        _Mdate3.setName(""); // NOI18N
+        _Mdate3.setPreferredSize(new java.awt.Dimension(470, 46));
+        _Mdate3.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        jPanel15.add(_Mdate3, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 100, 230, 40));
+
+        jPanel6.add(jPanel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 1610, 1100, 250));
+
+        _Mbottom.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
+        _Mbottom.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _Mbottom.setText("Rapor");
+        _Mbottom.setToolTipText("");
+        _Mbottom.setBorder(null);
+        _Mbottom.setMinimumSize(new java.awt.Dimension(470, 46));
+        _Mbottom.setName(""); // NOI18N
+        _Mbottom.setPreferredSize(new java.awt.Dimension(470, 46));
+        _Mbottom.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _weldingProcess7FocusGained(evt);
+            }
+        });
+        _Mbottom.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                _MbottomActionPerformed(evt);
+            }
+        });
+        jPanel6.add(_Mbottom, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 1860, 1330, 30));
+
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/magnetic2.png"))); // NOI18N
+        jLabel3.setMaximumSize(new java.awt.Dimension(1350, 1900));
+        jLabel3.setMinimumSize(new java.awt.Dimension(1350, 1900));
+        jLabel3.setPreferredSize(new java.awt.Dimension(1350, 1900));
+        jPanel6.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, 1870));
+
+        jTabbedPane1.addTab("Manyetik Parçacık Muayene Raporu", jPanel6);
 
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
         jPanel5.setMaximumSize(new java.awt.Dimension(1350, 1900));
@@ -4860,17 +7421,6 @@ public class Report extends javax.swing.JFrame {
         jPanel21.add(_confirmationLevel);
         _confirmationLevel.setBounds(790, 50, 210, 30);
 
-        _bottom.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
-        _bottom.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _bottom.setBorder(null);
-        _bottom.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _customerFocusGained(evt);
-            }
-        });
-        jPanel21.add(_bottom);
-        _bottom.setBounds(84, 255, 1020, 30);
-
         _date1.setEditable(false);
         _date1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         _date1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -4910,2500 +7460,24 @@ public class Report extends javax.swing.JFrame {
         jPanel21.add(_date3);
         _date3.setBounds(790, 88, 210, 30);
 
-        jPanel5.add(jPanel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(84, 1800, 1280, 270));
+        jPanel5.add(jPanel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(84, 1800, 1280, 250));
+
+        _bottom.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
+        _bottom.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        _bottom.setText("Rapor");
+        _bottom.setToolTipText("");
+        _bottom.setBorder(null);
+        _bottom.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                _customerFocusGained(evt);
+            }
+        });
+        jPanel5.add(_bottom, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 2050, 1360, 30));
 
         jLabel38.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/radio2.png"))); // NOI18N
         jPanel5.add(jLabel38, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, 2060));
 
         jTabbedPane1.addTab("Radyografik Muayene Raporu", jPanel5);
-
-        jPanel6.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel6.setMaximumSize(new java.awt.Dimension(1350, 2000));
-        jPanel6.setMinimumSize(new java.awt.Dimension(1350, 2000));
-        jPanel6.setName(""); // NOI18N
-        jPanel6.setPreferredSize(new java.awt.Dimension(1350, 2000));
-        jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jPanel4.setOpaque(false);
-        jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        _MstageOfExamination.setEditable(false);
-        _MstageOfExamination.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _MstageOfExamination.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _MstageOfExamination.setToolTipText("");
-        _MstageOfExamination.setBorder(null);
-        _MstageOfExamination.setMinimumSize(new java.awt.Dimension(470, 46));
-        _MstageOfExamination.setName(""); // NOI18N
-        _MstageOfExamination.setPreferredSize(new java.awt.Dimension(470, 46));
-        _MstageOfExamination.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _MstageOfExamination.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel4.add(_MstageOfExamination, new org.netbeans.lib.awtextra.AbsoluteConstraints(3, 211, 193, 48));
-
-        _MinspectionProcedure.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _MinspectionProcedure.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _MinspectionProcedure.setToolTipText("");
-        _MinspectionProcedure.setBorder(null);
-        _MinspectionProcedure.setMinimumSize(new java.awt.Dimension(470, 46));
-        _MinspectionProcedure.setName(""); // NOI18N
-        _MinspectionProcedure.setPreferredSize(new java.awt.Dimension(470, 46));
-        _MinspectionProcedure.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _MinspectionProcedure.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel4.add(_MinspectionProcedure, new org.netbeans.lib.awtextra.AbsoluteConstraints(3, 6, 193, 46));
-
-        _MinspectionScope.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _MinspectionScope.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _MinspectionScope.setToolTipText("");
-        _MinspectionScope.setBorder(null);
-        _MinspectionScope.setMinimumSize(new java.awt.Dimension(470, 46));
-        _MinspectionScope.setName(""); // NOI18N
-        _MinspectionScope.setPreferredSize(new java.awt.Dimension(470, 46));
-        _MinspectionScope.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                _MinspectionScopeFocusLost(evt);
-            }
-        });
-        _MinspectionScope.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel4.add(_MinspectionScope, new org.netbeans.lib.awtextra.AbsoluteConstraints(3, 56, 193, 48));
-
-        _MdrawingNo.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _MdrawingNo.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _MdrawingNo.setToolTipText("");
-        _MdrawingNo.setBorder(null);
-        _MdrawingNo.setMinimumSize(new java.awt.Dimension(470, 46));
-        _MdrawingNo.setName(""); // NOI18N
-        _MdrawingNo.setPreferredSize(new java.awt.Dimension(470, 46));
-        _MdrawingNo.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _MdrawingNo.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel4.add(_MdrawingNo, new org.netbeans.lib.awtextra.AbsoluteConstraints(3, 108, 193, 48));
-
-        _MsurfaceCondition.setEditable(false);
-        _MsurfaceCondition.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _MsurfaceCondition.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _MsurfaceCondition.setToolTipText("");
-        _MsurfaceCondition.setBorder(null);
-        _MsurfaceCondition.setMinimumSize(new java.awt.Dimension(470, 46));
-        _MsurfaceCondition.setName(""); // NOI18N
-        _MsurfaceCondition.setPreferredSize(new java.awt.Dimension(470, 46));
-        _MsurfaceCondition.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _MsurfaceCondition.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel4.add(_MsurfaceCondition, new org.netbeans.lib.awtextra.AbsoluteConstraints(3, 160, 193, 47));
-
-        jPanel6.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 150, 200, 260));
-
-        jPanel2.setOpaque(false);
-        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        _MevaluationStandard.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _MevaluationStandard.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _MevaluationStandard.setToolTipText("");
-        _MevaluationStandard.setBorder(null);
-        _MevaluationStandard.setMinimumSize(new java.awt.Dimension(470, 46));
-        _MevaluationStandard.setName(""); // NOI18N
-        _MevaluationStandard.setPreferredSize(new java.awt.Dimension(470, 46));
-        _MevaluationStandard.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _MevaluationStandard.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel2.add(_MevaluationStandard, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 211, 465, 48));
-
-        _Mcustomer.setEditable(false);
-        _Mcustomer.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _Mcustomer.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _Mcustomer.setToolTipText("");
-        _Mcustomer.setBorder(null);
-        _Mcustomer.setDisabledTextColor(new java.awt.Color(0, 0, 0));
-        _Mcustomer.setMinimumSize(new java.awt.Dimension(470, 46));
-        _Mcustomer.setName(""); // NOI18N
-        _Mcustomer.setPreferredSize(new java.awt.Dimension(470, 46));
-        _Mcustomer.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _Mcustomer.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel2.add(_Mcustomer, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 6, 465, 46));
-
-        _Mproject.setEditable(false);
-        _Mproject.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _Mproject.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _Mproject.setToolTipText("");
-        _Mproject.setBorder(null);
-        _Mproject.setMinimumSize(new java.awt.Dimension(470, 46));
-        _Mproject.setName(""); // NOI18N
-        _Mproject.setPreferredSize(new java.awt.Dimension(470, 46));
-        _Mproject.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _Mproject.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel2.add(_Mproject, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 56, 465, 48));
-
-        _MinspectionPlace.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _MinspectionPlace.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _MinspectionPlace.setToolTipText("");
-        _MinspectionPlace.setBorder(null);
-        _MinspectionPlace.setMinimumSize(new java.awt.Dimension(470, 46));
-        _MinspectionPlace.setName(""); // NOI18N
-        _MinspectionPlace.setPreferredSize(new java.awt.Dimension(470, 46));
-        _MinspectionPlace.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _MinspectionPlace.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel2.add(_MinspectionPlace, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 108, 465, 48));
-
-        _MinspectionStandard.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _MinspectionStandard.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _MinspectionStandard.setToolTipText("");
-        _MinspectionStandard.setBorder(null);
-        _MinspectionStandard.setMinimumSize(new java.awt.Dimension(470, 46));
-        _MinspectionStandard.setName(""); // NOI18N
-        _MinspectionStandard.setPreferredSize(new java.awt.Dimension(470, 46));
-        _MinspectionStandard.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _MinspectionStandard.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel2.add(_MinspectionStandard, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 160, 465, 47));
-
-        jPanel6.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 150, 470, 260));
-
-        jPanel8.setOpaque(false);
-        jPanel8.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        _MofferNo.setEditable(false);
-        _MofferNo.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _MofferNo.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _MofferNo.setToolTipText("");
-        _MofferNo.setBorder(null);
-        _MofferNo.setMinimumSize(new java.awt.Dimension(470, 46));
-        _MofferNo.setName(""); // NOI18N
-        _MofferNo.setPreferredSize(new java.awt.Dimension(470, 46));
-        _MofferNo.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _MofferNo.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel8.add(_MofferNo, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 211, 148, 48));
-
-        _Mpage.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _Mpage.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _Mpage.setToolTipText("");
-        _Mpage.setBorder(null);
-        _Mpage.setMinimumSize(new java.awt.Dimension(470, 46));
-        _Mpage.setName(""); // NOI18N
-        _Mpage.setPreferredSize(new java.awt.Dimension(470, 46));
-        _Mpage.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _Mpage.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel8.add(_Mpage, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 6, 148, 46));
-
-        _MreportNo.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _MreportNo.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _MreportNo.setToolTipText("");
-        _MreportNo.setBorder(null);
-        _MreportNo.setMinimumSize(new java.awt.Dimension(470, 46));
-        _MreportNo.setName(""); // NOI18N
-        _MreportNo.setPreferredSize(new java.awt.Dimension(470, 46));
-        _MreportNo.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _MreportNo.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel8.add(_MreportNo, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 56, 148, 48));
-
-        _MreportDate.setEditable(false);
-        _MreportDate.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _MreportDate.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _MreportDate.setToolTipText("");
-        _MreportDate.setBorder(null);
-        _MreportDate.setMinimumSize(new java.awt.Dimension(470, 46));
-        _MreportDate.setName(""); // NOI18N
-        _MreportDate.setPreferredSize(new java.awt.Dimension(470, 46));
-        _MreportDate.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _MreportDate.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel8.add(_MreportDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 108, 148, 48));
-
-        _MorderNo.setEditable(false);
-        _MorderNo.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _MorderNo.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _MorderNo.setToolTipText("");
-        _MorderNo.setBorder(null);
-        _MorderNo.setMinimumSize(new java.awt.Dimension(470, 46));
-        _MorderNo.setName(""); // NOI18N
-        _MorderNo.setPreferredSize(new java.awt.Dimension(470, 46));
-        _MorderNo.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _MorderNo.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel8.add(_MorderNo, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 160, 148, 47));
-
-        jPanel6.add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(1200, 150, 160, 260));
-
-        jPanel9.setOpaque(false);
-        jPanel9.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        _distanceOfLight.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _distanceOfLight.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _distanceOfLight.setToolTipText("");
-        _distanceOfLight.setBorder(null);
-        _distanceOfLight.setMinimumSize(new java.awt.Dimension(470, 46));
-        _distanceOfLight.setName(""); // NOI18N
-        _distanceOfLight.setPreferredSize(new java.awt.Dimension(470, 46));
-        _distanceOfLight.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _distanceOfLight.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel9.add(_distanceOfLight, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 260, 227, 46));
-
-        _poleDistance.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _poleDistance.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _poleDistance.setToolTipText("");
-        _poleDistance.setBorder(null);
-        _poleDistance.setMinimumSize(new java.awt.Dimension(470, 46));
-        _poleDistance.setName(""); // NOI18N
-        _poleDistance.setPreferredSize(new java.awt.Dimension(470, 46));
-        _poleDistance.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _poleDistance.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel9.add(_poleDistance, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 7, 227, 48));
-
-        _Mequipment.setEditable(false);
-        _Mequipment.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _Mequipment.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _Mequipment.setToolTipText("");
-        _Mequipment.setBorder(null);
-        _Mequipment.setMinimumSize(new java.awt.Dimension(470, 46));
-        _Mequipment.setName(""); // NOI18N
-        _Mequipment.setPreferredSize(new java.awt.Dimension(470, 46));
-        _Mequipment.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _Mequipment.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel9.add(_Mequipment, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 58, 227, 47));
-
-        _MPCarrier.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _MPCarrier.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _MPCarrier.setToolTipText("");
-        _MPCarrier.setBorder(null);
-        _MPCarrier.setMinimumSize(new java.awt.Dimension(470, 46));
-        _MPCarrier.setName(""); // NOI18N
-        _MPCarrier.setPreferredSize(new java.awt.Dimension(470, 46));
-        _MPCarrier.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _MPCarrier.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel9.add(_MPCarrier, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 109, 227, 47));
-
-        _UV.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _UV.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _UV.setToolTipText("");
-        _UV.setBorder(null);
-        _UV.setMinimumSize(new java.awt.Dimension(470, 46));
-        _UV.setName(""); // NOI18N
-        _UV.setPreferredSize(new java.awt.Dimension(470, 46));
-        _UV.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _UV.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel9.add(_UV, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 210, 227, 47));
-
-        _magTech.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _magTech.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _magTech.setToolTipText("");
-        _magTech.setBorder(null);
-        _magTech.setMinimumSize(new java.awt.Dimension(470, 46));
-        _magTech.setName(""); // NOI18N
-        _magTech.setPreferredSize(new java.awt.Dimension(470, 46));
-        _magTech.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _magTech_weldingProcess7FocusGained(evt);
-            }
-        });
-        _magTech.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _magTech_weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel9.add(_magTech, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 159, 227, 47));
-
-        jPanel6.add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 440, 230, 310));
-
-        jPanel10.setOpaque(false);
-        jPanel10.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        _MheatTreatment.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _MheatTreatment.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _MheatTreatment.setToolTipText("");
-        _MheatTreatment.setBorder(null);
-        _MheatTreatment.setMinimumSize(new java.awt.Dimension(470, 46));
-        _MheatTreatment.setName(""); // NOI18N
-        _MheatTreatment.setPreferredSize(new java.awt.Dimension(470, 46));
-        _MheatTreatment.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _MheatTreatment.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel10.add(_MheatTreatment, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 260, 283, 46));
-
-        _examinationArea.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _examinationArea.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _examinationArea.setToolTipText("");
-        _examinationArea.setBorder(null);
-        _examinationArea.setMinimumSize(new java.awt.Dimension(470, 46));
-        _examinationArea.setName(""); // NOI18N
-        _examinationArea.setPreferredSize(new java.awt.Dimension(470, 46));
-        _examinationArea.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _examinationArea.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel10.add(_examinationArea, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 7, 283, 48));
-
-        _currentType.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _currentType.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _currentType.setToolTipText("");
-        _currentType.setBorder(null);
-        _currentType.setMinimumSize(new java.awt.Dimension(470, 46));
-        _currentType.setName(""); // NOI18N
-        _currentType.setPreferredSize(new java.awt.Dimension(470, 46));
-        _currentType.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _currentType.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel10.add(_currentType, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 58, 283, 47));
-
-        _luxmeter.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _luxmeter.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _luxmeter.setToolTipText("");
-        _luxmeter.setBorder(null);
-        _luxmeter.setMinimumSize(new java.awt.Dimension(470, 46));
-        _luxmeter.setName(""); // NOI18N
-        _luxmeter.setPreferredSize(new java.awt.Dimension(470, 46));
-        _luxmeter.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _luxmeter.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel10.add(_luxmeter, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 109, 283, 46));
-
-        _testMedium.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _testMedium.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _testMedium.setToolTipText("");
-        _testMedium.setBorder(null);
-        _testMedium.setMinimumSize(new java.awt.Dimension(470, 46));
-        _testMedium.setName(""); // NOI18N
-        _testMedium.setPreferredSize(new java.awt.Dimension(470, 46));
-        _testMedium.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _testMedium.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel10.add(_testMedium, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 159, 283, 47));
-
-        _demagnetization.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _demagnetization.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _demagnetization.setToolTipText("");
-        _demagnetization.setBorder(null);
-        _demagnetization.setMinimumSize(new java.awt.Dimension(470, 46));
-        _demagnetization.setName(""); // NOI18N
-        _demagnetization.setPreferredSize(new java.awt.Dimension(470, 46));
-        _demagnetization.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _demagnetization.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel10.add(_demagnetization, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 210, 283, 47));
-
-        jPanel6.add(jPanel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 440, 290, 310));
-
-        jPanel11.setOpaque(false);
-        jPanel11.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        _gauss.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _gauss.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _gauss.setToolTipText("");
-        _gauss.setBorder(null);
-        _gauss.setMinimumSize(new java.awt.Dimension(470, 46));
-        _gauss.setName(""); // NOI18N
-        _gauss.setPreferredSize(new java.awt.Dimension(470, 46));
-        _gauss.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _gauss.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel11.add(_gauss, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 58, 197, 97));
-
-        _liftingTestDate.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _liftingTestDate.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _liftingTestDate.setToolTipText("");
-        _liftingTestDate.setBorder(null);
-        _liftingTestDate.setMinimumSize(new java.awt.Dimension(470, 46));
-        _liftingTestDate.setName(""); // NOI18N
-        _liftingTestDate.setPreferredSize(new java.awt.Dimension(470, 46));
-        _liftingTestDate.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _liftingTestDate.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel11.add(_liftingTestDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 260, 197, 46));
-
-        _surfaceTemperature.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _surfaceTemperature.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _surfaceTemperature.setToolTipText("");
-        _surfaceTemperature.setBorder(null);
-        _surfaceTemperature.setMinimumSize(new java.awt.Dimension(470, 46));
-        _surfaceTemperature.setName(""); // NOI18N
-        _surfaceTemperature.setPreferredSize(new java.awt.Dimension(470, 46));
-        _surfaceTemperature.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _surfaceTemperature.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel11.add(_surfaceTemperature, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 7, 197, 48));
-
-        _MsurfaceCondition2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _MsurfaceCondition2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _MsurfaceCondition2.setToolTipText("");
-        _MsurfaceCondition2.setBorder(null);
-        _MsurfaceCondition2.setMinimumSize(new java.awt.Dimension(470, 46));
-        _MsurfaceCondition2.setName(""); // NOI18N
-        _MsurfaceCondition2.setPreferredSize(new java.awt.Dimension(470, 46));
-        _MsurfaceCondition2.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _MsurfaceCondition2.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel11.add(_MsurfaceCondition2, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 159, 197, 47));
-
-        _identification.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _identification.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _identification.setToolTipText("");
-        _identification.setBorder(null);
-        _identification.setMinimumSize(new java.awt.Dimension(470, 46));
-        _identification.setName(""); // NOI18N
-        _identification.setPreferredSize(new java.awt.Dimension(470, 46));
-        _identification.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _identification.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel11.add(_identification, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 210, 197, 47));
-
-        jPanel6.add(jPanel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(1150, 440, 210, 310));
-
-        jPanel12.setOpaque(false);
-        jPanel12.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel20.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel20.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
-        jLabel20.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel20.setText("Butt Weld");
-        jLabel20.setOpaque(true);
-        jPanel12.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 130, 110, 20));
-
-        jLabel35.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel35.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jLabel35.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel35.setText("Alın Kaynağı");
-        jLabel35.setOpaque(true);
-        jPanel12.add(jLabel35, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 104, 110, 30));
-
-        _fillet.setBackground(new java.awt.Color(255, 255, 255));
-        _fillet.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        _fillet.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        _fillet.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        _fillet.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                _buttMouseClicked(evt);
-            }
-        });
-        _fillet.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                _filletActionPerformed(evt);
-            }
-        });
-        jPanel12.add(_fillet, new org.netbeans.lib.awtextra.AbsoluteConstraints(308, 10, 350, 170));
-
-        jLabel36.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel36.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jLabel36.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel36.setText("Köşe Kaynağı");
-        jLabel36.setOpaque(true);
-        jPanel12.add(jLabel36, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 120, 110, 30));
-
-        jLabel37.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel37.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
-        jLabel37.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel37.setText("Fillet Weld");
-        jLabel37.setOpaque(true);
-        jPanel12.add(jLabel37, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 140, 110, 30));
-
-        _butt.setBackground(new java.awt.Color(255, 255, 255));
-        _butt.setToolTipText("");
-        _butt.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        _butt.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        _butt.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        _butt.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                _buttMouseClicked(evt);
-            }
-        });
-        _butt.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                _buttActionPerformed(evt);
-            }
-        });
-        jPanel12.add(_butt, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 290, 170));
-
-        jLabel39.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel39.setOpaque(true);
-        jPanel12.add(jLabel39, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 130, 80, 40));
-
-        jLabel40.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel40.setOpaque(true);
-        jPanel12.add(jLabel40, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 124, 80, 40));
-
-        jPanel6.add(jPanel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 750, 660, 180));
-
-        jPanel14.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel14.setOpaque(false);
-        jPanel14.setLayout(null);
-
-        _Mdescription.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _Mdescription.setToolTipText("");
-        _Mdescription.setBorder(null);
-        _Mdescription.setMinimumSize(new java.awt.Dimension(470, 46));
-        _Mdescription.setName(""); // NOI18N
-        _Mdescription.setPreferredSize(new java.awt.Dimension(470, 46));
-        _Mdescription.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _Mdescription.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel14.add(_Mdescription);
-        _Mdescription.setBounds(3, 100, 1040, 44);
-
-        _standardDeviations.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _standardDeviations.setToolTipText("");
-        _standardDeviations.setBorder(null);
-        _standardDeviations.setMinimumSize(new java.awt.Dimension(470, 46));
-        _standardDeviations.setName(""); // NOI18N
-        _standardDeviations.setPreferredSize(new java.awt.Dimension(470, 46));
-        _standardDeviations.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _standardDeviations.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel14.add(_standardDeviations);
-        _standardDeviations.setBounds(3, 6, 1040, 43);
-
-        _MinspectionDates.setEditable(false);
-        _MinspectionDates.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _MinspectionDates.setForeground(new java.awt.Color(255, 0, 51));
-        _MinspectionDates.setToolTipText("");
-        _MinspectionDates.setBorder(null);
-        _MinspectionDates.setMinimumSize(new java.awt.Dimension(470, 46));
-        _MinspectionDates.setName(""); // NOI18N
-        _MinspectionDates.setPreferredSize(new java.awt.Dimension(470, 46));
-        _MinspectionDates.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _MinspectionDates.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel14.add(_MinspectionDates);
-        _MinspectionDates.setBounds(3, 53, 1040, 44);
-
-        jPanel6.add(jPanel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 930, 1050, 150));
-
-        jPanel13.setOpaque(false);
-        jPanel13.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        _result1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _result1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _result1.setToolTipText("");
-        _result1.setBorder(null);
-        _result1.setMinimumSize(new java.awt.Dimension(470, 46));
-        _result1.setName(""); // NOI18N
-        _result1.setPreferredSize(new java.awt.Dimension(470, 46));
-        _result1.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _result1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_result1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1266, 2, 77, 36));
-
-        _pieceNo1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _pieceNo1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _pieceNo1.setToolTipText("");
-        _pieceNo1.setBorder(null);
-        _pieceNo1.setMinimumSize(new java.awt.Dimension(470, 46));
-        _pieceNo1.setName(""); // NOI18N
-        _pieceNo1.setPreferredSize(new java.awt.Dimension(470, 46));
-        _pieceNo1.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _pieceNo1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_pieceNo1, new org.netbeans.lib.awtextra.AbsoluteConstraints(81, 2, 253, 36));
-
-        _testLength1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _testLength1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _testLength1.setToolTipText("");
-        _testLength1.setBorder(null);
-        _testLength1.setMinimumSize(new java.awt.Dimension(470, 46));
-        _testLength1.setName(""); // NOI18N
-        _testLength1.setPreferredSize(new java.awt.Dimension(470, 46));
-        _testLength1.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _testLength1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_testLength1, new org.netbeans.lib.awtextra.AbsoluteConstraints(338, 2, 150, 36));
-
-        _weldingProcess1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _weldingProcess1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _weldingProcess1.setToolTipText("");
-        _weldingProcess1.setBorder(null);
-        _weldingProcess1.setMinimumSize(new java.awt.Dimension(470, 46));
-        _weldingProcess1.setName(""); // NOI18N
-        _weldingProcess1.setPreferredSize(new java.awt.Dimension(470, 46));
-        _weldingProcess1.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _weldingProcess1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_weldingProcess1, new org.netbeans.lib.awtextra.AbsoluteConstraints(492, 2, 204, 36));
-
-        _Mthickness1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _Mthickness1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _Mthickness1.setToolTipText("");
-        _Mthickness1.setBorder(null);
-        _Mthickness1.setMinimumSize(new java.awt.Dimension(470, 46));
-        _Mthickness1.setName(""); // NOI18N
-        _Mthickness1.setPreferredSize(new java.awt.Dimension(470, 46));
-        _Mthickness1.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _Mthickness1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_Mthickness1, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 2, 108, 36));
-
-        _diameter1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _diameter1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _diameter1.setToolTipText("");
-        _diameter1.setBorder(null);
-        _diameter1.setMinimumSize(new java.awt.Dimension(470, 46));
-        _diameter1.setName(""); // NOI18N
-        _diameter1.setPreferredSize(new java.awt.Dimension(470, 46));
-        _diameter1.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _diameter1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_diameter1, new org.netbeans.lib.awtextra.AbsoluteConstraints(812, 2, 132, 36));
-
-        _MdefectType1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _MdefectType1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _MdefectType1.setToolTipText("");
-        _MdefectType1.setBorder(null);
-        _MdefectType1.setMinimumSize(new java.awt.Dimension(470, 46));
-        _MdefectType1.setName(""); // NOI18N
-        _MdefectType1.setPreferredSize(new java.awt.Dimension(470, 46));
-        _MdefectType1.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _MdefectType1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_MdefectType1, new org.netbeans.lib.awtextra.AbsoluteConstraints(948, 2, 134, 36));
-
-        _MdefectLocation1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _MdefectLocation1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _MdefectLocation1.setToolTipText("");
-        _MdefectLocation1.setBorder(null);
-        _MdefectLocation1.setMinimumSize(new java.awt.Dimension(470, 46));
-        _MdefectLocation1.setName(""); // NOI18N
-        _MdefectLocation1.setPreferredSize(new java.awt.Dimension(470, 46));
-        _MdefectLocation1.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _MdefectLocation1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_MdefectLocation1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1086, 2, 176, 36));
-
-        _result2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _result2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _result2.setToolTipText("");
-        _result2.setBorder(null);
-        _result2.setMinimumSize(new java.awt.Dimension(470, 46));
-        _result2.setName(""); // NOI18N
-        _result2.setPreferredSize(new java.awt.Dimension(470, 46));
-        _result2.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _result2.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_result2, new org.netbeans.lib.awtextra.AbsoluteConstraints(1266, 42, 77, 36));
-
-        _MdefectLocation2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _MdefectLocation2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _MdefectLocation2.setToolTipText("");
-        _MdefectLocation2.setBorder(null);
-        _MdefectLocation2.setMinimumSize(new java.awt.Dimension(470, 46));
-        _MdefectLocation2.setName(""); // NOI18N
-        _MdefectLocation2.setPreferredSize(new java.awt.Dimension(470, 46));
-        _MdefectLocation2.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _MdefectLocation2.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_MdefectLocation2, new org.netbeans.lib.awtextra.AbsoluteConstraints(1086, 42, 176, 36));
-
-        _MdefectType2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _MdefectType2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _MdefectType2.setToolTipText("");
-        _MdefectType2.setBorder(null);
-        _MdefectType2.setMinimumSize(new java.awt.Dimension(470, 46));
-        _MdefectType2.setName(""); // NOI18N
-        _MdefectType2.setPreferredSize(new java.awt.Dimension(470, 46));
-        _MdefectType2.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _MdefectType2.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_MdefectType2, new org.netbeans.lib.awtextra.AbsoluteConstraints(948, 42, 134, 36));
-
-        _diameter2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _diameter2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _diameter2.setToolTipText("");
-        _diameter2.setBorder(null);
-        _diameter2.setMinimumSize(new java.awt.Dimension(470, 46));
-        _diameter2.setName(""); // NOI18N
-        _diameter2.setPreferredSize(new java.awt.Dimension(470, 46));
-        _diameter2.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _diameter2.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_diameter2, new org.netbeans.lib.awtextra.AbsoluteConstraints(812, 42, 132, 36));
-
-        _Mthickness2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _Mthickness2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _Mthickness2.setToolTipText("");
-        _Mthickness2.setBorder(null);
-        _Mthickness2.setMinimumSize(new java.awt.Dimension(470, 46));
-        _Mthickness2.setName(""); // NOI18N
-        _Mthickness2.setPreferredSize(new java.awt.Dimension(470, 46));
-        _Mthickness2.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _Mthickness2.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_Mthickness2, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 42, 108, 36));
-
-        _weldingProcess2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _weldingProcess2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _weldingProcess2.setToolTipText("");
-        _weldingProcess2.setBorder(null);
-        _weldingProcess2.setMinimumSize(new java.awt.Dimension(470, 46));
-        _weldingProcess2.setName(""); // NOI18N
-        _weldingProcess2.setPreferredSize(new java.awt.Dimension(470, 46));
-        _weldingProcess2.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _weldingProcess2.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_weldingProcess2, new org.netbeans.lib.awtextra.AbsoluteConstraints(492, 42, 204, 36));
-
-        _testLength2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _testLength2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _testLength2.setToolTipText("");
-        _testLength2.setBorder(null);
-        _testLength2.setMinimumSize(new java.awt.Dimension(470, 46));
-        _testLength2.setName(""); // NOI18N
-        _testLength2.setPreferredSize(new java.awt.Dimension(470, 46));
-        _testLength2.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _testLength2.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_testLength2, new org.netbeans.lib.awtextra.AbsoluteConstraints(338, 42, 150, 36));
-
-        _pieceNo2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _pieceNo2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _pieceNo2.setToolTipText("");
-        _pieceNo2.setBorder(null);
-        _pieceNo2.setMinimumSize(new java.awt.Dimension(470, 46));
-        _pieceNo2.setName(""); // NOI18N
-        _pieceNo2.setPreferredSize(new java.awt.Dimension(470, 46));
-        _pieceNo2.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _pieceNo2.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_pieceNo2, new org.netbeans.lib.awtextra.AbsoluteConstraints(81, 42, 253, 36));
-
-        _MdefectType3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _MdefectType3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _MdefectType3.setToolTipText("");
-        _MdefectType3.setBorder(null);
-        _MdefectType3.setMinimumSize(new java.awt.Dimension(470, 46));
-        _MdefectType3.setName(""); // NOI18N
-        _MdefectType3.setPreferredSize(new java.awt.Dimension(470, 46));
-        _MdefectType3.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _MdefectType3.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_MdefectType3, new org.netbeans.lib.awtextra.AbsoluteConstraints(948, 82, 134, 36));
-
-        _testLength3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _testLength3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _testLength3.setToolTipText("");
-        _testLength3.setBorder(null);
-        _testLength3.setMinimumSize(new java.awt.Dimension(470, 46));
-        _testLength3.setName(""); // NOI18N
-        _testLength3.setPreferredSize(new java.awt.Dimension(470, 46));
-        _testLength3.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _testLength3.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_testLength3, new org.netbeans.lib.awtextra.AbsoluteConstraints(338, 82, 150, 36));
-
-        _result3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _result3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _result3.setToolTipText("");
-        _result3.setBorder(null);
-        _result3.setMinimumSize(new java.awt.Dimension(470, 46));
-        _result3.setName(""); // NOI18N
-        _result3.setPreferredSize(new java.awt.Dimension(470, 46));
-        _result3.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _result3.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_result3, new org.netbeans.lib.awtextra.AbsoluteConstraints(1266, 82, 77, 36));
-
-        _weldingProcess3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _weldingProcess3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _weldingProcess3.setToolTipText("");
-        _weldingProcess3.setBorder(null);
-        _weldingProcess3.setMinimumSize(new java.awt.Dimension(470, 46));
-        _weldingProcess3.setName(""); // NOI18N
-        _weldingProcess3.setPreferredSize(new java.awt.Dimension(470, 46));
-        _weldingProcess3.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _weldingProcess3.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_weldingProcess3, new org.netbeans.lib.awtextra.AbsoluteConstraints(492, 82, 204, 36));
-
-        _diameter3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _diameter3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _diameter3.setToolTipText("");
-        _diameter3.setBorder(null);
-        _diameter3.setMinimumSize(new java.awt.Dimension(470, 46));
-        _diameter3.setName(""); // NOI18N
-        _diameter3.setPreferredSize(new java.awt.Dimension(470, 46));
-        _diameter3.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _diameter3.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_diameter3, new org.netbeans.lib.awtextra.AbsoluteConstraints(812, 82, 132, 36));
-
-        _Mthickness3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _Mthickness3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _Mthickness3.setToolTipText("");
-        _Mthickness3.setBorder(null);
-        _Mthickness3.setMinimumSize(new java.awt.Dimension(470, 46));
-        _Mthickness3.setName(""); // NOI18N
-        _Mthickness3.setPreferredSize(new java.awt.Dimension(470, 46));
-        _Mthickness3.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _Mthickness3.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_Mthickness3, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 82, 108, 36));
-
-        _MdefectLocation3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _MdefectLocation3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _MdefectLocation3.setToolTipText("");
-        _MdefectLocation3.setBorder(null);
-        _MdefectLocation3.setMinimumSize(new java.awt.Dimension(470, 46));
-        _MdefectLocation3.setName(""); // NOI18N
-        _MdefectLocation3.setPreferredSize(new java.awt.Dimension(470, 46));
-        _MdefectLocation3.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _MdefectLocation3.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_MdefectLocation3, new org.netbeans.lib.awtextra.AbsoluteConstraints(1086, 82, 176, 36));
-
-        _pieceNo3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _pieceNo3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _pieceNo3.setToolTipText("");
-        _pieceNo3.setBorder(null);
-        _pieceNo3.setMinimumSize(new java.awt.Dimension(470, 46));
-        _pieceNo3.setName(""); // NOI18N
-        _pieceNo3.setPreferredSize(new java.awt.Dimension(470, 46));
-        _pieceNo3.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _pieceNo3.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_pieceNo3, new org.netbeans.lib.awtextra.AbsoluteConstraints(81, 82, 253, 36));
-
-        _MdefectType4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _MdefectType4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _MdefectType4.setToolTipText("");
-        _MdefectType4.setBorder(null);
-        _MdefectType4.setMinimumSize(new java.awt.Dimension(470, 46));
-        _MdefectType4.setName(""); // NOI18N
-        _MdefectType4.setPreferredSize(new java.awt.Dimension(470, 46));
-        _MdefectType4.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _MdefectType4.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_MdefectType4, new org.netbeans.lib.awtextra.AbsoluteConstraints(948, 122, 134, 35));
-
-        _Mthickness4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _Mthickness4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _Mthickness4.setToolTipText("");
-        _Mthickness4.setBorder(null);
-        _Mthickness4.setMinimumSize(new java.awt.Dimension(470, 46));
-        _Mthickness4.setName(""); // NOI18N
-        _Mthickness4.setPreferredSize(new java.awt.Dimension(470, 46));
-        _Mthickness4.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _Mthickness4.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_Mthickness4, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 122, 108, 35));
-
-        _testLength4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _testLength4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _testLength4.setToolTipText("");
-        _testLength4.setBorder(null);
-        _testLength4.setMinimumSize(new java.awt.Dimension(470, 46));
-        _testLength4.setName(""); // NOI18N
-        _testLength4.setPreferredSize(new java.awt.Dimension(470, 46));
-        _testLength4.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _testLength4.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_testLength4, new org.netbeans.lib.awtextra.AbsoluteConstraints(338, 122, 150, 35));
-
-        _result4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _result4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _result4.setToolTipText("");
-        _result4.setBorder(null);
-        _result4.setMinimumSize(new java.awt.Dimension(470, 46));
-        _result4.setName(""); // NOI18N
-        _result4.setPreferredSize(new java.awt.Dimension(470, 46));
-        _result4.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _result4.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_result4, new org.netbeans.lib.awtextra.AbsoluteConstraints(1266, 122, 77, 35));
-
-        _diameter4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _diameter4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _diameter4.setToolTipText("");
-        _diameter4.setBorder(null);
-        _diameter4.setMinimumSize(new java.awt.Dimension(470, 46));
-        _diameter4.setName(""); // NOI18N
-        _diameter4.setPreferredSize(new java.awt.Dimension(470, 46));
-        _diameter4.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _diameter4.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_diameter4, new org.netbeans.lib.awtextra.AbsoluteConstraints(812, 122, 132, 35));
-
-        _MdefectLocation4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _MdefectLocation4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _MdefectLocation4.setToolTipText("");
-        _MdefectLocation4.setBorder(null);
-        _MdefectLocation4.setMinimumSize(new java.awt.Dimension(470, 46));
-        _MdefectLocation4.setName(""); // NOI18N
-        _MdefectLocation4.setPreferredSize(new java.awt.Dimension(470, 46));
-        _MdefectLocation4.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _MdefectLocation4.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_MdefectLocation4, new org.netbeans.lib.awtextra.AbsoluteConstraints(1086, 122, 176, 35));
-
-        _weldingProcess4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _weldingProcess4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _weldingProcess4.setToolTipText("");
-        _weldingProcess4.setBorder(null);
-        _weldingProcess4.setMinimumSize(new java.awt.Dimension(470, 46));
-        _weldingProcess4.setName(""); // NOI18N
-        _weldingProcess4.setPreferredSize(new java.awt.Dimension(470, 46));
-        _weldingProcess4.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _weldingProcess4.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_weldingProcess4, new org.netbeans.lib.awtextra.AbsoluteConstraints(492, 122, 204, 35));
-
-        _pieceNo4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _pieceNo4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _pieceNo4.setToolTipText("");
-        _pieceNo4.setBorder(null);
-        _pieceNo4.setMinimumSize(new java.awt.Dimension(470, 46));
-        _pieceNo4.setName(""); // NOI18N
-        _pieceNo4.setPreferredSize(new java.awt.Dimension(470, 46));
-        _pieceNo4.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _pieceNo4.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_pieceNo4, new org.netbeans.lib.awtextra.AbsoluteConstraints(81, 122, 253, 35));
-
-        _testLength8.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _testLength8.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _testLength8.setToolTipText("");
-        _testLength8.setBorder(null);
-        _testLength8.setMinimumSize(new java.awt.Dimension(470, 46));
-        _testLength8.setName(""); // NOI18N
-        _testLength8.setPreferredSize(new java.awt.Dimension(470, 46));
-        _testLength8.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _testLength8.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_testLength8, new org.netbeans.lib.awtextra.AbsoluteConstraints(338, 281, 150, 35));
-
-        _weldingProcess8.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _weldingProcess8.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _weldingProcess8.setToolTipText("");
-        _weldingProcess8.setBorder(null);
-        _weldingProcess8.setMinimumSize(new java.awt.Dimension(470, 46));
-        _weldingProcess8.setName(""); // NOI18N
-        _weldingProcess8.setPreferredSize(new java.awt.Dimension(470, 46));
-        _weldingProcess8.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _weldingProcess8.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_weldingProcess8, new org.netbeans.lib.awtextra.AbsoluteConstraints(492, 281, 204, 35));
-
-        _Mthickness8.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _Mthickness8.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _Mthickness8.setToolTipText("");
-        _Mthickness8.setBorder(null);
-        _Mthickness8.setMinimumSize(new java.awt.Dimension(470, 46));
-        _Mthickness8.setName(""); // NOI18N
-        _Mthickness8.setPreferredSize(new java.awt.Dimension(470, 46));
-        _Mthickness8.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _Mthickness8.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_Mthickness8, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 281, 108, 35));
-
-        _result8.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _result8.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _result8.setToolTipText("");
-        _result8.setBorder(null);
-        _result8.setMinimumSize(new java.awt.Dimension(470, 46));
-        _result8.setName(""); // NOI18N
-        _result8.setPreferredSize(new java.awt.Dimension(470, 46));
-        _result8.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _result8.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_result8, new org.netbeans.lib.awtextra.AbsoluteConstraints(1266, 281, 77, 35));
-
-        _pieceNo8.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _pieceNo8.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _pieceNo8.setToolTipText("");
-        _pieceNo8.setBorder(null);
-        _pieceNo8.setMinimumSize(new java.awt.Dimension(470, 46));
-        _pieceNo8.setName(""); // NOI18N
-        _pieceNo8.setPreferredSize(new java.awt.Dimension(470, 46));
-        _pieceNo8.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _pieceNo8.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_pieceNo8, new org.netbeans.lib.awtextra.AbsoluteConstraints(81, 281, 253, 35));
-
-        _MdefectLocation8.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _MdefectLocation8.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _MdefectLocation8.setToolTipText("");
-        _MdefectLocation8.setBorder(null);
-        _MdefectLocation8.setMinimumSize(new java.awt.Dimension(470, 46));
-        _MdefectLocation8.setName(""); // NOI18N
-        _MdefectLocation8.setPreferredSize(new java.awt.Dimension(470, 46));
-        _MdefectLocation8.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _MdefectLocation8.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_MdefectLocation8, new org.netbeans.lib.awtextra.AbsoluteConstraints(1086, 281, 176, 35));
-
-        _diameter8.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _diameter8.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _diameter8.setToolTipText("");
-        _diameter8.setBorder(null);
-        _diameter8.setMinimumSize(new java.awt.Dimension(470, 46));
-        _diameter8.setName(""); // NOI18N
-        _diameter8.setPreferredSize(new java.awt.Dimension(470, 46));
-        _diameter8.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _diameter8.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_diameter8, new org.netbeans.lib.awtextra.AbsoluteConstraints(812, 281, 132, 35));
-
-        _MdefectType8.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _MdefectType8.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _MdefectType8.setToolTipText("");
-        _MdefectType8.setBorder(null);
-        _MdefectType8.setMinimumSize(new java.awt.Dimension(470, 46));
-        _MdefectType8.setName(""); // NOI18N
-        _MdefectType8.setPreferredSize(new java.awt.Dimension(470, 46));
-        _MdefectType8.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _MdefectType8.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_MdefectType8, new org.netbeans.lib.awtextra.AbsoluteConstraints(948, 281, 134, 35));
-
-        _pieceNo7.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _pieceNo7.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _pieceNo7.setToolTipText("");
-        _pieceNo7.setBorder(null);
-        _pieceNo7.setMinimumSize(new java.awt.Dimension(470, 46));
-        _pieceNo7.setName(""); // NOI18N
-        _pieceNo7.setPreferredSize(new java.awt.Dimension(470, 46));
-        _pieceNo7.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _pieceNo7.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_pieceNo7, new org.netbeans.lib.awtextra.AbsoluteConstraints(81, 241, 253, 36));
-
-        _pieceNo6.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _pieceNo6.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _pieceNo6.setToolTipText("");
-        _pieceNo6.setBorder(null);
-        _pieceNo6.setMinimumSize(new java.awt.Dimension(470, 46));
-        _pieceNo6.setName(""); // NOI18N
-        _pieceNo6.setPreferredSize(new java.awt.Dimension(470, 46));
-        _pieceNo6.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _pieceNo6.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_pieceNo6, new org.netbeans.lib.awtextra.AbsoluteConstraints(81, 201, 253, 36));
-
-        _pieceNo5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _pieceNo5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _pieceNo5.setToolTipText("");
-        _pieceNo5.setBorder(null);
-        _pieceNo5.setMinimumSize(new java.awt.Dimension(470, 46));
-        _pieceNo5.setName(""); // NOI18N
-        _pieceNo5.setPreferredSize(new java.awt.Dimension(470, 46));
-        _pieceNo5.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _pieceNo5.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_pieceNo5, new org.netbeans.lib.awtextra.AbsoluteConstraints(81, 161, 253, 36));
-
-        _testLength5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _testLength5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _testLength5.setToolTipText("");
-        _testLength5.setBorder(null);
-        _testLength5.setMinimumSize(new java.awt.Dimension(470, 46));
-        _testLength5.setName(""); // NOI18N
-        _testLength5.setPreferredSize(new java.awt.Dimension(470, 46));
-        _testLength5.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _testLength5.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_testLength5, new org.netbeans.lib.awtextra.AbsoluteConstraints(338, 161, 150, 36));
-
-        _testLength6.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _testLength6.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _testLength6.setToolTipText("");
-        _testLength6.setBorder(null);
-        _testLength6.setMinimumSize(new java.awt.Dimension(470, 46));
-        _testLength6.setName(""); // NOI18N
-        _testLength6.setPreferredSize(new java.awt.Dimension(470, 46));
-        _testLength6.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _testLength6.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_testLength6, new org.netbeans.lib.awtextra.AbsoluteConstraints(338, 201, 150, 36));
-
-        _testLength7.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _testLength7.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _testLength7.setToolTipText("");
-        _testLength7.setBorder(null);
-        _testLength7.setMinimumSize(new java.awt.Dimension(470, 46));
-        _testLength7.setName(""); // NOI18N
-        _testLength7.setPreferredSize(new java.awt.Dimension(470, 46));
-        _testLength7.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _testLength7.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_testLength7, new org.netbeans.lib.awtextra.AbsoluteConstraints(338, 241, 150, 36));
-
-        _weldingProcess7.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _weldingProcess7.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _weldingProcess7.setToolTipText("");
-        _weldingProcess7.setBorder(null);
-        _weldingProcess7.setMinimumSize(new java.awt.Dimension(470, 46));
-        _weldingProcess7.setName(""); // NOI18N
-        _weldingProcess7.setPreferredSize(new java.awt.Dimension(470, 46));
-        _weldingProcess7.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _weldingProcess7.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_weldingProcess7, new org.netbeans.lib.awtextra.AbsoluteConstraints(492, 241, 204, 36));
-
-        _weldingProcess6.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _weldingProcess6.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _weldingProcess6.setToolTipText("");
-        _weldingProcess6.setBorder(null);
-        _weldingProcess6.setMinimumSize(new java.awt.Dimension(470, 46));
-        _weldingProcess6.setName(""); // NOI18N
-        _weldingProcess6.setPreferredSize(new java.awt.Dimension(470, 46));
-        _weldingProcess6.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _weldingProcess6.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_weldingProcess6, new org.netbeans.lib.awtextra.AbsoluteConstraints(492, 201, 204, 36));
-
-        _weldingProcess5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _weldingProcess5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _weldingProcess5.setToolTipText("");
-        _weldingProcess5.setBorder(null);
-        _weldingProcess5.setMinimumSize(new java.awt.Dimension(470, 46));
-        _weldingProcess5.setName(""); // NOI18N
-        _weldingProcess5.setPreferredSize(new java.awt.Dimension(470, 46));
-        _weldingProcess5.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _weldingProcess5.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_weldingProcess5, new org.netbeans.lib.awtextra.AbsoluteConstraints(492, 161, 204, 36));
-
-        _Mthickness5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _Mthickness5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _Mthickness5.setToolTipText("");
-        _Mthickness5.setBorder(null);
-        _Mthickness5.setMinimumSize(new java.awt.Dimension(470, 46));
-        _Mthickness5.setName(""); // NOI18N
-        _Mthickness5.setPreferredSize(new java.awt.Dimension(470, 46));
-        _Mthickness5.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _Mthickness5.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_Mthickness5, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 161, 108, 36));
-
-        _Mthickness6.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _Mthickness6.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _Mthickness6.setToolTipText("");
-        _Mthickness6.setBorder(null);
-        _Mthickness6.setMinimumSize(new java.awt.Dimension(470, 46));
-        _Mthickness6.setName(""); // NOI18N
-        _Mthickness6.setPreferredSize(new java.awt.Dimension(470, 46));
-        _Mthickness6.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _Mthickness6.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_Mthickness6, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 201, 108, 36));
-
-        _Mthickness7.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _Mthickness7.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _Mthickness7.setToolTipText("");
-        _Mthickness7.setBorder(null);
-        _Mthickness7.setMinimumSize(new java.awt.Dimension(470, 46));
-        _Mthickness7.setName(""); // NOI18N
-        _Mthickness7.setPreferredSize(new java.awt.Dimension(470, 46));
-        _Mthickness7.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _Mthickness7.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_Mthickness7, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 241, 108, 36));
-
-        _diameter7.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _diameter7.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _diameter7.setToolTipText("");
-        _diameter7.setBorder(null);
-        _diameter7.setMinimumSize(new java.awt.Dimension(470, 46));
-        _diameter7.setName(""); // NOI18N
-        _diameter7.setPreferredSize(new java.awt.Dimension(470, 46));
-        _diameter7.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _diameter7.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_diameter7, new org.netbeans.lib.awtextra.AbsoluteConstraints(812, 241, 132, 36));
-
-        _diameter6.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _diameter6.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _diameter6.setToolTipText("");
-        _diameter6.setBorder(null);
-        _diameter6.setMinimumSize(new java.awt.Dimension(470, 46));
-        _diameter6.setName(""); // NOI18N
-        _diameter6.setPreferredSize(new java.awt.Dimension(470, 46));
-        _diameter6.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _diameter6.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_diameter6, new org.netbeans.lib.awtextra.AbsoluteConstraints(812, 201, 132, 36));
-
-        _diameter5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _diameter5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _diameter5.setToolTipText("");
-        _diameter5.setBorder(null);
-        _diameter5.setMinimumSize(new java.awt.Dimension(470, 46));
-        _diameter5.setName(""); // NOI18N
-        _diameter5.setPreferredSize(new java.awt.Dimension(470, 46));
-        _diameter5.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _diameter5.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_diameter5, new org.netbeans.lib.awtextra.AbsoluteConstraints(812, 161, 132, 36));
-
-        _MdefectType5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _MdefectType5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _MdefectType5.setToolTipText("");
-        _MdefectType5.setBorder(null);
-        _MdefectType5.setMinimumSize(new java.awt.Dimension(470, 46));
-        _MdefectType5.setName(""); // NOI18N
-        _MdefectType5.setPreferredSize(new java.awt.Dimension(470, 46));
-        _MdefectType5.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _MdefectType5.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_MdefectType5, new org.netbeans.lib.awtextra.AbsoluteConstraints(948, 161, 134, 36));
-
-        _MdefectType6.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _MdefectType6.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _MdefectType6.setToolTipText("");
-        _MdefectType6.setBorder(null);
-        _MdefectType6.setMinimumSize(new java.awt.Dimension(470, 46));
-        _MdefectType6.setName(""); // NOI18N
-        _MdefectType6.setPreferredSize(new java.awt.Dimension(470, 46));
-        _MdefectType6.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _MdefectType6.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_MdefectType6, new org.netbeans.lib.awtextra.AbsoluteConstraints(948, 201, 134, 36));
-
-        _MdefectType7.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _MdefectType7.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _MdefectType7.setToolTipText("");
-        _MdefectType7.setBorder(null);
-        _MdefectType7.setMinimumSize(new java.awt.Dimension(470, 46));
-        _MdefectType7.setName(""); // NOI18N
-        _MdefectType7.setPreferredSize(new java.awt.Dimension(470, 46));
-        _MdefectType7.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _MdefectType7.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_MdefectType7, new org.netbeans.lib.awtextra.AbsoluteConstraints(948, 241, 134, 36));
-
-        _MdefectLocation7.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _MdefectLocation7.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _MdefectLocation7.setToolTipText("");
-        _MdefectLocation7.setBorder(null);
-        _MdefectLocation7.setMinimumSize(new java.awt.Dimension(470, 46));
-        _MdefectLocation7.setName(""); // NOI18N
-        _MdefectLocation7.setPreferredSize(new java.awt.Dimension(470, 46));
-        _MdefectLocation7.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _MdefectLocation7.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_MdefectLocation7, new org.netbeans.lib.awtextra.AbsoluteConstraints(1086, 241, 176, 36));
-
-        _MdefectLocation6.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _MdefectLocation6.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _MdefectLocation6.setToolTipText("");
-        _MdefectLocation6.setBorder(null);
-        _MdefectLocation6.setMinimumSize(new java.awt.Dimension(470, 46));
-        _MdefectLocation6.setName(""); // NOI18N
-        _MdefectLocation6.setPreferredSize(new java.awt.Dimension(470, 46));
-        _MdefectLocation6.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _MdefectLocation6.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_MdefectLocation6, new org.netbeans.lib.awtextra.AbsoluteConstraints(1086, 201, 176, 36));
-
-        _MdefectLocation5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _MdefectLocation5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _MdefectLocation5.setToolTipText("");
-        _MdefectLocation5.setBorder(null);
-        _MdefectLocation5.setMinimumSize(new java.awt.Dimension(470, 46));
-        _MdefectLocation5.setName(""); // NOI18N
-        _MdefectLocation5.setPreferredSize(new java.awt.Dimension(470, 46));
-        _MdefectLocation5.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _MdefectLocation5.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_MdefectLocation5, new org.netbeans.lib.awtextra.AbsoluteConstraints(1086, 161, 176, 36));
-
-        _result5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _result5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _result5.setToolTipText("");
-        _result5.setBorder(null);
-        _result5.setMinimumSize(new java.awt.Dimension(470, 46));
-        _result5.setName(""); // NOI18N
-        _result5.setPreferredSize(new java.awt.Dimension(470, 46));
-        _result5.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _result5.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_result5, new org.netbeans.lib.awtextra.AbsoluteConstraints(1266, 161, 77, 36));
-
-        _result6.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _result6.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _result6.setToolTipText("");
-        _result6.setBorder(null);
-        _result6.setMinimumSize(new java.awt.Dimension(470, 46));
-        _result6.setName(""); // NOI18N
-        _result6.setPreferredSize(new java.awt.Dimension(470, 46));
-        _result6.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _result6.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_result6, new org.netbeans.lib.awtextra.AbsoluteConstraints(1266, 201, 77, 36));
-
-        _result7.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _result7.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _result7.setToolTipText("");
-        _result7.setBorder(null);
-        _result7.setMinimumSize(new java.awt.Dimension(470, 46));
-        _result7.setName(""); // NOI18N
-        _result7.setPreferredSize(new java.awt.Dimension(470, 46));
-        _result7.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _result7.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_result7, new org.netbeans.lib.awtextra.AbsoluteConstraints(1266, 241, 77, 36));
-
-        _diameter9.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _diameter9.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _diameter9.setToolTipText("");
-        _diameter9.setBorder(null);
-        _diameter9.setMinimumSize(new java.awt.Dimension(470, 46));
-        _diameter9.setName(""); // NOI18N
-        _diameter9.setPreferredSize(new java.awt.Dimension(470, 46));
-        _diameter9.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _diameter9.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_diameter9, new org.netbeans.lib.awtextra.AbsoluteConstraints(812, 321, 132, 35));
-
-        _testLength9.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _testLength9.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _testLength9.setToolTipText("");
-        _testLength9.setBorder(null);
-        _testLength9.setMinimumSize(new java.awt.Dimension(470, 46));
-        _testLength9.setName(""); // NOI18N
-        _testLength9.setPreferredSize(new java.awt.Dimension(470, 46));
-        _testLength9.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _testLength9.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_testLength9, new org.netbeans.lib.awtextra.AbsoluteConstraints(338, 321, 150, 35));
-
-        _Mthickness9.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _Mthickness9.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _Mthickness9.setToolTipText("");
-        _Mthickness9.setBorder(null);
-        _Mthickness9.setMinimumSize(new java.awt.Dimension(470, 46));
-        _Mthickness9.setName(""); // NOI18N
-        _Mthickness9.setPreferredSize(new java.awt.Dimension(470, 46));
-        _Mthickness9.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _Mthickness9.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_Mthickness9, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 321, 108, 35));
-
-        _result10.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _result10.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _result10.setToolTipText("");
-        _result10.setBorder(null);
-        _result10.setMinimumSize(new java.awt.Dimension(470, 46));
-        _result10.setName(""); // NOI18N
-        _result10.setPreferredSize(new java.awt.Dimension(470, 46));
-        _result10.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _result10.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_result10, new org.netbeans.lib.awtextra.AbsoluteConstraints(1266, 360, 77, 35));
-
-        _pieceNo10.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _pieceNo10.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _pieceNo10.setToolTipText("");
-        _pieceNo10.setBorder(null);
-        _pieceNo10.setMinimumSize(new java.awt.Dimension(470, 46));
-        _pieceNo10.setName(""); // NOI18N
-        _pieceNo10.setPreferredSize(new java.awt.Dimension(470, 46));
-        _pieceNo10.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _pieceNo10.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_pieceNo10, new org.netbeans.lib.awtextra.AbsoluteConstraints(81, 360, 253, 35));
-
-        _MdefectLocation9.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _MdefectLocation9.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _MdefectLocation9.setToolTipText("");
-        _MdefectLocation9.setBorder(null);
-        _MdefectLocation9.setMinimumSize(new java.awt.Dimension(470, 46));
-        _MdefectLocation9.setName(""); // NOI18N
-        _MdefectLocation9.setPreferredSize(new java.awt.Dimension(470, 46));
-        _MdefectLocation9.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _MdefectLocation9.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_MdefectLocation9, new org.netbeans.lib.awtextra.AbsoluteConstraints(1086, 321, 176, 35));
-
-        _Mthickness10.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _Mthickness10.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _Mthickness10.setToolTipText("");
-        _Mthickness10.setBorder(null);
-        _Mthickness10.setMinimumSize(new java.awt.Dimension(470, 46));
-        _Mthickness10.setName(""); // NOI18N
-        _Mthickness10.setPreferredSize(new java.awt.Dimension(470, 46));
-        _Mthickness10.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _Mthickness10.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_Mthickness10, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 360, 108, 35));
-
-        _diameter10.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _diameter10.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _diameter10.setToolTipText("");
-        _diameter10.setBorder(null);
-        _diameter10.setMinimumSize(new java.awt.Dimension(470, 46));
-        _diameter10.setName(""); // NOI18N
-        _diameter10.setPreferredSize(new java.awt.Dimension(470, 46));
-        _diameter10.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _diameter10.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_diameter10, new org.netbeans.lib.awtextra.AbsoluteConstraints(812, 360, 132, 35));
-
-        _testLength10.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _testLength10.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _testLength10.setToolTipText("");
-        _testLength10.setBorder(null);
-        _testLength10.setMinimumSize(new java.awt.Dimension(470, 46));
-        _testLength10.setName(""); // NOI18N
-        _testLength10.setPreferredSize(new java.awt.Dimension(470, 46));
-        _testLength10.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _testLength10.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_testLength10, new org.netbeans.lib.awtextra.AbsoluteConstraints(338, 360, 150, 35));
-
-        _weldingProcess10.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _weldingProcess10.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _weldingProcess10.setToolTipText("");
-        _weldingProcess10.setBorder(null);
-        _weldingProcess10.setMinimumSize(new java.awt.Dimension(470, 46));
-        _weldingProcess10.setName(""); // NOI18N
-        _weldingProcess10.setPreferredSize(new java.awt.Dimension(470, 46));
-        _weldingProcess10.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _weldingProcess10.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_weldingProcess10, new org.netbeans.lib.awtextra.AbsoluteConstraints(492, 360, 204, 35));
-
-        _result9.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _result9.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _result9.setToolTipText("");
-        _result9.setBorder(null);
-        _result9.setMinimumSize(new java.awt.Dimension(470, 46));
-        _result9.setName(""); // NOI18N
-        _result9.setPreferredSize(new java.awt.Dimension(470, 46));
-        _result9.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _result9.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_result9, new org.netbeans.lib.awtextra.AbsoluteConstraints(1266, 321, 77, 35));
-
-        _pieceNo9.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _pieceNo9.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _pieceNo9.setToolTipText("");
-        _pieceNo9.setBorder(null);
-        _pieceNo9.setMinimumSize(new java.awt.Dimension(470, 46));
-        _pieceNo9.setName(""); // NOI18N
-        _pieceNo9.setPreferredSize(new java.awt.Dimension(470, 46));
-        _pieceNo9.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _pieceNo9.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_pieceNo9, new org.netbeans.lib.awtextra.AbsoluteConstraints(81, 321, 253, 35));
-
-        _MdefectType10.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _MdefectType10.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _MdefectType10.setToolTipText("");
-        _MdefectType10.setBorder(null);
-        _MdefectType10.setMinimumSize(new java.awt.Dimension(470, 46));
-        _MdefectType10.setName(""); // NOI18N
-        _MdefectType10.setPreferredSize(new java.awt.Dimension(470, 46));
-        _MdefectType10.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _MdefectType10.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_MdefectType10, new org.netbeans.lib.awtextra.AbsoluteConstraints(948, 360, 134, 35));
-
-        _MdefectType9.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _MdefectType9.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _MdefectType9.setToolTipText("");
-        _MdefectType9.setBorder(null);
-        _MdefectType9.setMinimumSize(new java.awt.Dimension(470, 46));
-        _MdefectType9.setName(""); // NOI18N
-        _MdefectType9.setPreferredSize(new java.awt.Dimension(470, 46));
-        _MdefectType9.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _MdefectType9.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_MdefectType9, new org.netbeans.lib.awtextra.AbsoluteConstraints(948, 321, 134, 35));
-
-        _MdefectLocation10.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _MdefectLocation10.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _MdefectLocation10.setToolTipText("");
-        _MdefectLocation10.setBorder(null);
-        _MdefectLocation10.setMinimumSize(new java.awt.Dimension(470, 46));
-        _MdefectLocation10.setName(""); // NOI18N
-        _MdefectLocation10.setPreferredSize(new java.awt.Dimension(470, 46));
-        _MdefectLocation10.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _MdefectLocation10.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_MdefectLocation10, new org.netbeans.lib.awtextra.AbsoluteConstraints(1086, 360, 176, 35));
-
-        _weldingProcess9.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _weldingProcess9.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _weldingProcess9.setToolTipText("");
-        _weldingProcess9.setBorder(null);
-        _weldingProcess9.setMinimumSize(new java.awt.Dimension(470, 46));
-        _weldingProcess9.setName(""); // NOI18N
-        _weldingProcess9.setPreferredSize(new java.awt.Dimension(470, 46));
-        _weldingProcess9.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _weldingProcess9.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                _weldingProcess7KeyReleased(evt);
-            }
-        });
-        jPanel13.add(_weldingProcess9, new org.netbeans.lib.awtextra.AbsoluteConstraints(492, 321, 204, 35));
-
-        jPanel6.add(jPanel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 1170, 1350, 400));
-
-        jPanel15.setOpaque(false);
-        jPanel15.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        _MoperatorName.setEditable(false);
-        _MoperatorName.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _MoperatorName.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _MoperatorName.setToolTipText("");
-        _MoperatorName.setBorder(null);
-        _MoperatorName.setMinimumSize(new java.awt.Dimension(470, 46));
-        _MoperatorName.setName(""); // NOI18N
-        _MoperatorName.setPreferredSize(new java.awt.Dimension(470, 46));
-        _MoperatorName.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        jPanel15.add(_MoperatorName, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 6, 310, 41));
-
-        _MevaluatorName.setEditable(false);
-        _MevaluatorName.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _MevaluatorName.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _MevaluatorName.setToolTipText("");
-        _MevaluatorName.setBorder(null);
-        _MevaluatorName.setMinimumSize(new java.awt.Dimension(470, 46));
-        _MevaluatorName.setName(""); // NOI18N
-        _MevaluatorName.setPreferredSize(new java.awt.Dimension(470, 46));
-        _MevaluatorName.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        jPanel15.add(_MevaluatorName, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 6, 330, 41));
-
-        _MconfirmationName.setEditable(false);
-        _MconfirmationName.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _MconfirmationName.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _MconfirmationName.setToolTipText("");
-        _MconfirmationName.setBorder(null);
-        _MconfirmationName.setMinimumSize(new java.awt.Dimension(470, 46));
-        _MconfirmationName.setName(""); // NOI18N
-        _MconfirmationName.setPreferredSize(new java.awt.Dimension(470, 46));
-        _MconfirmationName.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        jPanel15.add(_MconfirmationName, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 6, 230, 41));
-
-        _MoperatorLevel.setEditable(false);
-        _MoperatorLevel.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _MoperatorLevel.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _MoperatorLevel.setToolTipText("");
-        _MoperatorLevel.setBorder(null);
-        _MoperatorLevel.setMinimumSize(new java.awt.Dimension(470, 46));
-        _MoperatorLevel.setName(""); // NOI18N
-        _MoperatorLevel.setPreferredSize(new java.awt.Dimension(470, 46));
-        _MoperatorLevel.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        jPanel15.add(_MoperatorLevel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 55, 310, 40));
-
-        _Mbottom.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
-        _Mbottom.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _Mbottom.setToolTipText("");
-        _Mbottom.setBorder(null);
-        _Mbottom.setMinimumSize(new java.awt.Dimension(470, 46));
-        _Mbottom.setName(""); // NOI18N
-        _Mbottom.setPreferredSize(new java.awt.Dimension(470, 46));
-        _Mbottom.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        _Mbottom.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                _MbottomActionPerformed(evt);
-            }
-        });
-        jPanel15.add(_Mbottom, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 255, 900, 30));
-
-        _MconfirmationLevel.setEditable(false);
-        _MconfirmationLevel.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _MconfirmationLevel.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _MconfirmationLevel.setToolTipText("");
-        _MconfirmationLevel.setBorder(null);
-        _MconfirmationLevel.setMinimumSize(new java.awt.Dimension(470, 46));
-        _MconfirmationLevel.setName(""); // NOI18N
-        _MconfirmationLevel.setPreferredSize(new java.awt.Dimension(470, 46));
-        _MconfirmationLevel.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        jPanel15.add(_MconfirmationLevel, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 55, 230, 40));
-
-        _MevaluatorLevel.setEditable(false);
-        _MevaluatorLevel.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _MevaluatorLevel.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _MevaluatorLevel.setToolTipText("");
-        _MevaluatorLevel.setBorder(null);
-        _MevaluatorLevel.setMinimumSize(new java.awt.Dimension(470, 46));
-        _MevaluatorLevel.setName(""); // NOI18N
-        _MevaluatorLevel.setPreferredSize(new java.awt.Dimension(470, 46));
-        _MevaluatorLevel.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        jPanel15.add(_MevaluatorLevel, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 55, 330, 40));
-
-        _Mdate1.setEditable(false);
-        _Mdate1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _Mdate1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _Mdate1.setToolTipText("");
-        _Mdate1.setBorder(null);
-        _Mdate1.setMinimumSize(new java.awt.Dimension(470, 46));
-        _Mdate1.setName(""); // NOI18N
-        _Mdate1.setPreferredSize(new java.awt.Dimension(470, 46));
-        _Mdate1.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        jPanel15.add(_Mdate1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, 310, 40));
-
-        _Mdate2.setEditable(false);
-        _Mdate2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _Mdate2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _Mdate2.setToolTipText("");
-        _Mdate2.setBorder(null);
-        _Mdate2.setMinimumSize(new java.awt.Dimension(470, 46));
-        _Mdate2.setName(""); // NOI18N
-        _Mdate2.setPreferredSize(new java.awt.Dimension(470, 46));
-        _Mdate2.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        jPanel15.add(_Mdate2, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 100, 330, 40));
-
-        _Mdate3.setEditable(false);
-        _Mdate3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        _Mdate3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        _Mdate3.setToolTipText("");
-        _Mdate3.setBorder(null);
-        _Mdate3.setMinimumSize(new java.awt.Dimension(470, 46));
-        _Mdate3.setName(""); // NOI18N
-        _Mdate3.setPreferredSize(new java.awt.Dimension(470, 46));
-        _Mdate3.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                _weldingProcess7FocusGained(evt);
-            }
-        });
-        jPanel15.add(_Mdate3, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 100, 230, 40));
-
-        jPanel6.add(jPanel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 1610, 1100, 270));
-
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/berichtserstellungssystem/Images/magnetic2.png"))); // NOI18N
-        jLabel3.setMaximumSize(new java.awt.Dimension(1350, 1900));
-        jLabel3.setMinimumSize(new java.awt.Dimension(1350, 1900));
-        jLabel3.setPreferredSize(new java.awt.Dimension(1350, 1900));
-        jPanel6.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, 1870));
-
-        jTabbedPane1.addTab("Manyetik Parçacık Muayene Raporu", jPanel6);
 
         jLayeredPane1.add(jTabbedPane1, "card2");
 
@@ -7463,7 +7537,7 @@ public class Report extends javax.swing.JFrame {
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
         jLabel1.requestFocusInWindow();
         if (!jLabel2.isEnabled() && (everyThingIsOkayM() || everyThingIsOkayR())) {
-            if (equip1 != null) {
+            if (this.type == DatabaseManagement.getMAGNETIC_TYPE()) {
                 printReport(jPanel6, 0.38, 0.36);
             }
             else {
@@ -7475,6 +7549,7 @@ public class Report extends javax.swing.JFrame {
     private void _descriptionKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event__descriptionKeyReleased
         jLabel1.setEnabled(false);
         jLabel4.setEnabled(false);
+        jLabel6.setEnabled(false);
         if (everyThingIsOkayR()) {
             jLabel2.setEnabled(true);
         }
@@ -7504,6 +7579,7 @@ public class Report extends javax.swing.JFrame {
     private void _weldingProcess7KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event__weldingProcess7KeyReleased
         jLabel1.setEnabled(false);
         jLabel4.setEnabled(false);
+        jLabel6.setEnabled(false);
         if (everyThingIsOkayM()) {
             jLabel2.setEnabled(true);
         }
@@ -7527,7 +7603,7 @@ public class Report extends javax.swing.JFrame {
     private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
         int res = 0;
         if (!jLabel2.isEnabled() && (everyThingIsOkayM() || everyThingIsOkayR())) {
-            if (toEditM != null) {
+            if (this.type == DatabaseManagement.getMAGNETIC_TYPE()) {
                 JFileChooser chooser = new JFileChooser();
                 FileFilter ff = new FileFilter() {
                     @Override
@@ -7592,6 +7668,7 @@ public class Report extends javax.swing.JFrame {
     private void _automaticMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event__automaticMouseClicked
         jLabel1.setEnabled(false);
         jLabel4.setEnabled(false);
+        jLabel6.setEnabled(false);
         if (everyThingIsOkayR()) {
             jLabel2.setEnabled(true);
         }
@@ -7603,6 +7680,7 @@ public class Report extends javax.swing.JFrame {
     private void _buttMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event__buttMouseClicked
         jLabel1.setEnabled(false);
         jLabel4.setEnabled(false);
+        jLabel6.setEnabled(false);
         if (everyThingIsOkayM()) {
             jLabel2.setEnabled(true);
         }
@@ -7612,8 +7690,22 @@ public class Report extends javax.swing.JFrame {
     }//GEN-LAST:event__buttMouseClicked
 
     private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
-        new FirstPage(theCustomer.getName() + ", " + theCustomer.getAddress(), orderNr, offerNr, operator, evaluator, confirmator, equip1, equip2, project, surfaceCondition, stageOfExamination, reportDate, this).setVisible(true);
+        if (this.type == DatabaseManagement.getMAGNETIC_TYPE()) {
+            new FirstPage(theCustomer.getName() + ", " + theCustomer.getAddress(), orderNr, offerNr, operator, evaluator, confirmator, equip1, null, project, surfaceCondition, stageOfExamination, reportDate, this).setVisible(true);
+        }
+        else {
+            new FirstPage(theCustomer.getName() + ", " + theCustomer.getAddress(), orderNr, offerNr, operator, evaluator, confirmator, null, equip2, project, surfaceCondition, stageOfExamination, reportDate, this).setVisible(true);
+        }
+        
     }//GEN-LAST:event_jLabel5MouseClicked
+
+    private void _MequipmentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event__MequipmentActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event__MequipmentActionPerformed
+
+    private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
+        new Verify("Raporu silmekten emin misiniz?", this, 8).setVisible(true);
+    }//GEN-LAST:event_jLabel6MouseClicked
 
     /**
      * @param args the command line arguments
@@ -7953,6 +8045,7 @@ public class Report extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel40;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JLayeredPane jLayeredPane1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;

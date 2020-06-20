@@ -192,17 +192,17 @@ public class ReportManagement extends DatabaseManagement{
             rs = stmt.executeQuery("SELECT id FROM Report WHERE customer = '" + customer + "' AND reportNumber = '" + reportNo + "';");
             if (rs.next()) {
                 report_id = rs.getInt("id");
-
-                stmt.executeUpdate("DELETE FROM Report WHERE id = " + report_id + ";");
-                stmt.executeUpdate("DELETE FROM MangneticReport WHERE Report_id = " + report_id + ";");
-                stmt.executeUpdate("DELETE FROM RadiographicReport WHERE Report_id = " + report_id + ";");
-                stmt.executeUpdate("DELETE FROM MangneticResults WHERE Report_id = " + report_id + ";");
-                stmt.executeUpdate("DELETE FROM RadiographicResults WHERE Report_id = " + report_id + ";");                
-                return 1;
             }
             else {
                 return 0;
             }
+            stmt.executeUpdate("DELETE FROM Report WHERE id = " + report_id + ";");
+            stmt.executeUpdate("DELETE FROM MagneticReport WHERE Report_id = " + report_id + ";");
+            stmt.executeUpdate("DELETE FROM RadiographicReport WHERE Report_id = " + report_id + ";");
+            stmt.executeUpdate("DELETE FROM MagneticResults WHERE Report_id = " + report_id + ";");
+            stmt.executeUpdate("DELETE FROM RadiographicResults WHERE Report_id = " + report_id + ";");                
+            return 1;
+            
         }
             catch (SQLException e) {
                 System.out.println("deleteReport " + e);

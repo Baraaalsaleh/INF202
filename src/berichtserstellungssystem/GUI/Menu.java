@@ -62,7 +62,7 @@ public class Menu extends javax.swing.JFrame {
      */
     public Menu() {
         if (!PersonManagement.findAdmin()) {
-            new Personel(0, 1, me).setVisible(true);
+            new Personel(0, 1, me, null).setVisible(true);
         }
         
         initComponents();
@@ -1203,7 +1203,7 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem10ActionPerformed
 
     private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
-        new Personel(DatabaseManagement.getMANAGER_STATUS(), 1, me).setVisible(true);
+        new Personel(DatabaseManagement.getMANAGER_STATUS(), 1, me, null).setVisible(true);
     }//GEN-LAST:event_jMenuItem11ActionPerformed
 
     private void jMenuItem18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem18ActionPerformed
@@ -1230,11 +1230,11 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuBar1MouseDragged
 
     private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
-        new Personel(DatabaseManagement.getEMPLOYEE_STATUS(), 1, me).setVisible(true);
+        new Personel(DatabaseManagement.getEMPLOYEE_STATUS(), 1, me, null).setVisible(true);
     }//GEN-LAST:event_jMenuItem8ActionPerformed
 
     private void jMenuItem15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem15ActionPerformed
-        new Personel(0, 2, me).setVisible(true);
+        new Personel(0, 2, me, this).setVisible(true);
     }//GEN-LAST:event_jMenuItem15ActionPerformed
 
     private void jMenuItem16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem16ActionPerformed

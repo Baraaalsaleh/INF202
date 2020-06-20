@@ -404,7 +404,6 @@ public class PersonManagement extends DatabaseManagement{
     //Abfragen von Mitarbeiterinformationen
     public static ResultSet getEmployeeById (int id){
         ResultSet rs = null;
-        int employee_id = 0;
         try {
             stmt = con.createStatement();        
             rs = stmt.executeQuery("SELECT P.id, P.TCNr, P.PersonalNr, P.name as Employee_name, P.lastname as Employee_lastname, P.gender, P.birthdate, P.address,"

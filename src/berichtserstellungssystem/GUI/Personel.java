@@ -47,6 +47,8 @@ public class Personel extends javax.swing.JFrame {
     Date var3 = null;
     boolean verifiy;
     
+    Menu frame = null;
+    
     boolean testIt1 = false;
     boolean testIt2 = false;
     
@@ -67,11 +69,12 @@ public class Personel extends javax.swing.JFrame {
         setEveryThing();
     }
     
-    public Personel(int type, int process, Manager me) {
+    public Personel(int type, int process, Manager me, Menu frame) {
         initComponents();
         this.type = type;
         this.process = process;
         this.me = me;
+        this.frame = frame;
         setEveryThing();
     }
     
@@ -133,7 +136,7 @@ public class Personel extends javax.swing.JFrame {
                     Employee toEdit = new Employee(rs);
                     System.out.println("this is me " + toEdit.getName());
                     fillEmployeeData(toEdit);
-                    jTextField10.setEnabled(false);
+                    jTextField10.setVisible(false);
             }
             else if (type == DatabaseManagement.getMANAGER_STATUS()){
                 this.jLabel1.setText("Yönetici Güncelle");
@@ -152,9 +155,16 @@ public class Personel extends javax.swing.JFrame {
                 this.jLabel1.setText("Benim Bilgilerim");
                 this.jLabel11.setText("Kullanıcı Adı");
                 this.jTextField10.setText("Kullanıcı Adı");
+                this.jTextField10.setBackground(Color.pink);
+                this.jTextField10.setToolTipText("Zorunlu alan");
                 this.jDateChooser2.setVisible(false);
                 this.jLabel12.setText("Şifre");
                 this.jTextField11.setText("Şifre");
+                this.jTextField11.setBackground(Color.pink);
+                this.jTextField11.setToolTipText("Zorunlu alan");
+                jTextField8.setEnabled(false);
+                jDateChooser1.setEnabled(false);
+                jComboBox1.setEnabled(false);
             }
         }
     }
@@ -463,6 +473,10 @@ public class Personel extends javax.swing.JFrame {
             if (process == 1 || process == 3) {
                 cleanAll();
             }
+            else {
+                frame.me = new Manager(PersonManagement.getManager(Long.parseLong(jTextField9.getText())));
+                this.dispose();
+            }
         }
         else if (done == 0) {
             JOptionPane.showMessageDialog(dialog, "Girdiğiniz personel numarası daha önce veri tabanında bulunduğu için kullanılmaz!", "Hatalı İşlem", JOptionPane.PLAIN_MESSAGE);
@@ -512,6 +526,7 @@ public class Personel extends javax.swing.JFrame {
             message(done);
         }
         else {
+            
             Manager toUpdate = managerDataCollector();
             int done = PersonManagement.updateManager_self(toUpdate);
             System.out.println("It was successfully done, and as a profe, your name is " + toUpdate.getName() + " " + toUpdate.getLastname() + " " + toUpdate.getPersonalNr()
@@ -1170,7 +1185,7 @@ public class Personel extends javax.swing.JFrame {
             everyThingIsOkay(toCheck);
         }
         Date temp = jDateChooser1.getDate();
-        if (temp != null) {
+        if (temp != null && type == DatabaseManagement.getEMPLOYEE_STATUS()) {
             int year = temp.getYear();
             temp.setYear(year+18);
             testIt2 = false;
