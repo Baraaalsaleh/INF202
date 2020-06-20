@@ -109,15 +109,34 @@ public class Report extends javax.swing.JFrame {
         start();
         this.toEditM = toEditM;
         type = DatabaseManagement.getMAGNETIC_TYPE();
-        process = 2;
         
         if (type == DatabaseManagement.getMAGNETIC_TYPE()) {
             getInfosM((berichtserstellungssystem.Report.Report) toEditM, data);
         }
+        process = 2;
         setEveryThing();
-         for (int i = 0; i < 6; i++) {
-                System.out.println(data[i]);
+        int id = ReportManagement.getReportId(toEditM.getCustomer(), toEditM.getReportNumber());
+        if (id != 0) {
+            process = 2;
+        }
+        else {
+            process = 1;
+            if (everyThingIsOkayM()) {
+                jLabel2.setEnabled(true);
             }
+            else {
+                jLabel2.setEnabled(false);
+            }
+            
+            jLabel1.setEnabled(false);
+            jLabel4.setEnabled(false);
+            jLabel6.setEnabled(false);
+        }
+        
+        
+        for (int i = 0; i < 6; i++) {
+            System.out.println(data[i]);
+        }
         _MoperatorName.setText(data[0]);
         _MevaluatorName.setText(data[1]);
         _MconfirmationName.setText(data[2]);
@@ -165,9 +184,9 @@ public class Report extends javax.swing.JFrame {
         this.confirmation_id = r.getConfirmation_id();
         System.out.println(r.toString());
         System.out.println("getInfos: " + operator_id + " " + evaluator_id + " " + confirmation_id);
-        this.operator = new Employee(PersonManagement.getEmployeeById(this.operator_id));
-        this.evaluator = new Employee(PersonManagement.getEmployeeById(this.evaluator_id));
-        this.confirmator = new Employee(PersonManagement.getEmployeeById(this.confirmation_id));
+        this.operator = new Employee(PersonManagement.getEmployeeByIdBasic(this.operator_id));
+        this.evaluator = new Employee(PersonManagement.getEmployeeByIdBasic(this.evaluator_id));
+        this.confirmator = new Employee(PersonManagement.getEmployeeByIdBasic(this.confirmation_id));
         String equip = r.getEquipment();
         if (toEditM != null) {
             this.equip1 = new MagneticEquipment(EquipmentManagement.getMagneticEquipment(equip));
@@ -238,9 +257,9 @@ public class Report extends javax.swing.JFrame {
         }
         
         System.out.println("getInfosM: " + operator_id + " " + evaluator_id + " " + confirmation_id);
-        this.operator = new Employee(PersonManagement.getEmployeeById(this.operator_id));
-        this.evaluator = new Employee(PersonManagement.getEmployeeById(this.evaluator_id));
-        this.confirmator = new Employee(PersonManagement.getEmployeeById(this.confirmation_id));
+        this.operator = new Employee(PersonManagement.getEmployeeByIdBasic(this.operator_id));
+        this.evaluator = new Employee(PersonManagement.getEmployeeByIdBasic(this.evaluator_id));
+        this.confirmator = new Employee(PersonManagement.getEmployeeByIdBasic(this.confirmation_id));
         String equip = r.getEquipment();
         if (toEditM != null) {
             this.equip1 = new MagneticEquipment(EquipmentManagement.getMagneticEquipment(equip));
@@ -1581,6 +1600,12 @@ public class Report extends javax.swing.JFrame {
         }
         if (done == 1) {
             JOptionPane.showMessageDialog(dialog, func  + " işlemi başarıyla tamamlanmıştır", "Başarılı İşlem", JOptionPane.PLAIN_MESSAGE);
+            if (type == DatabaseManagement.getMAGNETIC_TYPE()) {
+                this.toEditM = collectDataMagnetic();
+            }
+            else {
+                this.toEditR = collectDataRadiographic();
+            }
             if (process == 3) {
                 process = 2;
             }

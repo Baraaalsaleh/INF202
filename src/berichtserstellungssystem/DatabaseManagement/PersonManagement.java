@@ -421,6 +421,24 @@ public class PersonManagement extends DatabaseManagement{
         return rs;
     } 
     
+    public static ResultSet getEmployeeByIdBasic (int id){
+        ResultSet rs = null;
+        try {
+            stmt = con.createStatement();        
+            rs = stmt.executeQuery("SELECT P.id, P.TCNr, P.PersonalNr, P.name as Employee_name, P.lastname as Employee_lastname, P.gender, P.birthdate, P.address,"
+                    + " P.email, P.telephone, P.status, E.level, E.permition_End_Date FROM Person P JOIN Employee E ON P.id = E.Person_id WHERE P.id = " + id + ";");
+            if (rs.next()) {
+                return rs;
+            }
+        }
+        catch (SQLException e){
+            System.out.println("getEmployeeById " + e);
+        }
+        return rs;
+    } 
+    
+    
+    
         //Abfragen von Mitarbeiterinformationen (Manager)
     public static ResultSet getManager (long personalNr){
         ResultSet rs = null;

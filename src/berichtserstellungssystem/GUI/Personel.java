@@ -473,7 +473,7 @@ public class Personel extends javax.swing.JFrame {
             if (process == 1 || process == 3) {
                 cleanAll();
             }
-            else {
+            else if (type == 0){
                 frame.me = new Manager(PersonManagement.getManager(Long.parseLong(jTextField9.getText())));
                 this.dispose();
             }

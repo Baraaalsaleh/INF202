@@ -239,7 +239,7 @@ public class ReportManagement extends DatabaseManagement{
                         + "', testMedium = '" + Security.prepareString(report.getTestMedium()) + "', demagnetization = '" + Security.prepareString(report.getDemagnetization()) + "', surfaceTemperature = '" 
                         + Security.prepareString(report.getSurfaceTemperature()) + "', gaussFieldStrength = '" + Security.prepareString(report.getGaussFieldStrength()) + "', surfaceCondition2 = '" 
                         + Security.prepareString(report.getSurfaceCondition2()) + "', identificationOfLightEquip = '" + Security.prepareString(report.getIdentificationOfLightEquip()) + "', liftingTest = '" 
-                        + Security.prepareString(report.getLiftingTest()) + "', buttWeld = " + report.isButtWeld() + ", filletWeld = " + report.isButtWeld() + ", standardDeviations = '" 
+                        + Security.prepareString(report.getLiftingTest()) + "', buttWeld = " + report.isButtWeld() + ", filletWeld = " + report.isFilletWeld()+ ", standardDeviations = '" 
                         + Security.prepareString(report.getStandardDeviations()) + "' WHERE Report_id = " + report_id + ";");
                 
             stmt.executeUpdate("DELETE FROM MagneticResults WHERE Report_id = " + report_id + ";");
